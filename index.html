@@ -1153,12 +1153,12 @@
       // ═══════════════════════════════════════
       return (
         <div style={{ maxWidth: 430, margin: "0 auto", background: "#f7f7fa", minHeight: "100vh", fontFamily: "'Noto Sans KR', -apple-system, sans-serif", paddingTop: profile ? 16 : 0, position: "relative" }}>
-          {!profile && <ProfileSetupScreen />}
-          {profile && screen === "home" && <HomeScreen />}
-          {profile && screen === "book" && <BookScreen />}
-          {profile && screen === "discussion" && <DiscussionScreen />}
-          {profile && screen === "avatar" && <AvatarScreen />}
-          {profile && screen === "schedule" && <ScheduleScreen />}
+          {!profile && ProfileSetupScreen()}
+          {profile && screen === "home" && HomeScreen()}
+          {profile && screen === "book" && BookScreen()}
+          {profile && screen === "discussion" && DiscussionScreen()}
+          {profile && screen === "avatar" && AvatarScreen()}
+          {profile && screen === "schedule" && ScheduleScreen()}
 
           <TabBar />
           <RewardModal />
