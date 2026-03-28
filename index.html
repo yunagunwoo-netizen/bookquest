@@ -99,12 +99,75 @@
 </head>
 <body>
   <div id="root"></div>
+  <!-- Firebase SDK (compat 버전 - CDN용) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script>
+    // Firebase 초기화
+    const firebaseConfig = {
+      apiKey: "AIzaSyCdUD26Zmyww_c0ZeLTlE4-tiRzGmTLraM",
+      authDomain: "bookquest-f9720.firebaseapp.com",
+      projectId: "bookquest-f9720",
+      storageBucket: "bookquest-f9720.firebasestorage.app",
+      messagingSenderId: "368184428538",
+      appId: "1:368184428538:web:9fe80b3f2f4b348b3dc643",
+      measurementId: "G-PKQK61MJ06"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+  </script>
+
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
   <script type="text/babel">
-    const { useState, useEffect, useRef } = React;
+    const { useState, useEffect, useRef, useCallback } = React;
+
+    // ═══════════════════════════════════════
+    // 🔥 Firestore 데이터 서비스
+    // ═══════════════════════════════════════
+    const FirestoreService = {
+      // 유저 ID 생성/가져오기 (기기별 고유)
+      getUserId() {
+        let uid = localStorage.getItem("bookquest_uid");
+        if (!uid) {
+          uid = "user_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8);
+          localStorage.setItem("bookquest_uid", uid);
+        }
+        return uid;
+      },
+
+      // 유저 데이터 저장
+      async saveUserData(data) {
+        try {
+          const uid = this.getUserId();
+          await db.collection("users").doc(uid).set({
+            ...data,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          }, { merge: true });
+          console.log("✅ Firestore 저장 완료");
+        } catch (e) {
+          console.error("❌ Firestore 저장 실패:", e);
+        }
+      },
+
+      // 유저 데이터 불러오기
+      async loadUserData() {
+        try {
+          const uid = this.getUserId();
+          const doc = await db.collection("users").doc(uid).get();
+          if (doc.exists) {
+            console.log("✅ Firestore 데이터 로드 완료");
+            return doc.data();
+          }
+          return null;
+        } catch (e) {
+          console.error("❌ Firestore 로드 실패:", e);
+          return null;
+        }
+      }
+    };
 
     // ═══════════════════════════════════════
     // 📚 BookQuest — 독서 모험 앱 with Voice
@@ -372,13 +435,52 @@
       const [isSpeaking, setIsSpeaking] = useState(false);
       const [voiceSupported] = useState(VoiceService.isSupported());
       const [showKeyboard, setShowKeyboard] = useState(false);
+      const [dataLoaded, setDataLoaded] = useState(false);
 
       const chatEndRef = useRef(null);
       const recognizerRef = useRef(null);
+      const saveTimerRef = useRef(null);
 
       const currentWeek = getWeekNum(startDate);
       const thisWeekBook = BOOKS.find(b => b.week === currentWeek) || BOOKS[0];
       const weekRange = getWeekRange(startDate, currentWeek);
+
+      // 🔥 Firestore에서 데이터 불러오기 (앱 시작 시 1회)
+      useEffect(() => {
+        (async () => {
+          const data = await FirestoreService.loadUserData();
+          if (data) {
+            if (data.profile) setProfile(data.profile);
+            if (data.xp !== undefined) setXp(data.xp);
+            if (data.level) setLevel(data.level);
+            if (data.currentTitle) setCurrentTitle(data.currentTitle);
+            if (data.earnedBadges) setEarnedBadges(data.earnedBadges);
+            if (data.streak) setStreak(data.streak);
+            if (data.bookProgress) setBookProgress(data.bookProgress);
+            if (data.discussionState) setDiscussionState(data.discussionState);
+          }
+          setDataLoaded(true);
+        })();
+      }, []);
+
+      // 🔥 Firestore에 데이터 저장 (변경 시 자동, 1초 디바운스)
+      useEffect(() => {
+        if (!dataLoaded) return; // 로드 전에는 저장하지 않음
+        if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+        saveTimerRef.current = setTimeout(() => {
+          FirestoreService.saveUserData({
+            profile,
+            xp,
+            level,
+            currentTitle,
+            earnedBadges,
+            streak,
+            bookProgress,
+            discussionState
+          });
+        }, 1000);
+        return () => clearTimeout(saveTimerRef.current);
+      }, [profile, xp, level, currentTitle, earnedBadges, streak, bookProgress, discussionState, dataLoaded]);
 
       useEffect(() => {
         chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -1151,6 +1253,17 @@
       // ═══════════════════════════════════════
       // 🎨 Main Render
       // ═══════════════════════════════════════
+      // 🔄 Firestore 로딩 중 화면
+      if (!dataLoaded) {
+        return (
+          <div style={{ maxWidth: 430, margin: "0 auto", background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", fontFamily: "'Noto Sans KR', -apple-system, sans-serif" }}>
+            <div style={{ fontSize: 64, marginBottom: 20, animation: "pop 0.8s ease infinite alternate" }}>📚</div>
+            <div style={{ color: "white", fontSize: 24, fontWeight: 800, marginBottom: 8 }}>BookQuest</div>
+            <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 14 }}>데이터 불러오는 중...</div>
+          </div>
+        );
+      }
+
       return (
         <div style={{ maxWidth: 430, margin: "0 auto", background: "#f7f7fa", minHeight: "100vh", fontFamily: "'Noto Sans KR', -apple-system, sans-serif", paddingTop: profile ? 16 : 0, position: "relative" }}>
           {!profile && ProfileSetupScreen()}
