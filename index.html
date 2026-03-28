@@ -342,8 +342,8 @@
         if (!this.SpeechRecognition) return null;
         const rec = new this.SpeechRecognition();
         rec.lang = 'ko-KR';
-        rec.continuous = false;
-        rec.interimResults = false;
+        rec.continuous = true;
+        rec.interimResults = true;
         return rec;
       },
 
@@ -440,6 +440,7 @@
       const chatEndRef = useRef(null);
       const recognizerRef = useRef(null);
       const saveTimerRef = useRef(null);
+      const isListeningRef = useRef(false);
 
       const currentWeek = getWeekNum(startDate);
       const thisWeekBook = BOOKS.find(b => b.week === currentWeek) || BOOKS[0];
@@ -532,44 +533,75 @@
       const startListening = () => {
         if (!voiceSupported || isListening) return;
 
-        if (!recognizerRef.current) {
-          recognizerRef.current = VoiceService.createRecognizer();
-        }
-
+        // 매번 새 인식기 생성 (continuous 모드 재시작 문제 방지)
+        recognizerRef.current = VoiceService.createRecognizer();
         const recognizer = recognizerRef.current;
         if (!recognizer) return;
 
         setIsListening(true);
+        isListeningRef.current = true;
+        setChatInput("");
 
         recognizer.onstart = () => {
           setIsListening(true);
+          isListeningRef.current = true;
         };
 
         recognizer.onresult = (event) => {
-          let transcript = "";
-          for (let i = event.resultIndex; i < event.results.length; i++) {
-            transcript += event.results[i][0].transcript;
+          let finalText = "";
+          let interimText = "";
+          for (let i = 0; i < event.results.length; i++) {
+            const result = event.results[i];
+            if (result.isFinal) {
+              finalText += result[0].transcript;
+            } else {
+              interimText += result[0].transcript;
+            }
           }
-
-          if (transcript.trim()) {
-            setChatInput(transcript.trim());
-            setIsListening(false);
-            setTimeout(() => sendChat(transcript.trim()), 300);
+          const fullText = (finalText + interimText).trim();
+          if (fullText) {
+            setChatInput(fullText);
           }
         };
 
-        recognizer.onerror = () => {
-          setIsListening(false);
+        recognizer.onerror = (e) => {
+          if (e.error !== 'no-speech') {
+            setIsListening(false);
+            isListeningRef.current = false;
+          }
         };
 
         recognizer.onend = () => {
-          setIsListening(false);
+          // continuous 모드에서도 브라우저가 자동 종료할 수 있으므로 재시작
+          if (isListeningRef.current) {
+            try { recognizer.start(); } catch(e) {
+              setIsListening(false);
+              isListeningRef.current = false;
+            }
+          }
         };
 
         try {
           recognizer.start();
         } catch (e) {
           setIsListening(false);
+        }
+      };
+
+      const stopListening = () => {
+        setIsListening(false);
+        isListeningRef.current = false;
+        if (recognizerRef.current) {
+          try { recognizerRef.current.stop(); } catch(e) {}
+          recognizerRef.current = null;
+        }
+      };
+
+      const finishVoiceInput = () => {
+        stopListening();
+        const text = chatInput.trim();
+        if (text) {
+          setTimeout(() => sendChat(text), 300);
         }
       };
 
@@ -981,27 +1013,52 @@
 
           <div style={{ padding: "16px", background: "white", borderTop: "1px solid #eee", flexShrink: 0, display: "flex", flexDirection: "column", gap: 10 }}>
             {!showKeyboard ? (
-              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                <button onClick={startListening} disabled={isListening || !voiceSupported}
-                  style={{
-                    flex: 1, padding: "16px", borderRadius: 20, border: "none",
-                    background: isListening ? "#667eea" : "#667eea",
-                    color: "white", fontSize: 14, fontWeight: 700, cursor: isListening ? "default" : "pointer",
-                    display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-                    animation: isListening ? "pulse 1.5s infinite" : "none",
-                    opacity: voiceSupported ? 1 : 0.5
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {isListening && chatInput && (
+                  <div style={{
+                    padding: "10px 14px", borderRadius: 12, background: "#f0f3ff",
+                    border: "2px solid #667eea", fontSize: 13, color: "#333",
+                    lineHeight: 1.6, minHeight: 40, maxHeight: 120, overflowY: "auto"
                   }}>
-                  <span style={{ fontSize: 20 }}>🎤</span>
-                  {isListening ? "듣는 중..." : "말하기"}
-                </button>
-                <button onClick={() => setShowKeyboard(true)}
-                  style={{
-                    padding: "14px 16px", borderRadius: 20, border: "2px solid #eee",
-                    background: "white", color: "#666", fontSize: 12, fontWeight: 600,
-                    cursor: "pointer"
-                  }}>
-                  ⌨️
-                </button>
+                    <span style={{ fontSize: 11, color: "#667eea", fontWeight: 600 }}>내가 말한 내용:</span>
+                    <div style={{ marginTop: 4 }}>{chatInput}</div>
+                  </div>
+                )}
+                <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                  {!isListening ? (
+                    <button onClick={startListening} disabled={!voiceSupported}
+                      style={{
+                        flex: 1, padding: "16px", borderRadius: 20, border: "none",
+                        background: "#667eea",
+                        color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer",
+                        display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+                        opacity: voiceSupported ? 1 : 0.5
+                      }}>
+                      <span style={{ fontSize: 20 }}>🎤</span>
+                      말하기
+                    </button>
+                  ) : (
+                    <button onClick={finishVoiceInput}
+                      style={{
+                        flex: 1, padding: "16px", borderRadius: 20, border: "none",
+                        background: "#ff6b6b",
+                        color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer",
+                        display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+                        animation: "pulse 1.5s infinite"
+                      }}>
+                      <span style={{ fontSize: 20 }}>✅</span>
+                      말하기 완료
+                    </button>
+                  )}
+                  <button onClick={() => { stopListening(); setShowKeyboard(true); }}
+                    style={{
+                      padding: "14px 16px", borderRadius: 20, border: "2px solid #eee",
+                      background: "white", color: "#666", fontSize: 12, fontWeight: 600,
+                      cursor: "pointer"
+                    }}>
+                    ⌨️
+                  </button>
+                </div>
               </div>
             ) : (
               <div style={{ display: "flex", gap: 8 }}>
