@@ -1,0 +1,894 @@
+import { useState, useEffect, useRef } from "react";
+
+// ═══════════════════════════════════════
+// 📚 BookQuest — 독서 모험 앱
+// ═══════════════════════════════════════
+
+const BOOKS = [
+  {
+    id: 1, week: 1,
+    title: "청소년을 위한 외교광장",
+    subtitle: "외교는 나라를 어떻게 바꾸는가",
+    author: "남기정·윤은주·김준형·김지운·민경태",
+    pages: 208, color: "#FFD700", emoji: "🌍",
+    chapters: [
+      { title: "1장 국가와 외교", topics: ["외교가 왜 중요할까요?", "외교의 의미", "마키아벨리로부터 시작된 외교", "비밀로 가득한 구외교의 시대", "미국의 신외교와 냉전", "여우의 지혜와 고슴도치의 바늘", "강대국과 약소국 사이에서", "중견국 대한민국의 역할"] },
+      { title: "2장 국민과 외교", topics: ["민간인도 외교를 할 수 있을까요?", "공공외교란 무엇일까요?", "냉전시대 체제 대결을 위한 공공외교", "우리 정부의 공공외교 정책", "한인 디아스포라의 공공외교", "국민외교, 누구나 외교관이 될 수 있을까요?"] },
+      { title: "3장 대한민국의 외교", topics: ["우리는 반도국?", "고조선과 최초의 외교관", "삼국시대와 신라의 외교", "신라의 석우로와 박제상", "외교 천재, 고려", "조선의 사대 외교", "대한민국의 외교", "김대중 대통령과 우리의 미래"] },
+      { title: "4장 세계의 외교: 편 가르기와 줄타기", topics: ["미국과 중국은 왜 적대할까요?", "미국과 중국의 편 가르기", "베트남의 줄타기 외교", "인도의 줄타기 외교", "국익과 가치 사이에서"] },
+      { title: "5장 미래의 외교", topics: ["과연 국가가 사라질 수 있을까요?", "다자외교와 비정부기구의 역할", "기술 발전은 외교에 어떤 영향을 미칠까요?", "국제질서의 변화와 새로운 시대의 시작", "유라시아와 태평양을 연결하는 한반도", "우리가 주도하는 미래의 외교"] }
+    ],
+    summary: "외교란 나라와 나라 사이에서 평화적으로 관계를 맺고 문제를 해결하는 일입니다. 이 책은 외교의 역사부터 마키아벨리, 냉전, 공공외교, 한국의 외교 역사, 미국·중국의 갈등, 베트남·인도의 줄타기 외교, 그리고 미래의 외교까지 폭넓게 다룹니다. 특히 한반도가 강대국 사이에서 어떤 외교적 선택을 해야 하는지 생각해 볼 수 있습니다.",
+    keyPoints: [
+      "외교는 전쟁을 방지하고 평화를 유지하는 것이 본질",
+      "한반도는 강대국 사이에서 '저주받은 땅'으로 불리기도 했음",
+      "공공외교: 한류처럼 민간이 참여하는 새로운 형태의 외교",
+      "미국과 중국 사이에서 '줄타기 외교'를 하는 나라들이 있음",
+      "기술 발전과 세계화가 미래 외교의 모습을 바꿀 것"
+    ],
+    characters: [
+      { name: "마키아벨리", desc: "근대 외교의 아버지, 현실주의 외교 주장" },
+      { name: "로버트 세실", desc: "1937년 노벨평화상 수상 영국 외교관" },
+      { name: "김대중", desc: "햇볕정책으로 남북관계 개선에 기여한 대통령" },
+      { name: "석우로·박제상", desc: "신라의 뛰어난 외교관들" }
+    ],
+    discussionTopics: [
+      { q: "외교가 실패하면 어떤 일이 벌어질까요? 우크라이나 사례를 생각해 봅시다.", hint: "2022년 러시아의 우크라이나 침공을 떠올려 보세요." },
+      { q: "한류(K-pop, 드라마)가 우리나라 외교에 어떤 도움을 줄 수 있을까요?", hint: "공공외교의 개념을 생각해 보세요." },
+      { q: "만약 네가 외교관이 된다면, 어떤 나라와의 관계를 가장 중요하게 다루고 싶어?", hint: "한국의 지리적 위치와 주변국을 생각해 보세요." },
+      { q: "강대국과 약소국 사이에서 한국은 어떤 외교 전략을 써야 할까요?", hint: "줄타기 외교 vs 줄서기 외교를 비교해 보세요." },
+      { q: "'국가는 외교를 만들고, 외교는 국가를 만든다'는 말의 의미는 무엇일까요?", hint: "외교가 나라의 운명을 바꾼 역사적 사례를 떠올려 보세요." }
+    ],
+    deepTopics: [
+      { q: "미래에 국가가 사라진다면 외교도 필요 없어질까요?", hint: "세계화와 국가의 역할 변화를 생각해 보세요." },
+      { q: "SNS와 AI 시대에 외교는 어떻게 변할까요?", hint: "기술이 사람들의 소통 방식을 어떻게 바꾸는지 생각해 보세요." },
+      { q: "만약 남북통일이 된다면 한국의 외교는 어떻게 달라질까요?", hint: "한반도의 지정학적 위치와 통일 한국의 가능성을 상상해 보세요." }
+    ]
+  },
+  {
+    id: 2, week: 2,
+    title: "씨앗을 부탁해",
+    subtitle: "우리가 꼭 알아야 할 종자 주권, 생물 다양성 이야기",
+    author: "김은식 글·임종길 그림·안완식 감수",
+    pages: 152, color: "#4CAF50", emoji: "🌱",
+    chapters: [
+      { title: "프롤로그: 식물과 농부는 서로 돕고 있지요", topics: ["식물의 생애", "농부와 식물의 관계", "작물과 농부의 우정이 깨지다"] },
+      { title: "1. 굶어 죽어도 씨앗은 베고 죽는다", topics: ["씨앗의 소중함", "농부에게 씨앗이 목숨보다 귀한 이유", "다산 정약용과 씨앗"] },
+      { title: "2. 금보다 비싼 씨앗 값", topics: ["씨앗 값이 금값보다 비싼 이유", "외국 회사에서 씨앗을 사야 하는 현실", "종자 주권의 위기"] },
+      { title: "3. 바나나가 사라져요?", topics: ["바나나 멸종 위기", "단일 품종 재배의 위험성", "생물 다양성의 중요성"] },
+      { title: "4. 아일랜드 감자 기근", topics: ["감자 역병과 대기근", "100만 명 이상 사망", "단일 작물 의존의 위험"] },
+      { title: "5. 통일벼 대흉년", topics: ["한국의 통일벼 사례", "병충해에 약한 단일 품종", "토종 벼의 소중함"] },
+      { title: "6. 육종학과 유전공학", topics: ["품종 개량의 역사", "GMO 논란", "유전자 조작의 위험성"] },
+      { title: "7. 바빌로프의 씨앗", topics: ["씨앗 수집가 바빌로프", "세계 종자 은행", "씨앗 보존의 역사"] },
+      { title: "8. 씨앗을 베고 죽은 사람들", topics: ["레닌그라드 포위전", "씨앗을 지킨 과학자들", "미래를 위한 희생"] },
+      { title: "9. 반다나 시바, 씨앗을 껴안다", topics: ["반다나 시바의 활동", "씨앗 운동", "농민의 권리"] },
+      { title: "10. 세상을 품은 보석, 씨앗", topics: ["종자 주권 되찾기", "토종 씨앗 보존", "우리가 할 수 있는 일"] }
+    ],
+    summary: "이 책은 씨앗과 종자 주권의 소중함을 이야기합니다. 옛날 농부들은 '굶어 죽어도 씨앗은 베고 죽는다'고 했을 만큼 씨앗을 귀하게 여겼습니다. 하지만 현대에는 많은 씨앗을 외국 회사에서 사와야 하고, 단일 품종 재배로 바나나 멸종 위기, 아일랜드 감자 기근 같은 재앙이 일어났습니다. 바빌로프처럼 씨앗을 지킨 영웅들의 이야기와 함께, 생물 다양성을 지키는 것이 왜 중요한지 알려줍니다.",
+    keyPoints: [
+      "'굶어 죽어도 씨앗은 베고 죽는다' — 농부에게 씨앗은 목숨보다 소중",
+      "청양고추 같은 채소도 외국 회사에 로열티를 내야 함",
+      "바나나는 단일 품종 재배로 멸종 위기에 처해 있음",
+      "아일랜드 감자 기근: 단일 작물에 의존하면 큰 재앙이 올 수 있음",
+      "바빌로프와 동료들은 굶주리면서도 씨앗 은행을 지켰음"
+    ],
+    characters: [
+      { name: "정약용(다산)", desc: "'농부는 굶어 죽어도 씨앗은 베고 죽는다'고 기록" },
+      { name: "바빌로프", desc: "세계 곳곳을 돌며 씨앗을 수집한 러시아 과학자" },
+      { name: "반다나 시바", desc: "인도의 환경운동가, 씨앗 운동의 선구자" },
+      { name: "안완식", desc: "토종 연구가, 이 책의 감수자" }
+    ],
+    discussionTopics: [
+      { q: "왜 농부들은 '굶어 죽어도 씨앗은 베고 죽는다'고 했을까요?", hint: "씨앗을 먹어버리면 내년에 무슨 일이 생길지 생각해 보세요." },
+      { q: "우리가 먹는 채소의 씨앗을 왜 외국 회사에서 사야 할까요?", hint: "종자 주권이라는 개념을 생각해 보세요." },
+      { q: "바나나가 정말 사라질 수 있을까요? 단일 품종 재배의 위험은?", hint: "모든 바나나가 똑같은 유전자를 가지고 있다면 어떤 문제가 생길까요?" },
+      { q: "마트에서 사 먹는 과일과 채소가 어디서 오는지 생각해 본 적 있나요?", hint: "씨앗 → 농부 → 식탁까지의 과정을 떠올려 보세요." },
+      { q: "만약 네가 농부라면, 토종 씨앗과 외국 씨앗 중 어느 것을 심을 건가요?", hint: "각각의 장단점을 비교해 보세요." }
+    ],
+    deepTopics: [
+      { q: "GMO(유전자 변형 작물)는 좋은 걸까요, 나쁜 걸까요?", hint: "식량 부족 해결 vs 생태계 위험을 균형있게 생각해 보세요." },
+      { q: "기후변화가 계속되면 우리가 먹는 음식은 어떻게 달라질까요?", hint: "기온이 오르면 어떤 작물이 잘 자라고, 어떤 작물이 사라질까요?" },
+      { q: "바빌로프처럼 굶주리면서도 씨앗을 지킨 과학자들의 선택에 대해 어떻게 생각하나요?", hint: "지금 당장의 생존 vs 미래 세대를 위한 희생에 대해 생각해 보세요." }
+    ]
+  },
+  {
+    id: 3, week: 3,
+    title: "생각이 크는 인문학: 우주",
+    subtitle: "인류, 우주로 가는 문을 열다",
+    author: "채화영 글",
+    pages: 169, color: "#3F51B5", emoji: "🚀",
+    chapters: [
+      { title: "1장 인류, 우주로 가는 문을 열다", topics: ["우주란 무엇일까요?", "코스모스, 스페이스, 유니버스의 차이", "우주 개발이란?", "인류는 왜 우주 개발에 나섰을까?", "바빌로니아 문명과 천문학", "고대 그리스 철학자들의 우주관", "SF 소설과 우주 개발의 꿈", "냉전과 우주 경쟁"] },
+      { title: "2장 우주 탐사의 역사", topics: ["로켓의 발명", "최초의 인공위성 스푸트니크", "유리 가가린의 우주 비행", "아폴로 11호 달 착륙", "우주왕복선 시대", "국제우주정거장(ISS)"] },
+      { title: "3장 우주의 비밀", topics: ["태양계의 구조", "별의 탄생과 죽음", "블랙홀", "은하와 우주의 크기", "외계 생명체 탐색"] },
+      { title: "4장 우주와 우리의 미래", topics: ["민간 우주 시대", "화성 탐사 계획", "우주 쓰레기 문제", "우주에서의 생활", "한국의 우주 개발"] }
+    ],
+    summary: "이 책은 인류가 우주를 향해 나아온 여정을 담고 있습니다. 고대 바빌로니아의 별 관측부터 그리스 철학자들의 우주관, SF 소설이 우주 개발에 미친 영향, 냉전 시대 미국과 소련의 우주 경쟁, 그리고 현대의 민간 우주 시대까지 다룹니다. 우주란 무엇인지, 왜 인류는 우주에 관심을 갖게 되었는지, 그리고 우주 개발이 우리 생활에 어떤 도움을 주는지(GPS 등) 쉽게 설명합니다.",
+    keyPoints: [
+      "우주(Cosmos, Space, Universe)는 각각 다른 의미를 가짐",
+      "우주 개발은 탐사뿐 아니라 GPS 같은 실생활 기술도 포함",
+      "바빌로니아 문명이 4천 년 전부터 별을 체계적으로 연구",
+      "SF 소설(쥘 베른, H.G. 웰스)이 실제 우주 개발에 영감을 줌",
+      "냉전 시대 미국·소련의 경쟁이 우주 개발을 가속화"
+    ],
+    characters: [
+      { name: "아리스토텔레스", desc: "지구 중심 우주론을 주장한 그리스 철학자" },
+      { name: "피타고라스", desc: "우주의 수학적 질서를 연구한 그리스 철학자" },
+      { name: "쥘 베른", desc: "SF 소설로 우주 여행의 꿈을 심어준 프랑스 작가" },
+      { name: "H.G. 웰스", desc: "우주 전쟁 등 SF 대표작을 쓴 영국 작가" }
+    ],
+    discussionTopics: [
+      { q: "만약 우주여행을 갈 수 있다면, 어디에 가보고 싶나요? 그 이유는?", hint: "달, 화성, 목성의 위성 등 다양한 곳을 생각해 보세요." },
+      { q: "우주 개발에 엄청난 돈을 쓰는 것은 올바른 일일까요?", hint: "지구의 문제(기후변화, 가난)와 우주 개발의 이점을 비교해 보세요." },
+      { q: "외계인이 정말 있다면 우리는 어떻게 대해야 할까요?", hint: "외교의 개념을 우주로 확장해 생각해 보세요!" },
+      { q: "GPS나 위성TV처럼 우주 기술이 일상에 도움을 주는 다른 예는 뭐가 있을까요?", hint: "날씨 예보, 인터넷 등을 생각해 보세요." },
+      { q: "냉전 시대 미국과 소련이 우주 경쟁을 한 진짜 이유는 무엇이었을까요?", hint: "국가의 자존심, 군사력, 기술력을 생각해 보세요." }
+    ],
+    deepTopics: [
+      { q: "인류가 화성에 도시를 건설한다면, 그곳의 법과 정부는 어떤 모습일까요?", hint: "지구의 나라들과 비교하면서 상상해 보세요." },
+      { q: "우주 쓰레기 문제를 해결하려면 어떻게 해야 할까요?", hint: "환경 문제와 연결지어 생각해 보세요." },
+      { q: "100년 후 인류의 우주 활동은 어떤 모습일까요? 상상해 봅시다!", hint: "기술 발전 속도와 현재의 계획들을 바탕으로 생각해 보세요." }
+    ]
+  }
+];
+
+const AVATARS = ["🧙‍♂️", "🦸‍♂️", "🧑‍🚀", "🥷", "🧑‍🔬", "🦊", "🐉", "🦁", "🐺", "🦅", "🐱‍👤", "🤖"];
+const TITLES_LIST = ["견습 독서가", "초보 탐험가", "지식의 수호자", "토론 마스터", "독서왕", "전설의 BookQuester"];
+const BADGES = [
+  { name: "첫 발걸음", desc: "첫 번째 토론 완료", icon: "👣" },
+  { name: "호기심 대장", desc: "3개 이상 토론 완료", icon: "🔍" },
+  { name: "깊은 생각", desc: "심화 토론 1개 완료", icon: "💡" },
+  { name: "책벌레", desc: "1권 완독", icon: "📖" },
+  { name: "연속 달성", desc: "3일 연속 접속", icon: "🔥" },
+  { name: "완전 정복", desc: "3권 모두 완독", icon: "👑" }
+];
+
+// 날짜 유틸
+const formatDate = (d) => `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일`;
+const getDayName = (d) => ["일", "월", "화", "수", "목", "금", "토"][d.getDay()];
+const getWeekNum = (startDate) => {
+  const now = new Date();
+  const diff = Math.floor((now - startDate) / (1000 * 60 * 60 * 24));
+  return Math.min(Math.max(Math.floor(diff / 7) + 1, 1), 3);
+};
+const getWeekRange = (startDate, weekNum) => {
+  const s = new Date(startDate);
+  s.setDate(s.getDate() + (weekNum - 1) * 7);
+  const e = new Date(s);
+  e.setDate(e.getDate() + 6);
+  return { start: s, end: e };
+};
+
+// ═══════════════════════════════════════
+export default function BookQuest() {
+  const [profile, setProfile] = useState(null);
+  const [profileForm, setProfileForm] = useState({ name: "", school: "", grade: "6", avatar: "🧙‍♂️" });
+  const [screen, setScreen] = useState("home");
+  const [selectedBook, setSelectedBook] = useState(null);
+  const [bookTab, setBookTab] = useState("summary");
+  const [xp, setXp] = useState(0);
+  const [level, setLevel] = useState(1);
+  const [currentTitle, setCurrentTitle] = useState(TITLES_LIST[0]);
+  const [earnedBadges, setEarnedBadges] = useState([]);
+  const [streak, setStreak] = useState(1);
+  const [bookProgress, setBookProgress] = useState({ 1: 0, 2: 0, 3: 0 });
+  const [discussionState, setDiscussionState] = useState({});
+  const [chatMessages, setChatMessages] = useState([]);
+  const [chatInput, setChatInput] = useState("");
+  const [activeDiscussionBook, setActiveDiscussionBook] = useState(null);
+  const [activeDiscussionIdx, setActiveDiscussionIdx] = useState(0);
+  const [isDeep, setIsDeep] = useState(false);
+  const [showReward, setShowReward] = useState(false);
+  const [rewardInfo, setRewardInfo] = useState(null);
+  const [today] = useState(new Date());
+  const [startDate] = useState(new Date(2026, 2, 23)); // 2026-03-23 월요일 시작
+  const chatEndRef = useRef(null);
+
+  const currentWeek = getWeekNum(startDate);
+  const thisWeekBook = BOOKS.find(b => b.week === currentWeek) || BOOKS[0];
+  const weekRange = getWeekRange(startDate, currentWeek);
+
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chatMessages]);
+
+  const getLevel = (xpVal) => Math.min(Math.floor(xpVal / 100) + 1, 10);
+  const getTitle = (lvl) => TITLES_LIST[Math.min(lvl - 1, TITLES_LIST.length - 1)];
+  const xpToNext = (xpVal) => 100 - (xpVal % 100);
+
+  const addXp = (amount) => {
+    const newXp = xp + amount;
+    const newLevel = getLevel(newXp);
+    if (newLevel > level) {
+      setRewardInfo({ type: "levelup", level: newLevel, title: getTitle(newLevel) });
+      setShowReward(true);
+      setLevel(newLevel);
+      setCurrentTitle(getTitle(newLevel));
+    }
+    setXp(newXp);
+  };
+
+  const startDiscussion = (book, idx, deep = false) => {
+    setActiveDiscussionBook(book);
+    setActiveDiscussionIdx(idx);
+    setIsDeep(deep);
+    const topics = deep ? book.deepTopics : book.discussionTopics;
+    const topic = topics[idx];
+    const name = profile?.name || "친구";
+    setChatMessages([
+      { role: "ai", text: `📚 "${book.title}" ${deep ? "심화" : ""} 토론 ${idx + 1}번째 주제입니다!` },
+      { role: "ai", text: topic.q },
+      { role: "ai", text: `💡 힌트: ${topic.hint}` },
+      { role: "ai", text: `${name}의 생각을 자유롭게 이야기해 주세요! ✏️` }
+    ]);
+    setChatInput("");
+    setScreen("discussion");
+  };
+
+  const sendChat = () => {
+    if (!chatInput.trim()) return;
+    const userMsg = chatInput.trim();
+    setChatInput("");
+    const newMsgs = [...chatMessages, { role: "user", text: userMsg }];
+    const topics = isDeep ? activeDiscussionBook.deepTopics : activeDiscussionBook.discussionTopics;
+    const topic = topics[activeDiscussionIdx];
+    const name = profile?.name || "친구";
+    const aiResponses = [
+      `좋은 생각이에요, ${name}! 👏 "${userMsg.slice(0, 20)}..." 라는 의견이 인상적이네요.`,
+      `이 주제에 대해 더 깊이 생각해 볼까요? ${topic.hint}`,
+      `${name}의 생각을 정리하면: ${userMsg.slice(0, 50)}${userMsg.length > 50 ? "..." : ""}`,
+      `정말 훌륭한 답변이에요! 🌟 이 토론에서 ${isDeep ? 30 : 20}XP를 획득했어요!`
+    ];
+    const withAi = [...newMsgs];
+    aiResponses.forEach(r => withAi.push({ role: "ai", text: r }));
+    setChatMessages(withAi);
+    addXp(isDeep ? 30 : 20);
+    const key = `${activeDiscussionBook.id}-${isDeep ? "deep" : "disc"}-${activeDiscussionIdx}`;
+    setDiscussionState(prev => ({ ...prev, [key]: true }));
+    const bookId = activeDiscussionBook.id;
+    setBookProgress(prev => ({ ...prev, [bookId]: Math.min(100, prev[bookId] + (isDeep ? 15 : 10)) }));
+  };
+
+  // ═══════════════════════════════════════
+  // 👤 Profile Setup Screen
+  // ═══════════════════════════════════════
+  const ProfileSetupScreen = () => (
+    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 24 }}>
+      <div style={{ width: "100%", maxWidth: 380 }}>
+        {/* Logo */}
+        <div style={{ textAlign: "center", marginBottom: 32 }}>
+          <div style={{ fontSize: 48, marginBottom: 8 }}>📚⚔️</div>
+          <div style={{ fontSize: 28, fontWeight: 900, background: "linear-gradient(135deg, #667eea, #764ba2)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>BookQuest</div>
+          <div style={{ fontSize: 14, color: "#888", marginTop: 4 }}>나만의 독서 모험을 시작하세요!</div>
+          <div style={{ fontSize: 12, color: "#aaa", marginTop: 8 }}>📅 {formatDate(today)} {getDayName(today)}요일</div>
+        </div>
+
+        {/* Form Card */}
+        <div style={{ background: "white", borderRadius: 20, padding: 24, boxShadow: "0 4px 20px rgba(0,0,0,0.08)" }}>
+          <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 20, color: "#1a1a2e", textAlign: "center" }}>모험가 프로필 만들기</h3>
+
+          {/* Name */}
+          <div style={{ marginBottom: 16 }}>
+            <label style={{ fontSize: 13, fontWeight: 600, color: "#555", display: "block", marginBottom: 6 }}>이름 *</label>
+            <input value={profileForm.name} onChange={e => setProfileForm(p => ({ ...p, name: e.target.value }))}
+              placeholder="이름을 입력하세요"
+              style={{ width: "100%", padding: "12px 14px", borderRadius: 12, border: "2px solid #eee", fontSize: 14, outline: "none", boxSizing: "border-box" }} />
+          </div>
+
+          {/* School */}
+          <div style={{ marginBottom: 16 }}>
+            <label style={{ fontSize: 13, fontWeight: 600, color: "#555", display: "block", marginBottom: 6 }}>학교</label>
+            <input value={profileForm.school} onChange={e => setProfileForm(p => ({ ...p, school: e.target.value }))}
+              placeholder="학교 이름 (선택)"
+              style={{ width: "100%", padding: "12px 14px", borderRadius: 12, border: "2px solid #eee", fontSize: 14, outline: "none", boxSizing: "border-box" }} />
+          </div>
+
+          {/* Grade */}
+          <div style={{ marginBottom: 20 }}>
+            <label style={{ fontSize: 13, fontWeight: 600, color: "#555", display: "block", marginBottom: 6 }}>학년</label>
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+              {["4", "5", "6", "중1", "중2", "중3"].map(g => (
+                <button key={g} onClick={() => setProfileForm(p => ({ ...p, grade: g }))}
+                  style={{
+                    padding: "8px 16px", borderRadius: 20, border: "2px solid",
+                    borderColor: profileForm.grade === g ? "#667eea" : "#eee",
+                    background: profileForm.grade === g ? "#667eea" : "white",
+                    color: profileForm.grade === g ? "white" : "#666",
+                    fontSize: 13, fontWeight: 600, cursor: "pointer"
+                  }}>
+                  {g}학년
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Avatar Selection */}
+          <div style={{ marginBottom: 24 }}>
+            <label style={{ fontSize: 13, fontWeight: 600, color: "#555", display: "block", marginBottom: 6 }}>아바타 선택</label>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 8 }}>
+              {AVATARS.map(a => (
+                <button key={a} onClick={() => setProfileForm(p => ({ ...p, avatar: a }))}
+                  style={{
+                    width: "100%", aspectRatio: "1", borderRadius: 12, border: "3px solid",
+                    borderColor: profileForm.avatar === a ? "#667eea" : "#f0f0f0",
+                    background: profileForm.avatar === a ? "#667eea15" : "#fafafa",
+                    fontSize: 24, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+                    transition: "all 0.2s"
+                  }}>
+                  {a}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Submit */}
+          <button onClick={() => { if (profileForm.name.trim()) setProfile({ ...profileForm, createdAt: new Date().toISOString() }); }}
+            disabled={!profileForm.name.trim()}
+            style={{
+              width: "100%", padding: "14px", borderRadius: 14, border: "none",
+              background: profileForm.name.trim() ? "linear-gradient(135deg, #667eea, #764ba2)" : "#ddd",
+              color: "white", fontSize: 16, fontWeight: 700, cursor: profileForm.name.trim() ? "pointer" : "default",
+              transition: "all 0.2s"
+            }}>
+            모험 시작하기! 🚀
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  // ═══════════════════════════════════════
+  // 🏠 Home Screen
+  // ═══════════════════════════════════════
+  const HomeScreen = () => (
+    <div style={{ padding: "0 16px 100px" }}>
+      {/* Date Bar */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12, padding: "0 4px" }}>
+        <div style={{ fontSize: 13, color: "#888" }}>📅 {formatDate(today)} {getDayName(today)}요일</div>
+        <div style={{ fontSize: 12, color: "#667eea", fontWeight: 600, background: "#667eea15", padding: "4px 10px", borderRadius: 12 }}>
+          {currentWeek}주차
+        </div>
+      </div>
+
+      {/* Header */}
+      <div style={{ background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", borderRadius: 20, padding: "24px 20px", marginBottom: 20, color: "white" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+          <div>
+            <div style={{ fontSize: 14, opacity: 0.8 }}>안녕, {profile.name}! 🎮</div>
+            <div style={{ fontSize: 22, fontWeight: 800 }}>BookQuest</div>
+          </div>
+          <div style={{ textAlign: "right" }}>
+            <div style={{ fontSize: 12, opacity: 0.8 }}>🔥 {streak}일 연속</div>
+            <div style={{ fontSize: 14, fontWeight: 600 }}>{currentTitle}</div>
+          </div>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <div style={{ width: 64, height: 64, borderRadius: "50%", background: "rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 32 }}>
+            {profile.avatar}
+          </div>
+          <div style={{ flex: 1 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, marginBottom: 4 }}>
+              <span>Lv.{level} {profile.grade}학년</span>
+              <span>{xp % 100}/100 XP</span>
+            </div>
+            <div style={{ background: "rgba(255,255,255,0.3)", borderRadius: 10, height: 10, overflow: "hidden" }}>
+              <div style={{ background: "#FFD700", height: "100%", width: `${xp % 100}%`, borderRadius: 10, transition: "width 0.5s" }} />
+            </div>
+            <div style={{ fontSize: 11, opacity: 0.7, marginTop: 4 }}>다음 레벨까지 {xpToNext(xp)}XP</div>
+          </div>
+        </div>
+      </div>
+
+      {/* This Week Quest */}
+      <div style={{ marginBottom: 20 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+          <h3 style={{ fontSize: 16, fontWeight: 700, color: "#1a1a2e" }}>⚔️ 이번 주 퀘스트</h3>
+          <span style={{ fontSize: 11, color: "#888" }}>
+            {weekRange.start.getMonth() + 1}/{weekRange.start.getDate()} ~ {weekRange.end.getMonth() + 1}/{weekRange.end.getDate()}
+          </span>
+        </div>
+        {/* Current week book - featured */}
+        <div onClick={() => { setSelectedBook(thisWeekBook); setBookTab("summary"); setScreen("book"); }}
+          style={{ background: `linear-gradient(135deg, ${thisWeekBook.color}30, ${thisWeekBook.color}10)`, borderRadius: 20, padding: 20, marginBottom: 16, cursor: "pointer", border: `2px solid ${thisWeekBook.color}60`, transition: "transform 0.2s" }}
+          onMouseEnter={e => e.currentTarget.style.transform = "scale(1.02)"}
+          onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}>
+          <div style={{ display: "flex", alignItems: "center", gap: 4, marginBottom: 10 }}>
+            <span style={{ background: thisWeekBook.color, color: "white", padding: "3px 10px", borderRadius: 10, fontSize: 11, fontWeight: 700 }}>{currentWeek}주차 퀘스트</span>
+            {bookProgress[thisWeekBook.id] === 100 && <span style={{ fontSize: 12 }}>✅ 클리어!</span>}
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            <div style={{ width: 60, height: 78, borderRadius: 10, background: thisWeekBook.color, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 32, flexShrink: 0, boxShadow: `0 4px 12px ${thisWeekBook.color}40` }}>
+              {thisWeekBook.emoji}
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 16, fontWeight: 800, color: "#1a1a2e", marginBottom: 2 }}>{thisWeekBook.title}</div>
+              <div style={{ fontSize: 12, color: "#888", marginBottom: 8 }}>{thisWeekBook.author}</div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <div style={{ flex: 1, background: "#ddd", borderRadius: 6, height: 8, overflow: "hidden" }}>
+                  <div style={{ background: thisWeekBook.color, height: "100%", width: `${bookProgress[thisWeekBook.id]}%`, borderRadius: 6, transition: "width 0.5s" }} />
+                </div>
+                <span style={{ fontSize: 12, color: "#666", fontWeight: 700 }}>{bookProgress[thisWeekBook.id]}%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Other books */}
+        <h3 style={{ fontSize: 14, fontWeight: 600, color: "#888", marginBottom: 10 }}>📚 전체 퀘스트 목록</h3>
+        {BOOKS.filter(b => b.id !== thisWeekBook.id).map(book => (
+          <div key={book.id} onClick={() => { setSelectedBook(book); setBookTab("summary"); setScreen("book"); }}
+            style={{ background: "white", borderRadius: 14, padding: 14, marginBottom: 10, display: "flex", alignItems: "center", gap: 12, cursor: "pointer", boxShadow: "0 2px 6px rgba(0,0,0,0.04)", border: `2px solid ${bookProgress[book.id] === 100 ? "#4CAF50" : "transparent"}`, opacity: book.week > currentWeek ? 0.5 : 1 }}>
+            <div style={{ width: 44, height: 56, borderRadius: 8, background: book.color, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0 }}>
+              {book.emoji}
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 2 }}>
+                <span style={{ fontSize: 10, background: "#f0f0f0", padding: "2px 6px", borderRadius: 6, color: "#888", fontWeight: 600 }}>{book.week}주차</span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: "#1a1a2e", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{book.title}</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 4 }}>
+                <div style={{ flex: 1, background: "#eee", borderRadius: 6, height: 5, overflow: "hidden" }}>
+                  <div style={{ background: book.color, height: "100%", width: `${bookProgress[book.id]}%`, borderRadius: 6 }} />
+                </div>
+                <span style={{ fontSize: 11, color: "#666", fontWeight: 600 }}>{bookProgress[book.id]}%</span>
+              </div>
+            </div>
+            <div style={{ fontSize: 16 }}>{bookProgress[book.id] === 100 ? "✅" : book.week > currentWeek ? "🔒" : "▶️"}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Badges */}
+      <div>
+        <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 12, color: "#1a1a2e" }}>🏆 배지</h3>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          {BADGES.map((b, i) => {
+            const earned = earnedBadges.some(e => e.name === b.name);
+            return (
+              <div key={i} style={{ background: earned ? "white" : "#f0f0f0", borderRadius: 12, padding: "8px 12px", display: "flex", alignItems: "center", gap: 6, boxShadow: earned ? "0 2px 6px rgba(0,0,0,0.06)" : "none", opacity: earned ? 1 : 0.5 }}>
+                <span style={{ fontSize: 18 }}>{earned ? b.icon : "🔒"}</span>
+                <div>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: earned ? "#1a1a2e" : "#999" }}>{b.name}</div>
+                  <div style={{ fontSize: 9, color: earned ? "#888" : "#bbb" }}>{b.desc}</div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+
+  // ═══════════════════════════════════════
+  // 📖 Book Detail Screen
+  // ═══════════════════════════════════════
+  const BookScreen = () => {
+    if (!selectedBook) return null;
+    const book = selectedBook;
+    const tabs = [
+      { key: "summary", label: "📋 요약" },
+      { key: "chapters", label: "📑 목차" },
+      { key: "characters", label: "👤 인물" },
+      { key: "discuss", label: "💬 토론" },
+      { key: "deep", label: "🔥 심화" }
+    ];
+    return (
+      <div style={{ padding: "0 16px 100px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+          <div onClick={() => setScreen("home")} style={{ display: "inline-flex", alignItems: "center", gap: 6, cursor: "pointer", fontSize: 14, color: "#667eea", fontWeight: 600 }}>
+            ← 돌아가기
+          </div>
+          <div style={{ fontSize: 12, color: "#888" }}>📅 {formatDate(today)}</div>
+        </div>
+
+        <div style={{ background: `linear-gradient(135deg, ${book.color}cc, ${book.color}88)`, borderRadius: 20, padding: "24px 20px", marginBottom: 16, color: "#1a1a2e" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+            <span style={{ fontSize: 36 }}>{book.emoji}</span>
+            <span style={{ background: "rgba(255,255,255,0.6)", padding: "3px 10px", borderRadius: 10, fontSize: 11, fontWeight: 700 }}>{book.week}주차 퀘스트</span>
+          </div>
+          <div style={{ fontSize: 20, fontWeight: 800, marginBottom: 4 }}>{book.title}</div>
+          <div style={{ fontSize: 13, opacity: 0.8, marginBottom: 6 }}>{book.subtitle}</div>
+          <div style={{ fontSize: 12, opacity: 0.7 }}>✍️ {book.author} | 📄 {book.pages}쪽</div>
+          <div style={{ marginTop: 12, background: "rgba(255,255,255,0.4)", borderRadius: 8, height: 8, overflow: "hidden" }}>
+            <div style={{ background: "white", height: "100%", width: `${bookProgress[book.id]}%`, borderRadius: 8 }} />
+          </div>
+          <div style={{ fontSize: 12, marginTop: 4, opacity: 0.8 }}>진행률 {bookProgress[book.id]}%</div>
+        </div>
+
+        <div style={{ display: "flex", gap: 4, marginBottom: 16, overflowX: "auto", paddingBottom: 4 }}>
+          {tabs.map(t => (
+            <button key={t.key} onClick={() => setBookTab(t.key)}
+              style={{ padding: "8px 12px", borderRadius: 20, border: "none", background: bookTab === t.key ? "#667eea" : "#f0f0f0", color: bookTab === t.key ? "white" : "#666", fontSize: 12, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap" }}>
+              {t.label}
+            </button>
+          ))}
+        </div>
+
+        {bookTab === "summary" && (
+          <div>
+            <div style={{ background: "white", borderRadius: 16, padding: 20, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 16 }}>
+              <h4 style={{ fontSize: 15, fontWeight: 700, marginBottom: 10, color: "#1a1a2e" }}>📝 줄거리</h4>
+              <p style={{ fontSize: 14, lineHeight: 1.7, color: "#444" }}>{book.summary}</p>
+            </div>
+            <div style={{ background: "white", borderRadius: 16, padding: 20, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
+              <h4 style={{ fontSize: 15, fontWeight: 700, marginBottom: 10, color: "#1a1a2e" }}>⭐ 핵심 포인트</h4>
+              {book.keyPoints.map((p, i) => (
+                <div key={i} style={{ display: "flex", gap: 8, marginBottom: 8 }}>
+                  <span style={{ color: book.color, fontWeight: 700 }}>•</span>
+                  <span style={{ fontSize: 13, lineHeight: 1.6, color: "#444" }}>{p}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        {bookTab === "chapters" && (
+          <div>
+            {book.chapters.map((ch, i) => (
+              <div key={i} style={{ background: "white", borderRadius: 14, padding: 16, marginBottom: 10, boxShadow: "0 2px 6px rgba(0,0,0,0.04)" }}>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "#1a1a2e", marginBottom: 8 }}>{ch.title}</div>
+                {ch.topics.map((t, j) => (
+                  <div key={j} style={{ fontSize: 12, color: "#666", padding: "3px 0 3px 12px", borderLeft: `2px solid ${book.color}40` }}>{t}</div>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
+        {bookTab === "characters" && (
+          <div>
+            {book.characters.map((c, i) => (
+              <div key={i} style={{ background: "white", borderRadius: 14, padding: 16, marginBottom: 10, display: "flex", gap: 12, alignItems: "center", boxShadow: "0 2px 6px rgba(0,0,0,0.04)" }}>
+                <div style={{ width: 44, height: 44, borderRadius: "50%", background: `${book.color}30`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0 }}>
+                  {["👤", "🧑‍🔬", "👩", "📜"][i % 4]}
+                </div>
+                <div>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: "#1a1a2e" }}>{c.name}</div>
+                  <div style={{ fontSize: 12, color: "#666", marginTop: 2 }}>{c.desc}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+        {bookTab === "discuss" && (
+          <div>
+            <div style={{ fontSize: 13, color: "#888", marginBottom: 12 }}>💬 주제를 선택해 AI와 토론을 시작하세요!</div>
+            {book.discussionTopics.map((t, i) => {
+              const key = `${book.id}-disc-${i}`;
+              const done = discussionState[key];
+              return (
+                <div key={i} onClick={() => !done && startDiscussion(book, i, false)}
+                  style={{ background: done ? "#f0fff0" : "white", borderRadius: 14, padding: 16, marginBottom: 10, cursor: done ? "default" : "pointer", boxShadow: "0 2px 6px rgba(0,0,0,0.04)", border: done ? "2px solid #4CAF50" : "2px solid transparent" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontSize: 12, color: "#667eea", fontWeight: 600, marginBottom: 4 }}>토론 {i + 1} {done ? "✅" : "(+20XP)"}</div>
+                      <div style={{ fontSize: 13, fontWeight: 600, color: "#1a1a2e", lineHeight: 1.5 }}>{t.q}</div>
+                    </div>
+                    {!done && <span style={{ fontSize: 20, marginLeft: 8 }}>💬</span>}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+        {bookTab === "deep" && (
+          <div>
+            <div style={{ fontSize: 13, color: "#888", marginBottom: 12 }}>🔥 더 깊이 생각해 보는 심화 토론! (+30XP)</div>
+            {book.deepTopics.map((t, i) => {
+              const key = `${book.id}-deep-${i}`;
+              const done = discussionState[key];
+              return (
+                <div key={i} onClick={() => !done && startDiscussion(book, i, true)}
+                  style={{ background: done ? "#fff8e1" : "white", borderRadius: 14, padding: 16, marginBottom: 10, cursor: done ? "default" : "pointer", boxShadow: "0 2px 6px rgba(0,0,0,0.04)", border: done ? "2px solid #FFB300" : "2px solid transparent" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontSize: 12, color: "#FF6F00", fontWeight: 600, marginBottom: 4 }}>심화 {i + 1} {done ? "✅" : "(+30XP)"}</div>
+                      <div style={{ fontSize: 13, fontWeight: 600, color: "#1a1a2e", lineHeight: 1.5 }}>{t.q}</div>
+                    </div>
+                    {!done && <span style={{ fontSize: 20, marginLeft: 8 }}>🔥</span>}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  // ═══════════════════════════════════════
+  // 💬 Discussion Screen
+  // ═══════════════════════════════════════
+  const DiscussionScreen = () => (
+    <div style={{ display: "flex", flexDirection: "column", height: "100vh", maxHeight: "100vh" }}>
+      <div style={{ background: isDeep ? "linear-gradient(135deg, #FF6F00, #FFB300)" : "linear-gradient(135deg, #667eea, #764ba2)", padding: "16px 20px", color: "white", flexShrink: 0 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div onClick={() => setScreen("book")} style={{ cursor: "pointer", fontSize: 13, opacity: 0.8 }}>← 돌아가기</div>
+          <div style={{ fontSize: 11, opacity: 0.7 }}>📅 {formatDate(today)}</div>
+        </div>
+        <div style={{ fontSize: 16, fontWeight: 700, marginTop: 4 }}>{activeDiscussionBook?.title}</div>
+        <div style={{ fontSize: 12, opacity: 0.8 }}>{isDeep ? "🔥 심화" : "💬"} 토론 {activeDiscussionIdx + 1}</div>
+      </div>
+      <div style={{ flex: 1, overflowY: "auto", padding: 16, background: "#f7f7fa" }}>
+        {chatMessages.map((msg, i) => (
+          <div key={i} style={{ display: "flex", justifyContent: msg.role === "user" ? "flex-end" : "flex-start", marginBottom: 10 }}>
+            <div style={{
+              maxWidth: "80%", padding: "10px 14px",
+              borderRadius: msg.role === "user" ? "16px 16px 4px 16px" : "16px 16px 16px 4px",
+              background: msg.role === "user" ? "#667eea" : "white",
+              color: msg.role === "user" ? "white" : "#333",
+              fontSize: 13, lineHeight: 1.6, boxShadow: "0 1px 4px rgba(0,0,0,0.06)"
+            }}>
+              {msg.role === "ai" && <span style={{ fontSize: 11, color: "#667eea", fontWeight: 600, display: "block", marginBottom: 2 }}>🤖 AI 코치</span>}
+              {msg.text}
+            </div>
+          </div>
+        ))}
+        <div ref={chatEndRef} />
+      </div>
+      <div style={{ padding: "12px 16px", background: "white", borderTop: "1px solid #eee", display: "flex", gap: 8, flexShrink: 0 }}>
+        <input value={chatInput} onChange={e => setChatInput(e.target.value)} onKeyDown={e => e.key === "Enter" && sendChat()}
+          placeholder={`${profile?.name || ""}의 생각을 써 주세요...`}
+          style={{ flex: 1, padding: "10px 14px", borderRadius: 20, border: "2px solid #eee", fontSize: 13, outline: "none" }} />
+        <button onClick={sendChat}
+          style={{ padding: "10px 18px", borderRadius: 20, border: "none", background: "#667eea", color: "white", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+          전송
+        </button>
+      </div>
+    </div>
+  );
+
+  // ═══════════════════════════════════════
+  // 👤 Profile / Avatar Screen
+  // ═══════════════════════════════════════
+  const AvatarScreen = () => (
+    <div style={{ padding: "0 16px 100px" }}>
+      {/* Date */}
+      <div style={{ textAlign: "right", fontSize: 12, color: "#888", marginBottom: 8 }}>📅 {formatDate(today)}</div>
+
+      <div style={{ textAlign: "center", padding: "24px 0" }}>
+        <div style={{
+          width: 110, height: 110, borderRadius: "50%", margin: "0 auto 14px",
+          background: "linear-gradient(135deg, #667eea, #764ba2)",
+          display: "flex", alignItems: "center", justifyContent: "center", fontSize: 56,
+          boxShadow: "0 8px 24px rgba(102,126,234,0.4)"
+        }}>
+          {profile?.avatar}
+        </div>
+        <div style={{ fontSize: 22, fontWeight: 800, color: "#1a1a2e" }}>{profile?.name}</div>
+        <div style={{ fontSize: 14, color: "#667eea", fontWeight: 600, marginTop: 4 }}>{currentTitle}</div>
+        <div style={{ fontSize: 13, color: "#888", marginTop: 2 }}>
+          {profile?.school ? `${profile.school} ` : ""}{profile?.grade}학년 | Level {level}
+        </div>
+      </div>
+
+      {/* Profile Info Card */}
+      <div style={{ background: "white", borderRadius: 16, padding: 20, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 16 }}>
+        <h4 style={{ fontSize: 15, fontWeight: 700, marginBottom: 12 }}>📋 내 프로필</h4>
+        <div style={{ fontSize: 13, color: "#444", lineHeight: 2.2 }}>
+          <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>이름</span><span style={{ fontWeight: 600 }}>{profile?.name}</span></div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>학교</span><span style={{ fontWeight: 600 }}>{profile?.school || "미입력"}</span></div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>학년</span><span style={{ fontWeight: 600 }}>{profile?.grade}학년</span></div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>가입일</span><span style={{ fontWeight: 600 }}>{profile?.createdAt ? new Date(profile.createdAt).toLocaleDateString("ko-KR") : "-"}</span></div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>현재 주차</span><span style={{ fontWeight: 600 }}>{currentWeek}주차 / 3주차</span></div>
+        </div>
+      </div>
+
+      {/* Stats */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 20 }}>
+        {[
+          { label: "총 XP", value: xp, icon: "⚡" },
+          { label: "레벨", value: level, icon: "📊" },
+          { label: "연속", value: `${streak}일`, icon: "🔥" }
+        ].map((s, i) => (
+          <div key={i} style={{ background: "white", borderRadius: 14, padding: "14px 10px", textAlign: "center", boxShadow: "0 2px 6px rgba(0,0,0,0.06)" }}>
+            <div style={{ fontSize: 22 }}>{s.icon}</div>
+            <div style={{ fontSize: 18, fontWeight: 800, color: "#1a1a2e", marginTop: 2 }}>{s.value}</div>
+            <div style={{ fontSize: 10, color: "#888" }}>{s.label}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* XP Bar */}
+      <div style={{ background: "white", borderRadius: 16, padding: 20, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 16 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, marginBottom: 8 }}>
+          <span style={{ fontWeight: 600 }}>경험치</span>
+          <span style={{ color: "#888" }}>{xp % 100}/100 XP</span>
+        </div>
+        <div style={{ background: "#eee", borderRadius: 10, height: 14, overflow: "hidden" }}>
+          <div style={{ background: "linear-gradient(90deg, #667eea, #764ba2)", height: "100%", width: `${xp % 100}%`, borderRadius: 10, transition: "width 0.5s" }} />
+        </div>
+      </div>
+
+      {/* Achievements */}
+      <div style={{ background: "white", borderRadius: 16, padding: 20, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
+        <h4 style={{ fontSize: 15, fontWeight: 700, marginBottom: 12 }}>🏆 업적</h4>
+        <div style={{ fontSize: 13, color: "#444", lineHeight: 2 }}>
+          📚 완독한 책: {Object.values(bookProgress).filter(v => v === 100).length}권 / 3권<br/>
+          💬 완료한 토론: {Object.keys(discussionState).filter(k => !k.includes("deep")).length}개 / 15개<br/>
+          🔥 완료한 심화: {Object.keys(discussionState).filter(k => k.includes("deep")).length}개 / 9개<br/>
+          🏅 획득한 배지: {earnedBadges.length}개 / {BADGES.length}개
+        </div>
+      </div>
+
+      {/* Edit Profile */}
+      <button onClick={() => setProfile(null)}
+        style={{ width: "100%", marginTop: 16, padding: "12px", borderRadius: 12, border: "2px solid #eee", background: "white", color: "#888", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+        ✏️ 프로필 수정
+      </button>
+    </div>
+  );
+
+  // ═══════════════════════════════════════
+  // 📅 Schedule Screen
+  // ═══════════════════════════════════════
+  const ScheduleScreen = () => {
+    const days = ["월", "화", "수", "목", "금", "토", "일"];
+    const cwBook = thisWeekBook;
+    const schedule = [
+      { day: "월", task: "📖 주요 내용 읽기", book: cwBook },
+      { day: "화", task: "💬 토론 1~2", book: cwBook },
+      { day: "수", task: "💬 토론 3~5", book: cwBook },
+      { day: "목", task: "🔥 심화 토론", book: cwBook },
+      { day: "금", task: "📝 정리 & 클리어", book: cwBook },
+      { day: "토", task: "🎮 자유 독서", book: null },
+      { day: "일", task: "📅 다음 주 준비", book: null }
+    ];
+    const todayIdx = today.getDay() === 0 ? 6 : today.getDay() - 1;
+
+    return (
+      <div style={{ padding: "0 16px 100px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+          <h3 style={{ fontSize: 18, fontWeight: 800, color: "#1a1a2e" }}>📅 {currentWeek}주차 스케줄</h3>
+          <div style={{ fontSize: 12, color: "#888" }}>{formatDate(today)}</div>
+        </div>
+
+        {/* Week Info */}
+        <div style={{ background: "linear-gradient(135deg, #667eea15, #764ba215)", borderRadius: 14, padding: 14, marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
+          <div style={{ fontSize: 28 }}>{cwBook.emoji}</div>
+          <div>
+            <div style={{ fontSize: 12, color: "#667eea", fontWeight: 600 }}>{currentWeek}주차 퀘스트</div>
+            <div style={{ fontSize: 14, fontWeight: 700, color: "#1a1a2e" }}>{cwBook.title}</div>
+            <div style={{ fontSize: 11, color: "#888" }}>
+              {weekRange.start.getMonth() + 1}/{weekRange.start.getDate()} ~ {weekRange.end.getMonth() + 1}/{weekRange.end.getDate()}
+            </div>
+          </div>
+        </div>
+
+        {/* Daily Schedule */}
+        <div style={{ background: "white", borderRadius: 16, overflow: "hidden", boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 24 }}>
+          {schedule.map((s, i) => (
+            <div key={i} style={{
+              display: "flex", alignItems: "center", gap: 14, padding: "14px 16px",
+              borderBottom: i < 6 ? "1px solid #f0f0f0" : "none",
+              background: i === todayIdx ? "#667eea08" : "transparent"
+            }}>
+              <div style={{
+                width: 36, height: 36, borderRadius: "50%",
+                background: i === todayIdx ? "#667eea" : i < todayIdx ? "#4CAF5020" : "#f0f0f0",
+                color: i === todayIdx ? "white" : i < todayIdx ? "#4CAF50" : "#666",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: 13, fontWeight: 700, flexShrink: 0
+              }}>
+                {i < todayIdx ? "✓" : s.day}
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 13, fontWeight: i === todayIdx ? 700 : 500, color: "#1a1a2e" }}>{s.task}</div>
+                {s.book && <div style={{ fontSize: 11, color: "#888" }}>{s.book.title}</div>}
+              </div>
+              {i === todayIdx && <span style={{ fontSize: 11, color: "#667eea", fontWeight: 700, background: "#667eea15", padding: "3px 8px", borderRadius: 8 }}>오늘</span>}
+            </div>
+          ))}
+        </div>
+
+        {/* 3-Week Overview */}
+        <h3 style={{ fontSize: 16, fontWeight: 700, color: "#1a1a2e", marginBottom: 12 }}>🗓️ 3주 전체 일정</h3>
+        {BOOKS.map(book => {
+          const wr = getWeekRange(startDate, book.week);
+          const isCurrent = book.week === currentWeek;
+          const isPast = book.week < currentWeek;
+          return (
+            <div key={book.id} style={{
+              background: isCurrent ? `${book.color}15` : "white",
+              borderRadius: 14, padding: 14, marginBottom: 10,
+              border: isCurrent ? `2px solid ${book.color}60` : "2px solid transparent",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.04)"
+            }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <span style={{ fontSize: 24 }}>{book.emoji}</span>
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: isCurrent ? book.color : "#888" }}>{book.week}주차</span>
+                    {isCurrent && <span style={{ fontSize: 10, background: book.color, color: "white", padding: "1px 6px", borderRadius: 6 }}>진행 중</span>}
+                    {isPast && <span style={{ fontSize: 10, color: "#4CAF50" }}>✅</span>}
+                  </div>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: "#1a1a2e" }}>{book.title}</div>
+                  <div style={{ fontSize: 11, color: "#888" }}>
+                    {wr.start.getMonth() + 1}/{wr.start.getDate()} ({getDayName(wr.start)}) ~ {wr.end.getMonth() + 1}/{wr.end.getDate()} ({getDayName(wr.end)})
+                  </div>
+                </div>
+                <span style={{ fontSize: 13, fontWeight: 700, color: book.color }}>{bookProgress[book.id]}%</span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
+  // ═══════════════════════════════════════
+  // 🎁 Reward Modal
+  // ═══════════════════════════════════════
+  const RewardModal = () => {
+    if (!showReward || !rewardInfo) return null;
+    return (
+      <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}
+        onClick={() => setShowReward(false)}>
+        <div style={{ background: "white", borderRadius: 24, padding: "32px 24px", textAlign: "center", maxWidth: 300, width: "90%", animation: "pop 0.3s ease" }}
+          onClick={e => e.stopPropagation()}>
+          <div style={{ fontSize: 60, marginBottom: 12 }}>🎉</div>
+          <div style={{ fontSize: 20, fontWeight: 800, color: "#1a1a2e", marginBottom: 8 }}>레벨 업!</div>
+          <div style={{ fontSize: 40, fontWeight: 800, color: "#667eea", marginBottom: 8 }}>Lv.{rewardInfo.level}</div>
+          <div style={{ fontSize: 16, color: "#444", marginBottom: 16 }}>새로운 칭호: <b style={{ color: "#FFB300" }}>{rewardInfo.title}</b></div>
+          <button onClick={() => setShowReward(false)}
+            style={{ padding: "12px 32px", borderRadius: 20, border: "none", background: "#667eea", color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
+            좋아요! 🎮
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  // ═══════════════════════════════════════
+  // 🔽 Bottom Tab Bar
+  // ═══════════════════════════════════════
+  const TabBar = () => {
+    if (screen === "discussion" || !profile) return null;
+    const tabs = [
+      { key: "home", icon: "🏠", label: "홈" },
+      { key: "avatar", icon: profile?.avatar || "👤", label: "프로필" },
+      { key: "schedule", icon: "📅", label: "스케줄" }
+    ];
+    return (
+      <div style={{
+        position: "fixed", bottom: 0, left: 0, right: 0, background: "white", borderTop: "1px solid #eee",
+        display: "flex", justifyContent: "space-around", padding: "8px 0 env(safe-area-inset-bottom, 8px)", zIndex: 100
+      }}>
+        {tabs.map(t => (
+          <button key={t.key} onClick={() => setScreen(t.key)}
+            style={{
+              background: "none", border: "none", padding: "6px 20px",
+              display: "flex", flexDirection: "column", alignItems: "center", gap: 2,
+              cursor: "pointer", opacity: (screen === t.key || (screen === "book" && t.key === "home")) ? 1 : 0.5
+            }}>
+            <span style={{ fontSize: 22 }}>{t.icon}</span>
+            <span style={{ fontSize: 10, fontWeight: 600, color: "#1a1a2e" }}>{t.label}</span>
+          </button>
+        ))}
+      </div>
+    );
+  };
+
+  // ═══════════════════════════════════════
+  // 🎨 Render
+  // ═══════════════════════════════════════
+  return (
+    <div style={{ maxWidth: 430, margin: "0 auto", background: "#f7f7fa", minHeight: "100vh", fontFamily: "'Pretendard', -apple-system, sans-serif", paddingTop: profile ? 16 : 0, position: "relative" }}>
+      <style>{`
+        @keyframes pop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        * { box-sizing: border-box; margin: 0; }
+        input:focus { border-color: #667eea !important; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: #ddd; border-radius: 4px; }
+      `}</style>
+
+      {!profile && <ProfileSetupScreen />}
+      {profile && screen === "home" && <HomeScreen />}
+      {profile && screen === "book" && <BookScreen />}
+      {profile && screen === "discussion" && <DiscussionScreen />}
+      {profile && screen === "avatar" && <AvatarScreen />}
+      {profile && screen === "schedule" && <ScheduleScreen />}
+
+      <TabBar />
+      <RewardModal />
+    </div>
+  );
+}
