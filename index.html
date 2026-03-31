@@ -128,11 +128,12 @@
     // ☁️ Cloud Functions API 서비스
     // ═══════════════════════════════════════
     const FUNCTIONS_BASE = "https://us-central1-bookquest-f9720.cloudfunctions.net";
+    const ASKBOOK_URL = "https://askbook-xufrgr5zva-uc.a.run.app";
 
     const CloudAPI = {
       async askBook(question, bookData, chatHistory = []) {
         try {
-          const res = await fetch(`${FUNCTIONS_BASE}/askBook`, {
+          const res = await fetch(ASKBOOK_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ question, bookData, chatHistory })
