@@ -357,7 +357,49 @@
       }
     ];
 
-    const AVATARS = ["🧙‍♂️", "🦸‍♂️", "🧑‍🚀", "🥷", "🧑‍🔬", "🦊", "🐉", "🦁", "🐺", "🦅", "🐱‍👤", "🤖"];
+    // ═══════════════════════════════════════
+    // 👤 SVG 아바타 시스템
+    // ═══════════════════════════════════════
+    const AVATAR_DATA = [
+      { id: "wizard", name: "마법사", gradient: ["#667eea","#764ba2"],
+        svg: `<svg viewBox="0 0 80 80"><defs><linearGradient id="aw1" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#667eea"/><stop offset="1" stop-color="#764ba2"/></linearGradient></defs><circle cx="40" cy="40" r="38" fill="url(#aw1)"/><circle cx="40" cy="36" r="14" fill="#FFDBB4"/><path d="M26 52c0-8 6-14 14-14s14 6 14 14" fill="#5A4FCF"/><polygon points="40,6 32,28 48,28" fill="#7B68EE" stroke="#5A4FCF" stroke-width="1"/><circle cx="40" cy="16" r="3" fill="#FFD700"/><circle cx="35" cy="34" r="2" fill="#333"/><circle cx="45" cy="34" r="2" fill="#333"/><path d="M37 39c1.5 1.5 4.5 1.5 6 0" stroke="#333" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>` },
+      { id: "hero", name: "영웅", gradient: ["#E53E3E","#C53030"],
+        svg: `<svg viewBox="0 0 80 80"><defs><linearGradient id="ah1" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#E53E3E"/><stop offset="1" stop-color="#C53030"/></linearGradient></defs><circle cx="40" cy="40" r="38" fill="url(#ah1)"/><circle cx="40" cy="36" r="14" fill="#FFDBB4"/><path d="M26 54c0-8 6-14 14-14s14 6 14 14" fill="#E53E3E"/><path d="M28 28l12 6 12-6" fill="#FFD700" stroke="#DAA520" stroke-width="0.5"/><rect x="35" y="26" width="10" height="4" rx="2" fill="#FFD700"/><circle cx="35" cy="34" r="2" fill="#333"/><circle cx="45" cy="34" r="2" fill="#333"/><path d="M36 40c2 2 6 2 8 0" stroke="#333" stroke-width="1.2" fill="none" stroke-linecap="round"/><path d="M22 42l-6-6 4 0 0-4 4 0 0 4 4 0z" fill="#FFD700" opacity="0.8"/></svg>` },
+      { id: "astro", name: "우주인", gradient: ["#4299E1","#2B6CB0"],
+        svg: `<svg viewBox="0 0 80 80"><defs><linearGradient id="aa1" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#4299E1"/><stop offset="1" stop-color="#1A365D"/></linearGradient></defs><circle cx="40" cy="40" r="38" fill="url(#aa1)"/><circle cx="40" cy="36" r="16" fill="white" opacity="0.95"/><circle cx="40" cy="36" r="12" fill="#E0F0FF"/><circle cx="40" cy="36" r="12" fill="#FFDBB4"/><circle cx="36" cy="34" r="2" fill="#333"/><circle cx="44" cy="34" r="2" fill="#333"/><path d="M37 39c1.5 1.5 4.5 1.5 6 0" stroke="#333" stroke-width="1.2" fill="none" stroke-linecap="round"/><path d="M26 54c0-8 6-14 14-14s14 6 14 14" fill="white" opacity="0.9"/><rect x="32" y="50" width="16" height="4" rx="2" fill="#4299E1"/><circle cx="20" cy="16" r="1.5" fill="white" opacity="0.5"/><circle cx="62" cy="22" r="1" fill="white" opacity="0.4"/><circle cx="56" cy="12" r="2" fill="white" opacity="0.3"/></svg>` },
+      { id: "ninja", name: "닌자", gradient: ["#2D3748","#1A202C"],
+        svg: `<svg viewBox="0 0 80 80"><defs><linearGradient id="an1" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#4A5568"/><stop offset="1" stop-color="#1A202C"/></linearGradient></defs><circle cx="40" cy="40" r="38" fill="url(#an1)"/><circle cx="40" cy="36" r="14" fill="#FFDBB4"/><rect x="24" y="30" width="32" height="8" rx="4" fill="#2D3748"/><circle cx="35" cy="34" r="2.5" fill="white"/><circle cx="35" cy="34" r="1.5" fill="#333"/><circle cx="45" cy="34" r="2.5" fill="white"/><circle cx="45" cy="34" r="1.5" fill="#333"/><path d="M26 54c0-8 6-14 14-14s14 6 14 14" fill="#2D3748"/><path d="M56 32l8-4" stroke="#CBD5E0" stroke-width="1.5" stroke-linecap="round"/><path d="M56 36l8 2" stroke="#CBD5E0" stroke-width="1.5" stroke-linecap="round"/></svg>` },
+      { id: "scientist", name: "과학자", gradient: ["#38A169","#276749"],
+        svg: `<svg viewBox="0 0 80 80"><defs><linearGradient id="as1" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#48BB78"/><stop offset="1" stop-color="#276749"/></linearGradient></defs><circle cx="40" cy="40" r="38" fill="url(#as1)"/><circle cx="40" cy="36" r="14" fill="#FFDBB4"/><rect x="30" y="28" width="20" height="10" rx="5" fill="white" opacity="0.85" stroke="#CBD5E0" stroke-width="1"/><circle cx="35" cy="33" r="3.5" fill="white" stroke="#A0AEC0" stroke-width="0.8"/><circle cx="45" cy="33" r="3.5" fill="white" stroke="#A0AEC0" stroke-width="0.8"/><circle cx="35" cy="33" r="1.5" fill="#333"/><circle cx="45" cy="33" r="1.5" fill="#333"/><path d="M37 40c1.5 1 4.5 1 6 0" stroke="#333" stroke-width="1" fill="none" stroke-linecap="round"/><path d="M26 54c0-8 6-14 14-14s14 6 14 14" fill="white" opacity="0.9"/><rect x="34" y="48" width="12" height="3" rx="1.5" fill="#38A169"/></svg>` },
+      { id: "fox", name: "여우", gradient: ["#ED8936","#C05621"],
+        svg: `<svg viewBox="0 0 80 80"><defs><linearGradient id="af1" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ED8936"/><stop offset="1" stop-color="#C05621"/></linearGradient></defs><circle cx="40" cy="40" r="38" fill="url(#af1)"/><circle cx="40" cy="40" r="16" fill="#FDBA74"/><polygon points="24,24 30,38 22,38" fill="#ED8936"/><polygon points="56,24 58,38 50,38" fill="#ED8936"/><circle cx="34" cy="38" r="2.5" fill="#333"/><circle cx="46" cy="38" r="2.5" fill="#333"/><circle cx="34" cy="37.5" r="0.8" fill="white"/><circle cx="46" cy="37.5" r="0.8" fill="white"/><ellipse cx="40" cy="44" rx="3" ry="2" fill="#1A202C"/><path d="M37 44l-4 2" stroke="#C05621" stroke-width="1" stroke-linecap="round"/><path d="M37 45l-4 3" stroke="#C05621" stroke-width="1" stroke-linecap="round"/><path d="M43 44l4 2" stroke="#C05621" stroke-width="1" stroke-linecap="round"/><path d="M43 45l4 3" stroke="#C05621" stroke-width="1" stroke-linecap="round"/><circle cx="40" cy="43" r="1" fill="#FFDBB4"/></svg>` },
+      { id: "dragon", name: "드래곤", gradient: ["#9F7AEA","#6B46C1"],
+        svg: `<svg viewBox="0 0 80 80"><defs><linearGradient id="ad1" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9F7AEA"/><stop offset="1" stop-color="#553C9A"/></linearGradient></defs><circle cx="40" cy="40" r="38" fill="url(#ad1)"/><ellipse cx="40" cy="40" rx="18" ry="16" fill="#B794F4"/><polygon points="22,22 28,34 20,30" fill="#9F7AEA"/><polygon points="58,22 60,30 52,34" fill="#9F7AEA"/><circle cx="34" cy="36" r="3" fill="#FEFCBF"/><circle cx="46" cy="36" r="3" fill="#FEFCBF"/><circle cx="34" cy="36" r="1.5" fill="#553C9A"/><circle cx="46" cy="36" r="1.5" fill="#553C9A"/><path d="M36 44c2 2 6 2 8 0" stroke="#553C9A" stroke-width="1.5" fill="none" stroke-linecap="round"/><ellipse cx="37" cy="46" rx="1" ry="0.5" fill="#FC8181" opacity="0.5"/><ellipse cx="43" cy="46" rx="1" ry="0.5" fill="#FC8181" opacity="0.5"/><path d="M40 20l-3-8 3 4 3-4z" fill="#FFD700"/></svg>` },
+      { id: "lion", name: "사자", gradient: ["#D69E2E","#975A16"],
+        svg: `<svg viewBox="0 0 80 80"><defs><linearGradient id="al1" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ECC94B"/><stop offset="1" stop-color="#975A16"/></linearGradient></defs><circle cx="40" cy="40" r="38" fill="url(#al1)"/><circle cx="40" cy="40" r="22" fill="#D69E2E"/><circle cx="40" cy="40" r="16" fill="#F6E05E"/><circle cx="34" cy="38" r="2.5" fill="#333"/><circle cx="46" cy="38" r="2.5" fill="#333"/><circle cx="34" cy="37.5" r="0.8" fill="white"/><circle cx="46" cy="37.5" r="0.8" fill="white"/><ellipse cx="40" cy="44" rx="4" ry="2.5" fill="#FFDBB4"/><ellipse cx="40" cy="43.5" rx="2" ry="1" fill="#1A202C"/><path d="M36 46c2 2 6 2 8 0" stroke="#975A16" stroke-width="1" fill="none" stroke-linecap="round"/></svg>` },
+      { id: "wolf", name: "늑대", gradient: ["#718096","#2D3748"],
+        svg: `<svg viewBox="0 0 80 80"><defs><linearGradient id="awf1" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#A0AEC0"/><stop offset="1" stop-color="#2D3748"/></linearGradient></defs><circle cx="40" cy="40" r="38" fill="url(#awf1)"/><ellipse cx="40" cy="42" rx="16" ry="14" fill="#A0AEC0"/><polygon points="26,24 32,38 22,36" fill="#718096"/><polygon points="54,24 58,36 48,38" fill="#718096"/><ellipse cx="40" cy="42" rx="12" ry="10" fill="#CBD5E0"/><circle cx="35" cy="38" r="2" fill="#2D3748"/><circle cx="45" cy="38" r="2" fill="#2D3748"/><circle cx="35" cy="37.5" r="0.6" fill="#63B3ED"/><circle cx="45" cy="37.5" r="0.6" fill="#63B3ED"/><ellipse cx="40" cy="44" rx="2.5" ry="1.5" fill="#2D3748"/></svg>` },
+      { id: "eagle", name: "독수리", gradient: ["#744210","#975A16"],
+        svg: `<svg viewBox="0 0 80 80"><defs><linearGradient id="ae1" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#D69E2E"/><stop offset="1" stop-color="#744210"/></linearGradient></defs><circle cx="40" cy="40" r="38" fill="url(#ae1)"/><ellipse cx="40" cy="40" rx="14" ry="16" fill="#F6E05E"/><circle cx="34" cy="36" r="3" fill="white"/><circle cx="46" cy="36" r="3" fill="white"/><circle cx="34" cy="36" r="1.5" fill="#1A202C"/><circle cx="46" cy="36" r="1.5" fill="#1A202C"/><polygon points="40,40 36,48 44,48" fill="#ED8936"/><path d="M24 32c4-6 8-8 16-8s12 2 16 8" stroke="#975A16" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M20 44c-6-2-8 2-6 6" stroke="#F6E05E" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M60 44c6-2 8 2 6 6" stroke="#F6E05E" stroke-width="3" fill="none" stroke-linecap="round"/></svg>` },
+      { id: "cat", name: "고양이", gradient: ["#F687B3","#D53F8C"],
+        svg: `<svg viewBox="0 0 80 80"><defs><linearGradient id="ac1" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#F687B3"/><stop offset="1" stop-color="#D53F8C"/></linearGradient></defs><circle cx="40" cy="40" r="38" fill="url(#ac1)"/><circle cx="40" cy="42" r="16" fill="#FED7E2"/><polygon points="24,22 28,40 20,36" fill="#FBB6CE"/><polygon points="56,22 60,36 52,40" fill="#FBB6CE"/><polygon points="24,22 28,38 22,34" fill="#FED7E2" opacity="0.6"/><polygon points="56,22 58,34 52,38" fill="#FED7E2" opacity="0.6"/><circle cx="34" cy="40" r="3" fill="#333"/><circle cx="46" cy="40" r="3" fill="#333"/><circle cx="35" cy="39" r="1.2" fill="white"/><circle cx="47" cy="39" r="1.2" fill="white"/><ellipse cx="40" cy="46" rx="2" ry="1" fill="#D53F8C"/><path d="M34 48l-6 2" stroke="#D53F8C" stroke-width="0.8" stroke-linecap="round"/><path d="M34 49l-5 3" stroke="#D53F8C" stroke-width="0.8" stroke-linecap="round"/><path d="M46 48l6 2" stroke="#D53F8C" stroke-width="0.8" stroke-linecap="round"/><path d="M46 49l5 3" stroke="#D53F8C" stroke-width="0.8" stroke-linecap="round"/></svg>` },
+      { id: "robot", name: "로봇", gradient: ["#4FD1C5","#234E52"],
+        svg: `<svg viewBox="0 0 80 80"><defs><linearGradient id="ar1" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#4FD1C5"/><stop offset="1" stop-color="#234E52"/></linearGradient></defs><circle cx="40" cy="40" r="38" fill="url(#ar1)"/><rect x="26" y="26" width="28" height="24" rx="6" fill="#E2E8F0"/><rect x="30" y="30" width="8" height="6" rx="2" fill="#4FD1C5"/><rect x="42" y="30" width="8" height="6" rx="2" fill="#4FD1C5"/><circle cx="34" cy="33" r="1.5" fill="white"/><circle cx="46" cy="33" r="1.5" fill="white"/><rect x="34" y="42" width="12" height="3" rx="1.5" fill="#A0AEC0"/><line x1="36" y1="42" x2="36" y2="45" stroke="#E2E8F0" stroke-width="0.8"/><line x1="40" y1="42" x2="40" y2="45" stroke="#E2E8F0" stroke-width="0.8"/><line x1="44" y1="42" x2="44" y2="45" stroke="#E2E8F0" stroke-width="0.8"/><rect x="36" y="20" width="8" height="6" rx="4" fill="#A0AEC0"/><circle cx="40" cy="22" r="2" fill="#4FD1C5"/><path d="M26 54c0-4 6-6 14-6s14 2 14 6" fill="#A0AEC0"/></svg>` }
+    ];
+    const AVATARS = AVATAR_DATA.map(a => a.id);
+
+    // 아바타 렌더링 함수
+    const AvatarIcon = ({ avatarId, size = 40, style = {} }) => {
+      const data = AVATAR_DATA.find(a => a.id === avatarId);
+      if (!data) return React.createElement("span", { style: { fontSize: size * 0.6, ...style } }, "👤");
+      const encoded = btoa(unescape(encodeURIComponent(data.svg)));
+      return React.createElement("img", {
+        src: `data:image/svg+xml;base64,${encoded}`,
+        width: size, height: size,
+        style: { display: "block", borderRadius: "50%", ...style },
+        alt: data.name
+      });
+    };
     const TITLES_LIST = ["견습 독서가", "초보 탐험가", "지식의 수호자", "토론 마스터", "독서왕", "전설의 BookQuester"];
 
     // ═══════════════════════════════════════
@@ -505,7 +547,7 @@
     // ═══════════════════════════════════════
     function BookQuest() {
       const [profile, setProfile] = useState(null);
-      const [profileForm, setProfileForm] = useState({ name: "", school: "", grade: "6", avatar: "🧙‍♂️" });
+      const [profileForm, setProfileForm] = useState({ name: "", school: "", grade: "6", avatar: "wizard" });
       const [screen, setScreen] = useState("home");
       const [selectedBook, setSelectedBook] = useState(null);
       const [bookTab, setBookTab] = useState("summary");
@@ -786,18 +828,19 @@
               </div>
 
               <div style={{ marginBottom: 24 }}>
-                <label style={{ fontSize: 13, fontWeight: 600, color: "#555", display: "block", marginBottom: 6 }}>아바타 선택</label>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 8 }}>
-                  {AVATARS.map(a => (
-                    <button key={a} onClick={() => setProfileForm(p => ({ ...p, avatar: a }))}
+                <label style={{ fontSize: 13, fontWeight: 600, color: "#555", display: "block", marginBottom: 8 }}>아바타 선택</label>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 }}>
+                  {AVATAR_DATA.map(a => (
+                    <button key={a.id} onClick={() => setProfileForm(p => ({ ...p, avatar: a.id }))}
                       style={{
-                        width: "100%", aspectRatio: "1", borderRadius: 12, border: "3px solid",
-                        borderColor: profileForm.avatar === a ? "#667eea" : "#f0f0f0",
-                        background: profileForm.avatar === a ? "#667eea15" : "#fafafa",
-                        fontSize: 24, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
-                        transition: "all 0.2s"
+                        width: "100%", padding: "8px 0", borderRadius: 16, border: "3px solid",
+                        borderColor: profileForm.avatar === a.id ? "#667eea" : "#f0f0f0",
+                        background: profileForm.avatar === a.id ? "#667eea10" : "#fafafa",
+                        cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
+                        transition: "all 0.2s", boxShadow: profileForm.avatar === a.id ? "0 4px 12px rgba(102,126,234,0.25)" : "none"
                       }}>
-                      {a}
+                      <AvatarIcon avatarId={a.id} size={44} />
+                      <span style={{ fontSize: 10, fontWeight: 600, color: profileForm.avatar === a.id ? "#667eea" : "#999" }}>{a.name}</span>
                     </button>
                   ))}
                 </div>
@@ -845,12 +888,11 @@
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 14, position: "relative" }}>
               <div style={{
-                width: 60, height: 60, borderRadius: 16, background: "rgba(255,255,255,0.2)",
-                backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)",
-                display: "flex", alignItems: "center", justifyContent: "center", fontSize: 30,
-                border: "2px solid rgba(255,255,255,0.3)", boxShadow: "0 4px 12px rgba(0,0,0,0.1)"
+                width: 60, height: 60, borderRadius: 16,
+                border: "2px solid rgba(255,255,255,0.3)", boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+                overflow: "hidden", flexShrink: 0
               }}>
-                {profile.avatar}
+                <AvatarIcon avatarId={profile.avatar} size={60} style={{ borderRadius: 14 }} />
               </div>
               <div style={{ flex: 1 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, marginBottom: 6, fontWeight: 600 }}>
@@ -1206,11 +1248,10 @@
           <div style={{ textAlign: "center", padding: "24px 0" }}>
             <div style={{
               width: 110, height: 110, borderRadius: "50%", margin: "0 auto 14px",
-              background: "linear-gradient(135deg, #667eea, #764ba2)",
-              display: "flex", alignItems: "center", justifyContent: "center", fontSize: 56,
-              boxShadow: "0 8px 24px rgba(102,126,234,0.4)"
+              boxShadow: "0 8px 24px rgba(102,126,234,0.4)",
+              border: "4px solid #667eea", overflow: "hidden"
             }}>
-              {profile?.avatar}
+              <AvatarIcon avatarId={profile?.avatar} size={102} style={{ borderRadius: "50%" }} />
             </div>
             <div style={{ fontSize: 22, fontWeight: 800, color: "#1a1a2e" }}>{profile?.name}</div>
             <div style={{ fontSize: 14, color: "#667eea", fontWeight: 600, marginTop: 4 }}>{currentTitle}</div>
