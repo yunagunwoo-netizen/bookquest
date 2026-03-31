@@ -476,9 +476,25 @@
         return rec;
       },
 
-      // 이모지 제거 함수
-      removeEmoji(text) {
-        return text.replace(/[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{27BF}]|[\u{FE00}-\u{FE0F}]|[\u{1F000}-\u{1F02F}]|[\u{1F0A0}-\u{1F0FF}]|[\u{200D}]|[\u{20E3}]|[\u{E0020}-\u{E007F}]|[\u{FE00}-\u{FEFF}]|[\u{1F900}-\u{1F9FF}]|[\u{1FA00}-\u{1FA6F}]|[\u{1FA70}-\u{1FAFF}]|[\u{2702}-\u{27B0}]|[\u{231A}-\u{231B}]|[\u{23E9}-\u{23F3}]|[\u{23F8}-\u{23FA}]|[\u{25AA}-\u{25AB}]|[\u{25B6}]|[\u{25C0}]|[\u{25FB}-\u{25FE}]|[\u{2614}-\u{2615}]|[\u{2648}-\u{2653}]|[\u{267F}]|[\u{2693}]|[\u{26A1}]|[\u{26AA}-\u{26AB}]|[\u{26BD}-\u{26BE}]|[\u{26C4}-\u{26C5}]|[\u{26CE}]|[\u{26D4}]|[\u{26EA}]|[\u{26F2}-\u{26F3}]|[\u{26F5}]|[\u{26FA}]|[\u{26FD}]|[\u{2702}]|[\u{2705}]|[\u{2708}-\u{270D}]|[\u{270F}]|✅|❌|⭐|⚡|☀|☁|☂|❤|♥|♡|★|☆/gu, '').replace(/\s{2,}/g, ' ').trim();
+      // TTS용 텍스트 정리 (이모지, 마크다운, 특수문자 제거)
+      cleanForTTS(text) {
+        return text
+          // 이모지 제거
+          .replace(/[\u{1F300}-\u{1FAFF}]|[\u{2600}-\u{27BF}]|[\u{FE00}-\u{FE0F}]|[\u{200D}]|[\u{20E3}]|[\u{E0020}-\u{E007F}]|✅|❌|⭐|⚡|☀|☁|☂|❤|♥|♡|★|☆/gu, '')
+          // 마크다운 굵은글씨 **text** → text
+          .replace(/\*\*([^*]+)\*\*/g, '$1')
+          // 마크다운 기울임 *text* → text
+          .replace(/\*([^*]+)\*/g, '$1')
+          // 마크다운 헤더 ## text → text
+          .replace(/^#+\s*/gm, '')
+          // URL 제거
+          .replace(/https?:\/\/[^\s]+/g, '')
+          // 괄호 안 영어 약어 제거 (예: "(GDP)" → "")
+          .replace(/\([A-Z]{2,}\)/g, '')
+          // 연속 공백/줄바꿈 정리
+          .replace(/\n+/g, '. ')
+          .replace(/\s{2,}/g, ' ')
+          .trim();
       },
 
       speak(text, callback) {
@@ -488,28 +504,41 @@
         }
 
         this.SpeechSynthesis.cancel();
-        const cleanText = this.removeEmoji(text);
+        const cleanText = this.cleanForTTS(text);
         if (!cleanText) { if (callback) callback(true); return; }
-        const utterance = new SpeechSynthesisUtterance(cleanText);
-        utterance.lang = 'ko-KR';
-        utterance.rate = 1;
-        utterance.pitch = 1;
-        utterance.volume = 1;
 
-        const voices = this.SpeechSynthesis.getVoices();
-        const koreanVoice = voices.find(v => v.lang.startsWith('ko'));
-        if (koreanVoice) {
-          utterance.voice = koreanVoice;
-        }
+        // 문장 단위로 분리 (마침표, 물음표, 느낌표 기준)
+        const sentences = cleanText.match(/[^.!?]+[.!?]?/g) || [cleanText];
 
-        utterance.onend = () => {
-          if (callback) callback(true);
+        // 문장별로 순차적으로 읽기
+        let idx = 0;
+        const speakNext = () => {
+          if (idx >= sentences.length) {
+            if (callback) callback(true);
+            return;
+          }
+          const sentence = sentences[idx].trim();
+          idx++;
+          if (!sentence) { speakNext(); return; }
+
+          const utterance = new SpeechSynthesisUtterance(sentence);
+          utterance.lang = 'ko-KR';
+          utterance.rate = 0.95;
+          utterance.pitch = 1.05;
+          utterance.volume = 1;
+
+          const voices = this.SpeechSynthesis.getVoices();
+          // Google 한국어 음성 우선 선택 (더 자연스러움)
+          const googleKo = voices.find(v => v.lang.startsWith('ko') && v.name.includes('Google'));
+          const anyKo = voices.find(v => v.lang.startsWith('ko'));
+          if (googleKo) utterance.voice = googleKo;
+          else if (anyKo) utterance.voice = anyKo;
+
+          utterance.onend = () => speakNext();
+          utterance.onerror = () => speakNext();
+          this.SpeechSynthesis.speak(utterance);
         };
-        utterance.onerror = () => {
-          if (callback) callback(false);
-        };
-
-        this.SpeechSynthesis.speak(utterance);
+        speakNext();
       },
 
       stopSpeaking() {
