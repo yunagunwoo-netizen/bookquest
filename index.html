@@ -125,6 +125,62 @@
     const { useState, useEffect, useRef, useCallback } = React;
 
     // ═══════════════════════════════════════
+    // ☁️ Cloud Functions API 서비스
+    // ═══════════════════════════════════════
+    const FUNCTIONS_BASE = "https://us-central1-bookquest-f9720.cloudfunctions.net";
+    const ASKBOOK_URL = "https://askbook-xufrgr5zva-uc.a.run.app";
+
+    const CloudAPI = {
+      async askBook(question, bookData, chatHistory = []) {
+        try {
+          const res = await fetch(ASKBOOK_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ question, bookData, chatHistory })
+          });
+          const data = await res.json();
+          if (data.error) throw new Error(data.error);
+          return data.answer;
+        } catch (e) {
+          console.error("askBook 실패:", e);
+          return "죄송해요, 지금 답변을 할 수 없어요. 잠시 후 다시 시도해주세요! 🙏";
+        }
+      },
+
+      async discussionCoach(userAnswer, topic, bookTitle, bookSummary, isDeep) {
+        try {
+          const res = await fetch(`${FUNCTIONS_BASE}/discussionCoach`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userAnswer, topic, bookTitle, bookSummary, isDeep })
+          });
+          const data = await res.json();
+          if (data.error) throw new Error(data.error);
+          return data.feedback;
+        } catch (e) {
+          console.error("discussionCoach 실패:", e);
+          return "좋은 생각이에요! 조금 더 깊이 생각해보면 좋겠어요. 🌟";
+        }
+      },
+
+      async recommendBooks(readBooks, interests = "") {
+        try {
+          const res = await fetch(`${FUNCTIONS_BASE}/recommendBooks`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ readBooks, interests })
+          });
+          const data = await res.json();
+          if (data.error) throw new Error(data.error);
+          return data.recommendations || [];
+        } catch (e) {
+          console.error("recommendBooks 실패:", e);
+          return [];
+        }
+      }
+    };
+
+    // ═══════════════════════════════════════
     // 🔥 Firestore 데이터 서비스
     // ═══════════════════════════════════════
     const FirestoreService = {
@@ -605,27 +661,27 @@
         }
       };
 
-      const sendChat = (messageText = null) => {
+      const sendChat = async (messageText = null) => {
         const text = messageText || chatInput.trim();
         if (!text) return;
 
         setChatInput("");
         const userMsg = text;
         const newMsgs = [...chatMessages, { role: "user", text: userMsg }];
+        setChatMessages(newMsgs);
+
         const topics = isDeep ? activeDiscussionBook.deepTopics : activeDiscussionBook.discussionTopics;
         const topic = topics[activeDiscussionIdx];
 
-        const aiResponse = generateAIResponse(userMsg, topic, isDeep);
-        const complimentMsg = `정말 훌륭한 답변이에요! 🌟 이 토론에서 ${isDeep ? 30 : 20}XP를 획득했어요!`;
-
-        const withAi = [
-          ...newMsgs,
-          { role: "ai", text: aiResponse }
-        ];
-
-        setChatMessages(withAi);
-
+        // 실제 Claude AI로 피드백 받기
         setIsSpeaking(true);
+        const aiResponse = await CloudAPI.discussionCoach(
+          userMsg, topic, activeDiscussionBook.title, activeDiscussionBook.summary, isDeep
+        );
+        const complimentMsg = `🌟 이 토론에서 ${isDeep ? 30 : 20}XP를 획득했어요!`;
+
+        setChatMessages(prev => [...prev, { role: "ai", text: aiResponse }]);
+
         VoiceService.speak(aiResponse, () => {
           VoiceService.speak(complimentMsg, () => {
             setIsSpeaking(false);
@@ -1255,6 +1311,251 @@
       };
 
       // ═══════════════════════════════════════
+      // ═══════════════════════════════════════
+      // 💡 책에게 물어보기 화면
+      // ═══════════════════════════════════════
+      const AskBookScreen = () => {
+        const [askMessages, setAskMessages] = useState([
+          { role: "ai", text: "안녕, 건우! 📚 읽은 책에 대해 궁금한 게 있으면 뭐든 물어봐! 책 내용을 바탕으로 답변해줄게." }
+        ]);
+        const [askInput, setAskInput] = useState("");
+        const [askLoading, setAskLoading] = useState(false);
+        const [askListening, setAskListening] = useState(false);
+        const askEndRef = useRef(null);
+        const askRecRef = useRef(null);
+        const askListeningRef = useRef(false);
+
+        useEffect(() => {
+          askEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        }, [askMessages]);
+
+        // 읽은 책 데이터를 문자열로 변환
+        const getBookDataString = () => {
+          const completedBooks = BOOKS.filter(b => {
+            const progress = bookProgress[b.id] || 0;
+            return progress > 0;
+          });
+          if (completedBooks.length === 0) return "아직 읽은 책이 없습니다.";
+          return completedBooks.map(b =>
+            `📖 "${b.title}" (${b.author})\n요약: ${b.summary}\n핵심포인트: ${b.keyPoints.join(", ")}\n챕터: ${b.chapters.join(", ")}`
+          ).join("\n\n");
+        };
+
+        const sendAskMessage = async (messageText = null) => {
+          const text = messageText || askInput.trim();
+          if (!text || askLoading) return;
+          setAskInput("");
+          setAskMessages(prev => [...prev, { role: "user", text }]);
+          setAskLoading(true);
+
+          const answer = await CloudAPI.askBook(text, getBookDataString(), askMessages.slice(-6));
+          setAskMessages(prev => [...prev, { role: "ai", text: answer }]);
+          setAskLoading(false);
+
+          VoiceService.speak(answer, () => {});
+        };
+
+        const startAskListening = () => {
+          if (!voiceSupported || askListening) return;
+          askRecRef.current = VoiceService.createRecognizer();
+          const rec = askRecRef.current;
+          if (!rec) return;
+          setAskListening(true);
+          askListeningRef.current = true;
+          setAskInput("");
+
+          rec.onresult = (event) => {
+            let finalText = "", interimText = "";
+            for (let i = 0; i < event.results.length; i++) {
+              if (event.results[i].isFinal) finalText += event.results[i][0].transcript;
+              else interimText += event.results[i][0].transcript;
+            }
+            const full = (finalText + interimText).trim();
+            if (full) setAskInput(full);
+          };
+          rec.onerror = (e) => { if (e.error !== 'no-speech') { setAskListening(false); askListeningRef.current = false; } };
+          rec.onend = () => { if (askListeningRef.current) { try { rec.start(); } catch(e) { setAskListening(false); askListeningRef.current = false; } } };
+          try { rec.start(); } catch(e) { setAskListening(false); askListeningRef.current = false; }
+        };
+
+        const finishAskListening = () => {
+          setAskListening(false);
+          askListeningRef.current = false;
+          if (askRecRef.current) { try { askRecRef.current.stop(); } catch(e) {} askRecRef.current = null; }
+          const text = askInput.trim();
+          if (text) setTimeout(() => sendAskMessage(text), 300);
+        };
+
+        return (
+          <div style={{ display: "flex", flexDirection: "column", height: "100vh", paddingBottom: 70 }}>
+            <div style={{ padding: "16px 20px", background: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)", color: "white", flexShrink: 0 }}>
+              <div style={{ fontSize: 20, fontWeight: 800 }}>💡 책에게 물어보기</div>
+              <div style={{ fontSize: 12, opacity: 0.9, marginTop: 4 }}>읽은 책 내용을 바탕으로 궁금한 걸 물어봐!</div>
+            </div>
+
+            <div style={{ flex: 1, overflowY: "auto", padding: 16, background: "#f7f7fa", display: "flex", flexDirection: "column" }}>
+              {askMessages.map((msg, i) => (
+                <div key={i} style={{ display: "flex", justifyContent: msg.role === "user" ? "flex-end" : "flex-start", marginBottom: 10 }}>
+                  <div style={{
+                    maxWidth: "80%", padding: "10px 14px",
+                    borderRadius: msg.role === "user" ? "16px 16px 4px 16px" : "16px 16px 16px 4px",
+                    background: msg.role === "user" ? "#f5576c" : "white",
+                    color: msg.role === "user" ? "white" : "#333",
+                    fontSize: 13, lineHeight: 1.6, boxShadow: "0 1px 4px rgba(0,0,0,0.06)"
+                  }}>
+                    {msg.role === "ai" && <span style={{ fontSize: 11, color: "#f5576c", fontWeight: 600, display: "block", marginBottom: 2 }}>📚 책 도우미</span>}
+                    {msg.text}
+                  </div>
+                </div>
+              ))}
+              {askLoading && (
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+                  <span style={{ fontSize: 20 }}>🤔</span>
+                  <span style={{ fontSize: 12, color: "#666", fontStyle: "italic" }}>책을 찾아보는 중...</span>
+                </div>
+              )}
+              <div ref={askEndRef} />
+            </div>
+
+            <div style={{ padding: 16, background: "white", borderTop: "1px solid #eee", flexShrink: 0 }}>
+              {askListening && askInput && (
+                <div style={{ padding: "8px 12px", marginBottom: 8, borderRadius: 12, background: "#fff0f3", border: "2px solid #f5576c", fontSize: 13, maxHeight: 80, overflowY: "auto" }}>
+                  <span style={{ fontSize: 11, color: "#f5576c", fontWeight: 600 }}>내 질문:</span>
+                  <div style={{ marginTop: 2 }}>{askInput}</div>
+                </div>
+              )}
+              <div style={{ display: "flex", gap: 8 }}>
+                {!askListening ? (
+                  <button onClick={startAskListening} disabled={askLoading}
+                    style={{ flex: 1, padding: 14, borderRadius: 20, border: "none", background: "#f5576c", color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, opacity: askLoading ? 0.5 : 1 }}>
+                    <span>🎤</span> 질문하기
+                  </button>
+                ) : (
+                  <button onClick={finishAskListening}
+                    style={{ flex: 1, padding: 14, borderRadius: 20, border: "none", background: "#ff6b6b", color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, animation: "pulse 1.5s infinite" }}>
+                    <span>✅</span> 질문 완료
+                  </button>
+                )}
+                <input value={askInput} onChange={e => setAskInput(e.target.value)}
+                  onKeyDown={e => e.key === "Enter" && sendAskMessage()}
+                  placeholder="타이핑으로 질문..."
+                  disabled={askLoading}
+                  style={{ flex: 1, padding: "10px 14px", borderRadius: 20, border: "2px solid #eee", fontSize: 13 }} />
+                <button onClick={() => sendAskMessage()} disabled={askLoading || !askInput.trim()}
+                  style={{ padding: "10px 16px", borderRadius: 20, border: "none", background: "#f5576c", color: "white", fontSize: 13, fontWeight: 600, cursor: "pointer", opacity: askLoading || !askInput.trim() ? 0.5 : 1 }}>
+                  전송
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      // ═══════════════════════════════════════
+      // 📖 도서 추천 화면
+      // ═══════════════════════════════════════
+      const RecommendScreen = () => {
+        const [recommendations, setRecommendations] = useState([]);
+        const [recLoading, setRecLoading] = useState(false);
+        const [recLoaded, setRecLoaded] = useState(false);
+
+        const getReadBooks = () => {
+          return BOOKS.filter(b => (bookProgress[b.id] || 0) > 0).map(b => ({
+            title: b.title,
+            summary: b.summary,
+            keywords: b.keyPoints.slice(0, 3)
+          }));
+        };
+
+        const loadRecommendations = async () => {
+          const readBooks = getReadBooks();
+          if (readBooks.length === 0) return;
+          setRecLoading(true);
+          const recs = await CloudAPI.recommendBooks(readBooks);
+          setRecommendations(recs);
+          setRecLoading(false);
+          setRecLoaded(true);
+        };
+
+        useEffect(() => {
+          if (!recLoaded && getReadBooks().length > 0) {
+            loadRecommendations();
+          }
+        }, []);
+
+        const readBooks = getReadBooks();
+
+        return (
+          <div style={{ padding: "0 20px 90px", maxWidth: 430 }}>
+            <div style={{ padding: "16px 0 12px", marginBottom: 12 }}>
+              <div style={{ fontSize: 22, fontWeight: 900, color: "#1a1a2e" }}>📖 추천 도서</div>
+              <div style={{ fontSize: 13, color: "#888", marginTop: 4 }}>읽은 책을 바탕으로 다음에 읽으면 좋을 책을 추천해줘요!</div>
+            </div>
+
+            {readBooks.length === 0 ? (
+              <div style={{ textAlign: "center", padding: 40, background: "white", borderRadius: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
+                <div style={{ fontSize: 48, marginBottom: 12 }}>📚</div>
+                <div style={{ fontSize: 16, fontWeight: 700, color: "#333", marginBottom: 8 }}>아직 읽은 책이 없어요</div>
+                <div style={{ fontSize: 13, color: "#888" }}>책을 읽고 토론을 시작하면 맞춤 추천을 받을 수 있어요!</div>
+              </div>
+            ) : recLoading ? (
+              <div style={{ textAlign: "center", padding: 40, background: "white", borderRadius: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
+                <div style={{ fontSize: 48, marginBottom: 12, animation: "pop 0.8s ease infinite alternate" }}>🔍</div>
+                <div style={{ fontSize: 14, fontWeight: 600, color: "#333" }}>도서관에서 책을 찾는 중...</div>
+                <div style={{ fontSize: 12, color: "#888", marginTop: 4 }}>잠시만 기다려주세요!</div>
+              </div>
+            ) : recommendations.length > 0 ? (
+              <div>
+                <div style={{ fontSize: 13, color: "#667eea", fontWeight: 600, marginBottom: 12 }}>
+                  📚 {readBooks.length}권의 책을 분석해서 추천해요!
+                </div>
+                {recommendations.map((book, i) => (
+                  <div key={i} style={{
+                    background: "white", borderRadius: 16, padding: 16, marginBottom: 12,
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.06)", display: "flex", gap: 12
+                  }}>
+                    {book.cover ? (
+                      <img src={book.cover} alt={book.title}
+                        style={{ width: 70, height: 100, borderRadius: 8, objectFit: "cover", flexShrink: 0 }} />
+                    ) : (
+                      <div style={{ width: 70, height: 100, borderRadius: 8, background: "linear-gradient(135deg, #667eea, #764ba2)", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <span style={{ fontSize: 28 }}>📕</span>
+                      </div>
+                    )}
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontSize: 14, fontWeight: 700, color: "#1a1a2e", marginBottom: 4 }}>{book.title}</div>
+                      <div style={{ fontSize: 11, color: "#888", marginBottom: 6 }}>{book.author}</div>
+                      <div style={{ fontSize: 12, color: "#667eea", fontWeight: 600, background: "#f0f3ff", padding: "6px 10px", borderRadius: 8, lineHeight: 1.5 }}>
+                        💡 {book.reason}
+                      </div>
+                      {book.link && (
+                        <a href={book.link} target="_blank" rel="noopener noreferrer"
+                          style={{ fontSize: 11, color: "#f5576c", fontWeight: 600, marginTop: 6, display: "inline-block", textDecoration: "none" }}>
+                          알라딘에서 보기 →
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                <button onClick={loadRecommendations}
+                  style={{ width: "100%", padding: 14, borderRadius: 16, border: "none", background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer", marginTop: 8 }}>
+                  🔄 다른 책 추천받기
+                </button>
+              </div>
+            ) : recLoaded ? (
+              <div style={{ textAlign: "center", padding: 40, background: "white", borderRadius: 16 }}>
+                <div style={{ fontSize: 48, marginBottom: 12 }}>😅</div>
+                <div style={{ fontSize: 14, fontWeight: 600 }}>추천을 가져오지 못했어요</div>
+                <button onClick={loadRecommendations}
+                  style={{ marginTop: 12, padding: "10px 24px", borderRadius: 16, border: "none", background: "#667eea", color: "white", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+                  다시 시도
+                </button>
+              </div>
+            ) : null}
+          </div>
+        );
+      };
+
       // 🎁 Reward Modal
       // ═══════════════════════════════════════
       const RewardModal = () => {
@@ -1284,6 +1585,8 @@
         if (screen === "discussion" || !profile) return null;
         const tabs = [
           { key: "home", icon: "🏠", label: "홈" },
+          { key: "askbook", icon: "💡", label: "질문" },
+          { key: "recommend", icon: "📖", label: "추천" },
           { key: "avatar", icon: profile?.avatar || "👤", label: "프로필" },
           { key: "schedule", icon: "📅", label: "스케줄" }
         ];
@@ -1327,6 +1630,8 @@
           {profile && screen === "home" && HomeScreen()}
           {profile && screen === "book" && BookScreen()}
           {profile && screen === "discussion" && DiscussionScreen()}
+          {profile && screen === "askbook" && AskBookScreen()}
+          {profile && screen === "recommend" && RecommendScreen()}
           {profile && screen === "avatar" && AvatarScreen()}
           {profile && screen === "schedule" && ScheduleScreen()}
 
