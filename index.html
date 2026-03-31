@@ -128,12 +128,11 @@
     // ☁️ Cloud Functions API 서비스
     // ═══════════════════════════════════════
     const FUNCTIONS_BASE = "https://us-central1-bookquest-f9720.cloudfunctions.net";
-    const ASKBOOK_URL = "https://askbook-xufrgr5zva-uc.a.run.app";
 
     const CloudAPI = {
       async askBook(question, bookData, chatHistory = []) {
         try {
-          const res = await fetch(ASKBOOK_URL, {
+          const res = await fetch(`${FUNCTIONS_BASE}/askBook`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ question, bookData, chatHistory })
@@ -476,6 +475,11 @@
         return rec;
       },
 
+      // 이모지 제거 함수
+      removeEmoji(text) {
+        return text.replace(/[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{27BF}]|[\u{FE00}-\u{FE0F}]|[\u{1F000}-\u{1F02F}]|[\u{1F0A0}-\u{1F0FF}]|[\u{200D}]|[\u{20E3}]|[\u{E0020}-\u{E007F}]|[\u{FE00}-\u{FEFF}]|[\u{1F900}-\u{1F9FF}]|[\u{1FA00}-\u{1FA6F}]|[\u{1FA70}-\u{1FAFF}]|[\u{2702}-\u{27B0}]|[\u{231A}-\u{231B}]|[\u{23E9}-\u{23F3}]|[\u{23F8}-\u{23FA}]|[\u{25AA}-\u{25AB}]|[\u{25B6}]|[\u{25C0}]|[\u{25FB}-\u{25FE}]|[\u{2614}-\u{2615}]|[\u{2648}-\u{2653}]|[\u{267F}]|[\u{2693}]|[\u{26A1}]|[\u{26AA}-\u{26AB}]|[\u{26BD}-\u{26BE}]|[\u{26C4}-\u{26C5}]|[\u{26CE}]|[\u{26D4}]|[\u{26EA}]|[\u{26F2}-\u{26F3}]|[\u{26F5}]|[\u{26FA}]|[\u{26FD}]|[\u{2702}]|[\u{2705}]|[\u{2708}-\u{270D}]|[\u{270F}]|✅|❌|⭐|⚡|☀|☁|☂|❤|♥|♡|★|☆/gu, '').replace(/\s{2,}/g, ' ').trim();
+      },
+
       speak(text, callback) {
         if (!this.SpeechSynthesis) {
           if (callback) callback(false);
@@ -483,7 +487,9 @@
         }
 
         this.SpeechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
+        const cleanText = this.removeEmoji(text);
+        if (!cleanText) { if (callback) callback(true); return; }
+        const utterance = new SpeechSynthesisUtterance(cleanText);
         utterance.lang = 'ko-KR';
         utterance.rate = 1;
         utterance.pitch = 1;
