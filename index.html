@@ -831,7 +831,13 @@
         (async () => {
           const data = await FirestoreService.loadUserData();
           if (data) {
-            if (data.profile) setProfile(data.profile);
+            if (data.profile) {
+              // 이전 아바타 ID가 현재 AVATAR_DATA에 없으면 기본값으로 폴백
+              if (data.profile.avatar && !AVATAR_DATA.find(a => a.id === data.profile.avatar)) {
+                data.profile.avatar = "shelly";
+              }
+              setProfile(data.profile);
+            }
             if (data.xp !== undefined) setXp(data.xp);
             if (data.level) setLevel(data.level);
             if (data.currentTitle) setCurrentTitle(data.currentTitle);
