@@ -8,7 +8,9 @@
   <meta name="apple-mobile-web-app-title" content="BookQuest">
   <meta name="description" content="BookQuest - 독서 모험 앱">
   <meta name="theme-color" content="#667eea">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><text y='150' font-size='180'>📚</text></svg>">
+  <link rel="icon" href="icons/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/app-icon-192.png">
+  <link rel="manifest" href="manifest.json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -235,7 +237,7 @@
         title: "청소년을 위한 외교광장",
         subtitle: "외교는 나라를 어떻게 바꾸는가",
         author: "남기정·윤은주·김준형·김지운·민경태",
-        pages: 208, color: "#FFD700", emoji: "🌍",
+        pages: 208, color: "#FFD700", emoji: "🌍", themeIcon: "icons/theme-diplomacy.png",
         chapters: [
           { title: "1장 국가와 외교", topics: ["외교가 왜 중요할까요?", "외교의 의미", "마키아벨리로부터 시작된 외교", "비밀로 가득한 구외교의 시대", "미국의 신외교와 냉전", "여우의 지혜와 고슴도치의 바늘", "강대국과 약소국 사이에서", "중견국 대한민국의 역할"] },
           { title: "2장 국민과 외교", topics: ["민간인도 외교를 할 수 있을까요?", "공공외교란 무엇할까요?", "냉전시대 체제 대결을 위한 공공외교", "우리 정부의 공공외교 정책", "한인 디아스포라의 공공외교", "국민외교, 누구나 외교관이 될 수 있을까요?"] },
@@ -282,7 +284,7 @@
         title: "씨앗을 부탁해",
         subtitle: "우리가 꼭 알아야 할 종자 주권, 생물 다양성 이야기",
         author: "김은식 글·임종길 그림·안완식 감수",
-        pages: 152, color: "#4CAF50", emoji: "🌱",
+        pages: 152, color: "#4CAF50", emoji: "🌱", themeIcon: "icons/theme-seeds.png",
         chapters: [
           { title: "프롤로그: 식물과 농부는 서로 돕고 있지요", topics: ["식물의 생애", "농부와 식물의 관계", "작물과 농부의 우정이 깨지다"] },
           { title: "1. 굶어 죽어도 씨앗은 베고 죽는다", topics: ["씨앗의 소중함", "농부에게 씨앗이 목숨보다 귀한 이유", "다산 정약용과 씨앗"] },
@@ -335,7 +337,7 @@
         title: "생각이 크는 인문학: 우주",
         subtitle: "인류, 우주로 가는 문을 열다",
         author: "채화영 글",
-        pages: 169, color: "#3F51B5", emoji: "🚀",
+        pages: 169, color: "#3F51B5", emoji: "🚀", themeIcon: "icons/theme-space.png",
         chapters: [
           { title: "1장 인류, 우주로 가는 문을 열다", topics: ["우주란 무엇일까요?", "코스모스, 스페이스, 유니버스의 차이", "우주 개발이란?", "인류는 왜 우주 개발에 나섰을까?", "바빌로니아 문명과 천문학", "고대 그리스 철학자들의 우주관", "SF 소설과 우주 개발의 꿈", "냉전과 우주 경쟁"] },
           { title: "2장 우주 탐사의 역사", topics: ["로켓의 발명", "최초의 인공위성 스푸트니크", "유리 가가린의 우주 비행", "아폴로 11호 달 착륙", "우주왕복선 시대", "국제우주정거장(ISS)"] },
@@ -382,11 +384,11 @@
     // Feature 1: Daily Missions Data
     // ═══════════════════════════════════════
     const MISSION_TEMPLATES = [
-      { text: "토론 1개 완료하기", xp: 20 },
-      { text: "책에게 질문 1개 하기", xp: 15 },
-      { text: "심화 토론 도전하기", xp: 25 },
-      { text: "퀴즈 1개 풀기", xp: 20 },
-      { text: "5분 이상 독서하기", xp: 15 }
+      { text: "토론 1개 완료하기", xp: 20, icon: "icons/mission-discussion.png" },
+      { text: "책에게 질문 1개 하기", xp: 15, icon: "icons/mission-question.png" },
+      { text: "심화 토론 도전하기", xp: 25, icon: "icons/mission-streak.png" },
+      { text: "퀴즈 1개 풀기", xp: 20, icon: "icons/mission-review.png" },
+      { text: "5분 이상 독서하기", xp: 15, icon: "icons/mission-reading.png" }
     ];
 
     const generateDailyMissions = () => {
@@ -408,65 +410,65 @@
     // Feature 2: AI Character Personalities
     // ═══════════════════════════════════════
     const AVATAR_PERSONALITIES = {
-      wizard: {
-        greeting: "오호, 젊은 마법사여! 이 책의 마법 같은 비밀을 찾아볼까?",
-        style: "신비로운 마법사처럼 조금은 신비스럽고 현명하게 대답하는 스타일",
-        encouragement: ["마법이 통했군요! 🌟", "더욱 깊은 마법을 배우고 있네요!", "마법의 비결을 알아가고 있어요!"]
+      shelly: {
+        greeting: "좋아, 준비됐어! 이번 책도 한방에 클리어하자!",
+        style: "활발하고 당당한",
+        encouragement: ["멋진 답변이야! 역시 쉘리답게 정확해!"]
       },
-      hero: {
-        greeting: "용감한 영웅이여! 이번 퀘스트에 도전해보자!",
-        style: "용감하고 열정적인 영웅처럼 대담하고 격려하는 스타일",
-        encouragement: ["완벽한 승리다! ⚔️", "영웅다운 대답이군요!", "계속 앞으로 나아가세요!"]
+      colt: {
+        greeting: "헤이, 나 콜트야! 이번 퀘스트 멋지게 해치우자!",
+        style: "자신감 넘치고 쿨한",
+        encouragement: ["쏠쏠한 답변이네! 명사수다워!"]
       },
-      ninja: {
-        greeting: "임무 도착! 이 책의 숨겨진 비밀을 파헤쳐보자!",
-        style: "날렵한 닌자처럼 정확하고 쿨한 스타일",
-        encouragement: ["완벽한 암살 임무였어! 🥷", "비밀을 찾아냈군요!", "다음 미션에 준비되셨나요?"]
+      nita: {
+        greeting: "곰돌이랑 같이 왔어! 이 책 재밌을 것 같아~",
+        style: "귀엽고 친근한",
+        encouragement: ["우와~ 니타의 곰돌이도 감동받았어!"]
       },
-      dragon: {
-        greeting: "크하하! 이 책에서 보물을 찾아볼까?",
-        style: "강력한 드래곤처럼 자신감 있고 당당한 스타일",
-        encouragement: ["훌륭한 보물을 찾으셨군요! 🔥", "드래곤의 지혜를 보이셨어요!", "더욱 큰 보물을 향해!"]
+      elprimo: {
+        greeting: "엘프리모 등장! 이 책을 파워풀하게 정복하자!",
+        style: "열정적이고 파워풀한",
+        encouragement: ["파워풀한 답변! 엘프리모가 인정한다!"]
       },
-      fox: {
-        greeting: "후후, 영리한 친구! 이 책에 재미있는 단서가 숨어있어~",
-        style: "영리한 여우처럼 재치있고 장난스러운 스타일",
-        encouragement: ["아주 영리한 답변이군요! 🦊", "여우처럼 영리하네요!", "더 영리한 답변이 나올 거예요!"]
+      poco: {
+        greeting: "음~ 이 책의 멜로디를 들어볼까~?",
+        style: "음악적이고 감성적인",
+        encouragement: ["아름다운 하모니같은 답변이야~!"]
       },
-      scientist: {
-        greeting: "흥미로운 가설이야! 이 책을 분석해보자!",
-        style: "냉철한 과학자처럼 논리적이고 분석적인 스타일",
-        encouragement: ["훌륭한 분석이군요! 🔬", "과학적 사고력이 뛰어나네요!", "더 깊이 있는 분석을 기대합니다!"]
+      leon: {
+        greeting: "...조용히 등장! 이 책의 비밀을 찾아보자.",
+        style: "조용하지만 날카로운",
+        encouragement: ["...좋은 눈썰미야. 숨겨진 걸 잘 찾았어."]
       },
-      cat: {
-        greeting: "냐~ 궁금한 게 있으면 같이 찾아볼까?",
-        style: "귀여운 고양이처럼 친근하고 부드러운 스타일",
-        encouragement: ["야옹! 좋은 답변이에요~ 🐱", "정말 귀여운 생각이네요!", "계속 함께할게요!"]
+      crow: {
+        greeting: "크크크, 이 책에서 약점을 찾아볼까?",
+        style: "날카롭고 분석적인",
+        encouragement: ["크크, 날카로운 통찰력이야! 인정!"]
       },
-      robot: {
-        greeting: "시스템 가동! 이 책의 데이터를 분석합니다!",
-        style: "정확한 로봇처럼 체계적이고 효율적인 스타일",
-        encouragement: ["분석 완료! 🤖", "데이터 처리 성공!", "다음 데이터 준비 완료!"]
+      "8bit": {
+        greeting: "삐비빅! 게임 시작! 이번 책 스테이지 클리어하자!",
+        style: "게임 용어를 쓰는 레트로한",
+        encouragement: ["PERFECT! 보너스 포인트 획득!"]
       },
-      lion: {
-        greeting: "자, 용맹하게 도전하자! 이 책을 정복할 거야!",
-        style: "당당한 사자처럼 자신감 있고 리더십 있는 스타일",
-        encouragement: ["당신은 정복자입니다! 👑", "사자의 용맹함을 보았습니다!", "더욱 높은 곳으로!"]
+      mecha: {
+        greeting: "전투 시스템 가동! 이번 미션 시작한다!",
+        style: "강력하고 결단력 있는",
+        encouragement: ["미션 완수! 훌륭한 전투력이야!"]
       },
-      wolf: {
-        greeting: "달빛 아래, 이 책의 진실을 추적해보자...",
-        style: "신비로운 늑대처럼 신중하고 날카로운 스타일",
-        encouragement: ["훌륭한 추적이군요! 🐺", "늑대의 직감이 맞아떨어졌어요!", "더 깊은 흔적을 따라가봅시다!"]
+      penny: {
+        greeting: "보물 찾으러 출발! 이 책에 뭐가 숨어있을까~?",
+        style: "모험적이고 쾌활한",
+        encouragement: ["보물 발견! 대단한 발견이야!"]
       },
-      eagle: {
-        greeting: "높은 곳에서 내려다보면 모든 게 보이지! 같이 살펴볼까?",
-        style: "먼곳을 보는 독수리처럼 통찰력 있고 거시적인 스타일",
-        encouragement: ["뛰어난 통찰력이네요! 🦅", "높은 시점에서 보셨군요!", "더 높이 날아올라요!"]
+      fang: {
+        greeting: "하이야! 팡이 왔다! 이번 책도 발차기로 클리어!",
+        style: "액션 영화처럼 활기찬",
+        encouragement: ["완벽한 콤보! 팡의 필살기급 답변!"]
       },
-      astro: {
-        greeting: "우주 탐사 시작! 이 책의 미지의 세계를 탐험하자!",
-        style: "우주인처럼 모험적이고 개방적인 스타일",
-        encouragement: ["우주 탐사 성공! 🚀", "새로운 세계를 발견했어요!", "다음 우주로 떠나볼까요?"]
+      tara: {
+        greeting: "카드가 말해주네... 이 책에 흥미로운 운명이...",
+        style: "신비롭고 미스터리한",
+        encouragement: ["카드가 예언한 대로, 훌륭한 답변이야..."]
       }
     };
 
@@ -474,44 +476,32 @@
     // Feature 4: Quiz Data & Feature 5: Shop Items
     // ═══════════════════════════════════════
     const SHOP_ITEMS = [
-      { id: "crown", name: "황금 왕관", price: 30, emoji: "👑" },
-      { id: "glasses", name: "스마트 안경", price: 20, emoji: "🤓" },
-      { id: "star_frame", name: "별 프레임", price: 25, emoji: "⭐" },
-      { id: "fire_aura", name: "불꽃 오라", price: 40, emoji: "🔥" },
-      { id: "rainbow", name: "무지개 효과", price: 35, emoji: "🌈" },
-      { id: "music_note", name: "음표 장식", price: 15, emoji: "🎵" },
-      { id: "lightning", name: "번개 효과", price: 30, emoji: "⚡" },
-      { id: "heart", name: "하트 장식", price: 20, emoji: "💖" }
+      { id: "crown", name: "황금 왕관", price: 30, emoji: "👑", icon: "icons/shop-crown.png" },
+      { id: "glasses", name: "스마트 안경", price: 20, emoji: "🤓", icon: "icons/shop-glasses.png" },
+      { id: "star_frame", name: "별 프레임", price: 25, emoji: "⭐", icon: "icons/shop-star-frame.png" },
+      { id: "fire_aura", name: "불꽃 오라", price: 40, emoji: "🔥", icon: "icons/shop-fire-aura.png" },
+      { id: "rainbow", name: "무지개 효과", price: 35, emoji: "🌈", icon: "icons/shop-rainbow.png" },
+      { id: "music_note", name: "음표 장식", price: 15, emoji: "🎵", icon: "icons/shop-music.png" },
+      { id: "lightning", name: "번개 효과", price: 30, emoji: "⚡", icon: "icons/shop-lightning.png" },
+      { id: "heart", name: "하트 장식", price: 20, emoji: "💖", icon: "icons/shop-heart.png" }
     ];
 
     // ═══════════════════════════════════════
     // 👤 SVG 아바타 시스템
     // ═══════════════════════════════════════
     const AVATAR_DATA = [
-      { id: "wizard", name: "마법사", gradient: ["#667eea","#764ba2"],
-        svg: `<svg viewBox="0 0 120 120"><defs><linearGradient id="wiz_bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#667eea"/><stop offset="100%" stop-color="#764ba2"/></linearGradient><radialGradient id="wiz_glow" cx="0.5" cy="0.4" r="0.5"><stop offset="0%" stop-color="#a78bfa" stop-opacity="0.4"/><stop offset="100%" stop-color="transparent"/></radialGradient><linearGradient id="wiz_hat" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4338ca"/><stop offset="100%" stop-color="#6d28d9"/></linearGradient></defs><rect width="120" height="120" fill="url(#wiz_bg)"/><circle cx="60" cy="60" r="58" fill="url(#wiz_glow)"/><circle cx="20" cy="25" r="1.5" fill="#fde68a" opacity="0.8"/><circle cx="95" cy="35" r="1" fill="#fde68a" opacity="0.6"/><circle cx="30" cy="90" r="1.2" fill="#c4b5fd" opacity="0.5"/><circle cx="100" cy="80" r="0.8" fill="#fde68a" opacity="0.7"/><path d="M36 95 C36 78, 46 68, 60 68 S84 78, 84 95" fill="#5b21b6" opacity="0.9"/><path d="M42 95 C42 82, 50 74, 60 74 S78 82, 78 95" fill="#7c3aed" opacity="0.6"/><circle cx="60" cy="56" r="20" fill="#fde8c9"/><circle cx="60" cy="56" r="19" fill="#fce4b8"/><ellipse cx="46" cy="60" rx="4" ry="3" fill="#f9a8d4" opacity="0.4"/><ellipse cx="74" cy="60" rx="4" ry="3" fill="#f9a8d4" opacity="0.4"/><ellipse cx="52" cy="54" rx="3" ry="3.5" fill="#1e1b4b"/><ellipse cx="68" cy="54" rx="3" ry="3.5" fill="#1e1b4b"/><circle cx="53.5" cy="53" r="1.2" fill="white" opacity="0.9"/><circle cx="69.5" cy="53" r="1.2" fill="white" opacity="0.9"/><path d="M55 63 Q60 67 65 63" stroke="#c2410c" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M60 16 L42 42 L78 42 Z" fill="url(#wiz_hat)"/><path d="M60 16 L44 40 L76 40 Z" fill="#7c3aed" opacity="0.5"/><ellipse cx="60" cy="42" rx="22" ry="5" fill="#4338ca"/><circle cx="60" cy="22" r="4" fill="#fbbf24"/><circle cx="60" cy="22" r="2.5" fill="#fde68a"/><path d="M50 35 l1.5 3 3.5 0.5 -2.5 2.5 0.5 3.5 -3-1.5 -3 1.5 0.5-3.5 -2.5-2.5 3.5-0.5z" fill="#fde68a" opacity="0.8" transform="scale(0.6) translate(30, 10)"/></svg>` },
-      { id: "hero", name: "영웅", gradient: ["#E53E3E","#C53030"],
-        svg: `<svg viewBox="0 0 120 120"><defs><linearGradient id="hero_bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#dc2626"/><stop offset="100%" stop-color="#991b1b"/></linearGradient><linearGradient id="hero_cape" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ef4444"/><stop offset="100%" stop-color="#7f1d1d"/></linearGradient></defs><rect width="120" height="120" fill="url(#hero_bg)"/><path d="M30 70 Q25 95, 28 110 L40 95 Z" fill="url(#hero_cape)" opacity="0.7"/><path d="M90 70 Q95 95, 92 110 L80 95 Z" fill="url(#hero_cape)" opacity="0.7"/><path d="M38 95 C38 80, 48 70, 60 70 S82 80, 82 95" fill="#b91c1c"/><path d="M55 82 l5-6 5 6 -3 0 -2 4 -2-4z" fill="#fbbf24"/><circle cx="60" cy="55" r="20" fill="#fde8c9"/><ellipse cx="46" cy="59" rx="4" ry="3" fill="#fca5a5" opacity="0.35"/><ellipse cx="74" cy="59" rx="4" ry="3" fill="#fca5a5" opacity="0.35"/><path d="M48 51 L50 49 L56 51 L56 54 L50 55 L48 53 Z" fill="#1e1b4b"/><path d="M64 51 L70 49 L72 51 L72 53 L70 55 L64 54 Z" fill="#1e1b4b"/><circle cx="52" cy="52" r="1" fill="white" opacity="0.9"/><circle cx="68" cy="52" r="1" fill="white" opacity="0.9"/><path d="M54 63 Q60 66 66 63" stroke="#9a3412" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M40 38 L44 28 L50 36 L56 24 L60 34 L64 24 L70 36 L76 28 L80 38 Z" fill="#fbbf24"/><path d="M40 38 L80 38 L78 42 L42 42 Z" fill="#f59e0b"/><circle cx="60" cy="34" r="2.5" fill="#ef4444"/><circle cx="60" cy="34" r="1.5" fill="#fca5a5" opacity="0.5"/><circle cx="50" cy="36" r="1.5" fill="#3b82f6"/><circle cx="70" cy="36" r="1.5" fill="#3b82f6"/></svg>` },
-      { id: "astro", name: "우주인", gradient: ["#4299E1","#2B6CB0"],
-        svg: `<svg viewBox="0 0 120 120"><defs><linearGradient id="astro_bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1e3a5f"/><stop offset="100%" stop-color="#0f172a"/></linearGradient><radialGradient id="astro_visor" cx="0.4" cy="0.3" r="0.6"><stop offset="0%" stop-color="#93c5fd"/><stop offset="100%" stop-color="#1e40af"/></radialGradient></defs><rect width="120" height="120" fill="url(#astro_bg)"/><circle cx="15" cy="20" r="1" fill="white" opacity="0.8"/><circle cx="105" cy="15" r="1.5" fill="white" opacity="0.6"/><circle cx="25" cy="95" r="0.8" fill="white" opacity="0.5"/><circle cx="95" cy="90" r="1.2" fill="white" opacity="0.7"/><circle cx="10" cy="60" r="0.6" fill="white" opacity="0.4"/><circle cx="110" cy="50" r="0.8" fill="white" opacity="0.5"/><circle cx="100" cy="25" r="6" fill="#c084fc" opacity="0.3"/><ellipse cx="100" cy="25" rx="10" ry="2" fill="#c084fc" opacity="0.2" transform="rotate(-20,100,25)"/><path d="M36 100 C36 82, 46 72, 60 72 S84 82, 84 100" fill="#e2e8f0"/><path d="M40 100 C40 85, 48 76, 60 76 S80 85, 80 100" fill="#f1f5f9"/><circle cx="60" cy="88" r="4" fill="#3b82f6" opacity="0.6"/><circle cx="60" cy="50" r="26" fill="#cbd5e1"/><circle cx="60" cy="50" r="24" fill="#e2e8f0"/><ellipse cx="60" cy="50" rx="18" ry="16" fill="url(#astro_visor)"/><ellipse cx="54" cy="44" rx="6" ry="4" fill="white" opacity="0.25" transform="rotate(-15,54,44)"/><circle cx="54" cy="50" r="2.5" fill="#1e293b"/><circle cx="66" cy="50" r="2.5" fill="#1e293b"/><circle cx="55" cy="49" r="0.8" fill="#93c5fd" opacity="0.7"/><circle cx="67" cy="49" r="0.8" fill="#93c5fd" opacity="0.7"/><path d="M56 56 Q60 59 64 56" stroke="#475569" stroke-width="1.2" fill="none" stroke-linecap="round"/><line x1="60" y1="24" x2="60" y2="16" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/><circle cx="60" cy="14" r="3" fill="#f87171"/><circle cx="60" cy="14" r="1.5" fill="#fca5a5"/></svg>` },
-      { id: "ninja", name: "닌자", gradient: ["#2D3748","#1A202C"],
-        svg: `<svg viewBox="0 0 120 120"><defs><linearGradient id="nin_bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1f2937"/><stop offset="100%" stop-color="#111827"/></linearGradient></defs><rect width="120" height="120" fill="url(#nin_bg)"/><circle cx="95" cy="20" r="12" fill="#fde68a" opacity="0.15"/><path d="M36 100 C36 80, 48 70, 60 70 S84 80, 84 100" fill="#1f2937"/><path d="M40 100 C40 84, 49 74, 60 74 S80 84, 80 100" fill="#374151"/><line x1="44" y1="85" x2="76" y2="85" stroke="#6b7280" stroke-width="2"/><circle cx="60" cy="52" r="20" fill="#fde8c9"/><path d="M38 48 Q40 30, 60 28 Q80 30, 82 48 L82 42 Q80 26, 60 24 Q40 26, 38 42 Z" fill="#1f2937"/><path d="M38 48 L82 48 Q84 52, 82 55 L78 55 Q60 58, 42 55 L38 55 Q36 52, 38 48 Z" fill="#374151"/><rect x="36" y="56" width="48" height="14" rx="7" fill="#1f2937"/><path d="M46 50 L52 48 L56 50 L56 53 L52 54 L46 52 Z" fill="white"/><path d="M64 50 L68 48 L74 50 L74 52 L68 54 L64 53 Z" fill="white"/><circle cx="51" cy="51" r="2" fill="#dc2626"/><circle cx="69" cy="51" r="2" fill="#dc2626"/><circle cx="52" cy="50.5" r="0.7" fill="white"/><circle cx="70" cy="50.5" r="0.7" fill="white"/><g transform="translate(15,75) scale(0.8)"><path d="M0 -8 L3 -3 L8 0 L3 3 L0 8 L-3 3 L-8 0 L-3 -3 Z" fill="#9ca3af" opacity="0.6"/></g><path d="M82 50 Q90 48, 98 52" stroke="#374151" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M98 52 Q102 58, 96 62" stroke="#374151" stroke-width="2" fill="none" stroke-linecap="round"/></svg>` },
-      { id: "scientist", name: "과학자", gradient: ["#38A169","#276749"],
-        svg: `<svg viewBox="0 0 120 120"><defs><linearGradient id="sci_bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#065f46"/><stop offset="100%" stop-color="#064e3b"/></linearGradient></defs><rect width="120" height="120" fill="url(#sci_bg)"/><ellipse cx="90" cy="25" rx="15" ry="6" fill="none" stroke="#34d399" stroke-width="0.8" opacity="0.3" transform="rotate(30,90,25)"/><ellipse cx="90" cy="25" rx="15" ry="6" fill="none" stroke="#34d399" stroke-width="0.8" opacity="0.3" transform="rotate(-30,90,25)"/><circle cx="90" cy="25" r="2" fill="#34d399" opacity="0.4"/><path d="M36 100 C36 80, 48 70, 60 70 S84 80, 84 100" fill="white" opacity="0.95"/><line x1="60" y1="75" x2="60" y2="100" stroke="#d1d5db" stroke-width="0.8"/><rect x="65" y="85" width="10" height="8" rx="2" fill="#f3f4f6" stroke="#d1d5db" stroke-width="0.5"/><line x1="67" y1="87" x2="73" y2="87" stroke="#10b981" stroke-width="1.5" stroke-linecap="round"/><circle cx="60" cy="52" r="20" fill="#fde8c9"/><path d="M40 46 Q42 32, 55 30 Q65 28, 72 30 Q82 34, 80 46" fill="#292524"/><path d="M42 46 Q44 36, 55 34 Q65 32, 72 34 Q78 36, 78 44" fill="#44403c"/><circle cx="50" cy="52" r="8" fill="none" stroke="#374151" stroke-width="2"/><circle cx="70" cy="52" r="8" fill="none" stroke="#374151" stroke-width="2"/><line x1="58" y1="52" x2="62" y2="52" stroke="#374151" stroke-width="2"/><line x1="42" y1="50" x2="38" y2="48" stroke="#374151" stroke-width="1.5"/><line x1="78" y1="50" x2="82" y2="48" stroke="#374151" stroke-width="1.5"/><ellipse cx="48" cy="50" rx="3" ry="2" fill="white" opacity="0.15"/><ellipse cx="68" cy="50" rx="3" ry="2" fill="white" opacity="0.15"/><circle cx="50" cy="53" r="2.5" fill="#1e293b"/><circle cx="70" cy="53" r="2.5" fill="#1e293b"/><circle cx="51" cy="52" r="0.8" fill="white" opacity="0.8"/><circle cx="71" cy="52" r="0.8" fill="white" opacity="0.8"/><path d="M55 63 Q60 66 65 63" stroke="#92400e" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg>` },
-      { id: "fox", name: "여우", gradient: ["#ED8936","#C05621"],
-        svg: `<svg viewBox="0 0 120 120"><defs><linearGradient id="fox_bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ea580c"/><stop offset="100%" stop-color="#9a3412"/></linearGradient><linearGradient id="fox_fur" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fb923c"/><stop offset="100%" stop-color="#ea580c"/></linearGradient></defs><rect width="120" height="120" fill="url(#fox_bg)"/><path d="M15 90 Q20 80, 18 70 Q22 78, 25 85 Z" fill="#16a34a" opacity="0.2"/><path d="M28 50 L22 18 L48 40 Z" fill="url(#fox_fur)"/><path d="M32 48 L28 26 L44 42 Z" fill="#fed7aa" opacity="0.6"/><path d="M92 50 L98 18 L72 40 Z" fill="url(#fox_fur)"/><path d="M88 48 L92 26 L76 42 Z" fill="#fed7aa" opacity="0.6"/><ellipse cx="60" cy="60" rx="28" ry="26" fill="#fb923c"/><ellipse cx="60" cy="62" rx="20" ry="18" fill="#fed7aa"/><path d="M48 46 Q60 38, 72 46" fill="#ea580c" opacity="0.5"/><ellipse cx="48" cy="56" rx="4" ry="4.5" fill="#1c1917"/><ellipse cx="72" cy="56" rx="4" ry="4.5" fill="#1c1917"/><ellipse cx="49" cy="54.5" rx="1.5" ry="1.8" fill="white" opacity="0.8"/><ellipse cx="73" cy="54.5" rx="1.5" ry="1.8" fill="white" opacity="0.8"/><ellipse cx="60" cy="66" rx="4" ry="3" fill="#1c1917"/><ellipse cx="60" cy="65.5" rx="1.5" ry="1" fill="white" opacity="0.2"/><path d="M56 69 Q60 73, 64 69" stroke="#9a3412" stroke-width="1.2" fill="none" stroke-linecap="round"/><line x1="42" y1="64" x2="28" y2="60" stroke="#fde8c9" stroke-width="0.8" opacity="0.6"/><line x1="42" y1="67" x2="26" y2="66" stroke="#fde8c9" stroke-width="0.8" opacity="0.6"/><line x1="78" y1="64" x2="92" y2="60" stroke="#fde8c9" stroke-width="0.8" opacity="0.6"/><line x1="78" y1="67" x2="94" y2="66" stroke="#fde8c9" stroke-width="0.8" opacity="0.6"/><path d="M38 100 Q38 85, 60 82 Q82 85, 82 100" fill="#fb923c"/><path d="M46 100 Q46 90, 60 88 Q74 90, 74 100" fill="#fed7aa"/></svg>` },
-      { id: "dragon", name: "드래곤", gradient: ["#9F7AEA","#6B46C1"],
-        svg: `<svg viewBox="0 0 120 120"><defs><linearGradient id="drag_bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#4c1d95"/></linearGradient></defs><rect width="120" height="120" fill="url(#drag_bg)"/><circle cx="20" cy="85" r="2" fill="#fbbf24" opacity="0.3"/><circle cx="25" cy="80" r="1.5" fill="#f97316" opacity="0.2"/><path d="M42 30 L36 10 L48 28 Z" fill="#ddd6fe"/><path d="M78 30 L84 10 L72 28 Z" fill="#ddd6fe"/><ellipse cx="60" cy="55" rx="30" ry="26" fill="#a78bfa"/><ellipse cx="60" cy="58" rx="22" ry="18" fill="#c4b5fd"/><circle cx="60" cy="40" r="3" fill="#8b5cf6" opacity="0.4"/><circle cx="52" cy="44" r="2" fill="#8b5cf6" opacity="0.3"/><circle cx="68" cy="44" r="2" fill="#8b5cf6" opacity="0.3"/><ellipse cx="46" cy="52" rx="6" ry="7" fill="#fef3c7"/><ellipse cx="74" cy="52" rx="6" ry="7" fill="#fef3c7"/><ellipse cx="46" cy="52" rx="2" ry="5" fill="#4c1d95"/><ellipse cx="74" cy="52" rx="2" ry="5" fill="#4c1d95"/><ellipse cx="47" cy="50" rx="1.5" ry="2" fill="white" opacity="0.4"/><ellipse cx="75" cy="50" rx="1.5" ry="2" fill="white" opacity="0.4"/><circle cx="54" cy="64" r="2" fill="#7c3aed"/><circle cx="66" cy="64" r="2" fill="#7c3aed"/><path d="M48 70 Q60 76, 72 70" stroke="#6d28d9" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M52 70 L54 74 L56 70" fill="white"/><path d="M64 70 L66 74 L68 70" fill="white"/><ellipse cx="36" cy="62" rx="4" ry="3" fill="#f97316" opacity="0.25"/><ellipse cx="84" cy="62" rx="4" ry="3" fill="#f97316" opacity="0.25"/><path d="M34 100 Q34 82, 60 78 Q86 82, 86 100" fill="#8b5cf6"/><path d="M50 90 L55 84 L60 90 L65 84 L70 90" fill="#7c3aed" opacity="0.5"/></svg>` },
-      { id: "lion", name: "사자", gradient: ["#D69E2E","#975A16"],
-        svg: `<svg viewBox="0 0 120 120"><defs><linearGradient id="lion_bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#b45309"/><stop offset="100%" stop-color="#78350f"/></linearGradient><radialGradient id="lion_mane" cx="0.5" cy="0.45" r="0.45"><stop offset="60%" stop-color="#d97706"/><stop offset="100%" stop-color="#92400e"/></radialGradient></defs><rect width="120" height="120" fill="url(#lion_bg)"/><circle cx="60" cy="52" r="38" fill="url(#lion_mane)"/><path d="M22 52 Q26 42, 30 52 Q34 42, 38 52" fill="#b45309" opacity="0.5"/><path d="M82 52 Q86 42, 90 52 Q94 42, 98 52" fill="#b45309" opacity="0.5"/><path d="M40 22 Q48 18, 50 26" fill="#b45309" opacity="0.4"/><path d="M70 26 Q72 18, 80 22" fill="#b45309" opacity="0.4"/><ellipse cx="60" cy="56" rx="24" ry="22" fill="#fbbf24"/><ellipse cx="60" cy="58" rx="18" ry="16" fill="#fde68a"/><ellipse cx="50" cy="52" rx="4" ry="4.5" fill="#422006"/><ellipse cx="70" cy="52" rx="4" ry="4.5" fill="#422006"/><ellipse cx="51" cy="51" rx="1.5" ry="1.8" fill="white" opacity="0.7"/><ellipse cx="71" cy="51" rx="1.5" ry="1.8" fill="white" opacity="0.7"/><ellipse cx="60" cy="62" rx="5" ry="3.5" fill="#92400e"/><ellipse cx="60" cy="61.5" rx="2" ry="1.2" fill="#b45309" opacity="0.4"/><path d="M60 65.5 L55 70" stroke="#78350f" stroke-width="1.2" fill="none" stroke-linecap="round"/><path d="M60 65.5 L65 70" stroke="#78350f" stroke-width="1.2" fill="none" stroke-linecap="round"/><circle cx="48" cy="63" r="1" fill="#92400e" opacity="0.5"/><circle cx="46" cy="66" r="1" fill="#92400e" opacity="0.5"/><circle cx="72" cy="63" r="1" fill="#92400e" opacity="0.5"/><circle cx="74" cy="66" r="1" fill="#92400e" opacity="0.5"/><path d="M38 100 Q38 85, 60 82 Q82 85, 82 100" fill="#d97706"/></svg>` },
-      { id: "wolf", name: "늑대", gradient: ["#718096","#2D3748"],
-        svg: `<svg viewBox="0 0 120 120"><defs><linearGradient id="wolf_bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#374151"/><stop offset="100%" stop-color="#111827"/></linearGradient></defs><rect width="120" height="120" fill="url(#wolf_bg)"/><circle cx="90" cy="18" r="10" fill="#fde68a" opacity="0.2"/><path d="M32 48 L24 16 L50 40 Z" fill="#6b7280"/><path d="M36 46 L30 24 L46 42 Z" fill="#9ca3af" opacity="0.5"/><path d="M88 48 L96 16 L70 40 Z" fill="#6b7280"/><path d="M84 46 L90 24 L74 42 Z" fill="#9ca3af" opacity="0.5"/><ellipse cx="60" cy="56" rx="28" ry="24" fill="#6b7280"/><ellipse cx="60" cy="60" rx="18" ry="16" fill="#9ca3af"/><path d="M46 44 Q60 36, 74 44 Q60 40, 46 44" fill="#4b5563"/><ellipse cx="46" cy="52" rx="4.5" ry="5" fill="#1e293b"/><ellipse cx="74" cy="52" rx="4.5" ry="5" fill="#1e293b"/><circle cx="46" cy="51" r="2" fill="#60a5fa"/><circle cx="74" cy="51" r="2" fill="#60a5fa"/><circle cx="47" cy="50" r="0.8" fill="white" opacity="0.8"/><circle cx="75" cy="50" r="0.8" fill="white" opacity="0.8"/><ellipse cx="60" cy="66" rx="4" ry="3" fill="#1f2937"/><path d="M56 69 Q60 72, 64 69" stroke="#374151" stroke-width="1.2" fill="none" stroke-linecap="round"/><path d="M36 100 Q36 82, 60 78 Q84 82, 84 100" fill="#4b5563"/><path d="M48 100 Q48 90, 60 88 Q72 90, 72 100" fill="#6b7280"/></svg>` },
-      { id: "eagle", name: "독수리", gradient: ["#744210","#975A16"],
-        svg: `<svg viewBox="0 0 120 120"><defs><linearGradient id="eag_bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#92400e"/><stop offset="100%" stop-color="#451a03"/></linearGradient></defs><rect width="120" height="120" fill="url(#eag_bg)"/><ellipse cx="25" cy="20" rx="15" ry="6" fill="white" opacity="0.08"/><path d="M36 46 Q40 28, 60 24 Q80 28, 84 46" fill="#fef3c7"/><path d="M40 44 Q44 32, 60 30 Q76 32, 80 44" fill="#fde68a"/><path d="M18 70 Q14 55, 24 50 Q30 60, 36 75 Z" fill="#78350f" opacity="0.6"/><path d="M102 70 Q106 55, 96 50 Q90 60, 84 75 Z" fill="#78350f" opacity="0.6"/><ellipse cx="60" cy="56" rx="24" ry="22" fill="#fbbf24"/><path d="M40 44 Q48 40, 54 44" stroke="#78350f" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M66 44 Q72 40, 80 44" stroke="#78350f" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="48" cy="52" r="5" fill="white"/><circle cx="72" cy="52" r="5" fill="white"/><circle cx="48" cy="52" r="3" fill="#92400e"/><circle cx="72" cy="52" r="3" fill="#92400e"/><circle cx="49" cy="51" r="1" fill="white" opacity="0.7"/><circle cx="73" cy="51" r="1" fill="white" opacity="0.7"/><path d="M52 60 L60 74 L68 60 Q60 64, 52 60 Z" fill="#ea580c"/><path d="M55 62 L60 70 L65 62" fill="#f97316" opacity="0.5"/><path d="M36 100 Q36 82, 60 78 Q84 82, 84 100" fill="#78350f"/></svg>` },
-      { id: "cat", name: "고양이", gradient: ["#F687B3","#D53F8C"],
-        svg: `<svg viewBox="0 0 120 120"><defs><linearGradient id="cat_bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#db2777"/><stop offset="100%" stop-color="#831843"/></linearGradient></defs><rect width="120" height="120" fill="url(#cat_bg)"/><path d="M18 22 Q18 16, 22 16 Q26 16, 26 22 Q26 16, 30 16 Q34 16, 34 22 Q34 28, 26 32 Q18 28, 18 22 Z" fill="#f9a8d4" opacity="0.2"/><path d="M32 48 L26 18 L52 40 Z" fill="#fbcfe8"/><path d="M36 46 L32 26 L48 42 Z" fill="#fce7f3" opacity="0.7"/><path d="M88 48 L94 18 L68 40 Z" fill="#fbcfe8"/><path d="M84 46 L88 26 L72 42 Z" fill="#fce7f3" opacity="0.7"/><circle cx="60" cy="58" r="26" fill="#fbcfe8"/><circle cx="60" cy="60" r="20" fill="#fce7f3"/><ellipse cx="48" cy="56" rx="5" ry="6" fill="#1e1b4b"/><ellipse cx="72" cy="56" rx="5" ry="6" fill="#1e1b4b"/><ellipse cx="49" cy="54" rx="2" ry="2.5" fill="white" opacity="0.7"/><ellipse cx="73" cy="54" rx="2" ry="2.5" fill="white" opacity="0.7"/><path d="M57 65 L60 68 L63 65 Z" fill="#ec4899"/><path d="M60 68 L56 72" stroke="#be185d" stroke-width="1" fill="none" stroke-linecap="round"/><path d="M60 68 L64 72" stroke="#be185d" stroke-width="1" fill="none" stroke-linecap="round"/><line x1="40" y1="64" x2="24" y2="60" stroke="#f9a8d4" stroke-width="0.8"/><line x1="40" y1="68" x2="22" y2="68" stroke="#f9a8d4" stroke-width="0.8"/><line x1="40" y1="72" x2="24" y2="76" stroke="#f9a8d4" stroke-width="0.8"/><line x1="80" y1="64" x2="96" y2="60" stroke="#f9a8d4" stroke-width="0.8"/><line x1="80" y1="68" x2="98" y2="68" stroke="#f9a8d4" stroke-width="0.8"/><line x1="80" y1="72" x2="96" y2="76" stroke="#f9a8d4" stroke-width="0.8"/><path d="M38 100 Q38 85, 60 82 Q82 85, 82 100" fill="#fbcfe8"/><circle cx="60" cy="86" r="4" fill="#fbbf24"/><circle cx="60" cy="86" r="2" fill="#fde68a"/><line x1="60" y1="84" x2="60" y2="88" stroke="#d97706" stroke-width="0.8"/></svg>` },
-      { id: "robot", name: "로봇", gradient: ["#4FD1C5","#234E52"],
-        svg: `<svg viewBox="0 0 120 120"><defs><linearGradient id="rob_bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0d9488"/><stop offset="100%" stop-color="#134e4a"/></linearGradient><linearGradient id="rob_body" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e2e8f0"/><stop offset="100%" stop-color="#94a3b8"/></linearGradient></defs><rect width="120" height="120" fill="url(#rob_bg)"/><line x1="10" y1="30" x2="25" y2="30" stroke="#5eead4" stroke-width="0.5" opacity="0.2"/><line x1="25" y1="30" x2="25" y2="45" stroke="#5eead4" stroke-width="0.5" opacity="0.2"/><line x1="95" y1="80" x2="110" y2="80" stroke="#5eead4" stroke-width="0.5" opacity="0.2"/><line x1="95" y1="80" x2="95" y2="95" stroke="#5eead4" stroke-width="0.5" opacity="0.2"/><line x1="60" y1="22" x2="60" y2="12" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round"/><circle cx="60" cy="10" r="4" fill="#2dd4bf"/><circle cx="60" cy="10" r="2" fill="#99f6e4"/><rect x="32" y="24" width="56" height="44" rx="12" fill="url(#rob_body)"/><rect x="36" y="28" width="48" height="36" rx="8" fill="#f1f5f9"/><rect x="40" y="36" width="14" height="10" rx="3" fill="#0d9488"/><rect x="66" y="36" width="14" height="10" rx="3" fill="#0d9488"/><rect x="42" y="38" width="4" height="4" rx="1" fill="#5eead4" opacity="0.8"/><rect x="68" y="38" width="4" height="4" rx="1" fill="#5eead4" opacity="0.8"/><circle cx="50" cy="41" r="1.5" fill="#2dd4bf" opacity="0.6"/><circle cx="76" cy="41" r="1.5" fill="#2dd4bf" opacity="0.6"/><rect x="44" y="52" width="32" height="5" rx="2.5" fill="#94a3b8"/><rect x="46" y="53" width="4" height="3" rx="1" fill="#2dd4bf"/><rect x="52" y="53" width="4" height="3" rx="1" fill="#2dd4bf"/><rect x="58" y="53" width="4" height="3" rx="1" fill="#2dd4bf"/><rect x="64" y="53" width="4" height="3" rx="1" fill="#2dd4bf"/><rect x="70" y="53" width="4" height="3" rx="1" fill="#2dd4bf"/><circle cx="38" cy="48" r="3" fill="#f9a8d4" opacity="0.3"/><circle cx="82" cy="48" r="3" fill="#f9a8d4" opacity="0.3"/><rect x="38" y="72" width="44" height="28" rx="8" fill="url(#rob_body)"/><rect x="48" y="78" width="24" height="12" rx="4" fill="#f1f5f9"/><circle cx="55" cy="84" r="3" fill="#2dd4bf"/><circle cx="65" cy="84" r="2" fill="#fbbf24"/><rect x="26" y="76" width="10" height="18" rx="5" fill="#cbd5e0"/><rect x="84" y="76" width="10" height="18" rx="5" fill="#cbd5e0"/></svg>` }
+      { id: "shelly", name: "쉘리", gradient: ["#f97316","#ea580c"], img: "avatars/shelly.png", imgSm: "avatars/shelly_sm.png" },
+      { id: "colt", name: "콜트", gradient: ["#3b82f6","#1d4ed8"], img: "avatars/colt.png", imgSm: "avatars/colt_sm.png" },
+      { id: "nita", name: "니타", gradient: ["#ef4444","#b91c1c"], img: "avatars/nita.png", imgSm: "avatars/nita_sm.png" },
+      { id: "elprimo", name: "엘프리모", gradient: ["#f59e0b","#d97706"], img: "avatars/elprimo.png", imgSm: "avatars/elprimo_sm.png" },
+      { id: "poco", name: "포코", gradient: ["#8b5cf6","#6d28d9"], img: "avatars/poco.png", imgSm: "avatars/poco_sm.png" },
+      { id: "leon", name: "레온", gradient: ["#22c55e","#15803d"], img: "avatars/leon.png", imgSm: "avatars/leon_sm.png" },
+      { id: "crow", name: "크로우", gradient: ["#6b7280","#374151"], img: "avatars/crow.png", imgSm: "avatars/crow_sm.png" },
+      { id: "8bit", name: "8비트", gradient: ["#06b6d4","#0e7490"], img: "avatars/8bit.png", imgSm: "avatars/8bit_sm.png" },
+      { id: "mecha", name: "메카", gradient: ["#eab308","#ca8a04"], img: "avatars/mecha.png", imgSm: "avatars/mecha_sm.png" },
+      { id: "penny", name: "페니", gradient: ["#ec4899","#be185d"], img: "avatars/penny.png", imgSm: "avatars/penny_sm.png" },
+      { id: "fang", name: "팡", gradient: ["#0ea5e9","#0369a1"], img: "avatars/fang.png", imgSm: "avatars/fang_sm.png" },
+      { id: "tara", name: "타라", gradient: ["#a855f7","#7c3aed"], img: "avatars/tara.png", imgSm: "avatars/tara_sm.png" }
     ];
     const AVATARS = AVATAR_DATA.map(a => a.id);
 
@@ -519,9 +509,10 @@
     const AvatarIcon = ({ avatarId, size = 40, style = {} }) => {
       const data = AVATAR_DATA.find(a => a.id === avatarId);
       if (!data) return React.createElement("span", { style: { fontSize: size * 0.6, ...style } }, "👤");
-      return React.createElement("div", {
-        dangerouslySetInnerHTML: { __html: data.svg },
-        style: { width: size, height: size, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "50%", overflow: "hidden", flexShrink: 0, ...style }
+      return React.createElement("img", {
+        src: data.img,
+        alt: data.name,
+        style: { width: size, height: size, borderRadius: "50%", objectFit: "cover", flexShrink: 0, ...style }
       });
     };
     const TITLES_LIST = ["견습 독서가", "초보 탐험가", "지식의 수호자", "토론 마스터", "독서왕", "전설의 BookQuester"];
@@ -529,43 +520,90 @@
     // ═══════════════════════════════════════
     // 🎨 SVG 아이콘 & 배지 시스템
     // ═══════════════════════════════════════
-    const SVG_ICONS = {
-      badge_firstStep: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="22" fill="url(#g1)" stroke="#E8A735" stroke-width="2.5"/><defs><linearGradient id="g1" x1="4" y1="4" x2="44" y2="44"><stop stop-color="#FFF3C4"/><stop offset="1" stop-color="#F6E05E"/></linearGradient></defs><path d="M18 32l-2-8 6-5h7l6 5-2 8H18z" fill="#D69E2E" opacity="0.3"/><path d="M24 14v4M24 22v2M20 28h8" stroke="#D69E2E" stroke-width="2" stroke-linecap="round"/><circle cx="24" cy="18" r="3" fill="#D69E2E"/></svg>`,
-      badge_curious: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="22" fill="url(#g2)" stroke="#4299E1" stroke-width="2.5"/><defs><linearGradient id="g2" x1="4" y1="4" x2="44" y2="44"><stop stop-color="#BEE3F8"/><stop offset="1" stop-color="#63B3ED"/></linearGradient></defs><circle cx="22" cy="22" r="8" stroke="#2B6CB0" stroke-width="2.5" fill="none"/><line x1="28" y1="28" x2="35" y2="35" stroke="#2B6CB0" stroke-width="2.5" stroke-linecap="round"/><circle cx="22" cy="22" r="3" fill="#2B6CB0" opacity="0.3"/></svg>`,
-      badge_deep: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="22" fill="url(#g3)" stroke="#9F7AEA" stroke-width="2.5"/><defs><linearGradient id="g3" x1="4" y1="4" x2="44" y2="44"><stop stop-color="#E9D8FD"/><stop offset="1" stop-color="#B794F4"/></linearGradient></defs><path d="M24 12l2 5h5l-4 3.5 1.5 5L24 22l-4.5 3.5L21 20l-4-3.5h5l2-5z" fill="#6B46C1"/><path d="M16 30h16M18 34h12" stroke="#6B46C1" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/></svg>`,
-      badge_bookworm: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="22" fill="url(#g4)" stroke="#48BB78" stroke-width="2.5"/><defs><linearGradient id="g4" x1="4" y1="4" x2="44" y2="44"><stop stop-color="#C6F6D5"/><stop offset="1" stop-color="#68D391"/></linearGradient></defs><rect x="14" y="14" width="10" height="20" rx="1" fill="#276749" opacity="0.8"/><rect x="16" y="16" width="6" height="2" rx="0.5" fill="white" opacity="0.5"/><rect x="16" y="20" width="6" height="1" rx="0.5" fill="white" opacity="0.3"/><rect x="16" y="23" width="6" height="1" rx="0.5" fill="white" opacity="0.3"/><rect x="26" y="16" width="8" height="16" rx="1" fill="#276749" opacity="0.5"/><path d="M28 18h4M28 21h4M28 24h3" stroke="white" stroke-width="0.8" opacity="0.4"/></svg>`,
-      badge_streak: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="22" fill="url(#g5)" stroke="#F56565" stroke-width="2.5"/><defs><linearGradient id="g5" x1="4" y1="4" x2="44" y2="44"><stop stop-color="#FED7D7"/><stop offset="1" stop-color="#FC8181"/></linearGradient></defs><path d="M24 10c0 0 8 8 8 16s-3.6 8-8 8-8 0-8-8S24 10 24 10z" fill="#E53E3E" opacity="0.8"/><path d="M24 18c0 0 4 4 4 9s-1.8 4-4 4-4 1-4-4S24 18 24 18z" fill="#FEB2B2"/></svg>`,
-      badge_master: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="22" fill="url(#g6)" stroke="#F6AD55" stroke-width="2.5"/><defs><linearGradient id="g6" x1="4" y1="4" x2="44" y2="44"><stop stop-color="#FEFCBF"/><stop offset="1" stop-color="#F6E05E"/></linearGradient></defs><path d="M24 8l4 8 8 2-6 6 2 8-8-4-8 4 2-8-6-6 8-2 4-8z" fill="#D69E2E"/><circle cx="24" cy="22" r="4" fill="#FFF9C4"/></svg>`,
-      badge_locked: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="22" fill="#E2E8F0" stroke="#CBD5E0" stroke-width="2"/><rect x="18" y="22" width="12" height="10" rx="2" fill="#A0AEC0"/><path d="M21 22v-4a3 3 0 016 0v4" stroke="#A0AEC0" stroke-width="2" fill="none"/><circle cx="24" cy="27" r="1.5" fill="#E2E8F0"/></svg>`,
-      // 책 아이콘
-      book_diplomacy: `<svg viewBox="0 0 60 78" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="bc1" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#F6E05E"/><stop offset="1" stop-color="#D69E2E"/></linearGradient></defs><rect x="2" y="2" width="56" height="74" rx="4" fill="url(#bc1)"/><rect x="6" y="6" width="48" height="66" rx="2" fill="white" opacity="0.15"/><circle cx="30" cy="30" r="14" fill="white" opacity="0.25"/><path d="M22 30l4-8h8l4 8-4 8h-8l-4-8z" fill="white" opacity="0.5"/><rect x="14" y="52" width="32" height="8" rx="4" fill="white" opacity="0.25"/></svg>`,
-      book_seed: `<svg viewBox="0 0 60 78" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="bc2" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#68D391"/><stop offset="1" stop-color="#2F855A"/></linearGradient></defs><rect x="2" y="2" width="56" height="74" rx="4" fill="url(#bc2)"/><rect x="6" y="6" width="48" height="66" rx="2" fill="white" opacity="0.15"/><ellipse cx="30" cy="32" rx="10" ry="12" fill="white" opacity="0.25"/><path d="M30 20c0 0-3 8-3 14s1.3 4 3 4 3 2 3-4S30 20 30 20z" fill="white" opacity="0.5"/><path d="M26 36c4-4 8 0 8 0" stroke="white" stroke-width="1.5" opacity="0.4"/><rect x="14" y="52" width="32" height="8" rx="4" fill="white" opacity="0.25"/></svg>`,
-      book_space: `<svg viewBox="0 0 60 78" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="bc3" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#667EEA"/><stop offset="1" stop-color="#3C366B"/></linearGradient></defs><rect x="2" y="2" width="56" height="74" rx="4" fill="url(#bc3)"/><rect x="6" y="6" width="48" height="66" rx="2" fill="white" opacity="0.15"/><circle cx="30" cy="28" r="8" fill="white" opacity="0.2"/><circle cx="30" cy="28" r="4" fill="white" opacity="0.35"/><circle cx="22" cy="22" r="1.5" fill="white" opacity="0.4"/><circle cx="40" cy="18" r="1" fill="white" opacity="0.3"/><circle cx="18" cy="34" r="0.8" fill="white" opacity="0.3"/><circle cx="42" cy="32" r="1.2" fill="white" opacity="0.25"/><path d="M24 38c3-2 6-2 12 0" stroke="white" stroke-width="1" opacity="0.3"/><rect x="14" y="52" width="32" height="8" rx="4" fill="white" opacity="0.25"/></svg>`,
-      // 탭바 아이콘
-      tab_home: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12l9-8 9 8"/><path d="M5 10v10h14V10"/><rect x="9" y="14" width="6" height="6"/></svg>`,
-      tab_ask: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9 9c0-2 1.5-3 3-3s3 1 3 3c0 1.5-1.2 2-2 2.5-.5.3-1 .8-1 1.5"/><circle cx="12" cy="17" r="0.5" fill="currentColor"/></svg>`,
-      tab_recommend: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16v16H4z" rx="1"/><path d="M4 4l8 6 8-6"/><path d="M12 10v7"/><path d="M9 14l3 3 3-3"/></svg>`,
-      tab_profile: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M5 20c0-4 3.1-7 7-7s7 3 7 7"/></svg>`,
-      tab_schedule: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/><circle cx="8" cy="15" r="1" fill="currentColor"/><circle cx="12" cy="15" r="1" fill="currentColor"/></svg>`,
+    const PNG_ICONS = {
+      badge_firstStep: "icons/badge-first-step.png",
+      badge_curious: "icons/badge-curious.png",
+      badge_deep: "icons/badge-deep-thinker.png",
+      badge_bookworm: "icons/badge-bookworm.png",
+      badge_streak: "icons/badge-streak.png",
+      badge_master: "icons/badge-master.png",
+      badge_locked: null,
+      book_diplomacy: "icons/book-diplomacy.png",
+      book_seed: "icons/book-seeds.png",
+      book_space: "icons/book-space.png",
+      tab_home: "icons/tab-home.png",
+      tab_ask: "icons/tab-question.png",
+      tab_recommend: "icons/tab-explore.png",
+      tab_profile: "icons/tab-profile.png",
+      tab_schedule: "icons/tab-daily.png",
+      mission_discussion: "icons/mission-discussion.png",
+      mission_question: "icons/mission-question.png",
+      mission_streak: "icons/mission-streak.png",
+      mission_review: "icons/mission-review.png",
+      mission_reading: "icons/mission-reading.png",
+      coin: "icons/coin.png",
+      shop_chest: "icons/shop-chest.png",
+      quiz_correct: "icons/quiz-correct.png",
+      quiz_wrong: "icons/quiz-wrong.png",
+      level_up: "icons/level-up.png",
+      // New Set 2
+      shop_crown: "icons/shop-crown.png",
+      shop_glasses: "icons/shop-glasses.png",
+      shop_star_frame: "icons/shop-star-frame.png",
+      shop_fire_aura: "icons/shop-fire-aura.png",
+      shop_rainbow: "icons/shop-rainbow.png",
+      shop_music: "icons/shop-music.png",
+      shop_lightning: "icons/shop-lightning.png",
+      shop_heart: "icons/shop-heart.png",
+      stat_xp: "icons/stat-xp.png",
+      stat_level: "icons/stat-level.png",
+      stat_streak: "icons/stat-streak.png",
+      stat_trophy: "icons/stat-trophy.png",
+      theme_diplomacy: "icons/theme-diplomacy.png",
+      theme_seeds: "icons/theme-seeds.png",
+      theme_space: "icons/theme-space.png",
+      ui_locked: "icons/ui-locked.png",
+      ui_play: "icons/ui-play.png",
+      ui_check: "icons/ui-check.png",
+      ui_wrong: "icons/ui-wrong.png",
+      ui_speech: "icons/ui-speech.png",
+      ui_mic: "icons/ui-mic.png",
+      banner_quest: "icons/banner-quest-complete.png",
+      banner_welcome: "icons/banner-welcome.png",
+      activity_reading: "icons/activity-reading.png",
+      activity_question: "icons/activity-question.png",
+      activity_discussion: "icons/activity-discussion.png",
+      activity_schedule: "icons/activity-schedule.png",
     };
 
     // SVG를 인라인으로 렌더링하는 헬퍼
     const SvgIcon = ({ svg, size = 24, style = {} }) => {
+      if (svg && svg.startsWith("icons/")) {
+        return React.createElement("img", {
+          src: svg,
+          style: { width: size, height: size, objectFit: "contain", flexShrink: 0, ...style },
+        });
+      }
+      if (svg && svg.startsWith("<")) {
+        return React.createElement("div", {
+          dangerouslySetInnerHTML: { __html: svg },
+          style: { width: size, height: size, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, ...style },
+        });
+      }
       return React.createElement("div", {
-        dangerouslySetInnerHTML: { __html: svg },
-        style: { width: size, height: size, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, ...style },
-      });
+        style: { width: size, height: size, background: "#E2E8F0", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, ...style },
+      }, "🔒");
     };
 
-    const BOOK_COVERS = { 1: SVG_ICONS.book_diplomacy, 2: SVG_ICONS.book_seed, 3: SVG_ICONS.book_space };
+    const BOOK_COVERS = { 1: PNG_ICONS.book_diplomacy, 2: PNG_ICONS.book_seed, 3: PNG_ICONS.book_space };
 
     const BADGES = [
-      { name: "첫 발걸음", desc: "첫 번째 토론 완료", icon: "👣", svg: SVG_ICONS.badge_firstStep, color: "#F6E05E" },
-      { name: "호기심 대장", desc: "3개 이상 토론 완료", icon: "🔍", svg: SVG_ICONS.badge_curious, color: "#63B3ED" },
-      { name: "깊은 생각", desc: "심화 토론 1개 완료", icon: "💡", svg: SVG_ICONS.badge_deep, color: "#B794F4" },
-      { name: "책벌레", desc: "1권 완독", icon: "📖", svg: SVG_ICONS.badge_bookworm, color: "#68D391" },
-      { name: "연속 달성", desc: "3일 연속 접속", icon: "🔥", svg: SVG_ICONS.badge_streak, color: "#FC8181" },
-      { name: "완전 정복", desc: "3권 모두 완독", icon: "👑", svg: SVG_ICONS.badge_master, color: "#F6E05E" }
+      { name: "첫 발걸음", desc: "첫 번째 토론 완료", icon: "👣", svg: PNG_ICONS.badge_firstStep, color: "#F6E05E" },
+      { name: "호기심 대장", desc: "3개 이상 토론 완료", icon: "🔍", svg: PNG_ICONS.badge_curious, color: "#63B3ED" },
+      { name: "깊은 생각", desc: "심화 토론 1개 완료", icon: "💡", svg: PNG_ICONS.badge_deep, color: "#B794F4" },
+      { name: "책벌레", desc: "1권 완독", icon: "📖", svg: PNG_ICONS.badge_bookworm, color: "#68D391" },
+      { name: "연속 달성", desc: "3일 연속 접속", icon: "🔥", svg: PNG_ICONS.badge_streak, color: "#FC8181" },
+      { name: "완전 정복", desc: "3권 모두 완독", icon: "👑", svg: PNG_ICONS.badge_master, color: "#F6E05E" }
     ];
 
     const formatDate = (d) => `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일`;
@@ -703,7 +741,7 @@
     // ═══════════════════════════════════════
     function BookQuest() {
       const [profile, setProfile] = useState(null);
-      const [profileForm, setProfileForm] = useState({ name: "", school: "", grade: "6", avatar: "wizard" });
+      const [profileForm, setProfileForm] = useState({ name: "", school: "", grade: "6", avatar: "shelly" });
       const [screen, setScreen] = useState("home");
       const [selectedBook, setSelectedBook] = useState(null);
       const [bookTab, setBookTab] = useState("summary");
@@ -763,6 +801,10 @@
       const [equippedItem, setEquippedItem] = useState(null);
       const [showShop, setShowShop] = useState(false);
 
+      // PWA Install Prompt
+      const [installPrompt, setInstallPrompt] = useState(null);
+      const [showInstallBanner, setShowInstallBanner] = useState(false);
+
       const chatEndRef = useRef(null);
       const recognizerRef = useRef(null);
       const saveTimerRef = useRef(null);
@@ -771,6 +813,18 @@
       const currentWeek = getWeekNum(startDate);
       const thisWeekBook = BOOKS.find(b => b.week === currentWeek) || BOOKS[0];
       const weekRange = getWeekRange(startDate, currentWeek);
+
+      // 📲 PWA 설치 프롬프트 감지
+      useEffect(() => {
+        const handler = (e) => {
+          e.preventDefault();
+          setInstallPrompt(e);
+          const dismissed = localStorage.getItem("bq_install_dismissed");
+          if (!dismissed) setShowInstallBanner(true);
+        };
+        window.addEventListener("beforeinstallprompt", handler);
+        return () => window.removeEventListener("beforeinstallprompt", handler);
+      }, []);
 
       // 🔥 Firestore에서 데이터 불러오기 (앱 시작 시 1회)
       useEffect(() => {
@@ -1052,7 +1106,7 @@
         <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 24 }}>
           <div style={{ width: "100%", maxWidth: 380 }}>
             <div style={{ textAlign: "center", marginBottom: 32 }}>
-              <div style={{ fontSize: 48, marginBottom: 8 }}>📚⚔️</div>
+              <img src="icons/app-icon-192.png" style={{ width: 80, height: 80, marginBottom: 8, borderRadius: 16 }} />
               <div style={{ fontSize: 28, fontWeight: 900, background: "linear-gradient(135deg, #667eea, #764ba2)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>BookQuest</div>
               <div style={{ fontSize: 14, color: "#888", marginTop: 4 }}>나만의 독서 모험을 시작하세요!</div>
               <div style={{ fontSize: 12, color: "#aaa", marginTop: 8 }}>📅 {formatDate(today)} {getDayName(today)}요일</div>
@@ -1148,9 +1202,9 @@
                 <div style={{ fontSize: 24, fontWeight: 900, letterSpacing: "-0.5px" }}>BookQuest</div>
               </div>
               <div style={{ textAlign: "right" }}>
-                <div style={{ background: "rgba(255,255,255,0.15)", padding: "4px 10px", borderRadius: 20, fontSize: 11, fontWeight: 600, marginBottom: 4 }}>🔥 {streak}일 연속</div>
+                <div style={{ background: "rgba(255,255,255,0.15)", padding: "4px 10px", borderRadius: 20, fontSize: 11, fontWeight: 600, marginBottom: 4, display: "flex", alignItems: "center", gap: 3 }}><img src={PNG_ICONS.stat_streak} style={{ width: 16, height: 16 }} /> {streak}일 연속</div>
                 <div style={{ fontSize: 12, fontWeight: 600, opacity: 0.9 }}>{currentTitle}</div>
-                <div style={{ background: "rgba(255,215,0,0.25)", padding: "4px 10px", borderRadius: 20, fontSize: 11, fontWeight: 600, marginTop: 4 }}>💰 {coins}코인</div>
+                <div style={{ background: "rgba(255,215,0,0.25)", padding: "4px 10px", borderRadius: 20, fontSize: 11, fontWeight: 600, marginTop: 4, display: "flex", alignItems: "center", gap: 4 }}><img src={PNG_ICONS.coin} style={{ width: 16, height: 16 }} /> {coins}코인</div>
               </div>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 14, position: "relative" }}>
@@ -1180,7 +1234,7 @@
 
           <div style={{ marginBottom: 20 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-              <h3 style={{ fontSize: 16, fontWeight: 700, color: "#1a1a2e" }}>⚔️ 이번 주 퀘스트</h3>
+              <h3 style={{ fontSize: 16, fontWeight: 700, color: "#1a1a2e", display: "flex", alignItems: "center", gap: 6 }}><img src={PNG_ICONS.activity_discussion} style={{ width: 24, height: 24 }} /> 이번 주 퀘스트</h3>
               <span style={{ fontSize: 11, color: "#888" }}>
                 {weekRange.start.getMonth() + 1}/{weekRange.start.getDate()} ~ {weekRange.end.getMonth() + 1}/{weekRange.end.getDate()}
               </span>
@@ -1210,7 +1264,7 @@
               </div>
             </div>
 
-            <h3 style={{ fontSize: 14, fontWeight: 600, color: "#888", marginBottom: 10 }}>📚 전체 퀘스트 목록</h3>
+            <h3 style={{ fontSize: 14, fontWeight: 600, color: "#888", marginBottom: 10, display: "flex", alignItems: "center", gap: 6 }}><img src={PNG_ICONS.activity_reading} style={{ width: 20, height: 20 }} /> 전체 퀘스트 목록</h3>
             {BOOKS.filter(b => b.id !== thisWeekBook.id).map(book => (
               <div key={book.id} onClick={() => { setSelectedBook(book); setBookTab("summary"); setScreen("book"); }}
                 style={{ background: "white", borderRadius: 14, padding: 14, marginBottom: 10, display: "flex", alignItems: "center", gap: 12, cursor: "pointer", boxShadow: "0 2px 6px rgba(0,0,0,0.04)", border: `2px solid ${bookProgress[book.id] === 100 ? "#4CAF50" : "transparent"}`, opacity: book.week > currentWeek ? 0.5 : 1 }}>
@@ -1229,19 +1283,20 @@
                     <span style={{ fontSize: 11, color: "#666", fontWeight: 600 }}>{bookProgress[book.id]}%</span>
                   </div>
                 </div>
-                <div style={{ fontSize: 16 }}>{bookProgress[book.id] === 100 ? "✅" : book.week > currentWeek ? "🔒" : "▶️"}</div>
+                <div>{bookProgress[book.id] === 100 ? <img src={PNG_ICONS.ui_check} style={{ width: 24, height: 24 }} /> : book.week > currentWeek ? <img src={PNG_ICONS.ui_locked} style={{ width: 24, height: 24 }} /> : <img src={PNG_ICONS.ui_play} style={{ width: 24, height: 24 }} />}</div>
               </div>
             ))}
           </div>
 
           <div style={{ marginBottom: 20 }}>
-            <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 12, color: "#1a1a2e" }}>📋 일일 미션</h3>
+            <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 12, color: "#1a1a2e", display: "flex", alignItems: "center", gap: 6 }}><img src="icons/tab-daily.png" style={{ width: 24, height: 24 }} /> 일일 미션</h3>
             {dailyMissions.length > 0 ? (
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {dailyMissions.map(mission => {
                   const completed = mission.completed;
                   return (
                     <div key={mission.id} style={{ background: completed ? "#f0fff0" : "white", borderRadius: 12, padding: 14, display: "flex", alignItems: "center", gap: 12, boxShadow: "0 2px 6px rgba(0,0,0,0.04)", border: completed ? "2px solid #4CAF50" : "1px solid #eee" }}>
+                      {mission.icon && <img src={mission.icon} style={{ width: 32, height: 32, objectFit: "contain", opacity: completed ? 0.5 : 1 }} />}
                       <input type="checkbox" checked={completed} onChange={() => {
                         setDailyMissions(prev => prev.map(m => m.id === mission.id ? {...m, completed: !completed} : m));
                         if (!completed) {
@@ -1265,7 +1320,7 @@
           </div>
 
           <div>
-            <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 12, color: "#1a1a2e" }}>🏆 배지 컬렉션</h3>
+            <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 12, color: "#1a1a2e", display: "flex", alignItems: "center", gap: 6 }}><img src={PNG_ICONS.stat_trophy} style={{ width: 24, height: 24 }} /> 배지 컬렉션</h3>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
               {BADGES.map((b, i) => {
                 const earned = earnedBadges.some(e => e.name === b.name);
@@ -1277,7 +1332,7 @@
                     border: earned ? `2px solid ${b.color}` : "2px solid transparent",
                     transition: "all 0.3s"
                   }}>
-                    <SvgIcon svg={earned ? b.svg : SVG_ICONS.badge_locked} size={44} />
+                    <SvgIcon svg={earned ? b.svg : PNG_ICONS.badge_locked} size={44} />
                     <div style={{ textAlign: "center" }}>
                       <div style={{ fontSize: 11, fontWeight: 700, color: earned ? "#1a1a2e" : "#999" }}>{b.name}</div>
                       <div style={{ fontSize: 9, color: earned ? "#888" : "#ccc", marginTop: 1 }}>{b.desc}</div>
@@ -1518,7 +1573,7 @@
                   color: msg.role === "user" ? "white" : "#333",
                   fontSize: 13, lineHeight: 1.6, boxShadow: "0 1px 4px rgba(0,0,0,0.06)"
                 }}>
-                  {msg.role === "ai" && <span style={{ fontSize: 11, color: "#667eea", fontWeight: 600, display: "block", marginBottom: 2 }}>🤖 AI 코치</span>}
+                  {msg.role === "ai" && <span style={{ fontSize: 11, color: "#667eea", fontWeight: 600, display: "block", marginBottom: 2 }}>{(() => { const a = AVATAR_DATA.find(x => x.id === profile?.avatar); return a ? `${a.name} 코치` : '🤖 AI 코치'; })()}</span>}
                   {msg.text}
                 </div>
               </div>
@@ -1619,8 +1674,8 @@
             }}>
               <AvatarIcon avatarId={profile?.avatar} size={102} style={{ borderRadius: "50%" }} />
               {equippedItem && (
-                <div style={{ position: "absolute", bottom: 0, right: 0, fontSize: 32, background: "white", borderRadius: "50%", width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 8px rgba(0,0,0,0.15)" }}>
-                  {SHOP_ITEMS.find(item => item.id === equippedItem)?.emoji}
+                <div style={{ position: "absolute", bottom: 0, right: 0, background: "white", borderRadius: "50%", width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 8px rgba(0,0,0,0.15)", overflow: "hidden" }}>
+                  {SHOP_ITEMS.find(item => item.id === equippedItem)?.icon ? <img src={SHOP_ITEMS.find(item => item.id === equippedItem)?.icon} style={{ width: 36, height: 36, objectFit: "contain" }} /> : SHOP_ITEMS.find(item => item.id === equippedItem)?.emoji}
                 </div>
               )}
             </div>
@@ -1631,7 +1686,7 @@
             </div>
             <button onClick={() => setShowShop(true)}
               style={{ marginTop: 12, padding: "8px 16px", borderRadius: 20, border: "none", background: "#667eea", color: "white", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
-              🛍️ 상점 ({coins}코인)
+              <span style={{ display: "flex", alignItems: "center", gap: 4 }}><img src={PNG_ICONS.shop_chest} style={{ width: 18, height: 18 }} /> 상점 ({coins}코인)</span>
             </button>
           </div>
 
@@ -1648,12 +1703,12 @@
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 20 }}>
             {[
-              { label: "총 XP", value: xp, icon: "⚡" },
-              { label: "레벨", value: level, icon: "📊" },
-              { label: "연속", value: `${streak}일`, icon: "🔥" }
+              { label: "총 XP", value: xp, icon: PNG_ICONS.stat_xp },
+              { label: "레벨", value: level, icon: PNG_ICONS.stat_level },
+              { label: "연속", value: `${streak}일`, icon: PNG_ICONS.stat_streak }
             ].map((s, i) => (
               <div key={i} style={{ background: "white", borderRadius: 14, padding: "14px 10px", textAlign: "center", boxShadow: "0 2px 6px rgba(0,0,0,0.06)" }}>
-                <div style={{ fontSize: 22 }}>{s.icon}</div>
+                <div><img src={s.icon} style={{ width: 32, height: 32, objectFit: "contain" }} /></div>
                 <div style={{ fontSize: 18, fontWeight: 800, color: "#1a1a2e", marginTop: 2 }}>{s.value}</div>
                 <div style={{ fontSize: 10, color: "#888" }}>{s.label}</div>
               </div>
@@ -1671,12 +1726,12 @@
           </div>
 
           <div style={{ background: "white", borderRadius: 16, padding: 20, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
-            <h4 style={{ fontSize: 15, fontWeight: 700, marginBottom: 12 }}>🏆 업적</h4>
+            <h4 style={{ fontSize: 15, fontWeight: 700, marginBottom: 12, display: "flex", alignItems: "center", gap: 6 }}><img src={PNG_ICONS.stat_trophy} style={{ width: 20, height: 20 }} /> 업적</h4>
             <div style={{ fontSize: 13, color: "#444", lineHeight: 2 }}>
-              📚 완독한 책: {Object.values(bookProgress).filter(v => v === 100).length}권 / 3권<br/>
-              💬 완료한 토론: {Object.keys(discussionState).filter(k => !k.includes("deep")).length}개 / 15개<br/>
-              🔥 완료한 심화: {Object.keys(discussionState).filter(k => k.includes("deep")).length}개 / 9개<br/>
-              🏅 획득한 배지: {earnedBadges.length}개 / {BADGES.length}개
+              <span style={{ display: "flex", alignItems: "center", gap: 4 }}><img src={PNG_ICONS.activity_reading} style={{ width: 16, height: 16 }} /> 완독한 책: {Object.values(bookProgress).filter(v => v === 100).length}권 / 3권</span>
+              <span style={{ display: "flex", alignItems: "center", gap: 4 }}><img src={PNG_ICONS.ui_speech} style={{ width: 16, height: 16 }} /> 완료한 토론: {Object.keys(discussionState).filter(k => !k.includes("deep")).length}개 / 15개</span>
+              <span style={{ display: "flex", alignItems: "center", gap: 4 }}><img src={PNG_ICONS.stat_streak} style={{ width: 16, height: 16 }} /> 완료한 심화: {Object.keys(discussionState).filter(k => k.includes("deep")).length}개 / 9개</span>
+              <span style={{ display: "flex", alignItems: "center", gap: 4 }}><img src={PNG_ICONS.stat_trophy} style={{ width: 16, height: 16 }} /> 획득한 배지: {earnedBadges.length}개 / {BADGES.length}개</span>
             </div>
           </div>
 
@@ -2014,7 +2069,7 @@
             onClick={() => setShowQuizResult(false)}>
             <div style={{ background: "white", borderRadius: 24, padding: "32px 24px", textAlign: "center", maxWidth: 320, width: "90%", animation: "pop 0.3s ease" }}
               onClick={e => e.stopPropagation()}>
-              <div style={{ fontSize: 60, marginBottom: 12 }}>{correct ? "🎉" : "😅"}</div>
+              <img src={correct ? PNG_ICONS.quiz_correct : PNG_ICONS.quiz_wrong} style={{ width: 100, height: 100, marginBottom: 12 }} />
               <div style={{ fontSize: 20, fontWeight: 800, color: "#1a1a2e", marginBottom: 8 }}>{correct ? "정답!" : "틀렸어요"}</div>
               <div style={{ fontSize: 14, color: "#666", marginBottom: 16, lineHeight: 1.6 }}>{explanation}</div>
               {!correct && <div style={{ fontSize: 13, color: "#888", marginBottom: 12 }}>정답: {answer}</div>}
@@ -2043,7 +2098,7 @@
                 <button onClick={() => setShowShop(false)} style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer" }}>✕</button>
               </div>
               <div style={{ display: "flex", gap: 4, marginBottom: 16, fontSize: 13, fontWeight: 600, color: "#888", paddingBottom: 8, borderBottom: "1px solid #eee" }}>
-                <span>💰 {coins} 코인</span>
+                <span style={{ display: "flex", alignItems: "center", gap: 4 }}><img src={PNG_ICONS.coin} style={{ width: 18, height: 18 }} /> {coins} 코인</span>
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 10 }}>
                 {SHOP_ITEMS.map(item => {
@@ -2051,7 +2106,7 @@
                   const equipped = equippedItem === item.id;
                   return (
                     <div key={item.id} style={{ background: "#f7f7fa", borderRadius: 14, padding: 14, textAlign: "center", border: equipped ? "2px solid #667eea" : "1px solid #eee" }}>
-                      <div style={{ fontSize: 40, marginBottom: 8 }}>{item.emoji}</div>
+                      <div style={{ marginBottom: 8 }}>{item.icon ? <img src={item.icon} style={{ width: 56, height: 56, objectFit: "contain" }} /> : <span style={{ fontSize: 40 }}>{item.emoji}</span>}</div>
                       <div style={{ fontSize: 13, fontWeight: 700, color: "#1a1a2e", marginBottom: 2 }}>{item.name}</div>
                       <div style={{ fontSize: 12, color: "#888", marginBottom: 10 }}>{item.price} 코인</div>
                       {!owned ? (
@@ -2095,7 +2150,7 @@
             onClick={() => setShowReward(false)}>
             <div style={{ background: "white", borderRadius: 24, padding: "32px 24px", textAlign: "center", maxWidth: 300, width: "90%", animation: "pop 0.3s ease" }}
               onClick={e => e.stopPropagation()}>
-              <div style={{ fontSize: 60, marginBottom: 12 }}>🎉</div>
+              <img src={PNG_ICONS.level_up} style={{ width: "100%", borderRadius: 16, marginBottom: 12 }} />
               <div style={{ fontSize: 20, fontWeight: 800, color: "#1a1a2e", marginBottom: 8 }}>레벨 업!</div>
               <div style={{ fontSize: 40, fontWeight: 800, color: "#667eea", marginBottom: 8 }}>Lv.{rewardInfo.level}</div>
               <div style={{ fontSize: 16, color: "#444", marginBottom: 16 }}>새로운 칭호: <b style={{ color: "#FFB300" }}>{rewardInfo.title}</b></div>
@@ -2114,11 +2169,11 @@
       const TabBar = () => {
         if (screen === "discussion" || !profile) return null;
         const tabs = [
-          { key: "home", svg: SVG_ICONS.tab_home, label: "홈" },
-          { key: "askbook", svg: SVG_ICONS.tab_ask, label: "질문" },
-          { key: "recommend", svg: SVG_ICONS.tab_recommend, label: "추천" },
-          { key: "avatar", svg: SVG_ICONS.tab_profile, label: "프로필" },
-          { key: "schedule", svg: SVG_ICONS.tab_schedule, label: "스케줄" }
+          { key: "home", svg: PNG_ICONS.tab_home, label: "홈" },
+          { key: "askbook", svg: PNG_ICONS.tab_ask, label: "질문" },
+          { key: "recommend", svg: PNG_ICONS.tab_recommend, label: "추천" },
+          { key: "avatar", svg: PNG_ICONS.tab_profile, label: "프로필" },
+          { key: "schedule", svg: PNG_ICONS.tab_schedule, label: "스케줄" }
         ];
         const isActive = (key) => screen === key || (screen === "book" && key === "home");
         return (
@@ -2137,12 +2192,12 @@
                 }}>
                 <div style={{
                   width: 28, height: 28, display: "flex", alignItems: "center", justifyContent: "center",
-                  color: isActive(t.key) ? "#667eea" : "#999",
                   background: isActive(t.key) ? "#667eea15" : "transparent",
-                  borderRadius: 10, padding: 2, transition: "all 0.2s"
-                }}
-                  dangerouslySetInnerHTML={{ __html: t.svg }}
-                />
+                  borderRadius: 10, padding: 2, transition: "all 0.2s",
+                  opacity: isActive(t.key) ? 1 : 0.5
+                }}>
+                  <img src={t.svg} style={{ width: 24, height: 24, objectFit: "contain" }} />
+                </div>
                 <span style={{
                   fontSize: 10, fontWeight: isActive(t.key) ? 700 : 500,
                   color: isActive(t.key) ? "#667eea" : "#999",
@@ -2161,7 +2216,7 @@
       if (!dataLoaded) {
         return (
           <div style={{ maxWidth: 430, margin: "0 auto", background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", fontFamily: "'Noto Sans KR', -apple-system, sans-serif" }}>
-            <div style={{ fontSize: 64, marginBottom: 20, animation: "pop 0.8s ease infinite alternate" }}>📚</div>
+            <img src="icons/app-icon-192.png" style={{ width: 80, height: 80, borderRadius: 20, marginBottom: 20, animation: "pop 0.8s ease infinite alternate", boxShadow: "0 4px 20px rgba(0,0,0,0.3)" }} />
             <div style={{ color: "white", fontSize: 24, fontWeight: 800, marginBottom: 8 }}>BookQuest</div>
             <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 14 }}>데이터 불러오는 중...</div>
           </div>
@@ -2183,12 +2238,49 @@
           <RewardModal />
           <QuizResultModal />
           <ShopModal />
+
+          {showInstallBanner && (
+            <div style={{
+              position: "fixed", bottom: 70, left: 12, right: 12, zIndex: 200,
+              background: "linear-gradient(135deg, #667eea, #764ba2)", borderRadius: 20,
+              padding: "16px 18px", display: "flex", alignItems: "center", gap: 14,
+              boxShadow: "0 8px 32px rgba(102,126,234,0.4)", animation: "pop 0.4s ease"
+            }}>
+              <img src="icons/app-icon-192.png" style={{ width: 52, height: 52, borderRadius: 14, flexShrink: 0, boxShadow: "0 2px 8px rgba(0,0,0,0.2)" }} />
+              <div style={{ flex: 1 }}>
+                <div style={{ color: "white", fontSize: 14, fontWeight: 800 }}>BookQuest 설치하기</div>
+                <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 11, marginTop: 2 }}>홈 화면에 추가하면 더 빠르게!</div>
+              </div>
+              <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
+                <button onClick={() => { setShowInstallBanner(false); localStorage.setItem("bq_install_dismissed", "1"); }}
+                  style={{ background: "rgba(255,255,255,0.2)", border: "none", borderRadius: 12, padding: "8px 12px", color: "white", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
+                  닫기
+                </button>
+                <button onClick={async () => {
+                  if (installPrompt) {
+                    installPrompt.prompt();
+                    const result = await installPrompt.userChoice;
+                    if (result.outcome === "accepted") setShowInstallBanner(false);
+                    setInstallPrompt(null);
+                  }
+                }}
+                  style={{ background: "white", border: "none", borderRadius: 12, padding: "8px 16px", color: "#667eea", fontSize: 12, fontWeight: 800, cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}>
+                  설치
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       );
     }
 
     const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(<BookQuest />);
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    }
   </script>
 </body>
 </html>
