@@ -578,7 +578,7 @@
 
     // SVG를 인라인으로 렌더링하는 헬퍼
     const SvgIcon = ({ svg, size = 24, style = {} }) => {
-      if (svg && svg.startsWith("icons/")) {
+      if (svg && (svg.startsWith("icons/") || svg.startsWith("covers/"))) {
         return React.createElement("img", {
           src: svg,
           style: { width: size, height: size, objectFit: "contain", flexShrink: 0, ...style },
@@ -595,7 +595,7 @@
       }, "🔒");
     };
 
-    const BOOK_COVERS = { 1: PNG_ICONS.book_diplomacy, 2: PNG_ICONS.book_seed, 3: PNG_ICONS.book_space };
+    const BOOK_COVERS = { 1: "covers/book1.jpg", 2: "covers/book2.jpg", 3: "covers/book3.jpg" };
 
     const BADGES = [
       { name: "첫 발걸음", desc: "첫 번째 토론 완료", icon: "👣", svg: PNG_ICONS.badge_firstStep, color: "#F6E05E" },
@@ -741,7 +741,7 @@
     // ═══════════════════════════════════════
     function BookQuest() {
       const [profile, setProfile] = useState(null);
-      const [profileForm, setProfileForm] = useState({ name: "", school: "", grade: "6", avatar: "shelly" });
+      const [profileForm, setProfileForm] = useState({ name: "", school: "", grade: "6", avatar: "crow" });
       const [screen, setScreen] = useState("home");
       const [selectedBook, setSelectedBook] = useState(null);
       const [bookTab, setBookTab] = useState("summary");
@@ -834,7 +834,7 @@
             if (data.profile) {
               // 이전 아바타 ID가 현재 AVATAR_DATA에 없으면 기본값으로 폴백
               if (data.profile.avatar && !AVATAR_DATA.find(a => a.id === data.profile.avatar)) {
-                data.profile.avatar = "shelly";
+                data.profile.avatar = "crow";
               }
               setProfile(data.profile);
             }
