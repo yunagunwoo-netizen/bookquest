@@ -938,9 +938,735 @@
       emote:  { top:-0.24, left: 0.68, w:0.46, h:0.46, z:7 },  // 말풍선 (최상단)
     };
 
+    // ═══════════════════════════════════════
+    // 🎨 ITEM_SVG: 모든 아이템의 SVG 렌더러
+    // 각 아이템 ID에 대해 render(size) 함수를 제공
+    // ═══════════════════════════════════════
+    const ITEM_SVG = {
+      // ═══ HAT ITEMS ═══
+      crown: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 50 40", width:s*0.75, height:s*0.5, style:{position:"absolute", top:s*0.12, left:s*0.125, zIndex:5, filter:"drop-shadow(0 2px 4px rgba(0,0,0,0.3))"}},
+          React.createElement("defs", null, React.createElement("linearGradient", {id:"crownGrad", x1:"0%", y1:"0%", x2:"0%", y2:"100%"}, React.createElement("stop", {offset:"0%", stopColor:"#FFE082"}), React.createElement("stop", {offset:"100%", stopColor:"#DAA520"}))),
+          React.createElement("path", {d:"M 8 35 L 12 12 L 20 22 L 28 10 L 35 28 L 40 35 Z", fill:"url(#crownGrad)", stroke:"#D4AF37", strokeWidth:1.5}),
+          React.createElement("circle", {cx:15, cy:20, r:2, fill:"#E74C3C"}),
+          React.createElement("circle", {cx:25, cy:18, r:2, fill:"#3498DB"}),
+          React.createElement("circle", {cx:35, cy:20, r:2, fill:"#2ECC71"})
+        )
+      },
+      deco_hat_pirate: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 60 40", width:s*0.8, height:s*0.48, style:{position:"absolute", top:s*0.1, left:s*0.1, zIndex:5, filter:"drop-shadow(0 2px 4px rgba(0,0,0,0.4))"}},
+          React.createElement("path", {d:"M 10 30 Q 15 10 30 8 Q 45 10 50 30 Z", fill:"#2C3E50", stroke:"#000", strokeWidth:1.5}),
+          React.createElement("circle", {cx:30, cy:18, r:3, fill:"#FFFFFF"}),
+          React.createElement("circle", {cx:30, cy:18, r:1.5, fill:"#000"})
+        )
+      },
+      deco_hat_crown: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 50 45", width:s*0.7, height:s*0.52, style:{position:"absolute", top:s*0.08, left:s*0.15, zIndex:5, filter:"drop-shadow(0 3px 5px rgba(0,0,0,0.3))"}},
+          React.createElement("defs", null, React.createElement("linearGradient", {id:"crownGrad2", x1:"0%", y1:"0%", x2:"0%", y2:"100%"}, React.createElement("stop", {offset:"0%", stopColor:"#FFD700"}), React.createElement("stop", {offset:"100%", stopColor:"#FFA500"}))),
+          React.createElement("path", {d:"M 5 40 L 10 12 L 18 28 L 25 5 L 32 28 L 40 12 L 45 40 Z", fill:"url(#crownGrad2)", stroke:"#CC8800", strokeWidth:1.5}),
+          React.createElement("circle", {cx:12, cy:24, r:2.5, fill:"#FF6B6B"}),
+          React.createElement("circle", {cx:25, cy:10, r:2, fill:"#4ECDC4"}),
+          React.createElement("circle", {cx:38, cy:24, r:2.5, fill:"#95E1D3"})
+        )
+      },
+      deco_hat_santa: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 50 40", width:s*0.75, height:s*0.48, style:{position:"absolute", top:s*0.15, left:s*0.125, zIndex:5, filter:"drop-shadow(0 2px 4px rgba(0,0,0,0.3))"}},
+          React.createElement("path", {d:"M 5 25 L 8 8 L 15 16 L 22 5 L 28 18 L 35 8 L 42 25 Z", fill:"#E74C3C", stroke:"#C0392B", strokeWidth:1.2}),
+          React.createElement("path", {d:"M 3 28 L 47 28 L 45 35 L 5 35 Z", fill:"#FFFFFF", stroke:"#DDD", strokeWidth:0.8}),
+          React.createElement("circle", {cx:25, cy:32, r:2.5, fill:"#FFD700"})
+        )
+      },
+      deco_hat_wizard: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 40 50", width:s*0.6, height:s*0.6, style:{position:"absolute", top:s*0.05, left:s*0.2, zIndex:5, filter:"drop-shadow(0 2px 4px rgba(0,0,0,0.4))"}},
+          React.createElement("path", {d:"M 12 50 L 10 20 L 20 10 L 30 20 L 28 50 Z", fill:"#4A148C", stroke:"#6A1B9A", strokeWidth:1.2}),
+          React.createElement("circle", {cx:20, cy:8, r:3, fill:"#FFD700"}),
+          React.createElement("path", {d:"M 8 22 L 6 28 M 32 22 L 34 28 M 15 35 L 10 40 M 25 35 L 30 40", stroke:"#FFD700", strokeWidth:1, fill:"none"})
+        )
+      },
+      deco_hat_ninja: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 50 30", width:s*0.8, height:s*0.36, style:{position:"absolute", top:s*0.2, left:s*0.1, zIndex:5, filter:"drop-shadow(0 2px 3px rgba(0,0,0,0.5))"}},
+          React.createElement("path", {d:"M 5 20 L 10 8 L 25 5 L 40 8 L 45 20 Z", fill:"#1A1A1A", stroke:"#000", strokeWidth:1}),
+          React.createElement("circle", {cx:17, cy:16, r:2, fill:"#FFFFFF"}),
+          React.createElement("circle", {cx:33, cy:16, r:2, fill:"#FFFFFF"})
+        )
+      },
+      deco_hat_angel: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 50 35", width:s*0.65, height:s*0.42, style:{position:"absolute", top:s*0.08, left:s*0.175, zIndex:5, filter:"drop-shadow(0 2px 4px rgba(255,215,0,0.4))"}},
+          React.createElement("circle", {cx:25, cy:25, r:3, fill:"#FFD700", stroke:"#FFA500", strokeWidth:1}),
+          React.createElement("path", {d:"M 10 22 Q 5 18 8 12 M 40 22 Q 45 18 42 12", stroke:"#FFD700", strokeWidth:2, fill:"none", strokeLinecap:"round"}),
+          React.createElement("circle", {cx:25, cy:25, r:10, fill:"none", stroke:"#FFD700", strokeWidth:1, opacity:0.4})
+        )
+      },
+      deco_hat_devil: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 50 40", width:s*0.65, height:s*0.48, style:{position:"absolute", top:s*0.08, left:s*0.175, zIndex:5, filter:"drop-shadow(0 2px 4px rgba(0,0,0,0.3))"}},
+          React.createElement("path", {d:"M 12 35 L 15 15 L 20 10 L 20 5 Z", fill:"#8B0000", stroke:"#4C0000", strokeWidth:1}),
+          React.createElement("path", {d:"M 38 35 L 35 15 L 30 10 L 30 5 Z", fill:"#8B0000", stroke:"#4C0000", strokeWidth:1}),
+          React.createElement("circle", {cx:20, cy:8, r:2, fill:"#FF6B6B"}),
+          React.createElement("circle", {cx:30, cy:8, r:2, fill:"#FF6B6B"})
+        )
+      },
+      deco_hat_cat: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 50 45", width:s*0.65, height:s*0.54, style:{position:"absolute", top:s*0.1, left:s*0.175, zIndex:5, filter:"drop-shadow(0 2px 3px rgba(0,0,0,0.3))"}},
+          React.createElement("path", {d:"M 15 35 L 12 12 L 20 8 L 25 10 L 30 8 L 38 12 L 35 35 Z", fill:"#D2B48C", stroke:"#8B7355", strokeWidth:1}),
+          React.createElement("path", {d:"M 20 8 L 15 2 L 18 10 Z", fill:"#D2B48C", stroke:"#8B7355", strokeWidth:0.8}),
+          React.createElement("path", {d:"M 30 8 L 35 2 L 32 10 Z", fill:"#D2B48C", stroke:"#8B7355", strokeWidth:0.8})
+        )
+      },
+      deco_hat_bunny: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 50 60", width:s*0.55, height:s*0.7, style:{position:"absolute", top:s*-0.05, left:s*0.225, zIndex:5, filter:"drop-shadow(0 2px 3px rgba(0,0,0,0.3))"}},
+          React.createElement("ellipse", {cx:18, cy:15, rx:4, ry:15, fill:"#FFC0CB", stroke:"#FF69B4", strokeWidth:1}),
+          React.createElement("ellipse", {cx:32, cy:15, rx:4, ry:15, fill:"#FFC0CB", stroke:"#FF69B4", strokeWidth:1}),
+          React.createElement("circle", {cx:25, cy:40, r:8, fill:"#FFB6C1", stroke:"#FF69B4", strokeWidth:1})
+        )
+      },
+      deco_hat_unicorn: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 40 55", width:s*0.4, height:s*0.65, style:{position:"absolute", top:s*-0.08, left:s*0.3, zIndex:5, filter:"drop-shadow(0 2px 4px rgba(0,0,0,0.3))"}},
+          React.createElement("defs", null, React.createElement("linearGradient", {id:"unicornGrad", x1:"0%", y1:"0%", x2:"0%", y2:"100%"}, React.createElement("stop", {offset:"0%", stopColor:"#FF69B4"}), React.createElement("stop", {offset:"100%", stopColor:"#FFB6C1"}))),
+          React.createElement("path", {d:"M 18 55 L 16 35 L 20 5 L 24 35 L 22 55 Z", fill:"url(#unicornGrad)", stroke:"#FF1493", strokeWidth:1}),
+          React.createElement("circle", {cx:20, cy:3, r:2, fill:"#FFD700"})
+        )
+      },
+      deco_hat_party: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 50 45", width:s*0.7, height:s*0.54, style:{position:"absolute", top:s*0.1, left:s*0.15, zIndex:5, filter:"drop-shadow(0 2px 4px rgba(0,0,0,0.3))"}},
+          React.createElement("path", {d:"M 8 40 L 12 8 L 25 5 L 38 8 L 42 40 Z", fill:"#FF1493", stroke:"#C71585", strokeWidth:1.2}),
+          React.createElement("path", {d:"M 12 8 L 10 2 L 14 6 Z", fill:"#FFD700"}),
+          React.createElement("path", {d:"M 25 5 L 25 0 L 27 5 Z", fill:"#FFD700"}),
+          React.createElement("path", {d:"M 38 8 L 40 2 L 36 6 Z", fill:"#FFD700"}),
+          React.createElement("circle", {cx:20, cy:35, r:1.5, fill:"#FFD700"}),
+          React.createElement("circle", {cx:30, cy:35, r:1.5, fill:"#FFD700"})
+        )
+      },
+      deco_hat_laurel: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 60 30", width:s*0.85, height:s*0.36, style:{position:"absolute", top:s*0.15, left:s*0.075, zIndex:5, filter:"drop-shadow(0 2px 4px rgba(0,0,0,0.3))"}},
+          React.createElement("path", {d:"M 10 20 Q 5 15 8 8 Q 12 5 15 8", stroke:"#228B22", strokeWidth:2, fill:"none"}),
+          React.createElement("path", {d:"M 50 20 Q 55 15 52 8 Q 48 5 45 8", stroke:"#228B22", strokeWidth:2, fill:"none"}),
+          React.createElement("circle", {cx:30, cy:15, r:4, fill:"#FFD700", stroke:"#FFA500", strokeWidth:1})
+        )
+      },
+
+      // ═══ FACE ITEMS ═══
+      glasses: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 60 35", width:s*0.85, height:s*0.3, style:{position:"absolute", top:s*0.38, left:s*0.075, zIndex:6, filter:"drop-shadow(0 1px 3px rgba(0,0,0,0.3))"}},
+          React.createElement("circle", {cx:18, cy:18, r:10, fill:"none", stroke:"#333", strokeWidth:2}),
+          React.createElement("circle", {cx:42, cy:18, r:10, fill:"none", stroke:"#333", strokeWidth:2}),
+          React.createElement("line", {x1:28, y1:18, x2:32, y2:18, stroke:"#333", strokeWidth:2}),
+          React.createElement("circle", {cx:18, cy:18, r:6, fill:"#87CEEB", opacity:0.6}),
+          React.createElement("circle", {cx:42, cy:18, r:6, fill:"#87CEEB", opacity:0.6})
+        )
+      },
+      deco_face_sun: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 60 35", width:s*0.85, height:s*0.3, style:{position:"absolute", top:s*0.38, left:s*0.075, zIndex:6, filter:"drop-shadow(0 1px 3px rgba(255,215,0,0.4))"}},
+          React.createElement("rect", {x:8, y:8, width:16, height:16, rx:2, fill:"none", stroke:"#FFD700", strokeWidth:2}),
+          React.createElement("rect", {x:36, y:8, width:16, height:16, rx:2, fill:"none", stroke:"#FFD700", strokeWidth:2}),
+          React.createElement("line", {x1:24, y1:16, x2:36, y2:16, stroke:"#FFD700", strokeWidth:2}),
+          React.createElement("line", {x1:4, y1:16, x2:8, y2:16, stroke:"#FFD700", strokeWidth:1.5}),
+          React.createElement("line", {x1:52, y1:16, x2:56, y2:16, stroke:"#FFD700", strokeWidth:1.5})
+        )
+      },
+      deco_face_heart: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 60 35", width:s*0.85, height:s*0.3, style:{position:"absolute", top:s*0.38, left:s*0.075, zIndex:6, filter:"drop-shadow(0 1px 3px rgba(0,0,0,0.2))"}},
+          React.createElement("path", {d:"M 18 25 C 12 20 8 18 8 14 C 8 10 12 7 15 7 C 17 7 18 9 18 9 C 18 9 19 7 21 7 C 24 7 28 10 28 14 C 28 18 24 20 18 25 Z", fill:"#FF69B4", stroke:"#C71585", strokeWidth:0.8}),
+          React.createElement("path", {d:"M 42 25 C 36 20 32 18 32 14 C 32 10 36 7 39 7 C 41 7 42 9 42 9 C 42 9 43 7 45 7 C 48 7 52 10 52 14 C 52 18 48 20 42 25 Z", fill:"#FF69B4", stroke:"#C71585", strokeWidth:0.8})
+        )
+      },
+      deco_face_star: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 60 35", width:s*0.85, height:s*0.3, style:{position:"absolute", top:s*0.38, left:s*0.075, zIndex:6, filter:"drop-shadow(0 1px 3px rgba(0,0,0,0.2))"}},
+          React.createElement("path", {d:"M 18 10 L 20 16 L 26 16 L 21 20 L 23 26 L 18 22 L 13 26 L 15 20 L 10 16 L 16 16 Z", fill:"#FFD700", stroke:"#FFA500", strokeWidth:0.8}),
+          React.createElement("path", {d:"M 42 10 L 44 16 L 50 16 L 45 20 L 47 26 L 42 22 L 37 26 L 39 20 L 34 16 L 40 16 Z", fill:"#FFD700", stroke:"#FFA500", strokeWidth:0.8})
+        )
+      },
+      deco_face_3d: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 60 35", width:s*0.85, height:s*0.3, style:{position:"absolute", top:s*0.38, left:s*0.075, zIndex:6, filter:"drop-shadow(0 1px 3px rgba(0,0,0,0.3))"}},
+          React.createElement("rect", {x:8, y:8, width:14, height:14, fill:"none", stroke:"#FF0000", strokeWidth:2}),
+          React.createElement("rect", {x:10, y:10, width:14, height:14, fill:"none", stroke:"#00FFFF", strokeWidth:2, opacity:0.8}),
+          React.createElement("rect", {x:38, y:8, width:14, height:14, fill:"none", stroke:"#FF0000", strokeWidth:2}),
+          React.createElement("rect", {x:40, y:10, width:14, height:14, fill:"none", stroke:"#00FFFF", strokeWidth:2, opacity:0.8})
+        )
+      },
+      deco_face_monocle: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 60 35", width:s*0.85, height:s*0.3, style:{position:"absolute", top:s*0.38, left:s*0.075, zIndex:6, filter:"drop-shadow(0 1px 3px rgba(0,0,0,0.3))"}},
+          React.createElement("circle", {cx:42, cy:18, r:10, fill:"none", stroke:"#8B7355", strokeWidth:2.5}),
+          React.createElement("circle", {cx:42, cy:18, r:7, fill:"#E8D5B7", opacity:0.4}),
+          React.createElement("line", {x1:32, y1:8, x2:20, y2:8, stroke:"#8B7355", strokeWidth:1.5})
+        )
+      },
+      deco_face_vr: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 60 40", width:s*0.95, height:s*0.38, style:{position:"absolute", top:s*0.35, left:s*0.025, zIndex:6, filter:"drop-shadow(0 1px 3px rgba(0,0,0,0.3))"}},
+          React.createElement("rect", {x:5, y:10, width:18, height:16, rx:2, fill:"#1a1a1a", stroke:"#FFD700", strokeWidth:1.5}),
+          React.createElement("rect", {x:37, y:10, width:18, height:16, rx:2, fill:"#1a1a1a", stroke:"#FFD700", strokeWidth:1.5}),
+          React.createElement("circle", {cx:14, cy:18, r:5, fill:"#00FF00", opacity:0.7}),
+          React.createElement("circle", {cx:46, cy:18, r:5, fill:"#00FF00", opacity:0.7}),
+          React.createElement("line", {x1:23, y1:18, x2:37, y2:18, stroke:"#FFD700", strokeWidth:1})
+        )
+      },
+      deco_face_steam: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 60 40", width:s*0.95, height:s*0.38, style:{position:"absolute", top:s*0.35, left:s*0.025, zIndex:6, filter:"drop-shadow(0 1px 3px rgba(0,0,0,0.3))"}},
+          React.createElement("circle", {cx:15, cy:20, r:8, fill:"none", stroke:"#8B4513", strokeWidth:2}),
+          React.createElement("circle", {cx:45, cy:20, r:8, fill:"none", stroke:"#8B4513", strokeWidth:2}),
+          React.createElement("path", {d:"M 18 12 Q 20 6 22 10", stroke:"#A9A9A9", strokeWidth:1, fill:"none"}),
+          React.createElement("path", {d:"M 10 12 Q 12 6 14 10", stroke:"#A9A9A9", strokeWidth:1, fill:"none"}),
+          React.createElement("path", {d:"M 48 12 Q 50 6 52 10", stroke:"#A9A9A9", strokeWidth:1, fill:"none"}),
+          React.createElement("path", {d:"M 40 12 Q 42 6 44 10", stroke:"#A9A9A9", strokeWidth:1, fill:"none"})
+        )
+      },
+      deco_face_rainbow: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 60 35", width:s*0.85, height:s*0.3, style:{position:"absolute", top:s*0.38, left:s*0.075, zIndex:6, filter:"drop-shadow(0 1px 3px rgba(0,0,0,0.2))"}},
+          React.createElement("path", {d:"M 18 25 L 12 15 L 18 10 L 24 15 Z", fill:"#FF0000"}),
+          React.createElement("path", {d:"M 18 25 L 18 15 L 24 10 Z", fill:"#FFD700"}),
+          React.createElement("path", {d:"M 42 25 L 36 15 L 42 10 L 48 15 Z", fill:"#00FF00"}),
+          React.createElement("path", {d:"M 42 25 L 42 15 L 48 10 Z", fill:"#0000FF"})
+        )
+      },
+      deco_face_mask: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 60 45", width:s*0.95, height:s*0.42, style:{position:"absolute", top:s*0.35, left:s*0.025, zIndex:6, filter:"drop-shadow(0 1px 3px rgba(0,0,0,0.3))"}},
+          React.createElement("path", {d:"M 8 20 Q 8 10 20 8 L 20 32 Q 8 30 8 20 Z", fill:"#2E8B57", stroke:"#1a5c3a", strokeWidth:1.5}),
+          React.createElement("path", {d:"M 52 20 Q 52 10 40 8 L 40 32 Q 52 30 52 20 Z", fill:"#2E8B57", stroke:"#1a5c3a", strokeWidth:1.5}),
+          React.createElement("circle", {cx:20, cy:20, r:2, fill:"#FFD700"}),
+          React.createElement("circle", {cx:40, cy:20, r:2, fill:"#FFD700"})
+        )
+      },
+      deco_face_tiger: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 60 45", width:s*0.95, height:s*0.42, style:{position:"absolute", top:s*0.3, left:s*0.025, zIndex:6, filter:"drop-shadow(0 1px 3px rgba(0,0,0,0.3))"}},
+          React.createElement("path", {d:"M 5 20 L 18 15 L 18 25 Z", fill:"#FF6B35", stroke:"#D84315", strokeWidth:0.8}),
+          React.createElement("path", {d:"M 55 20 L 42 15 L 42 25 Z", fill:"#FF6B35", stroke:"#D84315", strokeWidth:0.8}),
+          React.createElement("line", {x1:8, y1:12, x2:16, y2:10, stroke:"#000", strokeWidth:1}),
+          React.createElement("line", {x1:44, y1:12, x2:52, y2:10, stroke:"#000", strokeWidth:1})
+        )
+      },
+      deco_face_war: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 60 45", width:s*0.95, height:s*0.42, style:{position:"absolute", top:s*0.3, left:s*0.025, zIndex:6, filter:"drop-shadow(0 1px 3px rgba(0,0,0,0.3))"}},
+          React.createElement("path", {d:"M 5 22 L 12 18 L 12 26 Z", fill:"#8B0000", stroke:"#4C0000", strokeWidth:0.8}),
+          React.createElement("path", {d:"M 55 22 L 48 18 L 48 26 Z", fill:"#8B0000", stroke:"#4C0000", strokeWidth:0.8}),
+          React.createElement("line", {x1:10, y1:15, x2:20, y2:18, stroke:"#FFD700", strokeWidth:1}),
+          React.createElement("line", {x1:40, y1:15, x2:50, y2:18, stroke:"#FFD700", strokeWidth:1})
+        )
+      },
+      deco_face_sticker: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 20 20", width:s*0.25, height:s*0.25, style:{position:"absolute", top:s*0.55, left:s*0.65, zIndex:6, filter:"drop-shadow(0 1px 2px rgba(0,0,0,0.3))"}},
+          React.createElement("path", {d:"M 10 2 L 13 8 L 19 8 L 14 12 L 16 18 L 10 14 L 4 18 L 6 12 L 1 8 L 7 8 Z", fill:"#FFD700", stroke:"#FFA500", strokeWidth:0.5})
+        )
+      },
+
+      // ═══ PET ITEMS ═══
+      deco_pet_dragon: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 40 40", width:s*0.5, height:s*0.5, style:{position:"absolute", top:s*0.58, left:s*0.75, zIndex:4, filter:"drop-shadow(0 2px 3px rgba(0,0,0,0.3))"}},
+          React.createElement("circle", {cx:20, cy:25, r:8, fill:"#E74C3C", stroke:"#C0392B", strokeWidth:1}),
+          React.createElement("path", {d:"M 14 17 L 12 10 L 16 14 Z", fill:"#E74C3C", stroke:"#C0392B", strokeWidth:0.8}),
+          React.createElement("path", {d:"M 26 17 L 28 10 L 24 14 Z", fill:"#E74C3C", stroke:"#C0392B", strokeWidth:0.8}),
+          React.createElement("circle", {cx:17, cy:22, r:1.5, fill:"#000"}),
+          React.createElement("circle", {cx:23, cy:22, r:1.5, fill:"#000"})
+        )
+      },
+      deco_pet_kitty: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 40 40", width:s*0.48, height:s*0.48, style:{position:"absolute", top:s*0.58, left:s*0.76, zIndex:4, filter:"drop-shadow(0 2px 3px rgba(0,0,0,0.3))"}},
+          React.createElement("circle", {cx:20, cy:24, r:8, fill:"#FFB6C1", stroke:"#FF69B4", strokeWidth:1}),
+          React.createElement("path", {d:"M 14 16 L 10 10 L 14 14 Z", fill:"#FFB6C1", stroke:"#FF69B4", strokeWidth:0.8}),
+          React.createElement("path", {d:"M 26 16 L 30 10 L 26 14 Z", fill:"#FFB6C1", stroke:"#FF69B4", strokeWidth:0.8}),
+          React.createElement("circle", {cx:17, cy:22, r:1, fill:"#000"}),
+          React.createElement("circle", {cx:23, cy:22, r:1, fill:"#000"}),
+          React.createElement("path", {d:"M 20 24 L 18 27 L 22 27 Z", fill:"#FFB6C1"})
+        )
+      },
+      deco_pet_ghost: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 40 40", width:s*0.48, height:s*0.48, style:{position:"absolute", top:s*0.58, left:s*0.76, zIndex:4, filter:"drop-shadow(0 2px 3px rgba(0,0,0,0.3))"}},
+          React.createElement("path", {d:"M 8 15 L 8 28 Q 8 32 12 32 L 28 32 Q 32 32 32 28 L 32 15 Q 32 10 20 10 Q 8 10 8 15 Z", fill:"#FFFFFF", stroke:"#DDD", strokeWidth:1}),
+          React.createElement("circle", {cx:14, cy:20, r:2, fill:"#000"}),
+          React.createElement("circle", {cx:26, cy:20, r:2, fill:"#000"}),
+          React.createElement("path", {d:"M 12 28 L 12 32 M 20 28 L 20 32 M 28 28 L 28 32", stroke:"#DDD", strokeWidth:0.8})
+        )
+      },
+      deco_pet_robot: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 40 40", width:s*0.48, height:s*0.48, style:{position:"absolute", top:s*0.58, left:s*0.76, zIndex:4, filter:"drop-shadow(0 2px 3px rgba(0,0,0,0.3))"}},
+          React.createElement("rect", {x:8, y:10, width:24, height:20, rx:2, fill:"#808080", stroke:"#404040", strokeWidth:1}),
+          React.createElement("rect", {x:12, y:14, width:5, height:5, fill:"#FFD700"}),
+          React.createElement("rect", {x:23, y:14, width:5, height:5, fill:"#FFD700"}),
+          React.createElement("rect", {x:16, y:24, width:8, height:3, fill:"#404040"})
+        )
+      },
+      deco_pet_star: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 40 40", width:s*0.48, height:s*0.48, style:{position:"absolute", top:s*0.58, left:s*0.76, zIndex:4, filter:"drop-shadow(0 2px 4px rgba(255,215,0,0.4))"}},
+          React.createElement("path", {d:"M 20 10 L 24 20 L 35 20 L 26 26 L 30 36 L 20 30 L 10 36 L 14 26 L 5 20 L 16 20 Z", fill:"#FFD700", stroke:"#FFA500", strokeWidth:0.8})
+        )
+      },
+      deco_pet_slime: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 40 40", width:s*0.48, height:s*0.48, style:{position:"absolute", top:s*0.58, left:s*0.76, zIndex:4, filter:"drop-shadow(0 2px 3px rgba(0,0,0,0.3))"}},
+          React.createElement("path", {d:"M 10 20 Q 10 15 15 15 Q 20 10 25 15 Q 30 15 30 20 Q 30 28 25 30 Q 20 32 15 30 Q 10 28 10 20 Z", fill:"#00FF00", stroke:"#00AA00", strokeWidth:0.8, opacity:0.7}),
+          React.createElement("circle", {cx:14, cy:18, r:2, fill:"#000"}),
+          React.createElement("circle", {cx:26, cy:18, r:2, fill:"#000"})
+        )
+      },
+      deco_pet_phoenix: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 40 40", width:s*0.52, height:s*0.52, style:{position:"absolute", top:s*0.56, left:s*0.74, zIndex:4, filter:"drop-shadow(0 2px 4px rgba(255,100,0,0.3))"}},
+          React.createElement("circle", {cx:20, cy:24, r:8, fill:"#FF6B35", stroke:"#D84315", strokeWidth:1}),
+          React.createElement("path", {d:"M 18 15 L 16 10 L 18 13 Z", fill:"#FFD700"}),
+          React.createElement("path", {d:"M 22 15 L 24 10 L 22 13 Z", fill:"#FFD700"}),
+          React.createElement("circle", {cx:17, cy:22, r:1, fill:"#000"}),
+          React.createElement("circle", {cx:23, cy:22, r:1, fill:"#000"})
+        )
+      },
+      deco_pet_snowman: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 40 40", width:s*0.48, height:s*0.48, style:{position:"absolute", top:s*0.58, left:s*0.76, zIndex:4, filter:"drop-shadow(0 2px 3px rgba(0,0,0,0.2))"}},
+          React.createElement("circle", {cx:20, cy:28, r:6, fill:"#FFFFFF", stroke:"#DDD", strokeWidth:0.8}),
+          React.createElement("circle", {cx:20, cy:18, r:5, fill:"#FFFFFF", stroke:"#DDD", strokeWidth:0.8}),
+          React.createElement("circle", {cx:20, cy:10, r:3, fill:"#FFFFFF", stroke:"#DDD", strokeWidth:0.8}),
+          React.createElement("circle", {cx:18, cy:16, r:1, fill:"#000"}),
+          React.createElement("circle", {cx:22, cy:16, r:1, fill:"#000"}),
+          React.createElement("circle", {cx:19, cy:20, r:0.5, fill:"#000"})
+        )
+      },
+      deco_pet_fairy: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 40 40", width:s*0.48, height:s*0.48, style:{position:"absolute", top:s*0.58, left:s*0.76, zIndex:4, filter:"drop-shadow(0 2px 4px rgba(255,192,203,0.3))"}},
+          React.createElement("circle", {cx:20, cy:24, r:7, fill:"#FFD700", stroke:"#FFA500", strokeWidth:0.8}),
+          React.createElement("path", {d:"M 15 22 Q 10 20 8 15 Q 10 20 15 22 Z", fill:"#87CEEB", opacity:0.6}),
+          React.createElement("path", {d:"M 25 22 Q 30 20 32 15 Q 30 20 25 22 Z", fill:"#87CEEB", opacity:0.6}),
+          React.createElement("circle", {cx:17, cy:22, r:1, fill:"#000"}),
+          React.createElement("circle", {cx:23, cy:22, r:1, fill:"#000"})
+        )
+      },
+      deco_pet_croc: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 40 40", width:s*0.5, height:s*0.5, style:{position:"absolute", top:s*0.58, left:s*0.75, zIndex:4, filter:"drop-shadow(0 2px 3px rgba(0,0,0,0.3))"}},
+          React.createElement("ellipse", {cx:20, cy:24, rx:10, ry:6, fill:"#228B22", stroke:"#1a5c3a", strokeWidth:0.8}),
+          React.createElement("path", {d:"M 10 20 L 5 17 L 10 18 Z", fill:"#228B22"}),
+          React.createElement("path", {d:"M 30 20 L 35 17 L 30 18 Z", fill:"#228B22"}),
+          React.createElement("circle", {cx:16, cy:22, r:1.5, fill:"#FFD700"}),
+          React.createElement("circle", {cx:24, cy:22, r:1.5, fill:"#FFD700"})
+        )
+      },
+      deco_pet_owl: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 40 40", width:s*0.48, height:s*0.48, style:{position:"absolute", top:s*0.58, left:s*0.76, zIndex:4, filter:"drop-shadow(0 2px 3px rgba(0,0,0,0.3))"}},
+          React.createElement("circle", {cx:20, cy:24, r:8, fill:"#8B4513", stroke:"#654321", strokeWidth:0.8}),
+          React.createElement("path", {d:"M 14 17 L 12 10 L 15 15 Z", fill:"#8B4513"}),
+          React.createElement("path", {d:"M 26 17 L 28 10 L 25 15 Z", fill:"#8B4513"}),
+          React.createElement("circle", {cx:16, cy:22, r:2.5, fill:"#FFD700", stroke:"#000", strokeWidth:0.5}),
+          React.createElement("circle", {cx:24, cy:22, r:2.5, fill:"#FFD700", stroke:"#000", strokeWidth:0.5}),
+          React.createElement("circle", {cx:16, cy:22, r:1, fill:"#000"}),
+          React.createElement("circle", {cx:24, cy:22, r:1, fill:"#000"})
+        )
+      },
+      deco_pet_orb: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 40 40", width:s*0.48, height:s*0.48, style:{position:"absolute", top:s*0.58, left:s*0.76, zIndex:4, filter:"drop-shadow(0 2px 4px rgba(138,43,226,0.4))"}},
+          React.createElement("defs", null, React.createElement("radialGradient", {id:"orbGrad", cx:"35%", cy:"35%"}, React.createElement("stop", {offset:"0%", stopColor:"#9370DB"}), React.createElement("stop", {offset:"100%", stopColor:"#4B0082"}))),
+          React.createElement("circle", {cx:20, cy:20, r:10, fill:"url(#orbGrad)", stroke:"#8A2BE2", strokeWidth:1}),
+          React.createElement("path", {d:"M 15 18 Q 20 15 25 18", stroke:"#E6E6FA", strokeWidth:1, fill:"none", opacity:0.6})
+        )
+      },
+
+      // ═══ EMOTE ITEMS ═══
+      music_note: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 30 40", width:s*0.35, height:s*0.35, style:{position:"absolute", top:s*0.1, left:s*0.78, zIndex:7, filter:"drop-shadow(0 1px 3px rgba(0,0,0,0.3))"}},
+          React.createElement("circle", {cx:8, cy:30, r:3, fill:"#FF69B4", stroke:"#C71585", strokeWidth:0.8}),
+          React.createElement("path", {d:"M 8 27 L 8 8", stroke:"#000", strokeWidth:1.5}),
+          React.createElement("circle", {cx:20, cy:20, r:3, fill:"#FFD700", stroke:"#FFA500", strokeWidth:0.8}),
+          React.createElement("path", {d:"M 20 17 L 20 5", stroke:"#000", strokeWidth:1.5}),
+          React.createElement("path", {d:"M 8 8 Q 12 6 20 5", stroke:"#000", strokeWidth:1})
+        )
+      },
+      heart: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 30 30", width:s*0.35, height:s*0.35, style:{position:"absolute", top:s*0.1, left:s*0.78, zIndex:7, filter:"drop-shadow(0 1px 3px rgba(0,0,0,0.2))"}},
+          React.createElement("path", {d:"M 15 27 C 5 20 2 16 2 11 C 2 7 5 4 8 4 C 10 4 12 6 15 8 C 18 6 20 4 22 4 C 25 4 28 7 28 11 C 28 16 25 20 15 27 Z", fill:"#FF1493", stroke:"#C71585", strokeWidth:0.8})
+        )
+      },
+      deco_emote_victory: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 40 50", width:s*0.4, height:s*0.4, style:{position:"absolute", top:s*0.08, left:s*0.75, zIndex:7, filter:"drop-shadow(0 2px 3px rgba(0,0,0,0.3))"}},
+          React.createElement("path", {d:"M 8 45 L 12 20 L 18 10 L 22 15 L 28 20 L 32 45 Z", fill:"#FFD700", stroke:"#FFA500", strokeWidth:1}),
+          React.createElement("path", {d:"M 18 15 L 22 8 L 26 15", fill:"#FFD700", stroke:"#FFA500", strokeWidth:0.8}),
+          React.createElement("path", {d:"M 15 25 L 10 20 M 25 25 L 30 20", stroke:"#FFD700", strokeWidth:1.5})
+        )
+      },
+      deco_emote_laugh: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 40 40", width:s*0.4, height:s*0.4, style:{position:"absolute", top:s*0.08, left:s*0.75, zIndex:7, filter:"drop-shadow(0 2px 3px rgba(0,0,0,0.2))"}},
+          React.createElement("circle", {cx:20, cy:20, r:15, fill:"#FFD700", stroke:"#FFA500", strokeWidth:1.2}),
+          React.createElement("circle", {cx:14, cy:16, r:2, fill:"#000"}),
+          React.createElement("circle", {cx:26, cy:16, r:2, fill:"#000"}),
+          React.createElement("path", {d:"M 13 23 Q 20 27 27 23", stroke:"#000", strokeWidth:1.5, fill:"none", strokeLinecap:"round"})
+        )
+      },
+      deco_emote_angry: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 40 40", width:s*0.4, height:s*0.4, style:{position:"absolute", top:s*0.08, left:s*0.75, zIndex:7, filter:"drop-shadow(0 2px 3px rgba(0,0,0,0.2))"}},
+          React.createElement("circle", {cx:20, cy:20, r:15, fill:"#FF6B6B", stroke:"#E74C3C", strokeWidth:1.2}),
+          React.createElement("circle", {cx:14, cy:16, r:2, fill:"#000"}),
+          React.createElement("circle", {cx:26, cy:16, r:2, fill:"#000"}),
+          React.createElement("path", {d:"M 12 15 L 16 17", stroke:"#000", strokeWidth:1.5, strokeLinecap:"round"}),
+          React.createElement("path", {d:"M 28 15 L 24 17", stroke:"#000", strokeWidth:1.5, strokeLinecap:"round"}),
+          React.createElement("path", {d:"M 13 26 Q 20 23 27 26", stroke:"#000", strokeWidth:1.5, fill:"none", strokeLinecap:"round"})
+        )
+      },
+      deco_emote_sad: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 40 40", width:s*0.4, height:s*0.4, style:{position:"absolute", top:s*0.08, left:s*0.75, zIndex:7, filter:"drop-shadow(0 2px 3px rgba(0,0,0,0.2))"}},
+          React.createElement("circle", {cx:20, cy:20, r:15, fill:"#87CEEB", stroke:"#4682B4", strokeWidth:1.2}),
+          React.createElement("circle", {cx:14, cy:16, r:2, fill:"#000"}),
+          React.createElement("circle", {cx:26, cy:16, r:2, fill:"#000"}),
+          React.createElement("path", {d:"M 13 27 Q 20 23 27 27", stroke:"#000", strokeWidth:1.5, fill:"none", strokeLinecap:"round"})
+        )
+      },
+      deco_emote_heart_b: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 40 50", width:s*0.4, height:s*0.4, style:{position:"absolute", top:s*0.08, left:s*0.75, zIndex:7, filter:"drop-shadow(0 2px 3px rgba(0,0,0,0.2))"}},
+          React.createElement("path", {d:"M 20 8 L 26 12 L 26 30 L 20 38 L 14 30 L 14 12 Z", fill:"#FFB6C1", stroke:"#FF69B4", strokeWidth:1}),
+          React.createElement("path", {d:"M 16 17 Q 14 14 13 12 Q 13 10 15 10 Q 17 10 18 12", fill:"#FF69B4"}),
+          React.createElement("path", {d:"M 24 17 Q 26 14 27 12 Q 27 10 25 10 Q 23 10 22 12", fill:"#FF69B4"})
+        )
+      },
+      deco_emote_star_b: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 40 50", width:s*0.4, height:s*0.4, style:{position:"absolute", top:s*0.08, left:s*0.75, zIndex:7, filter:"drop-shadow(0 2px 4px rgba(255,215,0,0.4))"}},
+          React.createElement("path", {d:"M 20 10 L 25 22 L 38 24 L 28 32 L 32 44 L 20 38 L 8 44 L 12 32 L 2 24 L 15 22 Z", fill:"#FFD700", stroke:"#FFA500", strokeWidth:0.8})
+        )
+      },
+      deco_emote_fire_b: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 40 50", width:s*0.4, height:s*0.4, style:{position:"absolute", top:s*0.08, left:s*0.75, zIndex:7, filter:"drop-shadow(0 2px 4px rgba(255,100,0,0.3))"}},
+          React.createElement("path", {d:"M 20 40 Q 15 35 15 28 Q 15 20 20 15 Q 25 20 25 28 Q 25 35 20 40 Z", fill:"#FF6B35", stroke:"#D84315", strokeWidth:0.8}),
+          React.createElement("path", {d:"M 20 35 Q 17 32 17 27 Q 17 22 20 20 Q 23 22 23 27 Q 23 32 20 35 Z", fill:"#FFD700", opacity:0.8})
+        )
+      },
+      deco_emote_rainbow_b: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 40 50", width:s*0.4, height:s*0.4, style:{position:"absolute", top:s*0.08, left:s*0.75, zIndex:7, filter:"drop-shadow(0 2px 3px rgba(0,0,0,0.2))"}},
+          React.createElement("path", {d:"M 20 40 L 15 25 L 20 15 L 25 25 Z", fill:"#FF0000"}),
+          React.createElement("path", {d:"M 20 40 L 20 25 L 25 15 Z", fill:"#00FF00"}),
+          React.createElement("path", {d:"M 20 40 L 25 25 L 20 15 Z", fill:"#0000FF"}),
+          React.createElement("path", {d:"M 20 40 L 15 25 L 15 15 Z", fill:"#FFD700"})
+        )
+      },
+      deco_emote_reading: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 40 50", width:s*0.4, height:s*0.4, style:{position:"absolute", top:s*0.08, left:s*0.75, zIndex:7, filter:"drop-shadow(0 2px 3px rgba(0,0,0,0.3))"}},
+          React.createElement("rect", {x:12, y:15, width:16, height:20, rx:1, fill:"#D2691E", stroke:"#8B4513", strokeWidth:0.8}),
+          React.createElement("line", {x1:20, y1:15, x2:20, y2:35, stroke:"#8B4513", strokeWidth:0.8}),
+          React.createElement("line", {x1:14, y1:20, x2:18, y2:20, stroke:"#FFD700", strokeWidth:0.5}),
+          React.createElement("line", {x1:14, y1:25, x2:18, y2:25, stroke:"#FFD700", strokeWidth:0.5})
+        )
+      },
+      deco_emote_idea: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 40 50", width:s*0.4, height:s*0.4, style:{position:"absolute", top:s*0.08, left:s*0.75, zIndex:7, filter:"drop-shadow(0 2px 4px rgba(255,215,0,0.3))"}},
+          React.createElement("path", {d:"M 20 15 Q 25 18 25 24 Q 25 30 20 32 Q 15 30 15 24 Q 15 18 20 15 Z", fill:"#FFD700", stroke:"#FFA500", strokeWidth:0.8}),
+          React.createElement("rect", {x:18, y:32, width:4, height:6, fill:"#8B7355"}),
+          React.createElement("path", {d:"M 16 38 L 24 38", stroke:"#8B7355", strokeWidth:1})
+        )
+      },
+      deco_emote_music: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 40 50", width:s*0.4, height:s*0.4, style:{position:"absolute", top:s*0.08, left:s*0.75, zIndex:7, filter:"drop-shadow(0 2px 3px rgba(0,0,0,0.3))"}},
+          React.createElement("circle", {cx:12, cy:32, r:3, fill:"#FF69B4"}),
+          React.createElement("path", {d:"M 12 29 L 12 10", stroke:"#000", strokeWidth:1.5}),
+          React.createElement("circle", {cx:28, cy:24, r:3, fill:"#00BFFF"}),
+          React.createElement("path", {d:"M 28 21 L 28 5", stroke:"#000", strokeWidth:1.5}),
+          React.createElement("path", {d:"M 12 10 Q 18 8 28 5", stroke:"#000", strokeWidth:1})
+        )
+      },
+      deco_emote_crown: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 40 50", width:s*0.4, height:s*0.4, style:{position:"absolute", top:s*0.08, left:s*0.75, zIndex:7, filter:"drop-shadow(0 2px 4px rgba(255,215,0,0.3))"}},
+          React.createElement("path", {d:"M 10 38 L 14 18 L 20 10 L 26 18 L 30 38 Z", fill:"#FFD700", stroke:"#FFA500", strokeWidth:0.8}),
+          React.createElement("circle", {cx:14, cy:22, r:1.5, fill:"#E74C3C"}),
+          React.createElement("circle", {cx:20, cy:12, r:1.5, fill:"#3498DB"}),
+          React.createElement("circle", {cx:26, cy:22, r:1.5, fill:"#2ECC71"})
+        )
+      },
+
+      // ═══ WEAPON ITEMS ═══
+      deco_weapon_sword: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 20 50", width:s*0.35, height:s*0.48, style:{position:"absolute", top:s*0.42, left:s*-0.25, zIndex:4, transform:"rotate(-20deg)", filter:"drop-shadow(0 2px 4px rgba(0,0,0,0.3))"}},
+          React.createElement("path", {d:"M 8 48 L 10 8 L 12 8 L 14 48 Z", fill:"#C0C0C0", stroke:"#808080", strokeWidth:0.5}),
+          React.createElement("path", {d:"M 9 6 L 11 2 L 13 6 Z", fill:"#FFD700"}),
+          React.createElement("rect", {x:8, y:46, width:4, height:2, fill:"#8B4513"})
+        )
+      },
+      deco_weapon_wand: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 20 55", width:s*0.32, height:s*0.5, style:{position:"absolute", top:s*0.38, left:s*-0.25, zIndex:4, transform:"rotate(-25deg)", filter:"drop-shadow(0 2px 4px rgba(138,43,226,0.3))"}},
+          React.createElement("path", {d:"M 9 52 L 10 10 L 11 52 Z", fill:"#8B4513", stroke:"#654321", strokeWidth:0.5}),
+          React.createElement("circle", {cx:10, cy:5, r:4, fill:"#8A2BE2", stroke:"#6A1B9A", strokeWidth:0.8}),
+          React.createElement("path", {d:"M 7 5 L 10 1 L 13 5", stroke:"#FFD700", strokeWidth:0.8, fill:"none"})
+        )
+      },
+      deco_weapon_shield: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 35 45", width:s*0.38, height:s*0.42, style:{position:"absolute", top:s*0.42, left:s*-0.28, zIndex:4, filter:"drop-shadow(0 2px 4px rgba(0,0,0,0.3))"}},
+          React.createElement("defs", null, React.createElement("linearGradient", {id:"shieldGrad", x1:"0%", y1:"0%", x2:"100%", y2:"0%"}, React.createElement("stop", {offset:"0%", stopColor:"#FFD700"}), React.createElement("stop", {offset:"100%", stopColor:"#FFA500"}))),
+          React.createElement("path", {d:"M 8 5 L 8 28 Q 17 38 17 38 Q 26 28 27 5 Z", fill:"url(#shieldGrad)", stroke:"#DAA520", strokeWidth:1}),
+          React.createElement("circle", {cx:17, cy:20, r:5, fill:"none", stroke:"#DAA520", strokeWidth:1})
+        )
+      },
+      deco_weapon_gun: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 50 30", width:s*0.48, height:s*0.3, style:{position:"absolute", top:s*0.48, left:s*-0.3, zIndex:4, transform:"rotate(-20deg)", filter:"drop-shadow(0 2px 4px rgba(0,0,0,0.3))"}},
+          React.createElement("rect", {x:5, y:12, width:30, height:6, rx:2, fill:"#696969", stroke:"#404040", strokeWidth:0.8}),
+          React.createElement("rect", {x:28, y:8, width:12, height:14, rx:1, fill:"#696969", stroke:"#404040", strokeWidth:0.8}),
+          React.createElement("circle", {cx:32, cy:15, r:3, fill:"#FFD700", opacity:0.8})
+        )
+      },
+      deco_weapon_ninja: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 25 50", width:s*0.3, height:s*0.46, style:{position:"absolute", top:s*0.42, left:s*-0.23, zIndex:4, transform:"rotate(-25deg)", filter:"drop-shadow(0 2px 4px rgba(0,0,0,0.3))"}},
+          React.createElement("path", {d:"M 12.5 2 L 18 12 L 12.5 10 L 7 12 Z", fill:"#FFD700", stroke:"#FFA500", strokeWidth:0.6}),
+          React.createElement("rect", {x:11.5, y:10, width:2, height:38, fill:"#1a1a1a", stroke:"#000", strokeWidth:0.5})
+        )
+      },
+      deco_weapon_pirate: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 20 45", width:s*0.32, height:s*0.45, style:{position:"absolute", top:s*0.42, left:s*-0.25, zIndex:4, transform:"rotate(-22deg)", filter:"drop-shadow(0 2px 4px rgba(0,0,0,0.3))"}},
+          React.createElement("path", {d:"M 8 43 L 10 8 L 12 8 L 14 43 Z", fill:"#8B4513", stroke:"#654321", strokeWidth:0.6}),
+          React.createElement("path", {d:"M 10 6 L 8 3 L 10 5 L 12 3 Z", fill:"#FFD700"},
+            React.createElement("path", {d:"M 8 8 L 5 12 L 7 9 Z", fill:"#FF6B6B"})
+          )
+        )
+      },
+      deco_weapon_book: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 30 40", width:s*0.38, height:s*0.42, style:{position:"absolute", top:s*0.42, left:s*-0.27, zIndex:4, filter:"drop-shadow(0 2px 4px rgba(0,0,0,0.3))"}},
+          React.createElement("rect", {x:5, y:5, width:20, height:30, rx:1, fill:"#D2691E", stroke:"#8B4513", strokeWidth:0.8}),
+          React.createElement("line", {x1:15, y1:5, x2:15, y2:35, stroke:"#8B4513", strokeWidth:0.8}),
+          React.createElement("line", {x1:7, y1:10, x2:13, y2:10, stroke:"#FFD700", strokeWidth:0.5}),
+          React.createElement("line", {x1:7, y1:15, x2:13, y2:15, stroke:"#FFD700", strokeWidth:0.5}),
+          React.createElement("line", {x1:17, y1:10, x2:23, y2:10, stroke:"#FFD700", strokeWidth:0.5}),
+          React.createElement("line", {x1:17, y1:15, x2:23, y2:15, stroke:"#FFD700", strokeWidth:0.5})
+        )
+      },
+      deco_weapon_key: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 45 30", width:s*0.42, height:s*0.28, style:{position:"absolute", top:s*0.5, left:s*-0.28, zIndex:4, filter:"drop-shadow(0 2px 3px rgba(0,0,0,0.3))"}},
+          React.createElement("circle", {cx:12, cy:15, r:8, fill:"none", stroke:"#FFD700", strokeWidth:1.5}),
+          React.createElement("line", {x1:20, y1:15, x2:40, y2:15, stroke:"#FFD700", strokeWidth:2}),
+          React.createElement("rect", {x:35, y:12, width:6, height:6, fill:"#FFD700", stroke:"#FFA500", strokeWidth:0.5})
+        )
+      },
+      deco_weapon_staff: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 20 55", width:s*0.3, height:s*0.52, style:{position:"absolute", top:s*0.38, left:s*-0.25, zIndex:4, transform:"rotate(-20deg)", filter:"drop-shadow(0 2px 4px rgba(138,43,226,0.3))"}},
+          React.createElement("path", {d:"M 9 52 L 10 10 L 11 52 Z", fill:"#8B4513", stroke:"#654321", strokeWidth:0.6}),
+          React.createElement("circle", {cx:10, cy:6, r:3.5, fill:"#8A2BE2", stroke:"#6A1B9A", strokeWidth:0.8}),
+          React.createElement("path", {d:"M 7 6 L 10 2 L 13 6", stroke:"#FFD700", strokeWidth:0.8, fill:"none"})
+        )
+      },
+      deco_weapon_orb: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 35 40", width:s*0.38, height:s*0.4, style:{position:"absolute", top:s*0.45, left:s*-0.27, zIndex:4, filter:"drop-shadow(0 2px 4px rgba(255,100,0,0.3))"}},
+          React.createElement("defs", null, React.createElement("radialGradient", {id:"orbWeaponGrad", cx:"40%", cy:"40%"}, React.createElement("stop", {offset:"0%", stopColor:"#FFD700"}), React.createElement("stop", {offset:"100%", stopColor:"#FF6B35"}))),
+          React.createElement("circle", {cx:17.5, cy:18, r:10, fill:"url(#orbWeaponGrad)", stroke:"#D84315", strokeWidth:1}),
+          React.createElement("path", {d:"M 12 18 Q 17.5 14 23 18", stroke:"#FFF", strokeWidth:0.8, fill:"none", opacity:0.6})
+        )
+      },
+      deco_weapon_flag: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 30 40", width:s*0.32, height:s*0.4, style:{position:"absolute", top:s*0.42, left:s*-0.24, zIndex:4, filter:"drop-shadow(0 2px 3px rgba(0,0,0,0.3))"}},
+          React.createElement("rect", {x:12, y:5, width:2, height:32, fill:"#8B4513", stroke:"#654321", strokeWidth:0.5}),
+          React.createElement("path", {d:"M 14 8 L 24 8 Q 26 12 24 16 L 14 16 Z", fill:"#FFD700", stroke:"#FFA500", strokeWidth:0.8})
+        )
+      },
+      deco_weapon_trophy: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 35 45", width:s*0.38, height:s*0.42, style:{position:"absolute", top:s*0.4, left:s*-0.27, zIndex:4, filter:"drop-shadow(0 2px 4px rgba(255,215,0,0.3))"}},
+          React.createElement("defs", null, React.createElement("linearGradient", {id:"trophyGrad", x1:"0%", y1:"0%", x2:"0%", y2:"100%"}, React.createElement("stop", {offset:"0%", stopColor:"#FFD700"}), React.createElement("stop", {offset:"100%", stopColor:"#FFA500"}))),
+          React.createElement("path", {d:"M 8 35 L 10 12 L 15 8 L 15 5 L 20 5 L 20 8 L 25 12 L 27 35 Z", fill:"url(#trophyGrad)", stroke:"#DAA520", strokeWidth:0.8}),
+          React.createElement("rect", {x:10, y:35, width:15, height:2, fill:"url(#trophyGrad)", stroke:"#DAA520", strokeWidth:0.5})
+        )
+      },
+
+      // ═══ WING ITEMS ═══
+      deco_wing_angel: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 100 60", width:s*1.3, height:s*0.7, style:{position:"absolute", top:s*0.15, left:s*-0.2, zIndex:1, opacity:0.85, filter:"drop-shadow(0 2px 4px rgba(255,215,0,0.3))"}},
+          React.createElement("ellipse", {cx:20, cy:30, rx:12, ry:22, fill:"none", stroke:"#FFD700", strokeWidth:2}),
+          React.createElement("ellipse", {cx:80, cy:30, rx:12, ry:22, fill:"none", stroke:"#FFD700", strokeWidth:2}),
+          React.createElement("path", {d:"M 16 15 Q 20 10 24 15", stroke:"#FFD700", strokeWidth:1.5, fill:"none"}),
+          React.createElement("path", {d:"M 76 15 Q 80 10 84 15", stroke:"#FFD700", strokeWidth:1.5, fill:"none"})
+        )
+      },
+      deco_wing_devil: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 100 60", width:s*1.3, height:s*0.7, style:{position:"absolute", top:s*0.12, left:s*-0.2, zIndex:1, opacity:0.85, filter:"drop-shadow(0 2px 4px rgba(0,0,0,0.3))"}},
+          React.createElement("path", {d:"M 20 45 Q 15 30 18 15 Q 20 20 20 30", fill:"#8B0000", opacity:0.7}),
+          React.createElement("path", {d:"M 80 45 Q 85 30 82 15 Q 80 20 80 30", fill:"#8B0000", opacity:0.7}),
+          React.createElement("path", {d:"M 18 12 L 20 5 L 22 12", fill:"#FF6B6B"}),
+          React.createElement("path", {d:"M 78 12 L 80 5 L 82 12", fill:"#FF6B6B"})
+        )
+      },
+      deco_wing_dragon: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 100 70", width:s*1.4, height:s*0.75, style:{position:"absolute", top:s*0.12, left:s*-0.25, zIndex:1, opacity:0.8, filter:"drop-shadow(0 2px 4px rgba(0,0,0,0.3))"}},
+          React.createElement("path", {d:"M 15 50 L 25 35 L 30 20 L 35 35 L 35 50 Z", fill:"#E74C3C", stroke:"#C0392B", strokeWidth:1.5}),
+          React.createElement("path", {d:"M 85 50 L 75 35 L 70 20 L 65 35 L 65 50 Z", fill:"#E74C3C", stroke:"#C0392B", strokeWidth:1.5}),
+          React.createElement("line", {x1:35, y1:20, x2:50, y2:15, stroke:"#E74C3C", strokeWidth:2}),
+          React.createElement("line", {x1:65, y1:20, x2:50, y2:15, stroke:"#E74C3C", strokeWidth:2})
+        )
+      },
+      deco_wing_butterfly: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 100 60", width:s*1.3, height:s*0.65, style:{position:"absolute", top:s*0.15, left:s*-0.2, zIndex:1, opacity:0.8, filter:"drop-shadow(0 2px 3px rgba(0,0,0,0.2))"}},
+          React.createElement("ellipse", {cx:22, cy:25, rx:14, ry:18, fill:"#FF69B4", stroke:"#C71585", strokeWidth:1}),
+          React.createElement("ellipse", {cx:78, cy:25, rx:14, ry:18, fill:"#FF69B4", stroke:"#C71585", strokeWidth:1}),
+          React.createElement("path", {d:"M 22 8 Q 18 5 20 2", stroke:"#FFD700", strokeWidth:1.5, fill:"none"}),
+          React.createElement("path", {d:"M 78 8 Q 82 5 80 2", stroke:"#FFD700", strokeWidth:1.5, fill:"none"})
+        )
+      },
+      deco_wing_fire: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 100 70", width:s*1.3, height:s*0.72, style:{position:"absolute", top:s*0.12, left:s*-0.2, zIndex:1, opacity:0.8, filter:"drop-shadow(0 2px 4px rgba(255,100,0,0.3))"}},
+          React.createElement("path", {d:"M 20 55 Q 18 40 22 25 Q 24 35 22 50 Z", fill:"#FF6B35", opacity:0.8}),
+          React.createElement("path", {d:"M 80 55 Q 82 40 78 25 Q 76 35 78 50 Z", fill:"#FF6B35", opacity:0.8}),
+          React.createElement("path", {d:"M 22 50 Q 20 40 24 30 Q 26 38 24 48 Z", fill:"#FFD700", opacity:0.7}),
+          React.createElement("path", {d:"M 78 50 Q 80 40 76 30 Q 74 38 76 48 Z", fill:"#FFD700", opacity:0.7})
+        )
+      },
+      deco_wing_ice: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 100 70", width:s*1.3, height:s*0.72, style:{position:"absolute", top:s*0.12, left:s*-0.2, zIndex:1, opacity:0.8, filter:"drop-shadow(0 2px 4px rgba(135,206,235,0.3))"}},
+          React.createElement("path", {d:"M 20 55 Q 18 40 22 25 L 26 40 Z", fill:"#87CEEB", opacity:0.7}),
+          React.createElement("path", {d:"M 80 55 Q 82 40 78 25 L 74 40 Z", fill:"#87CEEB", opacity:0.7}),
+          React.createElement("line", {x1:22, y1:25, x2:20, y2:15, stroke:"#ADD8E6", strokeWidth:1.5}),
+          React.createElement("line", {x1:78, y1:25, x2:80, y2:15, stroke:"#ADD8E6", strokeWidth:1.5})
+        )
+      },
+      deco_wing_mech: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 100 70", width:s*1.3, height:s*0.72, style:{position:"absolute", top:s*0.15, left:s*-0.2, zIndex:1, opacity:0.85, filter:"drop-shadow(0 2px 4px rgba(0,0,0,0.3))"}},
+          React.createElement("rect", {x:10, y:25, width:20, height:30, rx:2, fill:"#808080", stroke:"#404040", strokeWidth:1}),
+          React.createElement("rect", {x:70, y:25, width:20, height:30, rx:2, fill:"#808080", stroke:"#404040", strokeWidth:1}),
+          React.createElement("circle", {cx:20, cy:35, r:3, fill:"#FFD700"}),
+          React.createElement("circle", {cx:80, cy:35, r:3, fill:"#FFD700"}),
+          React.createElement("rect", {x:16, y:48, width:8, height:2, fill:"#404040"})
+        )
+      },
+      deco_wing_rainbow: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 100 70", width:s*1.3, height:s*0.72, style:{position:"absolute", top:s*0.12, left:s*-0.2, zIndex:1, opacity:0.8, filter:"drop-shadow(0 2px 3px rgba(0,0,0,0.2))"}},
+          React.createElement("path", {d:"M 20 55 Q 18 35 25 20", fill:"none", stroke:"#FF0000", strokeWidth:3}),
+          React.createElement("path", {d:"M 20 55 Q 22 40 28 22", fill:"none", stroke:"#FFD700", strokeWidth:2.5}),
+          React.createElement("path", {d:"M 80 55 Q 82 35 75 20", fill:"none", stroke:"#0000FF", strokeWidth:3}),
+          React.createElement("path", {d:"M 80 55 Q 78 40 72 22", fill:"none", stroke:"#00FF00", strokeWidth:2.5})
+        )
+      },
+      deco_wing_cape_red: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 100 80", width:s*1.3, height:s*0.8, style:{position:"absolute", top:s*0.15, left:s*-0.25, zIndex:1, opacity:0.85, filter:"drop-shadow(0 2px 4px rgba(0,0,0,0.3))"}},
+          React.createElement("path", {d:"M 30 20 Q 10 30 8 60 L 35 65 Q 32 40 30 20 Z", fill:"#E74C3C", opacity:0.8}),
+          React.createElement("path", {d:"M 70 20 Q 90 30 92 60 L 65 65 Q 68 40 70 20 Z", fill:"#E74C3C", opacity:0.8})
+        )
+      },
+      deco_wing_cape_purple: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 100 80", width:s*1.3, height:s*0.8, style:{position:"absolute", top:s*0.15, left:s*-0.25, zIndex:1, opacity:0.85, filter:"drop-shadow(0 2px 4px rgba(0,0,0,0.3))"}},
+          React.createElement("path", {d:"M 30 20 Q 10 30 8 60 L 35 65 Q 32 40 30 20 Z", fill:"#9370DB", opacity:0.8}),
+          React.createElement("path", {d:"M 70 20 Q 90 30 92 60 L 65 65 Q 68 40 70 20 Z", fill:"#9370DB", opacity:0.8})
+        )
+      },
+      deco_wing_jetpack: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 100 70", width:s*1.2, height:s*0.68, style:{position:"absolute", top:s*0.18, left:s*-0.15, zIndex:1, opacity:0.85, filter:"drop-shadow(0 2px 4px rgba(255,100,0,0.3))"}},
+          React.createElement("rect", {x:35, y:10, width:10, height:50, fill:"#696969", stroke:"#404040", strokeWidth:1}),
+          React.createElement("circle", {cx:30, cy:50, r:6, fill:"none", stroke:"#FF6B35", strokeWidth:2}),
+          React.createElement("circle", {cx:70, cy:50, r:6, fill:"none", stroke:"#FF6B35", strokeWidth:2}),
+          React.createElement("path", {d:"M 28 56 L 20 70", stroke:"#FFD700", strokeWidth:1.5}),
+          React.createElement("path", {d:"M 72 56 L 80 70", stroke:"#FFD700", strokeWidth:1.5})
+        )
+      },
+      deco_wing_bag: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 100 70", width:s*1.1, height:s*0.65, style:{position:"absolute", top:s*0.2, left:s*-0.15, zIndex:1, opacity:0.8, filter:"drop-shadow(0 2px 3px rgba(0,0,0,0.3))"}},
+          React.createElement("path", {d:"M 20 25 L 18 60 L 35 62 L 35 25 Z", fill:"#D2691E", stroke:"#8B4513", strokeWidth:1}),
+          React.createElement("path", {d:"M 80 25 L 82 60 L 65 62 L 65 25 Z", fill:"#D2691E", stroke:"#8B4513", strokeWidth:1}),
+          React.createElement("circle", {cx:27, cy:40, r:3, fill:"#FFD700", opacity:0.6}),
+          React.createElement("circle", {cx:73, cy:40, r:3, fill:"#FFD700", opacity:0.6})
+        )
+      },
+
+      // ═══ FRAME ITEMS ═══
+      star_frame: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 120 120", width:s*1.2, height:s*1.2, style:{position:"absolute", top:s*-0.1, left:s*-0.1, zIndex:3, filter:"drop-shadow(0 2px 4px rgba(255,215,0,0.3))"}},
+          React.createElement("circle", {cx:60, cy:60, r:58, fill:"none", stroke:"#FFD700", strokeWidth:3}),
+          React.createElement("path", {d:"M 60 10 L 68 35 L 95 35 L 73 52 L 81 77 L 60 60 L 39 77 L 47 52 L 25 35 L 52 35 Z", fill:"none", stroke:"#FFD700", strokeWidth:2}),
+          React.createElement("circle", {cx:60, cy:60, r:50, fill:"none", stroke:"#FFD700", strokeWidth:1, opacity:0.5})
+        )
+      },
+      deco_frame_gold_crown: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 120 120", width:s*1.2, height:s*1.2, style:{position:"absolute", top:s*-0.1, left:s*-0.1, zIndex:3, filter:"drop-shadow(0 2px 4px rgba(255,215,0,0.4))"}},
+          React.createElement("defs", null, React.createElement("linearGradient", {id:"crownFrameGrad", x1:"0%", y1:"0%", x2:"0%", y2:"100%"}, React.createElement("stop", {offset:"0%", stopColor:"#FFE082"}), React.createElement("stop", {offset:"100%", stopColor:"#DAA520"}))),
+          React.createElement("circle", {cx:60, cy:60, r:58, fill:"none", stroke:"url(#crownFrameGrad)", strokeWidth:4}),
+          React.createElement("path", {d:"M 30 65 L 40 35 L 50 50 L 60 20 L 70 50 L 80 35 L 90 65 Z", fill:"none", stroke:"url(#crownFrameGrad)", strokeWidth:2.5}),
+          React.createElement("circle", {cx:60, cy:60, r:52, fill:"none", stroke:"url(#crownFrameGrad)", strokeWidth:1, opacity:0.5})
+        )
+      },
+      deco_frame_diamond: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 120 120", width:s*1.2, height:s*1.2, style:{position:"absolute", top:s*-0.1, left:s*-0.1, zIndex:3, filter:"drop-shadow(0 2px 4px rgba(135,206,235,0.3))"}},
+          React.createElement("circle", {cx:60, cy:60, r:58, fill:"none", stroke:"#87CEEB", strokeWidth:3}),
+          React.createElement("path", {d:"M 60 20 L 80 40 L 60 60 L 80 80 L 60 100 L 40 80 L 60 60 L 40 40 Z", fill:"none", stroke:"#87CEEB", strokeWidth:2}),
+          React.createElement("circle", {cx:60, cy:60, r:45, fill:"none", stroke:"#87CEEB", strokeWidth:1, opacity:0.4}),
+          React.createElement("circle", {cx:60, cy:60, r:52, fill:"none", stroke:"#87CEEB", strokeWidth:1, opacity:0.4})
+        )
+      },
+      deco_frame_fire: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 120 120", width:s*1.2, height:s*1.2, style:{position:"absolute", top:s*-0.1, left:s*-0.1, zIndex:3, filter:"drop-shadow(0 2px 4px rgba(255,100,0,0.4))"}},
+          React.createElement("circle", {cx:60, cy:60, r:58, fill:"none", stroke:"#FF6B35", strokeWidth:3}),
+          React.createElement("path", {d:"M 30 60 Q 25 45 30 30 Q 35 45 30 60 Z", fill:"none", stroke:"#FF6B35", strokeWidth:2, opacity:0.7}),
+          React.createElement("path", {d:"M 90 60 Q 95 45 90 30 Q 85 45 90 60 Z", fill:"none", stroke:"#FF6B35", strokeWidth:2, opacity:0.7}),
+          React.createElement("path", {d:"M 60 30 Q 55 20 60 10 Q 65 20 60 30 Z", fill:"none", stroke:"#FFD700", strokeWidth:2, opacity:0.6})
+        )
+      },
+      deco_frame_ice: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 120 120", width:s*1.2, height:s*1.2, style:{position:"absolute", top:s*-0.1, left:s*-0.1, zIndex:3, filter:"drop-shadow(0 2px 4px rgba(135,206,250,0.3))"}},
+          React.createElement("circle", {cx:60, cy:60, r:58, fill:"none", stroke:"#ADD8E6", strokeWidth:3, strokeDasharray:"5,5"}),
+          React.createElement("line", {x1:60, y1:10, x2:60, y2:25, stroke:"#ADD8E6", strokeWidth:1.5}),
+          React.createElement("line", {x1:60, y1:95, x2:60, y2:110, stroke:"#ADD8E6", strokeWidth:1.5}),
+          React.createElement("line", {x1:10, y1:60, x2:25, y2:60, stroke:"#ADD8E6", strokeWidth:1.5}),
+          React.createElement("line", {x1:95, y1:60, x2:110, y2:60, stroke:"#ADD8E6", strokeWidth:1.5})
+        )
+      },
+      deco_frame_rainbow: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 120 120", width:s*1.2, height:s*1.2, style:{position:"absolute", top:s*-0.1, left:s*-0.1, zIndex:3, filter:"drop-shadow(0 2px 3px rgba(0,0,0,0.2))"}},
+          React.createElement("circle", {cx:60, cy:60, r:50, fill:"none", stroke:"#FF0000", strokeWidth:2}),
+          React.createElement("circle", {cx:60, cy:60, r:54, fill:"none", stroke:"#FFD700", strokeWidth:1.5}),
+          React.createElement("circle", {cx:60, cy:60, r:46, fill:"none", stroke:"#00FF00", strokeWidth:1.5}),
+          React.createElement("circle", {cx:60, cy:60, r:58, fill:"none", stroke:"#0000FF", strokeWidth:2})
+        )
+      },
+      deco_frame_starlight: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 120 120", width:s*1.2, height:s*1.2, style:{position:"absolute", top:s*-0.1, left:s*-0.1, zIndex:3, filter:"drop-shadow(0 2px 4px rgba(255,215,0,0.3))"}},
+          React.createElement("circle", {cx:60, cy:60, r:58, fill:"none", stroke:"#FFD700", strokeWidth:2.5}),
+          React.createElement("path", {d:"M 60 15 L 65 30 L 80 30 L 70 40 L 75 55 L 60 45 L 45 55 L 50 40 L 40 30 L 55 30 Z", fill:"#FFD700", opacity:0.6}),
+          React.createElement("circle", {cx:60, cy:60, r:50, fill:"none", stroke:"#FFD700", strokeWidth:1, opacity:0.4})
+        )
+      },
+      deco_frame_dragon: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 120 120", width:s*1.2, height:s*1.2, style:{position:"absolute", top:s*-0.1, left:s*-0.1, zIndex:3, filter:"drop-shadow(0 2px 4px rgba(0,0,0,0.3))"}},
+          React.createElement("circle", {cx:60, cy:60, r:58, fill:"none", stroke:"#E74C3C", strokeWidth:3}),
+          React.createElement("path", {d:"M 30 30 L 25 20 L 30 25 Z", fill:"#E74C3C"}),
+          React.createElement("path", {d:"M 90 30 L 95 20 L 90 25 Z", fill:"#E74C3C"}),
+          React.createElement("path", {d:"M 30 90 L 25 100 L 30 95 Z", fill:"#E74C3C"}),
+          React.createElement("path", {d:"M 90 90 L 95 100 L 90 95 Z", fill:"#E74C3C"})
+        )
+      },
+      deco_frame_skull: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 120 120", width:s*1.2, height:s*1.2, style:{position:"absolute", top:s*-0.1, left:s*-0.1, zIndex:3, filter:"drop-shadow(0 2px 4px rgba(0,0,0,0.4))"}},
+          React.createElement("circle", {cx:60, cy:60, r:58, fill:"none", stroke:"#8B0000", strokeWidth:3}),
+          React.createElement("circle", {cx:50, cy:50, r:8, fill:"none", stroke:"#8B0000", strokeWidth:2}),
+          React.createElement("circle", {cx:70, cy:50, r:8, fill:"none", stroke:"#8B0000", strokeWidth:2}),
+          React.createElement("path", {d:"M 50 65 L 70 65", stroke:"#8B0000", strokeWidth:2})
+        )
+      },
+      deco_frame_flower: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 120 120", width:s*1.2, height:s*1.2, style:{position:"absolute", top:s*-0.1, left:s*-0.1, zIndex:3, filter:"drop-shadow(0 2px 3px rgba(0,0,0,0.2))"}},
+          React.createElement("circle", {cx:60, cy:60, r:58, fill:"none", stroke:"#FF69B4", strokeWidth:2.5}),
+          React.createElement("circle", {cx:60, cy:20, r:6, fill:"#FF69B4", opacity:0.6}),
+          React.createElement("circle", {cx:100, cy:60, r:6, fill:"#FF69B4", opacity:0.6}),
+          React.createElement("circle", {cx:60, cy:100, r:6, fill:"#FF69B4", opacity:0.6}),
+          React.createElement("circle", {cx:20, cy:60, r:6, fill:"#FF69B4", opacity:0.6}),
+          React.createElement("circle", {cx:60, cy:60, r:48, fill:"none", stroke:"#FF69B4", strokeWidth:1, opacity:0.4})
+        )
+      },
+      deco_frame_lightning: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 120 120", width:s*1.2, height:s*1.2, style:{position:"absolute", top:s*-0.1, left:s*-0.1, zIndex:3, filter:"drop-shadow(0 2px 4px rgba(255,215,0,0.3))"}},
+          React.createElement("circle", {cx:60, cy:60, r:58, fill:"none", stroke:"#FFD700", strokeWidth:2.5}),
+          React.createElement("path", {d:"M 55 20 L 60 50 L 50 55 L 65 85", stroke:"#FFD700", strokeWidth:2, fill:"none"}),
+          React.createElement("path", {d:"M 65 20 L 60 50 L 70 55 L 55 85", stroke:"#FFD700", strokeWidth:2, fill:"none"})
+        )
+      },
+      deco_frame_neon: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 120 120", width:s*1.2, height:s*1.2, style:{position:"absolute", top:s*-0.1, left:s*-0.1, zIndex:3, filter:"drop-shadow(0 2px 4px rgba(0,255,255,0.3))"}},
+          React.createElement("rect", {x:10, y:10, width:100, height:100, rx:8, fill:"none", stroke:"#00FFFF", strokeWidth:3, opacity:0.9}),
+          React.createElement("rect", {x:15, y:15, width:90, height:90, rx:6, fill:"none", stroke:"#FF00FF", strokeWidth:1.5, opacity:0.6})
+        )
+      },
+      deco_frame_space: {
+        render: (s) => React.createElement("svg", {viewBox:"0 0 120 120", width:s*1.2, height:s*1.2, style:{position:"absolute", top:s*-0.1, left:s*-0.1, zIndex:3, filter:"drop-shadow(0 2px 4px rgba(75,0,130,0.3))"}},
+          React.createElement("circle", {cx:60, cy:60, r:58, fill:"none", stroke:"#8A2BE2", strokeWidth:2.5}),
+          React.createElement("circle", {cx:25, cy:25, r:3, fill:"#FFD700", opacity:0.7}),
+          React.createElement("circle", {cx:95, cy:30, r:2, fill:"#FFD700", opacity:0.6}),
+          React.createElement("circle", {cx:90, cy:95, r:2.5, fill:"#FFD700", opacity:0.7}),
+          React.createElement("circle", {cx:30, cy:100, r:2, fill:"#FFD700", opacity:0.6})
+        )
+      },
+
+      // ═══ AURA ITEMS (CSS-based) ═══
+      fire_aura: { render: (s) => null },
+      deco_aura_fire: { render: (s) => null },
+      deco_aura_ice: { render: (s) => null },
+      deco_aura_electric: { render: (s) => null },
+      deco_aura_poison: { render: (s) => null },
+      deco_aura_light: { render: (s) => null },
+      deco_aura_dark: { render: (s) => null },
+      rainbow: { render: (s) => null },
+      deco_aura_rainbow: { render: (s) => null },
+      deco_aura_star: { render: (s) => null },
+      deco_aura_heart: { render: (s) => null },
+      deco_aura_explosion: { render: (s) => null },
+      deco_aura_galaxy: { render: (s) => null },
+      deco_aura_cherry: { render: (s) => null },
+      lightning: { render: (s) => null }
+    };
 
     // ═══════════════════════════════════════
-    // 🎭 AvatarWithItems 컴포넌트
     // ─ 레이어 순서 (뒤→앞):
     //   aura → wing → 아바타 → frame → weapon → pet → hat → face → emote
     // ─ size: 아바타 이미지 크기(px)
@@ -950,9 +1676,6 @@
     // ═══════════════════════════════════════
     const AvatarWithItems = ({ size, avatarId, equippedItems, shape = "circle", borderStyle = {}, onClick = null }) => {
       // ── 패딩 계산 ──────────────────────────────────────────────
-      // HP: 모자가 머리 위로 올라갈 공간 (hat top=-0.24 → 0.24*size 필요)
-      // SP: 날개/오라/프레임이 좌우로 넘칠 공간 (wing left=-0.30 → 0.30*size 필요)
-      // BP: 펫/무기가 아래로 내려올 공간 (pet top=0.48+0.46/2 ≒ 0.71 → size의 71% - size ≒ size*0.15)
       const HP = Math.ceil(size * 0.30);   // hat padding (상단 여유)
       const SP = Math.ceil(size * 0.32);   // side padding (좌우 여유, 날개 포함)
       const BP = Math.ceil(size * 0.18);   // bottom padding (펫/무기 하단 여유)
@@ -960,58 +1683,75 @@
       const totalH = size + HP + BP;
       const avatarRadius = shape === "circle" ? "50%" : Math.round(size * 0.15) + "px";
 
-      // ── 아이템 렌더링 헬퍼 ──────────────────────────────────────
-      const renderItem = (cat, itemId) => {
-        const item = SHOP_ITEMS.find(i => i.id === itemId);
-        if (!item?.icon) return null;
-        const base = ITEM_BASE[cat];
-        if (!base) return null;
-        const adj = ITEM_ADJUST[itemId] || {};
-        const topOff  = adj.topOff  || 0;
-        const leftOff = adj.leftOff || 0;
-        const scaleW  = adj.scaleW  || 1;
-        const scaleH  = adj.scaleH  || 1;
+      // ── SVG 아이템 렌더링 (ITEM_SVG 기반) ──────────────────────
+      const renderSvgItem = (cat, itemId) => {
+        if (!itemId || !ITEM_SVG[itemId]) return null;
+        const svgRenderer = ITEM_SVG[itemId].render;
+        if (!svgRenderer) return null;
 
-        // 픽셀 좌표 계산
-        // top/left = 패딩 기준선 + (base 비율 + 보정 비율) * size
-        const top  = HP + (base.top  + topOff)  * size;
-        const left = SP + (base.left + leftOff) * size;
-        const w    = base.w * size * scaleW;
-        const h    = base.h * size * scaleH;
-
-        // 카테고리별 스타일 특성
-        const opacity   = (cat === "wing" || cat === "aura") ? 0.90 : 1.0;
-        // weapon: 손에 들고 있는 것처럼 기울임
-        const transform = cat === "weapon" ? "rotate(-18deg)" : "none";
-        // 실제 z-index는 ITEM_BASE에서 관리 (레이어 시스템표 참고)
-        const zIdx = base.z;
+        // Aura는 CSS 기반이므로 null 반환하면 무시
+        const svgElement = svgRenderer(size);
+        if (svgElement === null) return null;
 
         return (
-          <img
-            key={`item-${cat}-${itemId}`}
-            src={item.icon}
-            alt=""
-            style={{
-              position: "absolute",
-              top:    Math.round(top),
-              left:   Math.round(left),
-              width:  Math.round(w),
-              height: Math.round(h),
-              zIndex: zIdx,
-              opacity,
-              transform,
-              objectFit: "contain",
-              pointerEvents: "none",
-              imageRendering: "auto",
-              userSelect: "none"
-            }}
-          />
+          <div key={`svg-item-${cat}-${itemId}`} style={{position:"absolute", top:0, left:0, width:"100%", height:"100%"}}>
+            {svgElement}
+          </div>
         );
+      };
+
+      // ── Aura 배경색 스타일 계산 ──────────────────────────────────
+      const getAuraStyle = (auraId) => {
+        const baseStyle = {
+          position: "absolute",
+          top: HP - size * 0.2,
+          left: SP - size * 0.2,
+          width: size * 1.4,
+          height: size * 1.4,
+          borderRadius: "50%",
+          zIndex: 0,
+          opacity: 0.7,
+          pointerEvents: "none"
+        };
+
+        // CSS 기반 오라 효과
+        switch(auraId) {
+          case "fire_aura":
+          case "deco_aura_fire":
+            return {...baseStyle, background: "radial-gradient(circle, rgba(255, 107, 53, 0.6) 0%, rgba(255, 140, 0, 0.3) 50%, transparent 100%)", boxShadow: "0 0 30px rgba(255, 107, 53, 0.5)"};
+          case "rainbow":
+          case "deco_aura_rainbow":
+            return {...baseStyle, background: "conic-gradient(#FF0000, #FFD700, #00FF00, #0000FF, #FF0000)", boxShadow: "0 0 25px rgba(255, 255, 0, 0.3)"};
+          case "lightning":
+            return {...baseStyle, background: "radial-gradient(circle, rgba(255, 215, 0, 0.5) 0%, rgba(255, 215, 0, 0.2) 50%, transparent 100%)", boxShadow: "0 0 35px rgba(255, 215, 0, 0.4)", animation: "pulse 2s infinite"};
+          case "deco_aura_ice":
+            return {...baseStyle, background: "radial-gradient(circle, rgba(135, 206, 235, 0.5) 0%, rgba(176, 224, 230, 0.3) 50%, transparent 100%)", boxShadow: "0 0 25px rgba(135, 206, 235, 0.4)"};
+          case "deco_aura_electric":
+            return {...baseStyle, background: "radial-gradient(circle, rgba(255, 215, 0, 0.6) 0%, rgba(255, 165, 0, 0.3) 50%, transparent 100%)", boxShadow: "0 0 30px rgba(255, 215, 0, 0.5)", animation: "pulse 1.5s infinite"};
+          case "deco_aura_poison":
+            return {...baseStyle, background: "radial-gradient(circle, rgba(148, 0, 211, 0.5) 0%, rgba(75, 0, 130, 0.3) 50%, transparent 100%)", boxShadow: "0 0 25px rgba(148, 0, 211, 0.4)"};
+          case "deco_aura_light":
+            return {...baseStyle, background: "radial-gradient(circle, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 200, 0.3) 50%, transparent 100%)", boxShadow: "0 0 40px rgba(255, 255, 200, 0.4)"};
+          case "deco_aura_dark":
+            return {...baseStyle, background: "radial-gradient(circle, rgba(0, 0, 0, 0.5) 0%, rgba(50, 50, 50, 0.3) 50%, transparent 100%)", boxShadow: "0 0 20px rgba(0, 0, 0, 0.6)"};
+          case "deco_aura_star":
+            return {...baseStyle, background: "radial-gradient(circle, rgba(255, 215, 0, 0.5) 0%, rgba(255, 165, 0, 0.2) 50%, transparent 100%)", boxShadow: "0 0 30px rgba(255, 215, 0, 0.4)"};
+          case "deco_aura_heart":
+            return {...baseStyle, background: "radial-gradient(circle, rgba(255, 105, 180, 0.5) 0%, rgba(255, 192, 203, 0.3) 50%, transparent 100%)", boxShadow: "0 0 25px rgba(255, 105, 180, 0.4)"};
+          case "deco_aura_explosion":
+            return {...baseStyle, background: "radial-gradient(circle, rgba(255, 140, 0, 0.6) 0%, rgba(255, 215, 0, 0.4) 30%, rgba(255, 107, 53, 0.2) 100%)", boxShadow: "0 0 40px rgba(255, 140, 0, 0.5)", animation: "pulse 1.2s infinite"};
+          case "deco_aura_galaxy":
+            return {...baseStyle, background: "radial-gradient(circle, rgba(75, 0, 130, 0.4) 0%, rgba(138, 43, 226, 0.2) 50%, transparent 100%)", boxShadow: "0 0 35px rgba(138, 43, 226, 0.3)"};
+          case "deco_aura_cherry":
+            return {...baseStyle, background: "radial-gradient(circle, rgba(220, 20, 60, 0.5) 0%, rgba(255, 192, 203, 0.3) 50%, transparent 100%)", boxShadow: "0 0 25px rgba(220, 20, 60, 0.4)"};
+          default:
+            return baseStyle;
+        }
       };
 
       // ── 렌더링 ─────────────────────────────────────────────────
       // 레이어 순서: aura(z0) → wing(z1) → [아바타 z2] → frame(z3)
-      //             → weapon/pet(z4) → hat(z5) → face(z6) → emote(z7)
+      //             → weapon(z4) → pet(z4) → hat(z5) → face(z6) → emote(z7)
       return (
         <div
           style={{
@@ -1020,17 +1760,23 @@
             display: "inline-block",
             cursor: onClick ? "pointer" : "default",
             flexShrink: 0,
-            overflow: "visible"   // 아이템이 경계 밖으로 나와도 보이도록
+            overflow: "visible"
           }}
           onClick={onClick}
         >
-          {/* ─── 배경 레이어: aura만 (아바타보다 뒤) ─── */}
+          {/* ─── Aura 배경 (z:0) ─── */}
           {(() => {
             const auraId = equippedItems?.["aura"];
-            return auraId ? renderItem("aura", auraId) : null;
+            return auraId ? <div style={getAuraStyle(auraId)} /> : null;
           })()}
 
-          {/* ─── 아바타 이미지 (z:2, overflow:hidden으로 원형 클리핑) ─── */}
+          {/* ─── Wing (z:1) ─── */}
+          {(() => {
+            const wingId = equippedItems?.["wing"];
+            return wingId ? renderSvgItem("wing", wingId) : null;
+          })()}
+
+          {/* ─── 아바타 이미지 (z:2) ─── */}
           <div style={{
             position: "absolute",
             top: HP, left: SP,
@@ -1044,10 +1790,40 @@
             <AvatarIcon avatarId={avatarId} size={size} style={{ borderRadius: avatarRadius }} />
           </div>
 
-          {/* ─── 전경 레이어: frame만 (나머지는 효과 카드 시스템으로 전환) ─── */}
+          {/* ─── Frame (z:3) ─── */}
           {(() => {
             const frameId = equippedItems?.["frame"];
-            return frameId ? renderItem("frame", frameId) : null;
+            return frameId ? renderSvgItem("frame", frameId) : null;
+          })()}
+
+          {/* ─── Weapon (z:4) ─── */}
+          {(() => {
+            const weaponId = equippedItems?.["weapon"];
+            return weaponId ? renderSvgItem("weapon", weaponId) : null;
+          })()}
+
+          {/* ─── Pet (z:4) ─── */}
+          {(() => {
+            const petId = equippedItems?.["pet"];
+            return petId ? renderSvgItem("pet", petId) : null;
+          })()}
+
+          {/* ─── Hat (z:5) ─── */}
+          {(() => {
+            const hatId = equippedItems?.["hat"];
+            return hatId ? renderSvgItem("hat", hatId) : null;
+          })()}
+
+          {/* ─── Face (z:6) ─── */}
+          {(() => {
+            const faceId = equippedItems?.["face"];
+            return faceId ? renderSvgItem("face", faceId) : null;
+          })()}
+
+          {/* ─── Emote (z:7) ─── */}
+          {(() => {
+            const emoteId = equippedItems?.["emote"];
+            return emoteId ? renderSvgItem("emote", emoteId) : null;
           })()}
         </div>
       );
@@ -1282,7 +2058,16 @@
     function BookQuest() {
       const [profile, setProfile] = useState(null);
       const [profileForm, setProfileForm] = useState({ name: "", school: "", grade: "6", avatar: "crow" });
-      const [screen, setScreen] = useState("home");
+      const [screen, _setScreenRaw] = useState("home");
+      const screenRef = useRef("home");
+
+      // 화면 전환 시 history에 push하여 뒤로가기 버튼이 앱 내에서 동작하도록
+      const setScreen = (newScreen) => {
+        if (newScreen === screenRef.current) return;
+        screenRef.current = newScreen;
+        _setScreenRaw(newScreen);
+        window.history.pushState({ screen: newScreen }, "", "");
+      };
       const [selectedBook, setSelectedBook] = useState(null);
       const [bookTab, setBookTab] = useState("summary");
       const [xp, setXp] = useState(0);
@@ -1379,6 +2164,38 @@
         window.addEventListener("beforeinstallprompt", handler);
         return () => window.removeEventListener("beforeinstallprompt", handler);
       }, []);
+
+      // 🔙 뒤로가기 버튼 → 앱 내 네비게이션 처리
+      useEffect(() => {
+        // 초기 상태를 history에 설정
+        window.history.replaceState({ screen: "home" }, "", "");
+
+        const handlePopState = (e) => {
+          // 모달이 열려있으면 모달 먼저 닫기
+          if (showShop) {
+            setShowShop(false);
+            window.history.pushState({ screen: screenRef.current }, "", "");
+            return;
+          }
+          if (showReward) {
+            setShowReward(false);
+            window.history.pushState({ screen: screenRef.current }, "", "");
+            return;
+          }
+          // home이 아니면 home으로 돌아가기
+          if (screenRef.current !== "home") {
+            screenRef.current = "home";
+            _setScreenRaw("home");
+            window.history.pushState({ screen: "home" }, "", "");
+          } else {
+            // home에서 뒤로가기 → 앱 종료 방지: 다시 push
+            window.history.pushState({ screen: "home" }, "", "");
+          }
+        };
+
+        window.addEventListener("popstate", handlePopState);
+        return () => window.removeEventListener("popstate", handlePopState);
+      }, [showShop, showReward]);
 
       // 🔥 저장 실패 콜백 연결
       useEffect(() => {
