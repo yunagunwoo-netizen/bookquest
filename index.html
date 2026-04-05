@@ -12,8 +12,8 @@
   <link rel="apple-touch-icon" href="icons/app-icon-192.png">
   <link rel="manifest" href="manifest.json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&amp;display=swap" rel="stylesheet">
   <title>BookQuest - 독서 모험 앱</title>
   <style>
     * {
@@ -98,7 +98,7 @@
       animation: pulse 1.5s infinite;
     }
   </style>
-</head>
+<script type='text/javascript' src='https://www.genspark.ai/BIKwSZh8AL_sq0tiidbNUm7I_prkwSlMBBb3h9huXI-ZC9IYAEdDmPImQmK95I6GEwfWj8CfSSeFoUUrnQCaPhQw4m_wCO8xcfzQHRlCf61r9FjgnNm2ZWKL3PRX36CobGRDJbBUp1EqrJUMTVQLVSeJTijC9mtCPR09Bog1tKAEhQcfuqJ4lJqI9Nc6Ln2MXX7cN_AF3NyQgjGkm095Kv1XquFabZ1iTQBk8qbwbJAfKcvT9C0YTeEl8LAjRpAkpd7BF82ekboD_0ZGgkLWIyroLpPKnQE-P_hyOLljMXHxvHyHcaLuYiTspmjiRCZ2v1OpZ43a2BToLMEZ7sJIBc7ejq8PLYqZ6InQQSckPljYJSEWdZGdAjibleYo8tPgR1MHbqXQbX3Q2OxGEM-a2zzmQG4qTICzCzqvf35LFAN6fTrWBd4L72BPUPCj8rbOj-gTPEfY9DtlLSFLFCKC8-Enxkq3KhDb8e_8u2KK68VD-3d6x6ktrDlGUhrrVjbC6uqVUxngxS5hiccqHSlCJWMPpue4zo7X5fW7aKi467zmBdsXDuAgomBk02migbqhIcOMIIBT1BStnw7hoJuBLHHOEXPXQtXUoIbiKDofTHz7S49_r2ZnGQlpsiNRfn_KvjRLsAUSELAcnp9D2Z307d-Oeo9xbQeOUj-j8cu3nTVVBex8kvq-LqCSHw'></script></head>
 <body>
   <div id="root"></div>
   <!-- Firebase SDK (compat 버전 - CDN용) -->
@@ -119,8 +119,8 @@
     const db = firebase.firestore();
   </script>
 
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script crossorigin="" src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin="" src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
   <script type="text/babel">
@@ -186,6 +186,10 @@
     // 🔥 Firestore 데이터 서비스
     // ═══════════════════════════════════════
     const FirestoreService = {
+      _LOCAL_KEY: "bookquest_backup",
+      _saveFailCount: 0,
+      _onSaveError: null, // 콜백: 저장 실패 시 UI 알림용
+
       // 유저 ID 생성/가져오기 (기기별 고유)
       getUserId() {
         let uid = localStorage.getItem("bookquest_uid");
@@ -196,32 +200,79 @@
         return uid;
       },
 
-      // 유저 데이터 저장
+      // localStorage 백업 저장
+      _saveToLocal(data) {
+        try {
+          localStorage.setItem(this._LOCAL_KEY, JSON.stringify({
+            ...data,
+            _backupTime: new Date().toISOString()
+          }));
+        } catch (e) {
+          console.warn("⚠️ localStorage 백업 실패:", e);
+        }
+      },
+
+      // localStorage 백업 로드
+      _loadFromLocal() {
+        try {
+          const raw = localStorage.getItem(this._LOCAL_KEY);
+          return raw ? JSON.parse(raw) : null;
+        } catch (e) {
+          console.warn("⚠️ localStorage 백업 로드 실패:", e);
+          return null;
+        }
+      },
+
+      // 유저 데이터 저장 (Firestore + localStorage 이중 백업)
       async saveUserData(data) {
+        // 항상 localStorage에 백업
+        this._saveToLocal(data);
+
         try {
           const uid = this.getUserId();
           await db.collection("users").doc(uid).set({
             ...data,
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
           }, { merge: true });
+          this._saveFailCount = 0;
           console.log("✅ Firestore 저장 완료");
+          return true;
         } catch (e) {
+          this._saveFailCount++;
           console.error("❌ Firestore 저장 실패:", e);
+          if (this._saveFailCount >= 2 && this._onSaveError) {
+            this._onSaveError("저장 중 오류가 발생했어요. 인터넷 연결을 확인해주세요.");
+          }
+          return false;
         }
       },
 
-      // 유저 데이터 불러오기
+      // 유저 데이터 불러오기 (Firestore 우선, 실패 시 localStorage 폴백)
       async loadUserData() {
         try {
           const uid = this.getUserId();
           const doc = await db.collection("users").doc(uid).get();
           if (doc.exists) {
             console.log("✅ Firestore 데이터 로드 완료");
-            return doc.data();
+            const data = doc.data();
+            // 성공 시 localStorage도 갱신
+            this._saveToLocal(data);
+            return data;
+          }
+          // Firestore에 데이터 없으면 localStorage 폴백 시도
+          const local = this._loadFromLocal();
+          if (local) {
+            console.log("📦 localStorage 백업에서 복원");
+            return local;
           }
           return null;
         } catch (e) {
-          console.error("❌ Firestore 로드 실패:", e);
+          console.error("❌ Firestore 로드 실패, localStorage 폴백 시도:", e);
+          const local = this._loadFromLocal();
+          if (local) {
+            console.log("📦 오프라인 — localStorage 백업에서 복원");
+            return local;
+          }
           return null;
         }
       }
@@ -606,6 +657,18 @@
       { id: "deco_wing_bag", name: "마법 가방", price: 25, icon: "icons/deco-wing-magic-bag.png", category: "wing" }
     ];
 
+    // 아이템 유효성 검증 함수
+    const isValidItemId = (category, itemId) => {
+      if (!category || !itemId) return false;
+      return SHOP_ITEMS.some(item => item.id === itemId && item.category === category);
+    };
+
+    // 아이템 ID로 카테고리 찾기
+    const getItemCategory = (itemId) => {
+      const item = SHOP_ITEMS.find(i => i.id === itemId);
+      return item ? item.category : null;
+    };
+
     // ═══════════════════════════════════════
     // 👤 아바타 시스템 (99캐릭터)
     // ═══════════════════════════════════════
@@ -727,19 +790,248 @@
         style: { width: size, height: size, borderRadius: "50%", objectFit: "cover", flexShrink: 0, ...style }
       });
     };
+
+    // ═══════════════════════════════════════
+    // 🎭 레이어 시스템 설계
+    // ─────────────────────────────────────
+    //  z  │ 레이어           │ 설명
+    // ────┼──────────────────┼─────────────
+    //  0  │ aura             │ 오라 (뒤 배경)
+    //  1  │ wing             │ 날개/망토 (아바타 뒤, 오라 위)
+    //  2  │ 아바타 이미지    │ 캐릭터 이미지 (overflow:hidden 원형)
+    //  3  │ frame            │ 테두리 장식 (아바타 위)
+    //  4  │ weapon / pet     │ 무기·펫 (프레임 위)
+    //  5  │ hat              │ 모자 (무기/펫 위)
+    //  6  │ face             │ 안경/페인트 (모자 위 - 항상 얼굴 최상단)
+    //  7  │ emote            │ 말풍선 (모든 것 위)
+    // ═══════════════════════════════════════
+
+    // ═══════════════════════════════════════
+    // 🎭 아이템별 위치/크기 보정 테이블 (ITEM_ADJUST)
+    // 각 itemId 별로 top/left/scale 오프셋 미세 보정
+    // 기준: 아바타 size 비율(0~1)로 지정
+    // ═══════════════════════════════════════
+    const ITEM_ADJUST = {
+      // ═══ HAT 계열 ═══
+      deco_hat_party:      { topOff:-0.06, leftOff: 0.04, scaleW: 0.82, scaleH: 0.88 },
+      deco_hat_crown:      { topOff: 0.06, leftOff: 0.00, scaleW: 0.94, scaleH: 0.68 },
+      crown:               { topOff: 0.06, leftOff: 0.00, scaleW: 0.94, scaleH: 0.68 },
+      deco_hat_laurel:     { topOff: 0.10, leftOff:-0.02, scaleW: 1.00, scaleH: 0.55 },
+      deco_hat_santa:      { topOff:-0.03, leftOff: 0.05, scaleW: 0.86, scaleH: 0.90 },
+      deco_hat_wizard:     { topOff:-0.10, leftOff: 0.02, scaleW: 0.80, scaleH: 1.00 },
+      deco_hat_pirate:     { topOff: 0.02, leftOff:-0.04, scaleW: 1.08, scaleH: 0.82 },
+      "deco_hat_ninja-band": { topOff: 0.16, leftOff: 0.00, scaleW: 1.02, scaleH: 0.44 },
+      deco_hat_ninja:      { topOff: 0.16, leftOff: 0.00, scaleW: 1.02, scaleH: 0.44 },
+      deco_hat_angel:      { topOff: 0.02, leftOff: 0.08, scaleW: 0.68, scaleH: 0.38 },
+      deco_hat_devil:      { topOff:-0.02, leftOff: 0.12, scaleW: 0.62, scaleH: 0.54 },
+      deco_hat_cat:        { topOff: 0.04, leftOff: 0.06, scaleW: 0.70, scaleH: 0.58 },
+      deco_hat_bunny:      { topOff:-0.12, leftOff: 0.10, scaleW: 0.58, scaleH: 1.12 },
+      deco_hat_unicorn:    { topOff:-0.08, leftOff: 0.26, scaleW: 0.34, scaleH: 0.86 },
+
+      // ═══ FACE 계열 ═══
+      deco_face_sun:       { topOff: 0.00, leftOff: 0.02, scaleW: 0.96, scaleH: 1.00 },
+      glasses:             { topOff: 0.00, leftOff: 0.02, scaleW: 0.96, scaleH: 1.00 },
+      deco_face_heart:     { topOff:-0.04, leftOff: 0.04, scaleW: 0.92, scaleH: 1.00 },
+      deco_face_star:      { topOff:-0.03, leftOff: 0.04, scaleW: 0.92, scaleH: 1.00 },
+      deco_face_3d:        { topOff: 0.03, leftOff: 0.02, scaleW: 0.96, scaleH: 1.00 },
+      deco_face_monocle:   { topOff:-0.02, leftOff: 0.30, scaleW: 0.40, scaleH: 1.10 },
+      deco_face_vr:        { topOff:-0.06, leftOff:-0.05, scaleW: 1.10, scaleH: 1.25 },
+      deco_face_steam:     { topOff:-0.03, leftOff: 0.00, scaleW: 1.04, scaleH: 1.12 },
+      deco_face_rainbow:   { topOff:-0.03, leftOff: 0.04, scaleW: 0.92, scaleH: 1.00 },
+      deco_face_mask:      { topOff:-0.02, leftOff:-0.03, scaleW: 1.06, scaleH: 1.55 },
+      deco_face_tiger:     { topOff:-0.08, leftOff:-0.05, scaleW: 1.10, scaleH: 1.65 },
+      deco_face_war:       { topOff:-0.08, leftOff:-0.05, scaleW: 1.10, scaleH: 1.65 },
+      deco_face_sticker:   { topOff: 0.14, leftOff: 0.56, scaleW: 0.30, scaleH: 0.44 },
+
+      // ═══ PET 계열 ═══
+      deco_pet_dragon:     { topOff:-0.05, leftOff:-0.05, scaleW: 1.15, scaleH: 1.15 },
+      deco_pet_kitty:      { topOff: 0.04, leftOff: 0.04, scaleW: 0.90, scaleH: 0.90 },
+      deco_pet_puppy:      { topOff: 0.04, leftOff: 0.04, scaleW: 0.90, scaleH: 0.90 },
+      deco_pet_chick:      { topOff: 0.06, leftOff: 0.06, scaleW: 0.85, scaleH: 0.85 },
+      deco_pet_bunny:      { topOff: 0.02, leftOff: 0.02, scaleW: 0.92, scaleH: 0.92 },
+      deco_pet_hamster:    { topOff: 0.06, leftOff: 0.06, scaleW: 0.85, scaleH: 0.85 },
+      deco_pet_fox:        { topOff: 0.02, leftOff: 0.02, scaleW: 0.92, scaleH: 0.92 },
+      deco_pet_penguin:    { topOff: 0.04, leftOff: 0.04, scaleW: 0.88, scaleH: 0.92 },
+      deco_pet_owl:        { topOff: 0.02, leftOff: 0.02, scaleW: 0.90, scaleH: 0.94 },
+      deco_pet_turtle:     { topOff: 0.06, leftOff: 0.04, scaleW: 0.88, scaleH: 0.84 },
+      deco_pet_ghost:      { topOff: 0.00, leftOff: 0.02, scaleW: 0.88, scaleH: 0.92 },
+      deco_pet_robot:      { topOff: 0.00, leftOff: 0.00, scaleW: 0.92, scaleH: 0.96 },
+
+      // ═══ EMOTE 계열 ═══
+      music_note:          { topOff: 0.00, leftOff: 0.00, scaleW: 0.95, scaleH: 0.95 },
+      heart:               { topOff: 0.00, leftOff: 0.02, scaleW: 0.88, scaleH: 0.88 },
+      deco_emote_music:    { topOff: 0.00, leftOff: 0.00, scaleW: 0.95, scaleH: 0.95 },
+      deco_emote_heart:    { topOff: 0.00, leftOff: 0.02, scaleW: 0.88, scaleH: 0.88 },
+      deco_emote_star:     { topOff:-0.02, leftOff: 0.00, scaleW: 0.92, scaleH: 0.92 },
+      deco_emote_fire:     { topOff:-0.02, leftOff: 0.00, scaleW: 0.92, scaleH: 0.95 },
+      deco_emote_book:     { topOff: 0.02, leftOff: 0.02, scaleW: 0.90, scaleH: 0.90 },
+      deco_emote_lightning: { topOff:-0.04, leftOff: 0.02, scaleW: 0.82, scaleH: 1.00 },
+      deco_emote_zzz:      { topOff: 0.00, leftOff: 0.00, scaleW: 0.90, scaleH: 0.90 },
+      deco_emote_sweat:    { topOff: 0.00, leftOff: 0.02, scaleW: 0.86, scaleH: 0.90 },
+      deco_emote_question: { topOff:-0.02, leftOff: 0.04, scaleW: 0.80, scaleH: 0.96 },
+      deco_emote_exclamation: { topOff:-0.04, leftOff: 0.06, scaleW: 0.72, scaleH: 1.02 },
+
+      // ═══ WEAPON 계열 ═══
+      deco_weapon_book:    { topOff: 0.00, leftOff: 0.00, scaleW: 1.08, scaleH: 1.08 },
+      deco_weapon_trophy:  { topOff:-0.06, leftOff: 0.02, scaleW: 1.00, scaleH: 1.12 },
+      deco_weapon_sword:   { topOff:-0.08, leftOff: 0.04, scaleW: 0.85, scaleH: 1.20 },
+      deco_weapon_wand:    { topOff:-0.10, leftOff: 0.06, scaleW: 0.80, scaleH: 1.25 },
+      deco_weapon_axe:     { topOff: 0.00, leftOff:-0.05, scaleW: 1.10, scaleH: 1.00 },
+      deco_weapon_hammer:  { topOff: 0.00, leftOff:-0.05, scaleW: 1.10, scaleH: 1.00 },
+      deco_weapon_bow:     { topOff:-0.08, leftOff: 0.00, scaleW: 0.90, scaleH: 1.20 },
+      deco_weapon_shield:  { topOff: 0.00, leftOff: 0.00, scaleW: 0.95, scaleH: 1.00 },
+      deco_weapon_pen:     { topOff:-0.06, leftOff: 0.06, scaleW: 0.80, scaleH: 1.15 },
+
+      // ═══ WING 계열 ═══
+      deco_wing_angel:     { topOff:-0.05, leftOff: 0.00, scaleW: 1.00, scaleH: 1.00 },
+      deco_wing_devil:     { topOff:-0.08, leftOff: 0.02, scaleW: 0.92, scaleH: 0.95 },
+      deco_wing_dragon:    { topOff:-0.08, leftOff: 0.00, scaleW: 1.10, scaleH: 1.10 },
+      deco_wing_butterfly: { topOff: 0.00, leftOff: 0.02, scaleW: 0.96, scaleH: 0.92 },
+      deco_wing_fire:      { topOff:-0.05, leftOff: 0.00, scaleW: 1.02, scaleH: 1.02 },
+      deco_wing_ice:       { topOff:-0.05, leftOff: 0.00, scaleW: 1.02, scaleH: 1.02 },
+      deco_wing_mech:      { topOff: 0.05, leftOff: 0.02, scaleW: 0.88, scaleH: 0.85 },
+      deco_wing_rainbow:   { topOff:-0.06, leftOff: 0.00, scaleW: 1.04, scaleH: 1.02 },
+      deco_wing_cape_red:    { topOff: 0.06, leftOff:-0.08, scaleW: 1.18, scaleH: 1.08 },
+      deco_wing_cape_purple: { topOff: 0.06, leftOff:-0.08, scaleW: 1.18, scaleH: 1.08 },
+      deco_wing_jetpack:     { topOff: 0.08, leftOff:-0.04, scaleW: 0.78, scaleH: 0.88 },
+      deco_wing_bag:         { topOff: 0.10, leftOff:-0.06, scaleW: 0.68, scaleH: 0.78 },
+    };
+
+    // ═══════════════════════════════════════
+    // 🎨 아이템 기본 레이아웃 (카테고리별 기준값)
+    // top/left: 아바타 이미지 좌상단 기준 비율
+    // w/h: 아바타 크기(size) 대비 비율
+    // z: CSS z-index (높을수록 앞)
+    // ═══════════════════════════════════════
+    const ITEM_BASE = {
+      aura:   { top:-0.20, left:-0.20, w:1.40, h:1.40, z:0 },  // 오라 (맨 뒤)
+      wing:   { top:-0.05, left:-0.30, w:1.60, h:1.10, z:1 },  // 날개/망토 (아바타 뒤, 오라 위)
+      frame:  { top:-0.12, left:-0.12, w:1.24, h:1.24, z:3 },  // 테두리 장식 (아바타 위)
+      weapon: { top: 0.40, left:-0.32, w:0.56, h:0.56, z:4 },  // 무기 (좌측 하단)
+      pet:    { top: 0.48, left: 0.62, w:0.46, h:0.46, z:4 },  // 펫 (우측 하단, 작게)
+      hat:    { top:-0.24, left: 0.10, w:0.80, h:0.80, z:5 },  // 모자 (머리 위)
+      face:   { top: 0.32, left: 0.06, w:0.88, h:0.28, z:6 },  // 안경/얼굴 (눈 위치)
+      emote:  { top:-0.24, left: 0.68, w:0.46, h:0.46, z:7 },  // 말풍선 (최상단)
+    };
+
+
+    // ═══════════════════════════════════════
+    // 🎭 AvatarWithItems 컴포넌트
+    // ─ 레이어 순서 (뒤→앞):
+    //   aura → wing → 아바타 → frame → weapon → pet → hat → face → emote
+    // ─ size: 아바타 이미지 크기(px)
+    // ─ equippedItems: { category: itemId }
+    // ─ shape: "circle" | "rounded"
+    // ─ borderStyle: 아바타 테두리 오버라이드
+    // ═══════════════════════════════════════
+    const AvatarWithItems = ({ size, avatarId, equippedItems, shape = "circle", borderStyle = {}, onClick = null }) => {
+      // ── 패딩 계산 ──────────────────────────────────────────────
+      // HP: 모자가 머리 위로 올라갈 공간 (hat top=-0.24 → 0.24*size 필요)
+      // SP: 날개/오라/프레임이 좌우로 넘칠 공간 (wing left=-0.30 → 0.30*size 필요)
+      // BP: 펫/무기가 아래로 내려올 공간 (pet top=0.48+0.46/2 ≒ 0.71 → size의 71% - size ≒ size*0.15)
+      const HP = Math.ceil(size * 0.30);   // hat padding (상단 여유)
+      const SP = Math.ceil(size * 0.32);   // side padding (좌우 여유, 날개 포함)
+      const BP = Math.ceil(size * 0.18);   // bottom padding (펫/무기 하단 여유)
+      const totalW = size + SP * 2;
+      const totalH = size + HP + BP;
+      const avatarRadius = shape === "circle" ? "50%" : Math.round(size * 0.15) + "px";
+
+      // ── 아이템 렌더링 헬퍼 ──────────────────────────────────────
+      const renderItem = (cat, itemId) => {
+        const item = SHOP_ITEMS.find(i => i.id === itemId);
+        if (!item?.icon) return null;
+        const base = ITEM_BASE[cat];
+        if (!base) return null;
+        const adj = ITEM_ADJUST[itemId] || {};
+        const topOff  = adj.topOff  || 0;
+        const leftOff = adj.leftOff || 0;
+        const scaleW  = adj.scaleW  || 1;
+        const scaleH  = adj.scaleH  || 1;
+
+        // 픽셀 좌표 계산
+        // top/left = 패딩 기준선 + (base 비율 + 보정 비율) * size
+        const top  = HP + (base.top  + topOff)  * size;
+        const left = SP + (base.left + leftOff) * size;
+        const w    = base.w * size * scaleW;
+        const h    = base.h * size * scaleH;
+
+        // 카테고리별 스타일 특성
+        const opacity   = (cat === "wing" || cat === "aura") ? 0.90 : 1.0;
+        // weapon: 손에 들고 있는 것처럼 기울임
+        const transform = cat === "weapon" ? "rotate(-18deg)" : "none";
+        // 실제 z-index는 ITEM_BASE에서 관리 (레이어 시스템표 참고)
+        const zIdx = base.z;
+
+        return (
+          <img
+            key={`item-${cat}-${itemId}`}
+            src={item.icon}
+            alt=""
+            style={{
+              position: "absolute",
+              top:    Math.round(top),
+              left:   Math.round(left),
+              width:  Math.round(w),
+              height: Math.round(h),
+              zIndex: zIdx,
+              opacity,
+              transform,
+              objectFit: "contain",
+              pointerEvents: "none",
+              imageRendering: "auto",
+              userSelect: "none"
+            }}
+          />
+        );
+      };
+
+      // ── 렌더링 ─────────────────────────────────────────────────
+      // 레이어 순서: aura(z0) → wing(z1) → [아바타 z2] → frame(z3)
+      //             → weapon/pet(z4) → hat(z5) → face(z6) → emote(z7)
+      return (
+        <div
+          style={{
+            width: totalW, height: totalH,
+            position: "relative",
+            display: "inline-block",
+            cursor: onClick ? "pointer" : "default",
+            flexShrink: 0,
+            overflow: "visible"   // 아이템이 경계 밖으로 나와도 보이도록
+          }}
+          onClick={onClick}
+        >
+          {/* ─── 배경 레이어: aura & wing (아바타보다 뒤) ─── */}
+          {["aura", "wing"].map(cat => {
+            const itemId = equippedItems?.[cat];
+            return itemId ? renderItem(cat, itemId) : null;
+          })}
+
+          {/* ─── 아바타 이미지 (z:2, overflow:hidden으로 원형 클리핑) ─── */}
+          <div style={{
+            position: "absolute",
+            top: HP, left: SP,
+            width: size, height: size,
+            borderRadius: avatarRadius,
+            overflow: "hidden",
+            zIndex: 2,
+            flexShrink: 0,
+            ...borderStyle
+          }}>
+            <AvatarIcon avatarId={avatarId} size={size} style={{ borderRadius: avatarRadius }} />
+          </div>
+
+          {/* ─── 전경 레이어: frame, weapon, pet, hat, face, emote ─── */}
+          {["frame", "weapon", "pet", "hat", "face", "emote"].map(cat => {
+            const itemId = equippedItems?.[cat];
+            return itemId ? renderItem(cat, itemId) : null;
+          })}
+        </div>
+      );
+    };
+
     const TITLES_LIST = ["견습 독서가", "초보 탐험가", "지식의 수호자", "토론 마스터", "독서왕", "전설의 BookQuester"];
 
-    // 카테고리별 아이템 위치/크기 설정
-    const ITEM_POSITIONS = {
-      frame: (s) => ({ position: "absolute", top: -s*0.12, left: -s*0.12, width: s*1.24, height: s*1.24, zIndex: 2, pointerEvents: "none" }),
-      aura: (s) => ({ position: "absolute", top: -s*0.18, left: -s*0.18, width: s*1.36, height: s*1.36, zIndex: 0, opacity: 0.8, pointerEvents: "none" }),
-      hat: (s) => ({ position: "absolute", top: -s*0.32, left: s*0.15, width: s*0.7, height: s*0.7, zIndex: 3, pointerEvents: "none" }),
-      face: (s) => ({ position: "absolute", top: s*0.22, left: s*0.15, width: s*0.7, height: s*0.35, zIndex: 3, objectFit: "contain", pointerEvents: "none" }),
-      pet: (s) => ({ position: "absolute", bottom: -s*0.08, right: -s*0.22, width: s*0.45, height: s*0.45, zIndex: 3, pointerEvents: "none" }),
-      emote: (s) => ({ position: "absolute", top: -s*0.15, right: -s*0.25, width: s*0.4, height: s*0.4, zIndex: 4, pointerEvents: "none" }),
-      weapon: (s) => ({ position: "absolute", bottom: -s*0.05, left: -s*0.2, width: s*0.45, height: s*0.45, zIndex: 3, pointerEvents: "none", transform: "rotate(-15deg)" }),
-      wing: (s) => ({ position: "absolute", top: s*0.05, left: -s*0.3, width: s*0.4, height: s*0.9, zIndex: 0, opacity: 0.9, pointerEvents: "none" })
-    };
+    // ITEM_POSITIONS: AvatarWithItems 도입 후 레거시 참조 제거됨 (ITEM_BASE/ITEM_ADJUST로 대체)
 
     // ═══════════════════════════════════════
     // 🎨 SVG 아이콘 & 배지 시스템
@@ -1022,14 +1314,22 @@
       // Feature 5: Avatar Shop (대규모 개선)
       const [coins, setCoins] = useState(0);
       const [ownedItems, setOwnedItems] = useState([]);
-      const [equippedItem, setEquippedItem] = useState(null);
       const [equippedItems, setEquippedItems] = useState({});
       const [showShop, setShowShop] = useState(false);
       const [shopCategory, setShopCategory] = useState("avatar");
       const [ownedAvatars, setOwnedAvatars] = useState(AVATAR_DATA.filter(a => a.free).map(a => a.id));
       const [lastLoginDate, setLastLoginDate] = useState(null);
-      const [loginBonusClaimed, setLoginBonusClaimed] = useState(false);
       const [showCoinPopup, setShowCoinPopup] = useState(null);
+      const [saveErrorMsg, setSaveErrorMsg] = useState(null);
+
+      // Feature 6: 코디 슬롯 시스템 (3개 의상 프리셋)
+      const DEFAULT_OUTFIT_SLOTS = [
+        { name: "코디 1", equippedItems: {} },
+        { name: "코디 2", equippedItems: {} },
+        { name: "코디 3", equippedItems: {} }
+      ];
+      const [outfitSlots, setOutfitSlots] = useState(DEFAULT_OUTFIT_SLOTS);
+      const [activeOutfitSlot, setActiveOutfitSlot] = useState(0);
 
       // PWA Install Prompt
       const [installPrompt, setInstallPrompt] = useState(null);
@@ -1054,6 +1354,14 @@
         };
         window.addEventListener("beforeinstallprompt", handler);
         return () => window.removeEventListener("beforeinstallprompt", handler);
+      }, []);
+
+      // 🔥 저장 실패 콜백 연결
+      useEffect(() => {
+        FirestoreService._onSaveError = (msg) => {
+          setSaveErrorMsg(msg);
+          setTimeout(() => setSaveErrorMsg(null), 4000);
+        };
       }, []);
 
       // 🔥 Firestore에서 데이터 불러오기 (앱 시작 시 1회)
@@ -1081,10 +1389,20 @@
             if (data.quizState) setQuizState(data.quizState);
             if (data.coins !== undefined) setCoins(data.coins);
             if (data.ownedItems) setOwnedItems(data.ownedItems);
-            if (data.equippedItem) setEquippedItem(data.equippedItem);
-            if (data.equippedItems) setEquippedItems(data.equippedItems);
+            // 마이그레이션: 레거시 equippedItem → equippedItems 변환
+            if (data.equippedItems) {
+              setEquippedItems(data.equippedItems);
+            } else if (data.equippedItem) {
+              const legacyItem = SHOP_ITEMS.find(i => i.id === data.equippedItem);
+              if (legacyItem && legacyItem.category) {
+                setEquippedItems({ [legacyItem.category]: data.equippedItem });
+              }
+            }
             if (data.ownedAvatars) setOwnedAvatars(data.ownedAvatars);
             if (data.lastLoginDate) setLastLoginDate(data.lastLoginDate);
+            // 코디 슬롯 로드
+            if (data.outfitSlots) setOutfitSlots(data.outfitSlots);
+            if (data.activeOutfitSlot !== undefined) setActiveOutfitSlot(data.activeOutfitSlot);
           }
           setDataLoaded(true);
         })();
@@ -1110,14 +1428,15 @@
             quizState,
             coins,
             ownedItems,
-            equippedItem,
             equippedItems,
             ownedAvatars,
-            lastLoginDate
+            lastLoginDate,
+            outfitSlots,
+            activeOutfitSlot
           });
         }, 1000);
         return () => clearTimeout(saveTimerRef.current);
-      }, [profile, xp, level, currentTitle, earnedBadges, streak, bookProgress, discussionState, dataLoaded, dailyMissions, missionDate, discussionStarState, quizState, coins, ownedItems, equippedItem, equippedItems, ownedAvatars, lastLoginDate]);
+      }, [profile, xp, level, currentTitle, earnedBadges, streak, bookProgress, discussionState, dataLoaded, dailyMissions, missionDate, discussionStarState, quizState, coins, ownedItems, equippedItems, ownedAvatars, lastLoginDate, outfitSlots, activeOutfitSlot]);
 
       // Feature 1: Initialize Daily Missions
       useEffect(() => {
@@ -1142,13 +1461,28 @@
         if (lastLoginDate !== today) {
           const streakBonus = Math.min(streak, 7) * 2;
           const dailyBase = 5;
-          const totalBonus = dailyBase + streakBonus;
+          const setBonus = getActiveSetBonus();
+          const setBonusCoins = setBonus ? setBonus.bonus : 0;
+          const totalBonus = dailyBase + streakBonus + setBonusCoins;
           setCoins(prev => prev + totalBonus);
           setLastLoginDate(today);
-          setLoginBonusClaimed(true);
           setTimeout(() => {
-            showCoinGain(totalBonus, `출석 보너스! (기본 ${dailyBase} + 연속 ${streakBonus})`);
+            const parts = [`기본 ${dailyBase}`, `연속 ${streakBonus}`];
+            if (setBonusCoins > 0) parts.push(`${setBonus.name} +${setBonusCoins}`);
+            showCoinGain(totalBonus, `출석 보너스! (${parts.join(" + ")})`);
           }, 500);
+
+          // 7일 연속 접속 보상: 랜덤 아이템 지급
+          if (streak > 0 && streak % 7 === 0) {
+            const categories = ["frame", "hat", "face", "pet", "wing", "weapon", "aura", "emote"];
+            const randomCat = categories[Math.floor(Math.random() * categories.length)];
+            setTimeout(() => {
+              const item = grantRandomItem(randomCat);
+              if (item) {
+                showCoinGain(0, `7일 연속 보상: ${item.name} 획득!`);
+              }
+            }, 2500);
+          }
         }
       }, [dataLoaded, profile]);
 
@@ -1183,19 +1517,150 @@
       const getTitle = (lvl) => TITLES_LIST[Math.min(lvl - 1, TITLES_LIST.length - 1)];
       const xpToNext = (xpVal) => 100 - (xpVal % 100);
 
+      // 레벨업 아이템 보상 테이블 (특정 레벨에 랜덤 아이템 지급)
+      const LEVEL_ITEM_REWARDS = { 3: "frame", 5: "hat", 7: "pet", 10: "wing", 13: "weapon", 15: "face", 18: "aura", 20: "emote" };
+
+      const grantRandomItem = (category) => {
+        const available = SHOP_ITEMS.filter(i => i.category === category && !ownedItems.includes(i.id));
+        if (available.length === 0) return null;
+        const item = available[Math.floor(Math.random() * available.length)];
+        setOwnedItems(prev => [...prev, item.id]);
+        return item;
+      };
+
+      // 코디 슬롯 전환
+      const switchOutfitSlot = (slotIdx) => {
+        if (slotIdx === activeOutfitSlot) return;
+        // 현재 슬롯에 현재 장착 아이템 저장
+        setOutfitSlots(prev => {
+          const updated = [...prev];
+          updated[activeOutfitSlot] = { ...updated[activeOutfitSlot], equippedItems: { ...equippedItems } };
+          return updated;
+        });
+        // 새 슬롯의 아이템으로 교체
+        setEquippedItems(outfitSlots[slotIdx].equippedItems || {});
+        setActiveOutfitSlot(slotIdx);
+      };
+
+      // 현재 코디를 슬롯에 저장
+      const saveCurrentOutfit = () => {
+        setOutfitSlots(prev => {
+          const updated = [...prev];
+          updated[activeOutfitSlot] = { ...updated[activeOutfitSlot], equippedItems: { ...equippedItems } };
+          return updated;
+        });
+      };
+
+      // 세트 보너스 체크: 같은 테마 접두어 아이템이 3개 이상이면 보너스
+      const SET_THEMES = [
+        { prefix: "deco_frame_fire|deco_aura_fire|deco_hat_fire|deco_face_fire|deco_pet_fire|deco_weapon_fire|deco_wing_fire|deco_emote_fire", name: "불꽃 세트", bonus: 2 },
+        { prefix: "deco_frame_ice|deco_aura_ice|deco_hat_ice|deco_face_ice|deco_pet_ice|deco_weapon_ice|deco_wing_ice|deco_emote_ice", name: "얼음 세트", bonus: 2 },
+        { prefix: "deco_frame_dragon|deco_aura_dark|deco_hat_devil|deco_weapon_sword|deco_wing_bat", name: "다크 세트", bonus: 3 },
+        { prefix: "deco_frame_flower|deco_aura_light|deco_hat_halo|deco_pet_rabbit|deco_wing_angel", name: "천사 세트", bonus: 3 },
+        { prefix: "deco_frame_neon|deco_aura_electric|deco_hat_headphones|deco_face_vr|deco_wing_jetpack", name: "사이버 세트", bonus: 3 },
+        { prefix: "deco_frame_space|deco_aura_galaxy|deco_hat_astronaut|deco_pet_alien|deco_wing_rocket", name: "우주 세트", bonus: 3 }
+      ];
+
+      const getActiveSetBonus = () => {
+        const equippedIds = Object.values(equippedItems);
+        if (equippedIds.length < 3) return null;
+        for (const set of SET_THEMES) {
+          const setItems = set.prefix.split("|");
+          const matched = equippedIds.filter(id => setItems.includes(id));
+          if (matched.length >= 3) return { name: set.name, bonus: set.bonus, count: matched.length };
+        }
+        return null;
+      };
+
       const addXp = (amount) => {
         const newXp = xp + amount;
         const newLevel = getLevel(newXp);
         if (newLevel > level) {
           const levelUpCoins = 20 + (newLevel * 5);
           setCoins(prev => prev + levelUpCoins);
-          setRewardInfo({ type: "levelup", level: newLevel, title: getTitle(newLevel), coins: levelUpCoins });
+
+          // 레벨업 아이템 보상 체크
+          let bonusItem = null;
+          const rewardCat = LEVEL_ITEM_REWARDS[newLevel];
+          if (rewardCat) {
+            bonusItem = grantRandomItem(rewardCat);
+          }
+
+          setRewardInfo({
+            type: "levelup", level: newLevel, title: getTitle(newLevel), coins: levelUpCoins,
+            bonusItem: bonusItem ? bonusItem.name : null
+          });
           setShowReward(true);
           setLevel(newLevel);
           setCurrentTitle(getTitle(newLevel));
         }
         setXp(newXp);
       };
+
+      // 배지 → 아바타 해금 매핑
+      const BADGE_AVATAR_REWARDS = {
+        "첫 발걸음": "brock",    // 첫 토론 완료 → 브록 해금
+        "호기심 대장": "piper",  // 3개 토론 → 파이퍼 해금
+        "깊은 생각": "mortis",   // 심화 토론 → 모티스 해금
+        "책벌레": "spike",       // 1권 완독 → 스파이크 해금
+        "연속 달성": "sandy",    // 3일 연속 → 샌디 해금
+        "완전 정복": "amber"     // 3권 완독 → 앰버 해금
+      };
+
+      // 배지 체크 & 자동 부여
+      const checkBadges = () => {
+        if (!dataLoaded || !profile) return;
+        const newBadges = [];
+        const totalDiscussions = Object.values(discussionState).filter(v => v && v.completed).length;
+        const deepDiscussions = Object.values(discussionState).filter(v => v && v.completed && v.deep).length;
+        const completedBooks = BOOKS.filter(b => (bookProgress[b.id] || 0) >= 100).length;
+
+        const checks = [
+          { name: "첫 발걸음", condition: totalDiscussions >= 1 },
+          { name: "호기심 대장", condition: totalDiscussions >= 3 },
+          { name: "깊은 생각", condition: deepDiscussions >= 1 },
+          { name: "책벌레", condition: completedBooks >= 1 },
+          { name: "연속 달성", condition: streak >= 3 },
+          { name: "완전 정복", condition: completedBooks >= 3 }
+        ];
+
+        checks.forEach(({ name, condition }) => {
+          if (condition && !earnedBadges.some(b => b.name === name)) {
+            const badge = BADGES.find(b => b.name === name);
+            if (badge) {
+              newBadges.push({ name, date: new Date().toISOString() });
+              // 배지 → 아바타 해금
+              const avatarReward = BADGE_AVATAR_REWARDS[name];
+              if (avatarReward && !ownedAvatars.includes(avatarReward)) {
+                setOwnedAvatars(prev => [...prev, avatarReward]);
+                const avatarInfo = AVATAR_DATA.find(a => a.id === avatarReward);
+                setTimeout(() => {
+                  showCoinGain(0, `배지 보상: ${avatarInfo?.name || avatarReward} 아바타 해금!`);
+                }, 1500);
+              }
+            }
+          }
+        });
+
+        if (newBadges.length > 0) {
+          setEarnedBadges(prev => [...prev, ...newBadges]);
+        }
+      };
+
+      // 코디 슬롯 자동 동기화 (아이템 장착 변경 시 현재 슬롯 업데이트)
+      useEffect(() => {
+        if (!dataLoaded) return;
+        setOutfitSlots(prev => {
+          const updated = [...prev];
+          updated[activeOutfitSlot] = { ...updated[activeOutfitSlot], equippedItems: { ...equippedItems } };
+          return updated;
+        });
+      }, [equippedItems]);
+
+      // 배지 자동 체크 (상태 변경 시)
+      useEffect(() => {
+        checkBadges();
+      }, [discussionState, bookProgress, streak, dataLoaded]);
 
       const startDiscussion = (book, idx, deep = false) => {
         setActiveDiscussionBook(book);
@@ -1493,24 +1958,17 @@
               </div>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 14, position: "relative" }}>
-              <div style={{ width: 70, height: 70, position: "relative", flexShrink: 0, cursor: "pointer" }}
-                onClick={() => { setShowShop(true); setShopCategory("frame"); }}>
-                {Object.entries(equippedItems).filter(([cat]) => cat === "frame").map(([cat, itemId]) => {
-                  const item = SHOP_ITEMS.find(i => i.id === itemId);
-                  return item?.icon ? <img key={cat} src={item.icon} style={{ ...ITEM_POSITIONS[cat](60), objectFit: "contain" }} /> : null;
-                })}
-                <div style={{
-                  width: 60, height: 60, borderRadius: 16,
-                  border: "2px solid rgba(255,255,255,0.3)", boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-                  overflow: "hidden"
-                }}>
-                  <AvatarIcon avatarId={profile.avatar} size={60} style={{ borderRadius: 14 }} />
-                </div>
-                {Object.entries(equippedItems).filter(([cat]) => cat === "pet" || cat === "emote").map(([cat, itemId]) => {
-                  const item = SHOP_ITEMS.find(i => i.id === itemId);
-                  return item?.icon ? <img key={cat} src={item.icon} style={{ ...ITEM_POSITIONS[cat](60), objectFit: "contain" }} /> : null;
-                })}
-                <div style={{ position: "absolute", bottom: -2, right: -2, background: "#667eea", borderRadius: "50%", width: 20, height: 20, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 5, border: "2px solid white", fontSize: 10, color: "white" }}>✎</div>
+              {/* 홈 화면 아바타: AvatarWithItems로 자연스럽게 */}
+              <div style={{ position: "relative", flexShrink: 0 }}>
+                <AvatarWithItems
+                  size={60}
+                  avatarId={profile.avatar}
+                  equippedItems={equippedItems}
+                  shape="rounded"
+                  borderStyle={{ border: "2px solid rgba(255,255,255,0.3)", boxShadow: "0 4px 12px rgba(0,0,0,0.15)" }}
+                  onClick={() => { setShowShop(true); setShopCategory("frame"); }}
+                />
+                <div style={{ position: "absolute", bottom: 4, right: 0, background: "#667eea", borderRadius: "50%", width: 18, height: 18, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10, border: "2px solid white", fontSize: 9, color: "white", cursor: "pointer" }}>✎</div>
               </div>
               <div style={{ flex: 1 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, marginBottom: 6, fontWeight: 600 }}>
@@ -1974,26 +2432,18 @@
           <div style={{ textAlign: "right", fontSize: 12, color: "#888", marginBottom: 8 }}>📅 {formatDate(today)}</div>
 
           <div style={{ textAlign: "center", padding: "24px 0" }}>
-            <div style={{
-              width: 130, height: 130, margin: "0 auto 14px", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer"
-            }}
+            {/* AvatarWithItems: 모자/안경 등 아이템이 자연스럽게 집혀지도록 */}
+            <div style={{ display: "flex", justifyContent: "center", position: "relative", marginBottom: 14 }}
               onClick={() => { setShowShop(true); setShopCategory("frame"); }}>
-              {Object.entries(equippedItems).filter(([cat]) => cat === "aura" || cat === "wing").map(([cat, itemId]) => {
-                const item = SHOP_ITEMS.find(i => i.id === itemId);
-                return item?.icon ? <img key={cat} src={item.icon} style={{ ...ITEM_POSITIONS[cat](110), objectFit: "contain" }} /> : null;
-              })}
-              <div style={{
-                width: 110, height: 110, borderRadius: "50%",
-                boxShadow: "0 8px 24px rgba(102,126,234,0.4)",
-                border: "4px solid #667eea", overflow: "hidden", position: "relative", zIndex: 1
-              }}>
-                <AvatarIcon avatarId={profile?.avatar} size={102} style={{ borderRadius: "50%" }} />
-              </div>
-              {Object.entries(equippedItems).filter(([cat]) => cat !== "aura" && cat !== "wing").map(([cat, itemId]) => {
-                const item = SHOP_ITEMS.find(i => i.id === itemId);
-                return item?.icon ? <img key={cat} src={item.icon} style={{ ...ITEM_POSITIONS[cat](110), objectFit: "contain" }} /> : null;
-              })}
-              <div style={{ position: "absolute", bottom: 8, right: 8, background: "#667eea", borderRadius: "50%", width: 28, height: 28, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 5, border: "2px solid white", boxShadow: "0 2px 8px rgba(0,0,0,0.2)", fontSize: 13, color: "white" }}>✎</div>
+              <AvatarWithItems
+                size={110}
+                avatarId={profile?.avatar}
+                equippedItems={equippedItems}
+                shape="circle"
+                borderStyle={{ boxShadow: "0 8px 24px rgba(102,126,234,0.4)", border: "4px solid #667eea" }}
+                onClick={() => { setShowShop(true); setShopCategory("frame"); }}
+              />
+              <div style={{ position: "absolute", bottom: 12, right: "calc(50% - 91px)", background: "#667eea", borderRadius: "50%", width: 28, height: 28, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10, border: "2px solid white", boxShadow: "0 2px 8px rgba(0,0,0,0.2)", fontSize: 13, color: "white", cursor: "pointer" }}>✎</div>
             </div>
             <div style={{ fontSize: 22, fontWeight: 800, color: "#1a1a2e" }}>{profile?.name}</div>
             <div style={{ fontSize: 14, color: "#667eea", fontWeight: 600, marginTop: 4 }}>{currentTitle}</div>
@@ -2015,6 +2465,67 @@
               <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>가입일</span><span style={{ fontWeight: 600 }}>{profile?.createdAt ? new Date(profile.createdAt).toLocaleDateString("ko-KR") : "-"}</span></div>
               <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>현재 주차</span><span style={{ fontWeight: 600 }}>{currentWeek}주차 / 3주차</span></div>
             </div>
+          </div>
+
+          {/* 장착 중인 아이템 요약 */}
+          <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 16 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+              <h4 style={{ fontSize: 14, fontWeight: 700, margin: 0 }}>🎨 장착 아이템</h4>
+              <button onClick={() => setShowShop(true)} style={{ fontSize: 11, color: "#667eea", background: "none", border: "none", cursor: "pointer", fontWeight: 600 }}>상점 가기</button>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6 }}>
+              {SHOP_CATEGORIES.filter(c => c.id !== "avatar").map(cat => {
+                const itemId = equippedItems[cat.id];
+                const item = itemId ? SHOP_ITEMS.find(i => i.id === itemId) : null;
+                return (
+                  <div key={cat.id} onClick={() => { setShowShop(true); setShopCategory(cat.id); }}
+                    style={{ textAlign: "center", padding: 6, borderRadius: 10, background: item ? "#f0f0ff" : "#f7f7fa", border: item ? "1px solid #d0d0ff" : "1px dashed #ddd", cursor: "pointer" }}>
+                    {item && item.icon ? (
+                      <img src={item.icon} style={{ width: 28, height: 28, objectFit: "contain" }} />
+                    ) : (
+                      <div style={{ width: 28, height: 28, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, opacity: 0.3, margin: "0 auto" }}>{cat.emoji}</div>
+                    )}
+                    <div style={{ fontSize: 9, color: item ? "#444" : "#bbb", marginTop: 2, fontWeight: item ? 600 : 400 }}>{item ? item.name : cat.name}</div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* 코디 슬롯 전환 */}
+          <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 16 }}>
+            <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 10, margin: 0 }}>👗 코디 슬롯</h4>
+            <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+              {outfitSlots.map((slot, idx) => {
+                const isActive = idx === activeOutfitSlot;
+                const itemCount = Object.keys(slot.equippedItems || {}).length;
+                return (
+                  <button key={idx} onClick={() => switchOutfitSlot(idx)}
+                    style={{
+                      flex: 1, padding: "10px 8px", borderRadius: 14, cursor: "pointer",
+                      border: isActive ? "2px solid #667eea" : "1px solid #ddd",
+                      background: isActive ? "linear-gradient(135deg, #667eea15, #764ba215)" : "#f7f7fa",
+                      transition: "all 0.2s"
+                    }}>
+                    <div style={{ fontSize: 18, marginBottom: 4 }}>{idx === 0 ? "🔥" : idx === 1 ? "❄️" : "⚡"}</div>
+                    <div style={{ fontSize: 11, fontWeight: isActive ? 700 : 500, color: isActive ? "#667eea" : "#888" }}>{slot.name}</div>
+                    <div style={{ fontSize: 9, color: "#aaa", marginTop: 2 }}>{itemCount > 0 ? `${itemCount}개 장착` : "비어있음"}</div>
+                  </button>
+                );
+              })}
+            </div>
+            {(() => {
+              const setBonus = getActiveSetBonus();
+              return setBonus ? (
+                <div style={{ marginTop: 10, padding: "8px 12px", background: "linear-gradient(135deg, #FFF8E1, #FFF3E0)", borderRadius: 10, border: "1px solid #FFE0B2", display: "flex", alignItems: "center", gap: 8 }}>
+                  <span style={{ fontSize: 16 }}>✨</span>
+                  <div>
+                    <div style={{ fontSize: 12, fontWeight: 700, color: "#E65100" }}>{setBonus.name} 활성!</div>
+                    <div style={{ fontSize: 10, color: "#795548" }}>매일 출석 보너스 +{setBonus.bonus} 코인 ({setBonus.count}개 매칭)</div>
+                  </div>
+                </div>
+              ) : null;
+            })()}
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 8, marginBottom: 20 }}>
@@ -2413,128 +2924,7 @@
       };
 
       // ═══════════════════════════════════════
-      // 🛍️ Shop Modal (대규모 개선 - 카테고리 탭 + 아바타 구매)
-      // ═══════════════════════════════════════
-      const ShopModal = () => {
-        if (!showShop) return null;
-        const filteredItems = shopCategory === "avatar"
-          ? AVATAR_DATA.filter(a => !a.free)
-          : SHOP_ITEMS.filter(item => item.category === shopCategory);
-        const isAvatarTab = shopCategory === "avatar";
-        return (
-          <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "flex-end", zIndex: 1000 }}
-            onClick={() => setShowShop(false)}>
-            <div style={{ background: "white", borderRadius: "24px 24px 0 0", padding: "16px 16px 20px", maxHeight: "92vh", width: "100%", display: "flex", flexDirection: "column", animation: "pop 0.3s ease" }}
-              onClick={e => e.stopPropagation()}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                  <div style={{ width: 52, height: 52, position: "relative" }}>
-                    {Object.entries(equippedItems).filter(([cat]) => cat === "frame" || cat === "aura").map(([cat, itemId]) => {
-                      const item = SHOP_ITEMS.find(i => i.id === itemId);
-                      return item?.icon ? <img key={cat} src={item.icon} style={{ ...ITEM_POSITIONS[cat](44), objectFit: "contain" }} /> : null;
-                    })}
-                    <AvatarIcon avatarId={profile?.avatar} size={44} style={{ borderRadius: "50%", border: "2px solid #667eea", position: "relative", zIndex: 1 }} />
-                    {Object.entries(equippedItems).filter(([cat]) => cat === "hat" || cat === "pet").map(([cat, itemId]) => {
-                      const item = SHOP_ITEMS.find(i => i.id === itemId);
-                      return item?.icon ? <img key={cat} src={item.icon} style={{ ...ITEM_POSITIONS[cat](44), objectFit: "contain" }} /> : null;
-                    })}
-                  </div>
-                  <h3 style={{ fontSize: 18, fontWeight: 800, color: "#1a1a2e" }}>상점</h3>
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                  <span style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 14, fontWeight: 700, color: "#667eea" }}>
-                    <img src={PNG_ICONS.coin} style={{ width: 18, height: 18 }} /> {coins}
-                  </span>
-                  <button onClick={() => setShowShop(false)} style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer", padding: 0 }}>✕</button>
-                </div>
-              </div>
-              <div style={{ display: "flex", gap: 4, overflowX: "auto", paddingBottom: 10, marginBottom: 10, borderBottom: "1px solid #eee", flexShrink: 0 }}>
-                {SHOP_CATEGORIES.map(cat => (
-                  <button key={cat.id} onClick={() => setShopCategory(cat.id)}
-                    style={{ padding: "6px 12px", borderRadius: 20, border: "none", fontSize: 11, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap",
-                      background: shopCategory === cat.id ? "#667eea" : "#f0f0f5",
-                      color: shopCategory === cat.id ? "white" : "#666" }}>
-                    {cat.emoji} {cat.name}
-                  </button>
-                ))}
-              </div>
-              <div style={{ overflowY: "auto", flex: 1 }}>
-                <div style={{ display: "grid", gridTemplateColumns: isAvatarTab ? "repeat(3, 1fr)" : "repeat(2, 1fr)", gap: 8 }}>
-                  {isAvatarTab ? filteredItems.map(avatar => {
-                    const owned = ownedAvatars.includes(avatar.id);
-                    const equipped = profile?.avatar === avatar.id;
-                    return (
-                      <div key={avatar.id} style={{ background: "#f7f7fa", borderRadius: 14, padding: 10, textAlign: "center", border: equipped ? "2px solid #667eea" : "1px solid #eee" }}>
-                        <img src={avatar.img} style={{ width: 56, height: 56, borderRadius: "50%", objectFit: "cover", marginBottom: 4 }} />
-                        <div style={{ fontSize: 11, fontWeight: 700, color: "#1a1a2e", marginBottom: 2 }}>{avatar.name}</div>
-                        <div style={{ fontSize: 10, color: "#888", marginBottom: 6 }}>{avatar.price} 코인</div>
-                        {!owned ? (
-                          <button onClick={() => {
-                            if (coins >= avatar.price) {
-                              setCoins(prev => prev - avatar.price);
-                              setOwnedAvatars(prev => [...prev, avatar.id]);
-                            }
-                          }}
-                            disabled={coins < avatar.price}
-                            style={{ width: "100%", padding: "5px 8px", borderRadius: 8, border: "none", background: coins >= avatar.price ? "#667eea" : "#ddd", color: "white", fontSize: 11, fontWeight: 600, cursor: coins >= avatar.price ? "pointer" : "default" }}>
-                            구매
-                          </button>
-                        ) : equipped ? (
-                          <button style={{ width: "100%", padding: "5px 8px", borderRadius: 8, border: "none", background: "#667eea", color: "white", fontSize: 11, fontWeight: 600 }}>
-                            사용 중
-                          </button>
-                        ) : (
-                          <button onClick={() => { setProfile(prev => ({...prev, avatar: avatar.id})); setProfileForm(prev => ({...prev, avatar: avatar.id})); }}
-                            style={{ width: "100%", padding: "5px 8px", borderRadius: 8, border: "2px solid #667eea", background: "white", color: "#667eea", fontSize: 11, fontWeight: 600, cursor: "pointer" }}>
-                            선택
-                          </button>
-                        )}
-                      </div>
-                    );
-                  }) : filteredItems.map(item => {
-                    const owned = ownedItems.includes(item.id);
-                    const cat = item.category;
-                    const equipped = equippedItems[cat] === item.id;
-                    return (
-                      <div key={item.id} style={{ background: "#f7f7fa", borderRadius: 14, padding: 12, textAlign: "center", border: equipped ? "2px solid #667eea" : "1px solid #eee" }}>
-                        <div style={{ marginBottom: 6 }}>{item.icon ? <img src={item.icon} style={{ width: 52, height: 52, objectFit: "contain" }} /> : <span style={{ fontSize: 36 }}>{item.emoji}</span>}</div>
-                        <div style={{ fontSize: 12, fontWeight: 700, color: "#1a1a2e", marginBottom: 2 }}>{item.name}</div>
-                        <div style={{ fontSize: 11, color: "#888", marginBottom: 8 }}>{item.price} 코인</div>
-                        {!owned ? (
-                          <button onClick={() => {
-                            if (coins >= item.price) {
-                              setCoins(prev => prev - item.price);
-                              setOwnedItems(prev => [...prev, item.id]);
-                              setEquippedItems(prev => ({...prev, [cat]: item.id}));
-                            }
-                          }}
-                            disabled={coins < item.price}
-                            style={{ width: "100%", padding: "7px 10px", borderRadius: 10, border: "none", background: coins >= item.price ? "#667eea" : "#ddd", color: "white", fontSize: 12, fontWeight: 600, cursor: coins >= item.price ? "pointer" : "default" }}>
-                            구매
-                          </button>
-                        ) : equipped ? (
-                          <button onClick={() => setEquippedItems(prev => { const n = {...prev}; delete n[cat]; return n; })}
-                            style={{ width: "100%", padding: "7px 10px", borderRadius: 10, border: "none", background: "#667eea", color: "white", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
-                            해제
-                          </button>
-                        ) : (
-                          <button onClick={() => setEquippedItems(prev => ({...prev, [cat]: item.id}))}
-                            style={{ width: "100%", padding: "7px 10px", borderRadius: 10, border: "2px solid #667eea", background: "white", color: "#667eea", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
-                            장착
-                          </button>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-      };
-
-      // ═══════════════════════════════════════
-      // 🎁 Reward Modal
+      // 🎉 레벨업 보상 모달
       // ═══════════════════════════════════════
       const RewardModal = () => {
         if (!showReward || !rewardInfo) return null;
@@ -2543,13 +2933,18 @@
             onClick={() => setShowReward(false)}>
             <div style={{ background: "white", borderRadius: 24, padding: "32px 24px", textAlign: "center", maxWidth: 300, width: "90%", animation: "pop 0.3s ease" }}
               onClick={e => e.stopPropagation()}>
-              <img src={PNG_ICONS.level_up} style={{ width: "100%", borderRadius: 16, marginBottom: 12 }} />
+              <div style={{ fontSize: 60, marginBottom: 12 }}>🎉</div>
               <div style={{ fontSize: 20, fontWeight: 800, color: "#1a1a2e", marginBottom: 8 }}>레벨 업!</div>
               <div style={{ fontSize: 40, fontWeight: 800, color: "#667eea", marginBottom: 8 }}>Lv.{rewardInfo.level}</div>
               <div style={{ fontSize: 16, color: "#444", marginBottom: 8 }}>새로운 칭호: <b style={{ color: "#FFB300" }}>{rewardInfo.title}</b></div>
-              {rewardInfo.coins && <div style={{ fontSize: 14, color: "#667eea", fontWeight: 700, marginBottom: 16, display: "flex", alignItems: "center", justifyContent: "center", gap: 4 }}><img src={PNG_ICONS.coin} style={{ width: 20, height: 20 }} /> +{rewardInfo.coins} 코인 획득!</div>}
+              <div style={{ fontSize: 14, color: "#667eea", fontWeight: 600, marginBottom: 4 }}>+{rewardInfo.coins} 코인</div>
+              {rewardInfo.bonusItem && (
+                <div style={{ fontSize: 13, color: "#4CAF50", fontWeight: 600, marginBottom: 8, padding: "6px 12px", background: "#E8F5E9", borderRadius: 10 }}>
+                  보너스 아이템: {rewardInfo.bonusItem}
+                </div>
+              )}
               <button onClick={() => setShowReward(false)}
-                style={{ padding: "12px 32px", borderRadius: 20, border: "none", background: "#667eea", color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
+                style={{ padding: "12px 32px", borderRadius: 20, border: "none", background: "#667eea", color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer", marginTop: 8 }}>
                 좋아요! 🎮
               </button>
             </div>
@@ -2582,16 +2977,9 @@
                 style={{
                   background: "none", border: "none", padding: "6px 16px",
                   display: "flex", flexDirection: "column", alignItems: "center", gap: 3,
-                  cursor: "pointer", transition: "all 0.2s"
+                  cursor: "pointer", transition: "all 0.2s", opacity: isActive(t.key) ? 1 : 0.5
                 }}>
-                <div style={{
-                  width: 28, height: 28, display: "flex", alignItems: "center", justifyContent: "center",
-                  background: isActive(t.key) ? "#667eea15" : "transparent",
-                  borderRadius: 10, padding: 2, transition: "all 0.2s",
-                  opacity: isActive(t.key) ? 1 : 0.5
-                }}>
-                  <img src={t.svg} style={{ width: 24, height: 24, objectFit: "contain" }} />
-                </div>
+                <SvgIcon svg={t.svg} size={24} style={{ opacity: isActive(t.key) ? 1 : 0.6 }} />
                 <span style={{
                   fontSize: 10, fontWeight: isActive(t.key) ? 700 : 500,
                   color: isActive(t.key) ? "#667eea" : "#999",
@@ -2604,14 +2992,131 @@
       };
 
       // ═══════════════════════════════════════
-      // 🎨 Main Render
+      // 🛍️ Shop Modal (대규모 개선 - 카테고리 탭 + 아바타 구매)
       // ═══════════════════════════════════════
-      // 🔄 Firestore 로딩 중 화면
+      const ShopModal = () => {
+        if (!showShop) return null;
+        const filteredItems = shopCategory === "avatar"
+          ? AVATAR_DATA.filter(a => !a.free)
+          : SHOP_ITEMS.filter(item => item.category === shopCategory);
+        const isAvatarTab = shopCategory === "avatar";
+        return (
+          <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "flex-end", zIndex: 1000 }}
+            onClick={() => setShowShop(false)}>
+            <div style={{ background: "white", borderRadius: "24px 24px 0 0", padding: "16px 16px 20px", maxHeight: "92vh", width: "100%", display: "flex", flexDirection: "column", animation: "pop 0.3s ease" }}
+              onClick={e => e.stopPropagation()}>
+              {/* 상점 헤더: 큰 아바타 프리뷰 + 타이틀 */}
+              <div style={{ textAlign: "center", padding: "8px 0 4px", position: "relative" }}>
+                <div style={{ display: "flex", justifyContent: "flex-end", position: "absolute", top: 0, right: 0, gap: 12, alignItems: "center" }}>
+                  <span style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 14, fontWeight: 700, color: "#667eea" }}>
+                    <img src={PNG_ICONS.coin} style={{ width: 18, height: 18 }} /> {coins}
+                  </span>
+                  <button onClick={() => setShowShop(false)} style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer", padding: 0 }}>✕</button>
+                </div>
+                <AvatarWithItems
+                  size={80}
+                  avatarId={profile?.avatar}
+                  equippedItems={equippedItems}
+                  shape="circle"
+                  borderStyle={{ border: "3px solid #667eea", boxShadow: "0 4px 16px rgba(102,126,234,0.3)" }}
+                />
+                <h3 style={{ fontSize: 16, fontWeight: 800, color: "#1a1a2e", marginTop: 6, marginBottom: 0 }}>상점</h3>
+              </div>
+              <div style={{ display: "flex", gap: 4, overflowX: "auto", paddingBottom: 10, marginBottom: 10, borderBottom: "1px solid #eee", flexShrink: 0 }}>
+                {SHOP_CATEGORIES.map(cat => (
+                  <button key={cat.id} onClick={() => setShopCategory(cat.id)}
+                    style={{ padding: "6px 12px", borderRadius: 20, border: "none", fontSize: 11, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap",
+                      background: shopCategory === cat.id ? "#667eea" : "#f0f0f5",
+                      color: shopCategory === cat.id ? "white" : "#666" }}>
+                    {cat.emoji} {cat.name}
+                  </button>
+                ))}
+              </div>
+              <div style={{ overflowY: "auto", flex: 1 }}>
+                <div style={{ display: "grid", gridTemplateColumns: isAvatarTab ? "repeat(3, 1fr)" : "repeat(2, 1fr)", gap: 8 }}>
+                  {isAvatarTab ? filteredItems.map(avatar => {
+                    const owned = ownedAvatars.includes(avatar.id);
+                    const equipped = profile?.avatar === avatar.id;
+                    return (
+                      <div key={avatar.id} style={{ background: "#f7f7fa", borderRadius: 14, padding: 10, textAlign: "center", border: equipped ? "2px solid #667eea" : "1px solid #eee" }}>
+                        <img src={avatar.img} style={{ width: 56, height: 56, borderRadius: "50%", objectFit: "cover", marginBottom: 4 }} />
+                        <div style={{ fontSize: 11, fontWeight: 700, color: "#1a1a2e", marginBottom: 2 }}>{avatar.name}</div>
+                        <div style={{ fontSize: 10, color: "#888", marginBottom: 6 }}>{avatar.price} 코인</div>
+                        {!owned ? (
+                          <button onClick={() => {
+                            if (coins >= avatar.price) {
+                              setCoins(prev => prev - avatar.price);
+                              setOwnedAvatars(prev => [...prev, avatar.id]);
+                              showCoinGain(-avatar.price, `${avatar.name} 아바타 구매!`);
+                            }
+                          }}
+                            disabled={coins < avatar.price}
+                            style={{ width: "100%", padding: "5px 8px", borderRadius: 8, border: "none", background: coins >= avatar.price ? "#667eea" : "#ddd", color: "white", fontSize: 11, fontWeight: 600, cursor: coins >= avatar.price ? "pointer" : "default" }}>
+                            구매
+                          </button>
+                        ) : equipped ? (
+                          <button style={{ width: "100%", padding: "5px 8px", borderRadius: 8, border: "none", background: "#667eea", color: "white", fontSize: 11, fontWeight: 600 }}>
+                            사용 중
+                          </button>
+                        ) : (
+                          <button onClick={() => { setProfile(prev => ({...prev, avatar: avatar.id})); setProfileForm(prev => ({...prev, avatar: avatar.id})); }}
+                            style={{ width: "100%", padding: "5px 8px", borderRadius: 8, border: "2px solid #667eea", background: "white", color: "#667eea", fontSize: 11, fontWeight: 600, cursor: "pointer" }}>
+                            선택
+                          </button>
+                        )}
+                      </div>
+                    );
+                  }) : filteredItems.map(item => {
+                    const owned = ownedItems.includes(item.id);
+                    const cat = item.category;
+                    const equipped = equippedItems[cat] === item.id;
+                    return (
+                      <div key={item.id} style={{ background: "#f7f7fa", borderRadius: 14, padding: 12, textAlign: "center", border: equipped ? "2px solid #667eea" : "1px solid #eee" }}>
+                        <div style={{ marginBottom: 8, padding: 4 }}>{item.icon ? <img src={item.icon} style={{ width: 64, height: 64, objectFit: "contain" }} /> : <span style={{ fontSize: 40 }}>{item.emoji}</span>}</div>
+                        <div style={{ fontSize: 12, fontWeight: 700, color: "#1a1a2e", marginBottom: 2 }}>{item.name}</div>
+                        <div style={{ fontSize: 11, color: "#888", marginBottom: 8 }}>{item.price} 코인</div>
+                        {!owned ? (
+                          <button onClick={() => {
+                            if (coins >= item.price) {
+                              setCoins(prev => prev - item.price);
+                              setOwnedItems(prev => [...prev, item.id]);
+                              setEquippedItems(prev => ({...prev, [cat]: item.id}));
+                              showCoinGain(-item.price, `${item.name} 구매!`);
+                            }
+                          }}
+                            disabled={coins < item.price}
+                            style={{ width: "100%", padding: "7px 10px", borderRadius: 10, border: "none", background: coins >= item.price ? "#667eea" : "#ddd", color: "white", fontSize: 12, fontWeight: 600, cursor: coins >= item.price ? "pointer" : "default" }}>
+                            구매
+                          </button>
+                        ) : equipped ? (
+                          <button onClick={() => setEquippedItems(prev => { const n = {...prev}; delete n[cat]; return n; })}
+                            style={{ width: "100%", padding: "7px 10px", borderRadius: 10, border: "none", background: "#667eea", color: "white", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
+                            해제
+                          </button>
+                        ) : (
+                          <button onClick={() => setEquippedItems(prev => ({...prev, [cat]: item.id}))}
+                            style={{ width: "100%", padding: "7px 10px", borderRadius: 10, border: "2px solid #667eea", background: "white", color: "#667eea", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
+                            장착
+                          </button>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      // ═══════════════════════════════════════
+      // 메인 렌더링
+      // ═══════════════════════════════════════
       if (!dataLoaded) {
         return (
-          <div style={{ maxWidth: 430, margin: "0 auto", background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", fontFamily: "'Noto Sans KR', -apple-system, sans-serif" }}>
-            <img src="icons/app-icon-192.png" style={{ width: 80, height: 80, borderRadius: 20, marginBottom: 20, animation: "pop 0.8s ease infinite alternate", boxShadow: "0 4px 20px rgba(0,0,0,0.3)" }} />
-            <div style={{ color: "white", fontSize: 24, fontWeight: 800, marginBottom: 8 }}>BookQuest</div>
+          <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg, #667eea, #764ba2)" }}>
+            <div style={{ fontSize: 48, marginBottom: 16, animation: "pop 0.5s ease" }}>📚</div>
+            <div style={{ color: "white", fontSize: 18, fontWeight: 800 }}>BookQuest</div>
             <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 14 }}>데이터 불러오는 중...</div>
           </div>
         );
@@ -2636,13 +3141,31 @@
           {showCoinPopup && (
             <div style={{
               position: "fixed", top: 80, left: "50%", transform: "translateX(-50%)", zIndex: 2000,
-              background: "linear-gradient(135deg, #FFD700, #FFA500)", borderRadius: 20,
+              background: showCoinPopup.amount > 0
+                ? "linear-gradient(135deg, #FFD700, #FFA500)"
+                : "linear-gradient(135deg, #667eea, #764ba2)",
+              borderRadius: 20,
               padding: "12px 24px", display: "flex", alignItems: "center", gap: 8,
-              boxShadow: "0 8px 24px rgba(255,165,0,0.4)", animation: "pop 0.3s ease",
+              boxShadow: showCoinPopup.amount > 0
+                ? "0 8px 24px rgba(255,165,0,0.4)"
+                : "0 8px 24px rgba(102,126,234,0.4)",
+              animation: "pop 0.3s ease",
               color: "white", fontWeight: 700, fontSize: 14
             }}>
               <img src={PNG_ICONS.coin} style={{ width: 24, height: 24 }} />
-              +{showCoinPopup.amount} 코인! {showCoinPopup.label}
+              {showCoinPopup.amount > 0 ? "+" : ""}{showCoinPopup.amount} 코인 {showCoinPopup.label}
+            </div>
+          )}
+
+          {saveErrorMsg && (
+            <div style={{
+              position: "fixed", top: 80, left: "50%", transform: "translateX(-50%)", zIndex: 2000,
+              background: "linear-gradient(135deg, #FF5252, #D32F2F)", borderRadius: 20,
+              padding: "12px 24px", display: "flex", alignItems: "center", gap: 8,
+              boxShadow: "0 8px 24px rgba(211,47,47,0.4)", animation: "pop 0.3s ease",
+              color: "white", fontWeight: 700, fontSize: 13
+            }}>
+              {saveErrorMsg}
             </div>
           )}
 
