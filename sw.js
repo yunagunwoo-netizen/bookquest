@@ -1,11 +1,16 @@
-const CACHE_NAME = 'bookquest-v1';
+const CACHE_NAME = 'bookquest-v2';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
   './icons/favicon.png',
   './icons/app-icon-192.png',
-  './icons/app-icon-512.png'
+  './icons/app-icon-512.png',
+  './covers/book1.jpg',
+  './covers/book2.jpg',
+  './covers/book3.jpg',
+  './covers/book4.jpg',
+  './covers/book5.jpg'
 ];
 
 self.addEventListener('install', e => {
