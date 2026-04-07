@@ -626,24 +626,20 @@
       { id: "hat", name: "모자/머리", emoji: "🎩" },
       { id: "face", name: "안경/얼굴", emoji: "🕶️" },
       { id: "pet", name: "펫", emoji: "🐾" },
-      { id: "emote", name: "이모트", emoji: "💬" },
       { id: "weapon", name: "무기/소품", emoji: "⚔️" },
-      { id: "wing", name: "날개/등", emoji: "🦋" },
       { id: "avatar", name: "아바타", emoji: "👤" }
     ];
 
     // 🎮 카테고리별 효과 시스템
     // frame/aura = 비주얼 오버레이 (아바타에 직접 표시)
-    // hat/face/pet/emote/weapon/wing = 효과 카드 (기능 보너스 부여)
+    // hat/face/pet/weapon = 효과 카드 (기능 보너스 부여)
     const ITEM_EFFECTS = {
       frame:  { type: "visual", label: "비주얼", desc: "아바타 테두리 장식", color: "#667eea" },
       aura:   { type: "visual", label: "비주얼", desc: "아바타 배경 이펙트", color: "#764ba2" },
       hat:    { type: "bonus", label: "토론 XP +15%", desc: "토론 완료 시 XP 보너스", color: "#FF6B35", icon: "🎩", stat: "discussionXp", value: 0.15 },
       face:   { type: "bonus", label: "퀴즈 코인 +2", desc: "퀴즈 정답 시 추가 코인", color: "#2196F3", icon: "🕶️", stat: "quizCoin", value: 2 },
       pet:    { type: "bonus", label: "출석 코인 +3", desc: "매일 출석 보너스 추가", color: "#4CAF50", icon: "🐾", stat: "loginCoin", value: 3 },
-      emote:  { type: "bonus", label: "미션 XP +20%", desc: "일일 미션 XP 보너스", color: "#FF9800", icon: "💬", stat: "missionXp", value: 0.20 },
-      weapon: { type: "bonus", label: "별점 코인 +2", desc: "토론 별점 코인 보너스", color: "#F44336", icon: "⚔️", stat: "starCoin", value: 2 },
-      wing:   { type: "bonus", label: "레벨업 코인 +10", desc: "레벨업 시 추가 코인", color: "#9C27B0", icon: "🦋", stat: "levelCoin", value: 10 }
+      weapon: { type: "bonus", label: "별점 코인 +2", desc: "토론 별점 코인 보너스", color: "#F44336", icon: "⚔️", stat: "starCoin", value: 2 }
     };
 
     // 현재 활성 보너스 조회 헬퍼 (equippedItems 기반)
@@ -657,119 +653,42 @@
     };
 
     const SHOP_ITEMS = [
-      // 기존 아이템 (레거시 호환)
-      { id: "crown", name: "황금 왕관", price: 30, emoji: "👑", icon: "icons/shop-crown.png", category: "hat" },
-      { id: "glasses", name: "스마트 안경", price: 20, emoji: "🤓", icon: "icons/shop-glasses.png", category: "face" },
-      { id: "star_frame", name: "별 프레임", price: 25, emoji: "⭐", icon: "icons/shop-star-frame.png", category: "frame" },
-      { id: "fire_aura", name: "불꽃 오라", price: 40, emoji: "🔥", icon: "icons/shop-fire-aura.png", category: "aura" },
-      { id: "rainbow", name: "무지개 효과", price: 35, emoji: "🌈", icon: "icons/shop-rainbow.png", category: "aura" },
-      { id: "music_note", name: "음표 장식", price: 15, emoji: "🎵", icon: "icons/shop-music.png", category: "emote" },
-      { id: "lightning", name: "번개 효과", price: 30, emoji: "⚡", icon: "icons/shop-lightning.png", category: "aura" },
-      { id: "heart", name: "하트 장식", price: 20, emoji: "💖", icon: "icons/shop-heart.png", category: "emote" },
-      // 프레임 & 테두리 (12개)
-      { id: "deco_frame_gold_crown", name: "골드 왕관 프레임", price: 35, icon: "icons/deco-frame-gold-crown.png", category: "frame" },
-      { id: "deco_frame_diamond", name: "다이아몬드 프레임", price: 45, icon: "icons/deco-frame-diamond.png", category: "frame" },
-      { id: "deco_frame_fire", name: "불꽃 프레임", price: 40, icon: "icons/deco-frame-fire.png", category: "frame" },
-      { id: "deco_frame_ice", name: "얼음 결정 프레임", price: 40, icon: "icons/deco-frame-ice.png", category: "frame" },
-      { id: "deco_frame_rainbow", name: "무지개 프레임", price: 35, icon: "icons/deco-frame-rainbow.png", category: "frame" },
-      { id: "deco_frame_starlight", name: "별빛 프레임", price: 30, icon: "icons/deco-frame-starlight.png", category: "frame" },
-      { id: "deco_frame_dragon", name: "용 프레임", price: 50, icon: "icons/deco-frame-dragon.png", category: "frame" },
-      { id: "deco_frame_skull", name: "해골 프레임", price: 45, icon: "icons/deco-frame-skull.png", category: "frame" },
-      { id: "deco_frame_flower", name: "꽃 프레임", price: 25, icon: "icons/deco-frame-flower.png", category: "frame" },
-      { id: "deco_frame_lightning", name: "번개 프레임", price: 40, icon: "icons/deco-frame-lightning.png", category: "frame" },
-      { id: "deco_frame_neon", name: "네온 프레임", price: 35, icon: "icons/deco-frame-neon.png", category: "frame" },
-      { id: "deco_frame_space", name: "우주 프레임", price: 50, icon: "icons/deco-frame-space.png", category: "frame" },
-      // 배경 이펙트 (12개)
-      { id: "deco_aura_fire", name: "불꽃 오라", price: 40, icon: "icons/deco-aura-fire.png", category: "aura" },
-      { id: "deco_aura_ice", name: "얼음 오라", price: 40, icon: "icons/deco-aura-ice.png", category: "aura" },
-      { id: "deco_aura_electric", name: "전기 오라", price: 45, icon: "icons/deco-aura-electric.png", category: "aura" },
-      { id: "deco_aura_poison", name: "독 오라", price: 45, icon: "icons/deco-aura-poison.png", category: "aura" },
-      { id: "deco_aura_light", name: "빛 오라", price: 35, icon: "icons/deco-aura-light.png", category: "aura" },
-      { id: "deco_aura_dark", name: "어둠 오라", price: 50, icon: "icons/deco-aura-dark.png", category: "aura" },
-      { id: "deco_aura_rainbow", name: "무지개 오라", price: 35, icon: "icons/deco-aura-rainbow.png", category: "aura" },
-      { id: "deco_aura_star", name: "별 오라", price: 30, icon: "icons/deco-aura-star.png", category: "aura" },
-      { id: "deco_aura_heart", name: "하트 배경", price: 25, icon: "icons/deco-aura-heart-bg.png", category: "aura" },
-      { id: "deco_aura_explosion", name: "폭발 배경", price: 45, icon: "icons/deco-aura-explosion.png", category: "aura" },
-      { id: "deco_aura_galaxy", name: "은하수 배경", price: 50, icon: "icons/deco-aura-galaxy.png", category: "aura" },
-      { id: "deco_aura_cherry", name: "벚꽃 배경", price: 30, icon: "icons/deco-aura-cherry-blossom.png", category: "aura" },
-      // 모자 & 머리 장식 (12개)
-      { id: "deco_hat_pirate", name: "해적 모자", price: 30, icon: "icons/deco-hat-pirate.png", category: "hat" },
-      { id: "deco_hat_crown", name: "왕관", price: 50, icon: "icons/deco-hat-crown.png", category: "hat" },
-      { id: "deco_hat_santa", name: "산타 모자", price: 25, icon: "icons/deco-hat-santa.png", category: "hat" },
-      { id: "deco_hat_wizard", name: "마법사 모자", price: 35, icon: "icons/deco-hat-wizard.png", category: "hat" },
-      { id: "deco_hat_ninja", name: "닌자 머리띠", price: 30, icon: "icons/deco-hat-ninja-band.png", category: "hat" },
-      { id: "deco_hat_angel", name: "천사 후광", price: 40, icon: "icons/deco-hat-angel-halo.png", category: "hat" },
-      { id: "deco_hat_devil", name: "악마 뿔", price: 40, icon: "icons/deco-hat-devil-horn.png", category: "hat" },
-      { id: "deco_hat_cat", name: "고양이 귀", price: 20, icon: "icons/deco-hat-cat-ear.png", category: "hat" },
-      { id: "deco_hat_bunny", name: "토끼 귀", price: 20, icon: "icons/deco-hat-bunny-ear.png", category: "hat" },
-      { id: "deco_hat_unicorn", name: "유니콘 뿔", price: 35, icon: "icons/deco-hat-unicorn-horn.png", category: "hat" },
-      { id: "deco_hat_party", name: "파티 모자", price: 15, icon: "icons/deco-hat-party.png", category: "hat" },
-      { id: "deco_hat_laurel", name: "월계관", price: 45, icon: "icons/deco-hat-laurel.png", category: "hat" },
-      // 안경 & 얼굴 장식 (12개)
-      { id: "deco_face_sun", name: "선글라스", price: 20, icon: "icons/deco-face-sunglasses.png", category: "face" },
-      { id: "deco_face_heart", name: "하트 안경", price: 25, icon: "icons/deco-face-heart-glasses.png", category: "face" },
-      { id: "deco_face_star", name: "별 안경", price: 25, icon: "icons/deco-face-star-glasses.png", category: "face" },
-      { id: "deco_face_3d", name: "3D 안경", price: 20, icon: "icons/deco-face-3d-glasses.png", category: "face" },
-      { id: "deco_face_monocle", name: "모노클", price: 30, icon: "icons/deco-face-monocle.png", category: "face" },
-      { id: "deco_face_vr", name: "VR 고글", price: 40, icon: "icons/deco-face-vr-goggle.png", category: "face" },
-      { id: "deco_face_steam", name: "스팀펑크 고글", price: 35, icon: "icons/deco-face-steampunk.png", category: "face" },
-      { id: "deco_face_rainbow", name: "무지개 안경", price: 30, icon: "icons/deco-face-rainbow-glasses.png", category: "face" },
-      { id: "deco_face_mask", name: "가면", price: 35, icon: "icons/deco-face-half-mask.png", category: "face" },
-      { id: "deco_face_tiger", name: "호랑이 페인트", price: 25, icon: "icons/deco-face-tiger-paint.png", category: "face" },
-      { id: "deco_face_war", name: "전쟁 페인트", price: 30, icon: "icons/deco-face-war-paint.png", category: "face" },
-      { id: "deco_face_sticker", name: "별 스티커", price: 15, icon: "icons/deco-face-star-sticker.png", category: "face" },
-      // 펫 & 동반자 (12개)
-      { id: "deco_pet_dragon", name: "미니 드래곤", price: 50, icon: "icons/deco-pet-mini-dragon.png", category: "pet" },
-      { id: "deco_pet_kitty", name: "작은 고양이", price: 25, icon: "icons/deco-pet-kitty.png", category: "pet" },
-      { id: "deco_pet_ghost", name: "유령 펫", price: 35, icon: "icons/deco-pet-ghost.png", category: "pet" },
-      { id: "deco_pet_robot", name: "로봇 펫", price: 40, icon: "icons/deco-pet-robot.png", category: "pet" },
-      { id: "deco_pet_star", name: "별 펫", price: 30, icon: "icons/deco-pet-star.png", category: "pet" },
-      { id: "deco_pet_slime", name: "슬라임 펫", price: 20, icon: "icons/deco-pet-slime.png", category: "pet" },
-      { id: "deco_pet_phoenix", name: "미니 봉황", price: 55, icon: "icons/deco-pet-phoenix.png", category: "pet" },
-      { id: "deco_pet_snowman", name: "눈사람 펫", price: 25, icon: "icons/deco-pet-snowman.png", category: "pet" },
-      { id: "deco_pet_fairy", name: "요정 펫", price: 40, icon: "icons/deco-pet-fairy.png", category: "pet" },
-      { id: "deco_pet_croc", name: "미니 악어", price: 35, icon: "icons/deco-pet-mini-croc.png", category: "pet" },
-      { id: "deco_pet_owl", name: "작은 부엉이", price: 30, icon: "icons/deco-pet-owl.png", category: "pet" },
-      { id: "deco_pet_orb", name: "마법 구슬", price: 45, icon: "icons/deco-pet-magic-orb.png", category: "pet" },
-      // 이모트 & 말풍선 (12개)
-      { id: "deco_emote_victory", name: "승리 이모트", price: 20, icon: "icons/deco-emote-victory.png", category: "emote" },
-      { id: "deco_emote_laugh", name: "웃음 이모트", price: 15, icon: "icons/deco-emote-laugh.png", category: "emote" },
-      { id: "deco_emote_angry", name: "분노 이모트", price: 20, icon: "icons/deco-emote-angry.png", category: "emote" },
-      { id: "deco_emote_sad", name: "슬픔 이모트", price: 15, icon: "icons/deco-emote-sad.png", category: "emote" },
-      { id: "deco_emote_heart_b", name: "하트 말풍선", price: 25, icon: "icons/deco-emote-heart-bubble.png", category: "emote" },
-      { id: "deco_emote_star_b", name: "별 말풍선", price: 25, icon: "icons/deco-emote-star-bubble.png", category: "emote" },
-      { id: "deco_emote_fire_b", name: "불꽃 말풍선", price: 30, icon: "icons/deco-emote-fire-bubble.png", category: "emote" },
-      { id: "deco_emote_rainbow_b", name: "무지개 말풍선", price: 30, icon: "icons/deco-emote-rainbow-bubble.png", category: "emote" },
-      { id: "deco_emote_reading", name: "독서 말풍선", price: 20, icon: "icons/deco-emote-reading-bubble.png", category: "emote" },
-      { id: "deco_emote_idea", name: "아이디어 전구", price: 25, icon: "icons/deco-emote-idea-bulb.png", category: "emote" },
-      { id: "deco_emote_music", name: "음표 이모트", price: 15, icon: "icons/deco-emote-music.png", category: "emote" },
-      { id: "deco_emote_crown", name: "왕관 이모트", price: 30, icon: "icons/deco-emote-crown.png", category: "emote" },
-      // 무기 & 소품 (12개)
-      { id: "deco_weapon_sword", name: "빛나는 검", price: 40, icon: "icons/deco-weapon-shiny-sword.png", category: "weapon" },
-      { id: "deco_weapon_wand", name: "마법 지팡이", price: 35, icon: "icons/deco-weapon-magic-wand.png", category: "weapon" },
-      { id: "deco_weapon_shield", name: "황금 방패", price: 45, icon: "icons/deco-weapon-gold-shield.png", category: "weapon" },
-      { id: "deco_weapon_gun", name: "에너지 건", price: 40, icon: "icons/deco-weapon-energy-gun.png", category: "weapon" },
-      { id: "deco_weapon_ninja", name: "닌자 표창", price: 30, icon: "icons/deco-weapon-ninja-star.png", category: "weapon" },
-      { id: "deco_weapon_pirate", name: "해적 칼", price: 35, icon: "icons/deco-weapon-pirate-sword.png", category: "weapon" },
-      { id: "deco_weapon_book", name: "마법 책", price: 30, icon: "icons/deco-weapon-magic-book.png", category: "weapon" },
-      { id: "deco_weapon_key", name: "황금 열쇠", price: 25, icon: "icons/deco-weapon-gold-key.png", category: "weapon" },
-      { id: "deco_weapon_staff", name: "독서 지팡이", price: 35, icon: "icons/deco-weapon-reading-staff.png", category: "weapon" },
-      { id: "deco_weapon_orb", name: "지식의 구슬", price: 40, icon: "icons/deco-weapon-knowledge-orb.png", category: "weapon" },
-      { id: "deco_weapon_flag", name: "퀘스트 깃발", price: 20, icon: "icons/deco-weapon-quest-flag.png", category: "weapon" },
-      { id: "deco_weapon_trophy", name: "트로피", price: 50, icon: "icons/deco-weapon-trophy.png", category: "weapon" },
-      // 날개 & 등 장식 (12개)
-      { id: "deco_wing_angel", name: "천사 날개", price: 45, icon: "icons/deco-wing-angel.png", category: "wing" },
-      { id: "deco_wing_devil", name: "악마 날개", price: 45, icon: "icons/deco-wing-devil.png", category: "wing" },
-      { id: "deco_wing_dragon", name: "드래곤 날개", price: 55, icon: "icons/deco-wing-dragon.png", category: "wing" },
-      { id: "deco_wing_butterfly", name: "나비 날개", price: 35, icon: "icons/deco-wing-butterfly.png", category: "wing" },
-      { id: "deco_wing_fire", name: "불꽃 날개", price: 50, icon: "icons/deco-wing-fire.png", category: "wing" },
-      { id: "deco_wing_ice", name: "얼음 날개", price: 50, icon: "icons/deco-wing-ice.png", category: "wing" },
-      { id: "deco_wing_mech", name: "기계 날개", price: 45, icon: "icons/deco-wing-mech.png", category: "wing" },
-      { id: "deco_wing_rainbow", name: "무지개 날개", price: 40, icon: "icons/deco-wing-rainbow.png", category: "wing" },
-      { id: "deco_wing_cape_red", name: "빨간 망토", price: 30, icon: "icons/deco-wing-cape-red.png", category: "wing" },
-      { id: "deco_wing_cape_purple", name: "보라 망토", price: 30, icon: "icons/deco-wing-cape-purple.png", category: "wing" },
-      { id: "deco_wing_jetpack", name: "제트팩", price: 50, icon: "icons/deco-wing-jetpack.png", category: "wing" },
-      { id: "deco_wing_bag", name: "마법 가방", price: 25, icon: "icons/deco-wing-magic-bag.png", category: "wing" }
+      // 프레임 (5개)
+      { id: "deco_frame_gold_crown", name: "골드 왕관 프레임", price: 35, category: "frame" },
+      { id: "deco_frame_fire", name: "불꽃 프레임", price: 40, category: "frame" },
+      { id: "deco_frame_rainbow", name: "무지개 프레임", price: 35, category: "frame" },
+      { id: "deco_frame_flower", name: "꽃 프레임", price: 25, category: "frame" },
+      { id: "deco_frame_neon", name: "네온 프레임", price: 35, category: "frame" },
+      // 오라 (5개)
+      { id: "deco_aura_fire", name: "불꽃 오라", price: 40, category: "aura" },
+      { id: "deco_aura_ice", name: "얼음 오라", price: 40, category: "aura" },
+      { id: "deco_aura_rainbow", name: "무지개 오라", price: 35, category: "aura" },
+      { id: "deco_aura_galaxy", name: "은하수 배경", price: 50, category: "aura" },
+      { id: "deco_aura_cherry", name: "벚꽃 배경", price: 30, category: "aura" },
+      // 모자 (5개)
+      { id: "crown", name: "황금 왕관", price: 30, category: "hat" },
+      { id: "deco_hat_santa", name: "산타 모자", price: 25, category: "hat" },
+      { id: "deco_hat_wizard", name: "마법사 모자", price: 35, category: "hat" },
+      { id: "deco_hat_cat", name: "고양이 귀", price: 20, category: "hat" },
+      { id: "deco_hat_party", name: "파티 모자", price: 15, category: "hat" },
+      // 얼굴 (5개)
+      { id: "deco_face_sun", name: "선글라스", price: 20, category: "face" },
+      { id: "deco_face_heart", name: "하트 안경", price: 25, category: "face" },
+      { id: "deco_face_vr", name: "VR 고글", price: 40, category: "face" },
+      { id: "deco_face_mask", name: "가면", price: 35, category: "face" },
+      { id: "deco_face_sticker", name: "별 스티커", price: 15, category: "face" },
+      // 펫 (5개)
+      { id: "deco_pet_dragon", name: "미니 드래곤", price: 50, category: "pet" },
+      { id: "deco_pet_kitty", name: "작은 고양이", price: 25, category: "pet" },
+      { id: "deco_pet_ghost", name: "유령 펫", price: 35, category: "pet" },
+      { id: "deco_pet_robot", name: "로봇 펫", price: 40, category: "pet" },
+      { id: "deco_pet_owl", name: "작은 부엉이", price: 30, category: "pet" },
+      // 무기 (5개)
+      { id: "deco_weapon_sword", name: "빛나는 검", price: 40, category: "weapon" },
+      { id: "deco_weapon_wand", name: "마법 지팡이", price: 35, category: "weapon" },
+      { id: "deco_weapon_shield", name: "황금 방패", price: 45, category: "weapon" },
+      { id: "deco_weapon_book", name: "마법 책", price: 30, category: "weapon" },
+      { id: "deco_weapon_trophy", name: "트로피", price: 50, category: "weapon" }
     ];
 
     // 아이템 유효성 검증 함수
@@ -785,113 +704,14 @@
     };
 
     // ═══════════════════════════════════════
-    // 👤 아바타 시스템 (99캐릭터)
+    // 👤 아바타 시스템 (5개 무료 캐릭터)
     // ═══════════════════════════════════════
     const AVATAR_DATA = [
-      // 기본 12개 (무료)
       { id: "shelly", name: "쉘리", gradient: ["#f97316","#ea580c"], img: "avatars/shelly.png", imgSm: "avatars/shelly_sm.png", free: true },
-      { id: "colt", name: "콜트", gradient: ["#3b82f6","#1d4ed8"], img: "avatars/colt.png", imgSm: "avatars/colt_sm.png", free: true },
       { id: "nita", name: "니타", gradient: ["#ef4444","#b91c1c"], img: "avatars/nita.png", imgSm: "avatars/nita_sm.png", free: true },
-      { id: "elprimo", name: "엘프리모", gradient: ["#f59e0b","#d97706"], img: "avatars/elprimo.png", imgSm: "avatars/elprimo_sm.png", free: true },
-      { id: "poco", name: "포코", gradient: ["#8b5cf6","#6d28d9"], img: "avatars/poco.png", imgSm: "avatars/poco_sm.png", free: true },
       { id: "leon", name: "레온", gradient: ["#22c55e","#15803d"], img: "avatars/leon.png", imgSm: "avatars/leon_sm.png", free: true },
       { id: "crow", name: "크로우", gradient: ["#6b7280","#374151"], img: "avatars/crow.png", imgSm: "avatars/crow_sm.png", free: true },
-      { id: "8bit", name: "8비트", gradient: ["#06b6d4","#0e7490"], img: "avatars/8bit.png", imgSm: "avatars/8bit_sm.png", free: true },
-      { id: "mecha", name: "메카", gradient: ["#eab308","#ca8a04"], img: "avatars/mecha.png", imgSm: "avatars/mecha_sm.png", free: true },
-      { id: "penny", name: "페니", gradient: ["#ec4899","#be185d"], img: "avatars/penny.png", imgSm: "avatars/penny_sm.png", free: true },
-      { id: "fang", name: "팡", gradient: ["#0ea5e9","#0369a1"], img: "avatars/fang.png", imgSm: "avatars/fang_sm.png", free: true },
-      { id: "tara", name: "타라", gradient: ["#a855f7","#7c3aed"], img: "avatars/tara.png", imgSm: "avatars/tara_sm.png", free: true },
-      // 트로피 로드 & 레어 (18개) - 상점 구매
-      { id: "bull", name: "불", gradient: ["#92400e","#78350f"], img: "avatars/bull.png", imgSm: "avatars/bull_sm.png", price: 15 },
-      { id: "brock", name: "브록", gradient: ["#7c3aed","#5b21b6"], img: "avatars/brock.png", imgSm: "avatars/brock_sm.png", price: 15 },
-      { id: "bo", name: "보", gradient: ["#059669","#047857"], img: "avatars/bo.png", imgSm: "avatars/bo_sm.png", price: 15 },
-      { id: "tick", name: "틱", gradient: ["#2563eb","#1d4ed8"], img: "avatars/tick.png", imgSm: "avatars/tick_sm.png", price: 15 },
-      { id: "emz", name: "에밀즈", gradient: ["#d946ef","#a21caf"], img: "avatars/emz.png", imgSm: "avatars/emz_sm.png", price: 15 },
-      { id: "stu", name: "스튜", gradient: ["#ef4444","#dc2626"], img: "avatars/stu.png", imgSm: "avatars/stu_sm.png", price: 15 },
-      { id: "barley", name: "발리", gradient: ["#ca8a04","#a16207"], img: "avatars/barley.png", imgSm: "avatars/barley_sm.png", price: 15 },
-      { id: "rosa", name: "로사", gradient: ["#16a34a","#15803d"], img: "avatars/rosa.png", imgSm: "avatars/rosa_sm.png", price: 15 },
-      { id: "rico", name: "리코", gradient: ["#7c3aed","#6d28d9"], img: "avatars/rico.png", imgSm: "avatars/rico_sm.png", price: 15 },
-      { id: "darryl", name: "대릴", gradient: ["#ea580c","#c2410c"], img: "avatars/darryl.png", imgSm: "avatars/darryl_sm.png", price: 15 },
-      { id: "carl", name: "칼", gradient: ["#0284c7","#0369a1"], img: "avatars/carl.png", imgSm: "avatars/carl_sm.png", price: 15 },
-      { id: "jacky", name: "재키", gradient: ["#e11d48","#be123c"], img: "avatars/jacky.png", imgSm: "avatars/jacky_sm.png", price: 15 },
-      { id: "gus", name: "거스", gradient: ["#a78bfa","#8b5cf6"], img: "avatars/gus.png", imgSm: "avatars/gus_sm.png", price: 20 },
-      { id: "piper", name: "파이퍼", gradient: ["#ec4899","#db2777"], img: "avatars/piper.png", imgSm: "avatars/piper_sm.png", price: 20 },
-      { id: "pam", name: "팸", gradient: ["#f59e0b","#d97706"], img: "avatars/pam.png", imgSm: "avatars/pam_sm.png", price: 20 },
-      { id: "frank", name: "프랭크", gradient: ["#65a30d","#4d7c0f"], img: "avatars/frank.png", imgSm: "avatars/frank_sm.png", price: 20 },
-      { id: "bibi", name: "비비", gradient: ["#e11d48","#be123c"], img: "avatars/bibi.png", imgSm: "avatars/bibi_sm.png", price: 20 },
-      { id: "bea", name: "비", gradient: ["#eab308","#ca8a04"], img: "avatars/bea.png", imgSm: "avatars/bea_sm.png", price: 20 },
-      // 에픽 (18개)
-      { id: "edgar", name: "에드가", gradient: ["#dc2626","#b91c1c"], img: "avatars/edgar.png", imgSm: "avatars/edgar_sm.png", price: 25 },
-      { id: "griff", name: "그리프", gradient: ["#ca8a04","#a16207"], img: "avatars/griff.png", imgSm: "avatars/griff_sm.png", price: 25 },
-      { id: "grom", name: "그롬", gradient: ["#059669","#047857"], img: "avatars/grom.png", imgSm: "avatars/grom_sm.png", price: 25 },
-      { id: "bonnie", name: "보니", gradient: ["#d946ef","#a21caf"], img: "avatars/bonnie.png", imgSm: "avatars/bonnie_sm.png", price: 25 },
-      { id: "otis", name: "오티스", gradient: ["#0ea5e9","#0284c7"], img: "avatars/otis.png", imgSm: "avatars/otis_sm.png", price: 25 },
-      { id: "sam", name: "샘", gradient: ["#f97316","#ea580c"], img: "avatars/sam.png", imgSm: "avatars/sam_sm.png", price: 25 },
-      { id: "mandy", name: "맨디", gradient: ["#ec4899","#db2777"], img: "avatars/mandy.png", imgSm: "avatars/mandy_sm.png", price: 25 },
-      { id: "maisie", name: "메이지", gradient: ["#3b82f6","#2563eb"], img: "avatars/maisie.png", imgSm: "avatars/maisie_sm.png", price: 25 },
-      { id: "hank", name: "행크", gradient: ["#06b6d4","#0891b2"], img: "avatars/hank.png", imgSm: "avatars/hank_sm.png", price: 25 },
-      { id: "pearl", name: "펄", gradient: ["#f472b6","#ec4899"], img: "avatars/pearl.png", imgSm: "avatars/pearl_sm.png", price: 25 },
-      { id: "larrylawrie", name: "래리와로리", gradient: ["#4ade80","#22c55e"], img: "avatars/larrylawrie.png", imgSm: "avatars/larrylawrie_sm.png", price: 25 },
-      { id: "angelo", name: "안젤로", gradient: ["#fbbf24","#f59e0b"], img: "avatars/angelo.png", imgSm: "avatars/angelo_sm.png", price: 25 },
-      { id: "berry", name: "베리", gradient: ["#c084fc","#a855f7"], img: "avatars/berry.png", imgSm: "avatars/berry_sm.png", price: 25 },
-      { id: "shade", name: "셰이드", gradient: ["#1e293b","#0f172a"], img: "avatars/shade.png", imgSm: "avatars/shade_sm.png", price: 25 },
-      { id: "juju", name: "주주", gradient: ["#a855f7","#9333ea"], img: "avatars/juju.png", imgSm: "avatars/juju_sm.png", price: 25 },
-      { id: "spike", name: "스파이크", gradient: ["#22c55e","#16a34a"], img: "avatars/spike.png", imgSm: "avatars/spike_sm.png", price: 30 },
-      { id: "sandy", name: "샌디", gradient: ["#fbbf24","#f59e0b"], img: "avatars/sandy.png", imgSm: "avatars/sandy_sm.png", price: 30 },
-      { id: "amber", name: "앰버", gradient: ["#f97316","#ea580c"], img: "avatars/amber.png", imgSm: "avatars/amber_sm.png", price: 30 },
-      // 미식 (18개)
-      { id: "mortis", name: "모티스", gradient: ["#581c87","#3b0764"], img: "avatars/mortis.png", imgSm: "avatars/mortis_sm.png", price: 30 },
-      { id: "gene", name: "진", gradient: ["#7c3aed","#6d28d9"], img: "avatars/gene.png", imgSm: "avatars/gene_sm.png", price: 30 },
-      { id: "max", name: "맥스", gradient: ["#fbbf24","#eab308"], img: "avatars/max.png", imgSm: "avatars/max_sm.png", price: 30 },
-      { id: "mrp", name: "Mr.P", gradient: ["#3b82f6","#2563eb"], img: "avatars/mrp.png", imgSm: "avatars/mrp_sm.png", price: 30 },
-      { id: "sprout", name: "스프라우트", gradient: ["#4ade80","#22c55e"], img: "avatars/sprout.png", imgSm: "avatars/sprout_sm.png", price: 30 },
-      { id: "byron", name: "바이런", gradient: ["#7c3aed","#6d28d9"], img: "avatars/byron.png", imgSm: "avatars/byron_sm.png", price: 30 },
-      { id: "squeak", name: "스퀵", gradient: ["#fbbf24","#f59e0b"], img: "avatars/squeak.png", imgSm: "avatars/squeak_sm.png", price: 30 },
-      { id: "buzz", name: "버즈", gradient: ["#0ea5e9","#0284c7"], img: "avatars/buzz.png", imgSm: "avatars/buzz_sm.png", price: 30 },
-      { id: "ash", name: "애쉬", gradient: ["#dc2626","#b91c1c"], img: "avatars/ash.png", imgSm: "avatars/ash_sm.png", price: 30 },
-      { id: "lola", name: "롤라", gradient: ["#ec4899","#db2777"], img: "avatars/lola.png", imgSm: "avatars/lola_sm.png", price: 30 },
-      { id: "eve", name: "이브", gradient: ["#a3e635","#84cc16"], img: "avatars/eve.png", imgSm: "avatars/eve_sm.png", price: 30 },
-      { id: "janet", name: "자넷", gradient: ["#e879f9","#d946ef"], img: "avatars/janet.png", imgSm: "avatars/janet_sm.png", price: 30 },
-      { id: "gray", name: "그레이", gradient: ["#94a3b8","#64748b"], img: "avatars/gray.png", imgSm: "avatars/gray_sm.png", price: 35 },
-      { id: "rt", name: "R-T", gradient: ["#f97316","#ea580c"], img: "avatars/rt.png", imgSm: "avatars/rt_sm.png", price: 35 },
-      { id: "willow", name: "윌로우", gradient: ["#581c87","#3b0764"], img: "avatars/willow.png", imgSm: "avatars/willow_sm.png", price: 35 },
-      { id: "doug", name: "더그", gradient: ["#92400e","#78350f"], img: "avatars/doug.png", imgSm: "avatars/doug_sm.png", price: 35 },
-      { id: "chuck", name: "척", gradient: ["#eab308","#ca8a04"], img: "avatars/chuck.png", imgSm: "avatars/chuck_sm.png", price: 35 },
-      { id: "charlie", name: "찰리", gradient: ["#d946ef","#c026d3"], img: "avatars/charlie.png", imgSm: "avatars/charlie_sm.png", price: 35 },
-      // 레전더리 & 최신 (21개)
-      { id: "melodie", name: "멜로디", gradient: ["#f472b6","#ec4899"], img: "avatars/melodie.png", imgSm: "avatars/melodie_sm.png", price: 35 },
-      { id: "lily", name: "릴리", gradient: ["#4ade80","#22c55e"], img: "avatars/lily.png", imgSm: "avatars/lily_sm.png", price: 35 },
-      { id: "clancy", name: "클랜시", gradient: ["#0ea5e9","#0284c7"], img: "avatars/clancy.png", imgSm: "avatars/clancy_sm.png", price: 35 },
-      { id: "moe", name: "모", gradient: ["#f59e0b","#d97706"], img: "avatars/moe.png", imgSm: "avatars/moe_sm.png", price: 35 },
-      { id: "kenji", name: "켄지", gradient: ["#dc2626","#b91c1c"], img: "avatars/kenji.png", imgSm: "avatars/kenji_sm.png", price: 40 },
-      { id: "meg", name: "메그", gradient: ["#ec4899","#db2777"], img: "avatars/meg.png", imgSm: "avatars/meg_sm.png", price: 40 },
-      { id: "chester", name: "체스터", gradient: ["#f97316","#ea580c"], img: "avatars/chester.png", imgSm: "avatars/chester_sm.png", price: 40 },
-      { id: "cordelius", name: "코델리우스", gradient: ["#581c87","#3b0764"], img: "avatars/cordelius.png", imgSm: "avatars/cordelius_sm.png", price: 40 },
-      { id: "kit", name: "킷", gradient: ["#fbbf24","#f59e0b"], img: "avatars/kit.png", imgSm: "avatars/kit_sm.png", price: 40 },
-      { id: "draco", name: "드라코", gradient: ["#dc2626","#991b1b"], img: "avatars/draco.png", imgSm: "avatars/draco_sm.png", price: 40 },
-      { id: "mico", name: "미코", gradient: ["#a855f7","#9333ea"], img: "avatars/mico.png", imgSm: "avatars/mico_sm.png", price: 40 },
-      { id: "zig", name: "지그", gradient: ["#22d3ee","#06b6d4"], img: "avatars/zig.png", imgSm: "avatars/zig_sm.png", price: 40 },
-      { id: "colette", name: "콜레트", gradient: ["#d946ef","#c026d3"], img: "avatars/colette.png", imgSm: "avatars/colette_sm.png", price: 30 },
-      { id: "lou", name: "루", gradient: ["#38bdf8","#0ea5e9"], img: "avatars/lou.png", imgSm: "avatars/lou_sm.png", price: 30 },
-      { id: "belle", name: "벨", gradient: ["#eab308","#ca8a04"], img: "avatars/belle.png", imgSm: "avatars/belle_sm.png", price: 30 },
-      { id: "ruffs", name: "러프스", gradient: ["#3b82f6","#2563eb"], img: "avatars/ruffs.png", imgSm: "avatars/ruffs_sm.png", price: 30 },
-      { id: "squawk", name: "스쿼크", gradient: ["#22c55e","#16a34a"], img: "avatars/squawk.png", imgSm: "avatars/squawk_sm.png", price: 30 },
-      { id: "nani", name: "나니", gradient: ["#f472b6","#ec4899"], img: "avatars/nani.png", imgSm: "avatars/nani_sm.png", price: 30 },
-      { id: "surge", name: "서지", gradient: ["#7c3aed","#6d28d9"], img: "avatars/surge.png", imgSm: "avatars/surge_sm.png", price: 30 },
-      { id: "gale", name: "게일", gradient: ["#0ea5e9","#0284c7"], img: "avatars/gale.png", imgSm: "avatars/gale_sm.png", price: 25 },
-      { id: "mrmike", name: "미스터마이크", gradient: ["#f97316","#ea580c"], img: "avatars/mrmike.png", imgSm: "avatars/mrmike_sm.png", price: 25 },
-      { id: "jessie", name: "제시", gradient: ["#ef4444","#dc2626"], img: "avatars/jessie.png", imgSm: "avatars/jessie_sm.png", price: 15 },
-      { id: "dynamike", name: "다이나마이크", gradient: ["#ca8a04","#a16207"], img: "avatars/dynamike.png", imgSm: "avatars/dynamike_sm.png", price: 15 },
-      { id: "eliza", name: "엘리자", gradient: ["#e879f9","#d946ef"], img: "avatars/eliza.png", imgSm: "avatars/eliza_sm.png", price: 35 },
-      { id: "spray", name: "스프레이", gradient: ["#4ade80","#22c55e"], img: "avatars/spray.png", imgSm: "avatars/spray_sm.png", price: 25 },
-      { id: "moco", name: "모코", gradient: ["#a855f7","#9333ea"], img: "avatars/moco.png", imgSm: "avatars/moco_sm.png", price: 25 },
-      { id: "chark", name: "차크", gradient: ["#0891b2","#0e7490"], img: "avatars/chark.png", imgSm: "avatars/chark_sm.png", price: 25 },
-      { id: "lari", name: "라리", gradient: ["#ec4899","#db2777"], img: "avatars/lari.png", imgSm: "avatars/lari_sm.png", price: 25 },
-      { id: "hazel", name: "헤이즐", gradient: ["#65a30d","#4d7c0f"], img: "avatars/hazel.png", imgSm: "avatars/hazel_sm.png", price: 25 },
-      { id: "ranch", name: "랜치", gradient: ["#92400e","#78350f"], img: "avatars/ranch.png", imgSm: "avatars/ranch_sm.png", price: 25 },
-      { id: "ollie", name: "올리", gradient: ["#3b82f6","#2563eb"], img: "avatars/ollie.png", imgSm: "avatars/ollie_sm.png", price: 30 },
-      { id: "ted", name: "테드", gradient: ["#dc2626","#b91c1c"], img: "avatars/ted.png", imgSm: "avatars/ted_sm.png", price: 30 },
-      { id: "maverick", name: "매버릭", gradient: ["#059669","#047857"], img: "avatars/maverick.png", imgSm: "avatars/maverick_sm.png", price: 30 }
+      { id: "spike", name: "스파이크", gradient: ["#22c55e","#16a34a"], img: "avatars/spike.png", imgSm: "avatars/spike_sm.png", free: true }
     ];
     const AVATARS = AVATAR_DATA.map(a => a.id);
 
@@ -1029,210 +849,77 @@
       emote:  { top:-0.24, left: 0.68, w:0.46, h:0.46, z:7 },  // 말풍선 (최상단)
     };
 
-    // ═══════════════════════════════════════
-    // ═══════════════════════════════════════
-    // 🎭 아이템 이모지 매핑
-    // 각 아이템 ID → 고퀄리티 이모지 (OS 내장 그래픽 활용)
-    // ═══════════════════════════════════════
-    const ITEM_EMOJI = {
-      // 모자
-      crown: "👑", deco_hat_pirate: "🏴‍☠️", deco_hat_crown: "👑", deco_hat_santa: "🎅",
-      deco_hat_wizard: "🧙", deco_hat_ninja: "🥷", deco_hat_angel: "😇", deco_hat_devil: "😈",
-      deco_hat_cat: "🐱", deco_hat_bunny: "🐰", deco_hat_unicorn: "🦄", deco_hat_party: "🥳", deco_hat_laurel: "🌿",
-      // 안면
-      glasses: "🤓", deco_face_sun: "😎", deco_face_heart: "💕", deco_face_star: "⭐",
-      deco_face_3d: "🥽", deco_face_monocle: "🧐", deco_face_vr: "🥽", deco_face_steam: "⚙️",
-      deco_face_rainbow: "🌈", deco_face_mask: "🎭", deco_face_tiger: "🐯", deco_face_war: "⚔️", deco_face_sticker: "⭐",
-      // 펫
-      deco_pet_dragon: "🐉", deco_pet_kitty: "🐈", deco_pet_ghost: "👻", deco_pet_robot: "🤖",
-      deco_pet_star: "🌟", deco_pet_slime: "🟢", deco_pet_phoenix: "🔥", deco_pet_snowman: "⛄",
-      deco_pet_fairy: "🧚", deco_pet_croc: "🐊", deco_pet_owl: "🦉", deco_pet_orb: "🔮",
-      // 이모트
-      music_note: "🎵", heart: "💖", deco_emote_victory: "✌️", deco_emote_laugh: "😂",
-      deco_emote_angry: "😡", deco_emote_sad: "😢", deco_emote_heart_b: "💗", deco_emote_star_b: "⭐",
-      deco_emote_fire_b: "🔥", deco_emote_rainbow_b: "🌈", deco_emote_reading: "📖", deco_emote_idea: "💡",
-      deco_emote_music: "🎶", deco_emote_crown: "👑",
-      // 무기
-      deco_weapon_sword: "⚔️", deco_weapon_wand: "🪄", deco_weapon_shield: "🛡️", deco_weapon_gun: "🔫",
-      deco_weapon_ninja: "🌀", deco_weapon_pirate: "🗡️", deco_weapon_book: "📕", deco_weapon_key: "🔑",
-      deco_weapon_staff: "🪄", deco_weapon_orb: "🔮", deco_weapon_flag: "🚩", deco_weapon_trophy: "🏆",
-      // 날개
-      deco_wing_angel: "🕊️", deco_wing_devil: "🦇", deco_wing_dragon: "🐲", deco_wing_butterfly: "🦋",
-      deco_wing_fire: "🔥", deco_wing_ice: "❄️", deco_wing_mech: "⚙️", deco_wing_rainbow: "🌈",
-      deco_wing_cape_red: "🔴", deco_wing_cape_purple: "🟣", deco_wing_jetpack: "🚀", deco_wing_bag: "🎒",
-      // 프레임 → CSS 기반
-      // 오라 → CSS 기반
+    // 콤보 이미지 경로 생성 헬퍼
+    const getComboImagePath = (avatarId, itemId) => {
+      return `avatars/combos/${avatarId}_${itemId}.png`;
     };
 
-    // ═══════════════════════════════════════
-    // 🖼️ 프레임 스타일 (CSS 보더/그라데이션)
-    // ═══════════════════════════════════════
-    const FRAME_STYLES = {
-      star_frame:              { border: "3px solid #FFD700", boxShadow: "0 0 8px #FFD700, 0 0 16px rgba(255,215,0,0.3)" },
-      deco_frame_gold_crown:   { border: "3px solid #DAA520", boxShadow: "0 0 10px #DAA520, inset 0 0 8px rgba(218,165,32,0.3)" },
-      deco_frame_diamond:      { border: "3px solid #B9F2FF", boxShadow: "0 0 12px rgba(185,242,255,0.8), 0 0 4px #fff" },
-      deco_frame_fire:         { border: "3px solid #FF4500", boxShadow: "0 0 12px #FF4500, 0 0 24px rgba(255,69,0,0.4)" },
-      deco_frame_ice:          { border: "3px solid #87CEEB", boxShadow: "0 0 10px #87CEEB, 0 0 20px rgba(135,206,235,0.4)" },
-      deco_frame_rainbow:      { border: "3px solid transparent", backgroundClip: "padding-box", boxShadow: "0 0 0 3px #FF0000, 0 0 0 5px #FF8C00, 0 0 0 7px #FFD700, 0 0 0 9px #00FF00, 0 0 0 11px #0000FF, 0 0 0 13px #8B00FF" },
-      deco_frame_starlight:    { border: "3px solid #FFFACD", boxShadow: "0 0 15px rgba(255,250,205,0.8), 0 0 30px rgba(255,215,0,0.3)" },
-      deco_frame_dragon:       { border: "3px solid #228B22", boxShadow: "0 0 10px #228B22, 0 0 20px rgba(34,139,34,0.4)" },
-      deco_frame_skull:        { border: "3px solid #4a4a4a", boxShadow: "0 0 10px rgba(0,0,0,0.6), inset 0 0 5px rgba(255,0,0,0.3)" },
-      deco_frame_flower:       { border: "3px solid #FFB7C5", boxShadow: "0 0 10px rgba(255,183,197,0.6), 0 0 20px rgba(255,105,180,0.2)" },
-      deco_frame_lightning:    { border: "3px solid #FFD700", boxShadow: "0 0 15px #FFD700, 0 0 30px rgba(255,215,0,0.5)", animation: "pulse 1.5s infinite" },
-      deco_frame_neon:         { border: "2px solid #FF1493", boxShadow: "0 0 8px #FF1493, 0 0 16px #00FFFF, 0 0 24px #FF1493" },
-      deco_frame_space:        { border: "3px solid #191970", boxShadow: "0 0 12px #4B0082, 0 0 24px rgba(75,0,130,0.4)" },
-    };
+    // 콤보 이미지 지원 아바타 목록
+    const COMBO_AVATARS = ["shelly", "nita", "leon", "crow", "spike"];
 
-    // ═══════════════════════════════════════
-    // ✨ 오라 스타일 (CSS 그라데이션/글로우)
-    // ═══════════════════════════════════════
-    const AURA_STYLES = {
-      fire_aura:          { bg: "radial-gradient(circle, rgba(255,107,53,0.5) 0%, rgba(255,140,0,0.25) 50%, transparent 75%)", shadow: "0 0 30px rgba(255,107,53,0.5)" },
-      rainbow:            { bg: "conic-gradient(from 0deg, rgba(255,0,0,0.3), rgba(255,165,0,0.3), rgba(255,255,0,0.3), rgba(0,128,0,0.3), rgba(0,0,255,0.3), rgba(128,0,128,0.3), rgba(255,0,0,0.3))", shadow: "0 0 20px rgba(255,255,0,0.3)" },
-      lightning:          { bg: "radial-gradient(circle, rgba(255,215,0,0.45) 0%, rgba(255,215,0,0.15) 50%, transparent 75%)", shadow: "0 0 30px rgba(255,215,0,0.4)", anim: "pulse 2s infinite" },
-      deco_aura_fire:     { bg: "radial-gradient(circle, rgba(255,69,0,0.5) 0%, rgba(255,140,0,0.25) 50%, transparent 75%)", shadow: "0 0 35px rgba(255,69,0,0.5)" },
-      deco_aura_ice:      { bg: "radial-gradient(circle, rgba(135,206,235,0.45) 0%, rgba(176,224,230,0.2) 50%, transparent 75%)", shadow: "0 0 25px rgba(135,206,235,0.4)" },
-      deco_aura_electric: { bg: "radial-gradient(circle, rgba(255,215,0,0.5) 0%, rgba(255,165,0,0.2) 50%, transparent 75%)", shadow: "0 0 30px rgba(255,215,0,0.5)", anim: "pulse 1.5s infinite" },
-      deco_aura_poison:   { bg: "radial-gradient(circle, rgba(148,0,211,0.4) 0%, rgba(75,0,130,0.2) 50%, transparent 75%)", shadow: "0 0 25px rgba(148,0,211,0.4)" },
-      deco_aura_light:    { bg: "radial-gradient(circle, rgba(255,255,220,0.6) 0%, rgba(255,255,200,0.25) 50%, transparent 75%)", shadow: "0 0 35px rgba(255,255,200,0.4)" },
-      deco_aura_dark:     { bg: "radial-gradient(circle, rgba(30,0,50,0.5) 0%, rgba(50,0,80,0.25) 50%, transparent 75%)", shadow: "0 0 25px rgba(0,0,0,0.5)" },
-      deco_aura_rainbow:  { bg: "conic-gradient(from 45deg, rgba(255,0,0,0.25), rgba(255,165,0,0.25), rgba(255,255,0,0.25), rgba(0,200,0,0.25), rgba(0,100,255,0.25), rgba(128,0,255,0.25), rgba(255,0,0,0.25))", shadow: "0 0 20px rgba(255,200,0,0.3)" },
-      deco_aura_star:     { bg: "radial-gradient(circle, rgba(255,215,0,0.45) 0%, rgba(255,165,0,0.15) 50%, transparent 75%)", shadow: "0 0 30px rgba(255,215,0,0.4)" },
-      deco_aura_heart:    { bg: "radial-gradient(circle, rgba(255,105,180,0.45) 0%, rgba(255,192,203,0.2) 50%, transparent 75%)", shadow: "0 0 25px rgba(255,105,180,0.4)" },
-      deco_aura_explosion:{ bg: "radial-gradient(circle, rgba(255,140,0,0.5) 0%, rgba(255,215,0,0.3) 35%, rgba(255,107,53,0.1) 70%, transparent 85%)", shadow: "0 0 35px rgba(255,140,0,0.5)", anim: "pulse 1.2s infinite" },
-      deco_aura_galaxy:   { bg: "radial-gradient(circle, rgba(75,0,130,0.35) 0%, rgba(138,43,226,0.15) 50%, transparent 75%)", shadow: "0 0 30px rgba(138,43,226,0.3)" },
-      deco_aura_cherry:   { bg: "radial-gradient(circle, rgba(255,182,193,0.45) 0%, rgba(255,192,203,0.2) 50%, transparent 75%)", shadow: "0 0 25px rgba(255,105,180,0.3)" },
-    };
+    // 콤보 이미지가 있는 아이템 ID 목록
+    const COMBO_ITEM_IDS = new Set(SHOP_ITEMS.map(item => item.id));
 
-    // ═══════════════════════════════════════
-    // 🎭 AvatarWithItems 컴포넌트 (이모지 오버레이 + CSS 프레임/오라)
-    // ═══════════════════════════════════════
+    // AvatarWithItems: 콤보 이미지 기반 렌더링
     const AvatarWithItems = ({ size, avatarId, equippedItems, shape = "circle", borderStyle = {}, onClick = null }) => {
-      const pad = Math.ceil(size * 0.35);
-      const totalW = size + pad * 2;
-      const totalH = size + pad * 2;
-      const avatarRadius = shape === "circle" ? "50%" : Math.round(size * 0.15) + "px";
-      const emojiSize = Math.round(size * 0.38);
-      const smallEmoji = Math.round(size * 0.30);
+      const hasCombo = COMBO_AVATARS.includes(avatarId);
 
-      // 이모지 위치 설정 (아바타 중심 기준 오프셋)
-      const positions = {
-        hat:    { top: -emojiSize * 0.35,           left: (size - emojiSize) / 2,         z: 5, fontSize: emojiSize },
-        face:   { top: size * 0.22,                 left: (size - emojiSize) / 2,         z: 6, fontSize: smallEmoji },
-        pet:    { top: size * 0.62,                 left: size * 0.62,                    z: 4, fontSize: smallEmoji },
-        emote:  { top: -emojiSize * 0.5,            left: size * 0.6,                     z: 7, fontSize: smallEmoji },
-        weapon: { top: size * 0.45,                 left: size * 0.68,                    z: 4, fontSize: emojiSize, rotate: "-15deg" },
-        wing:   { top: size * 0.15,                 left: -size * 0.18,                   z: 1, fontSize: Math.round(size * 0.28) },
-      };
+      // 장착된 아이템 중 첫 번째 유효한 콤보 아이템 찾기 (우선순위: hat > face > weapon > pet > frame > aura)
+      const priorityOrder = ["hat", "face", "weapon", "pet", "frame", "aura"];
+      let comboItemId = null;
+      if (hasCombo && equippedItems) {
+        for (const cat of priorityOrder) {
+          const itemId = equippedItems[cat];
+          if (itemId && COMBO_ITEM_IDS.has(itemId)) {
+            comboItemId = itemId;
+            break;
+          }
+        }
+      }
 
-      const renderEmoji = (cat, itemId) => {
-        const emoji = ITEM_EMOJI[itemId];
-        if (!emoji) return null;
-        const pos = positions[cat];
-        if (!pos) return null;
-        const isWing = cat === "wing";
+      const imgSrc = comboItemId
+        ? getComboImagePath(avatarId, comboItemId)
+        : AVATAR_DATA.find(a => a.id === avatarId)?.img || "avatars/shelly.png";
 
-        return (
-          <React.Fragment key={`emoji-${cat}`}>
-            {isWing && (
-              <span style={{
-                position: "absolute",
-                top: pad + pos.top,
-                left: pad + size + size * 0.18 - pos.fontSize,
-                fontSize: pos.fontSize,
-                zIndex: pos.z,
-                pointerEvents: "none",
-                userSelect: "none",
-                filter: "drop-shadow(0 2px 3px rgba(0,0,0,0.3))",
-                transform: "scaleX(-1)",
-                lineHeight: 1
-              }}>{emoji}</span>
-            )}
-            <span style={{
-              position: "absolute",
-              top: pad + pos.top,
-              left: pad + pos.left,
-              fontSize: pos.fontSize,
-              zIndex: pos.z,
-              pointerEvents: "none",
-              userSelect: "none",
-              filter: "drop-shadow(0 2px 3px rgba(0,0,0,0.3))",
-              transform: pos.rotate ? `rotate(${pos.rotate})` : "none",
-              lineHeight: 1
-            }}>{emoji}</span>
-          </React.Fragment>
-        );
-      };
-
-      // 프레임 스타일 계산
-      const frameId = equippedItems?.["frame"];
-      const frameStyle = frameId && FRAME_STYLES[frameId] ? FRAME_STYLES[frameId] : {};
-
-      // 오라 스타일 계산
-      const auraId = equippedItems?.["aura"];
-      const auraConf = auraId && AURA_STYLES[auraId] ? AURA_STYLES[auraId] : null;
+      // 장착된 아이템 개수 표시 (콤보 이미지 1개 외 추가 장착)
+      const equippedCount = equippedItems ? Object.keys(equippedItems).filter(k => equippedItems[k]).length : 0;
 
       return (
         <div
           style={{
-            width: totalW, height: totalH,
+            width: size, height: size,
             position: "relative",
             display: "inline-block",
             cursor: onClick ? "pointer" : "default",
-            flexShrink: 0,
-            overflow: "visible"
+            flexShrink: 0
           }}
           onClick={onClick}
         >
-          {/* 오라 배경 (z:0) */}
-          {auraConf && (
+          <img
+            src={imgSrc}
+            alt="avatar"
+            style={{
+              width: size, height: size,
+              borderRadius: shape === "circle" ? "50%" : Math.round(size * 0.15) + "px",
+              objectFit: "cover",
+              ...borderStyle
+            }}
+            onError={(e) => {
+              // 콤보 이미지 로드 실패 시 기본 아바타로 폴백
+              const fallback = AVATAR_DATA.find(a => a.id === avatarId)?.img || "avatars/shelly.png";
+              if (e.target.src !== fallback) e.target.src = fallback;
+            }}
+          />
+          {equippedCount > 1 && (
             <div style={{
-              position: "absolute",
-              top: pad - size * 0.3,
-              left: pad - size * 0.3,
-              width: size * 1.6,
-              height: size * 1.6,
-              borderRadius: "50%",
-              background: auraConf.bg,
-              boxShadow: auraConf.shadow,
-              animation: auraConf.anim || "none",
-              zIndex: 0,
-              pointerEvents: "none"
-            }} />
+              position: "absolute", bottom: -2, right: -2,
+              background: "#667eea", color: "white",
+              fontSize: Math.max(size * 0.18, 9), fontWeight: 800,
+              width: Math.max(size * 0.28, 16), height: Math.max(size * 0.28, 16),
+              borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
+              border: "2px solid white", boxShadow: "0 1px 3px rgba(0,0,0,0.2)"
+            }}>+{equippedCount - 1}</div>
           )}
-
-          {/* 날개 이모지 (z:1) - 좌우 대칭 */}
-          {equippedItems?.["wing"] && renderEmoji("wing", equippedItems["wing"])}
-
-          {/* 아바타 이미지 (z:2) + 프레임 보더 */}
-          <div style={{
-            position: "absolute",
-            top: pad, left: pad,
-            width: size, height: size,
-            borderRadius: avatarRadius,
-            overflow: "hidden",
-            zIndex: 2,
-            flexShrink: 0,
-            ...borderStyle,
-            ...frameStyle
-          }}>
-            <AvatarIcon avatarId={avatarId} size={size} style={{ borderRadius: avatarRadius }} />
-          </div>
-
-          {/* 모자 이모지 (z:5) */}
-          {equippedItems?.["hat"] && renderEmoji("hat", equippedItems["hat"])}
-
-          {/* 안면 이모지 (z:6) */}
-          {equippedItems?.["face"] && renderEmoji("face", equippedItems["face"])}
-
-          {/* 무기 이모지 (z:4) */}
-          {equippedItems?.["weapon"] && renderEmoji("weapon", equippedItems["weapon"])}
-
-          {/* 펫 이모지 (z:4) */}
-          {equippedItems?.["pet"] && renderEmoji("pet", equippedItems["pet"])}
-
-          {/* 이모트 이모지 (z:7) */}
-          {equippedItems?.["emote"] && renderEmoji("emote", equippedItems["emote"])}
         </div>
       );
     };
@@ -1904,8 +1591,7 @@
         const newXp = xp + amount;
         const newLevel = getLevel(newXp);
         if (newLevel > level) {
-          const wingBonus = getItemBonus(equippedItems, "levelCoin");
-          const levelUpCoins = 20 + (newLevel * 5) + wingBonus;
+          const levelUpCoins = 20 + (newLevel * 5);
           setCoins(prev => prev + levelUpCoins);
 
           // 레벨업 아이템 보상 체크
@@ -2391,9 +2077,7 @@
                           const newMissions = dailyMissions.map(m => m.id === mission.id ? {...m, completed: true} : m);
                           setDailyMissions(newMissions);
                           setCoins(prev => prev + 3);
-                          // emote 효과: 미션 XP +20%
-                          const emoteBonus = getItemBonus(equippedItems, "missionXp");
-                          addXp(Math.round(mission.xp * (1 + emoteBonus)));
+                          addXp(mission.xp);
                           // 전체 미션 완료 보너스
                           if (newMissions.every(m => m.completed)) {
                             setTimeout(() => {
@@ -3390,7 +3074,7 @@
       const ShopModal = () => {
         if (!showShop) return null;
         const filteredItems = shopCategory === "avatar"
-          ? AVATAR_DATA.filter(a => !a.free)
+          ? AVATAR_DATA
           : SHOP_ITEMS.filter(item => item.category === shopCategory);
         const isAvatarTab = shopCategory === "avatar";
         return (
@@ -3434,20 +3118,8 @@
                       <div key={avatar.id} style={{ background: "#f7f7fa", borderRadius: 14, padding: 10, textAlign: "center", border: equipped ? "2px solid #667eea" : "1px solid #eee" }}>
                         <img src={avatar.img} style={{ width: 56, height: 56, borderRadius: "50%", objectFit: "cover", marginBottom: 4 }} />
                         <div style={{ fontSize: 11, fontWeight: 700, color: "#1a1a2e", marginBottom: 2 }}>{avatar.name}</div>
-                        <div style={{ fontSize: 10, color: "#888", marginBottom: 6 }}>{avatar.price} 코인</div>
-                        {!owned ? (
-                          <button onClick={() => {
-                            if (coins >= avatar.price) {
-                              setCoins(prev => prev - avatar.price);
-                              setOwnedAvatars(prev => [...prev, avatar.id]);
-                              showCoinGain(-avatar.price, `${avatar.name} 아바타 구매!`);
-                            }
-                          }}
-                            disabled={coins < avatar.price}
-                            style={{ width: "100%", padding: "5px 8px", borderRadius: 8, border: "none", background: coins >= avatar.price ? "#667eea" : "#ddd", color: "white", fontSize: 11, fontWeight: 600, cursor: coins >= avatar.price ? "pointer" : "default" }}>
-                            구매
-                          </button>
-                        ) : equipped ? (
+                        <div style={{ fontSize: 10, color: "#888", marginBottom: 6 }}>무료</div>
+                        {equipped ? (
                           <button style={{ width: "100%", padding: "5px 8px", borderRadius: 8, border: "none", background: "#667eea", color: "white", fontSize: 11, fontWeight: 600 }}>
                             사용 중
                           </button>
@@ -3465,7 +3137,7 @@
                     const equipped = equippedItems[cat] === item.id;
                     return (
                       <div key={item.id} style={{ background: "#f7f7fa", borderRadius: 14, padding: 12, textAlign: "center", border: equipped ? "2px solid #667eea" : "1px solid #eee" }}>
-                        <div style={{ marginBottom: 8, padding: 4 }}>{item.icon ? <img src={item.icon} style={{ width: 64, height: 64, objectFit: "contain" }} /> : <span style={{ fontSize: 40 }}>{item.emoji}</span>}</div>
+                        <div style={{ marginBottom: 8, padding: 4 }}><img src={getComboImagePath(profile?.avatar || "shelly", item.id)} style={{ width: 64, height: 64, borderRadius: "50%", objectFit: "cover" }} onError={(e) => { const av = AVATAR_DATA.find(a => a.id === (profile?.avatar || "shelly")); if (av && e.target.src !== av.img) e.target.src = av.img; }} /></div>
                         <div style={{ fontSize: 12, fontWeight: 700, color: "#1a1a2e", marginBottom: 2 }}>{item.name}</div>
                         {ITEM_EFFECTS[cat]?.type === "bonus" && (
                           <div style={{ fontSize: 10, fontWeight: 600, color: ITEM_EFFECTS[cat].color, background: ITEM_EFFECTS[cat].color + "18", borderRadius: 6, padding: "2px 6px", marginBottom: 4, display: "inline-block" }}>
