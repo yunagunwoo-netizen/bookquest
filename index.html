@@ -884,8 +884,26 @@
       const fallbackImg = AVATAR_DATA.find(a => a.id === avatarId)?.img || "avatars/shelly.png";
       const imgSrc = comboData || fallbackImg;
 
-      // 장착된 아이템 개수 표시 (콤보 이미지 1개 외 추가 장착)
-      const equippedCount = equippedItems ? Object.keys(equippedItems).filter(k => equippedItems[k]).length : 0;
+      // 장착된 아이템 중 메인 외 나머지 (썸네일 표시용)
+      const otherItems = [];
+      if (equippedItems) {
+        for (const cat of priorityOrder) {
+          const itemId = equippedItems[cat];
+          if (itemId && COMBO_ITEM_IDS.has(itemId) && itemId !== comboItemId) {
+            otherItems.push(itemId);
+          }
+        }
+      }
+
+      const thumbSize = Math.max(Math.round(size * 0.32), 20);
+      // 썸네일 위치 (시계 방향: 우상, 우하, 좌하, 좌상, 상단)
+      const thumbPositions = [
+        { top: -4, right: -4 },
+        { bottom: -4, right: -4 },
+        { bottom: -4, left: -4 },
+        { top: -4, left: -4 },
+        { top: -4, left: "50%", transform: "translateX(-50%)" }
+      ];
 
       return (
         <div
@@ -894,7 +912,8 @@
             position: "relative",
             display: "inline-block",
             cursor: onClick ? "pointer" : "default",
-            flexShrink: 0
+            flexShrink: 0,
+            margin: otherItems.length > 0 ? Math.round(thumbSize * 0.3) : 0
           }}
           onClick={onClick}
         >
@@ -908,21 +927,33 @@
               ...borderStyle
             }}
             onError={(e) => {
-              // 콤보 이미지 로드 실패 시 기본 아바타로 폴백
               const fallback = AVATAR_DATA.find(a => a.id === avatarId)?.img || "avatars/shelly.png";
               if (e.target.src !== fallback) e.target.src = fallback;
             }}
           />
-          {equippedCount > 1 && (
-            <div style={{
-              position: "absolute", bottom: -2, right: -2,
-              background: "#667eea", color: "white",
-              fontSize: Math.max(size * 0.18, 9), fontWeight: 800,
-              width: Math.max(size * 0.28, 16), height: Math.max(size * 0.28, 16),
-              borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
-              border: "2px solid white", boxShadow: "0 1px 3px rgba(0,0,0,0.2)"
-            }}>+{equippedCount - 1}</div>
-          )}
+          {otherItems.map((itemId, idx) => {
+            if (idx >= 5) return null;
+            const thumbSrc = getComboImagePath(avatarId, itemId);
+            if (!thumbSrc) return null;
+            const pos = thumbPositions[idx];
+            return (
+              <img
+                key={itemId}
+                src={thumbSrc}
+                alt=""
+                style={{
+                  position: "absolute",
+                  ...pos,
+                  width: thumbSize, height: thumbSize,
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  border: "2px solid white",
+                  boxShadow: "0 1px 4px rgba(0,0,0,0.25)",
+                  zIndex: 10 + idx
+                }}
+              />
+            );
+          })}
         </div>
       );
     };
