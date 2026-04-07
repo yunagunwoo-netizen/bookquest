@@ -1489,7 +1489,7 @@
 
           // 7일 연속 접속 보상: 랜덤 아이템 지급
           if (streak > 0 && streak % 7 === 0) {
-            const categories = ["frame", "hat", "face", "pet", "wing", "weapon", "aura", "emote"];
+            const categories = ["frame", "hat", "face", "pet", "weapon", "aura"];
             const randomCat = categories[Math.floor(Math.random() * categories.length)];
             setTimeout(() => {
               const item = grantRandomItem(randomCat);
@@ -1533,7 +1533,7 @@
       const xpToNext = (xpVal) => 100 - (xpVal % 100);
 
       // 레벨업 아이템 보상 테이블 (특정 레벨에 랜덤 아이템 지급)
-      const LEVEL_ITEM_REWARDS = { 3: "frame", 5: "hat", 7: "pet", 10: "wing", 13: "weapon", 15: "face", 18: "aura", 20: "emote" };
+      const LEVEL_ITEM_REWARDS = { 3: "frame", 5: "hat", 7: "pet", 10: "weapon", 13: "face", 15: "aura" };
 
       const grantRandomItem = (category) => {
         const available = SHOP_ITEMS.filter(i => i.category === category && !ownedItems.includes(i.id));
@@ -2503,8 +2503,8 @@
                 return (
                   <div key={catId} onClick={() => { setShowShop(true); setShopCategory(catId); }}
                     style={{ flex: 1, textAlign: "center", padding: 10, borderRadius: 12, background: item ? "#f0f0ff" : "#f7f7fa", border: item ? "2px solid #d0d0ff" : "1px dashed #ddd", cursor: "pointer" }}>
-                    {item && item.icon ? (
-                      <img src={item.icon} style={{ width: 36, height: 36, objectFit: "contain" }} />
+                    {item ? (
+                      <img src={getComboImagePath(profile?.avatar || "shelly", item.id)} style={{ width: 36, height: 36, borderRadius: "50%", objectFit: "cover", margin: "0 auto" }} />
                     ) : (
                       <div style={{ width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, opacity: 0.3, margin: "0 auto" }}>{cat?.emoji}</div>
                     )}
@@ -2523,7 +2523,7 @@
               <button onClick={() => setShowShop(true)} style={{ fontSize: 11, color: "#667eea", background: "none", border: "none", cursor: "pointer", fontWeight: 600 }}>상점 가기</button>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-              {["hat", "face", "pet", "emote", "weapon", "wing"].map(catId => {
+              {["hat", "face", "pet", "weapon"].map(catId => {
                 const effect = ITEM_EFFECTS[catId];
                 const itemId = equippedItems[catId];
                 const item = itemId ? SHOP_ITEMS.find(i => i.id === itemId) : null;
@@ -2535,10 +2535,10 @@
                       border: item ? `1.5px solid ${effect.color}40` : "1px dashed #ddd",
                     }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                      {item && item.icon ? (
-                        <img src={item.icon} style={{ width: 32, height: 32, objectFit: "contain", flexShrink: 0 }} />
+                      {item ? (
+                        <img src={getComboImagePath(profile?.avatar || "shelly", item.id)} style={{ width: 32, height: 32, borderRadius: "50%", objectFit: "cover", flexShrink: 0 }} />
                       ) : (
-                        <div style={{ width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, opacity: 0.3, flexShrink: 0 }}>{effect.icon}</div>
+                        <div style={{ width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, opacity: 0.3, flexShrink: 0 }}>{effect?.icon}</div>
                       )}
                       <div style={{ minWidth: 0 }}>
                         <div style={{ fontSize: 11, fontWeight: 700, color: item ? "#333" : "#bbb" }}>{item ? item.name : SHOP_CATEGORIES.find(c => c.id === catId)?.name}</div>
@@ -2553,7 +2553,7 @@
             </div>
             {/* 활성 효과 요약 */}
             {(() => {
-              const activeEffects = ["hat", "face", "pet", "emote", "weapon", "wing"].filter(c => equippedItems[c]);
+              const activeEffects = ["hat", "face", "pet", "weapon"].filter(c => equippedItems[c]);
               return activeEffects.length > 0 ? (
                 <div style={{ marginTop: 10, padding: "8px 12px", background: "#f0f7ff", borderRadius: 10, border: "1px solid #e0eaff" }}>
                   <div style={{ fontSize: 11, fontWeight: 700, color: "#333", marginBottom: 4 }}>활성 보너스 {activeEffects.length}개</div>
