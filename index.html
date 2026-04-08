@@ -582,11 +582,11 @@
     // Feature 1: Daily Missions Data
     // ═══════════════════════════════════════
     const MISSION_TEMPLATES = [
-      { text: "토론 1개 완료하기", xp: 20, icon: "icons/mission-discussion.png" },
-      { text: "책에게 질문 1개 하기", xp: 15, icon: "icons/mission-question.png" },
-      { text: "심화 토론 도전하기", xp: 25, icon: "icons/mission-streak.png" },
-      { text: "퀴즈 1개 풀기", xp: 20, icon: "icons/mission-review.png" },
-      { text: "5분 이상 독서하기", xp: 15, icon: "icons/mission-reading.png" }
+      { text: "토론 1개 완료하기", xp: 20, coin: 3, icon: "icons/mission-discussion.png", trigger: "discussion" },
+      { text: "책에게 질문 1개 하기", xp: 15, coin: 3, icon: "icons/mission-question.png", trigger: "question" },
+      { text: "심화 토론 도전하기", xp: 25, coin: 3, icon: "icons/mission-streak.png", trigger: "deep_discussion" },
+      { text: "퀴즈 1개 풀기", xp: 20, coin: 3, icon: "icons/mission-review.png", trigger: "quiz" },
+      { text: "5분 이상 독서하기", xp: 15, coin: 3, icon: "icons/mission-reading.png", trigger: "reading" }
     ];
 
     const generateDailyMissions = () => {
@@ -595,6 +595,9 @@
         id: i,
         text: m.text,
         xp: m.xp,
+        coin: m.coin || 3,
+        icon: m.icon,
+        trigger: m.trigger,
         completed: false
       }));
     };
@@ -1570,11 +1573,43 @@
         }
       }, [dataLoaded]);
 
+      // 🎯 미션 자동 완료 함수
+      const completeMissionByTrigger = (triggerType) => {
+        setDailyMissions(prev => {
+          const target = prev.find(m => m.trigger === triggerType && !m.completed);
+          if (!target) return prev;
+          const newMissions = prev.map(m => m.id === target.id ? {...m, completed: true} : m);
+          // XP/코인 지급
+          setCoins(c => c + (target.coin || 3));
+          addXp(target.xp);
+          setTimeout(() => {
+            showCoinGain(target.coin || 3, `미션 완료: ${target.text}`);
+          }, 300);
+          // 전체 미션 완료 보너스
+          if (newMissions.every(m => m.completed)) {
+            setTimeout(() => {
+              setCoins(c => c + 10);
+              showCoinGain(10, "🎉 일일 미션 전체 완료 보너스!");
+            }, 1500);
+          }
+          return newMissions;
+        });
+      };
+
       // 💰 출석 보너스 시스템
       const showCoinGain = (amount, label) => {
         setShowCoinPopup({ amount, label });
         setTimeout(() => setShowCoinPopup(null), 2000);
       };
+
+      // 🎯 독서 시간 추적 (5분 = 300초 → reading 미션 자동 완료)
+      useEffect(() => {
+        if (screen !== "discussion" && screen !== "book") return;
+        const timer = setTimeout(() => {
+          completeMissionByTrigger("reading");
+        }, 5 * 60 * 1000); // 5분
+        return () => clearTimeout(timer);
+      }, [screen]);
 
       useEffect(() => {
         if (!dataLoaded || !profile) return;
@@ -1957,6 +1992,10 @@
         });
 
         setDiscussionState(prev => ({ ...prev, [key]: true }));
+
+        // 🎯 일일 미션 자동 완료
+        completeMissionByTrigger(isDeep ? "deep_discussion" : "discussion");
+
         const bookId = activeDiscussionBook.id;
         const oldProgress = bookProgress[bookId] || 0;
         const newProgress = Math.min(100, oldProgress + (isDeep ? 15 : 10));
@@ -2178,35 +2217,49 @@
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {dailyMissions.map(mission => {
                   const completed = mission.completed;
+                  const triggerHints = {
+                    discussion: "토론 메뉴에서 토론을 완료하면 달성!",
+                    deep_discussion: "토론 메뉴에서 심화 토론을 완료하면 달성!",
+                    question: "질문 탭에서 책에게 질문하면 달성!",
+                    quiz: "책 상세에서 퀴즈를 맞추면 달성!",
+                    reading: "토론/책 화면에서 5분 이상 머물면 달성!"
+                  };
                   return (
-                    <div key={mission.id} style={{ background: completed ? "#f0fff0" : "white", borderRadius: 12, padding: 14, display: "flex", alignItems: "center", gap: 12, boxShadow: "0 2px 6px rgba(0,0,0,0.04)", border: completed ? "2px solid #4CAF50" : "1px solid #eee" }}>
-                      {mission.icon && <img src={mission.icon} style={{ width: 32, height: 32, objectFit: "contain", opacity: completed ? 0.5 : 1 }} />}
-                      <input type="checkbox" checked={completed} onChange={() => {
-                        if (!completed) {
-                          const newMissions = dailyMissions.map(m => m.id === mission.id ? {...m, completed: true} : m);
-                          setDailyMissions(newMissions);
-                          setCoins(prev => prev + 3);
-                          addXp(mission.xp);
-                          // 전체 미션 완료 보너스
-                          if (newMissions.every(m => m.completed)) {
-                            setTimeout(() => {
-                              setCoins(prev => prev + 10);
-                              showCoinGain(10, "일일 미션 전체 완료 보너스!");
-                            }, 500);
-                          }
-                        } else {
-                          setDailyMissions(prev => prev.map(m => m.id === mission.id ? {...m, completed: false} : m));
-                        }
-                      }}
-                        style={{ width: 20, height: 20, cursor: "pointer", accentColor: "#667eea" }} />
-                      <div style={{ flex: 1 }}>
-                        <div style={{ fontSize: 13, fontWeight: 600, color: "#1a1a2e" }}>{mission.text}</div>
-                        <div style={{ fontSize: 11, color: "#888", marginTop: 2 }}>+{mission.xp}XP +3코인</div>
+                    <div key={mission.id} style={{
+                      background: completed ? "linear-gradient(135deg, #f0fff0, #e8f5e9)" : "white",
+                      borderRadius: 14, padding: "12px 14px", display: "flex", alignItems: "center", gap: 12,
+                      boxShadow: completed ? "0 2px 8px rgba(76,175,80,0.15)" : "0 2px 6px rgba(0,0,0,0.04)",
+                      border: completed ? "2px solid #4CAF50" : "1px solid #eee",
+                      transition: "all 0.3s ease"
+                    }}>
+                      <div style={{
+                        width: 36, height: 36, borderRadius: 10,
+                        background: completed ? "#4CAF50" : "#f5f5f5",
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        fontSize: 18, flexShrink: 0,
+                        transition: "all 0.3s ease"
+                      }}>
+                        {completed ? "✅" : "⬜"}
                       </div>
-                      {completed && <span style={{ fontSize: 16 }}>✅</span>}
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: 13, fontWeight: 600, color: completed ? "#2e7d32" : "#1a1a2e", textDecoration: completed ? "line-through" : "none" }}>{mission.text}</div>
+                        <div style={{ fontSize: 11, color: completed ? "#66bb6a" : "#888", marginTop: 2 }}>
+                          {completed ? `✓ +${mission.xp}XP +${mission.coin || 3}코인 획득!` : (triggerHints[mission.trigger] || `+${mission.xp}XP +${mission.coin || 3}코인`)}
+                        </div>
+                      </div>
+                      {!completed && (
+                        <div style={{ fontSize: 11, fontWeight: 700, color: "#667eea", background: "#667eea15", padding: "4px 8px", borderRadius: 8, whiteSpace: "nowrap" }}>
+                          +{mission.xp}XP
+                        </div>
+                      )}
                     </div>
                   );
                 })}
+                {dailyMissions.every(m => m.completed) && (
+                  <div style={{ textAlign: "center", padding: "12px", background: "linear-gradient(135deg, #FFD700, #FFA500)", borderRadius: 14, color: "white", fontWeight: 700, fontSize: 14, boxShadow: "0 4px 12px rgba(255,165,0,0.3)" }}>
+                    🎉 오늘의 미션 전체 완료! 보너스 +10코인
+                  </div>
+                )}
               </div>
             ) : (
               <div style={{ background: "white", borderRadius: 14, padding: 16, textAlign: "center", color: "#888" }}>미션 로딩 중...</div>
@@ -2378,6 +2431,7 @@
                                 const faceBonus = getItemBonus(equippedItems, "quizCoin");
                                 setCoins(prev => prev + 5 + faceBonus);
                                 addXp(10);
+                                completeMissionByTrigger("quiz");
                               }
                               setQuizResultInfo({ correct: isCorrect, explanation: quiz.explanation, answer: quiz.options[quiz.answer] });
                               setShowQuizResult(true);
@@ -2398,6 +2452,7 @@
                                 const faceBonus = getItemBonus(equippedItems, "quizCoin");
                                 setCoins(prev => prev + 5 + faceBonus);
                                 addXp(10);
+                                completeMissionByTrigger("quiz");
                               }
                               setQuizResultInfo({ correct: isCorrect, explanation: quiz.explanation, answer: quiz.answer ? "맞음" : "틀림" });
                               setShowQuizResult(true);
@@ -2907,6 +2962,7 @@
           const answer = await CloudAPI.askBook(text, getBookDataString(), askMessages.slice(-6));
           setAskMessages(prev => [...prev, { role: "ai", text: answer }]);
           setAskLoading(false);
+          completeMissionByTrigger("question");
 
           VoiceService.speak(answer, () => {});
         };
