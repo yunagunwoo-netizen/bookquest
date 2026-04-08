@@ -149,12 +149,12 @@
         }
       },
 
-      async discussionCoach(userAnswer, topic, bookTitle, bookSummary, isDeep) {
+      async discussionCoach(userAnswer, topic, bookTitle, bookSummary, isDeep, studentName) {
         try {
           const res = await fetch(`${FUNCTIONS_BASE}/discussionCoach`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ userAnswer, topic, bookTitle, bookSummary, isDeep })
+            body: JSON.stringify({ userAnswer, topic, bookTitle, bookSummary, isDeep, studentName })
           });
           const data = await res.json();
           if (data.error) throw new Error(data.error);
@@ -1963,7 +1963,7 @@
         // 실제 Claude AI로 피드백 받기
         setIsSpeaking(true);
         const aiResponse = await CloudAPI.discussionCoach(
-          userMsg, topic, activeDiscussionBook.title, activeDiscussionBook.summary, isDeep
+          userMsg, topic, activeDiscussionBook.title, activeDiscussionBook.summary, isDeep, profile?.name || "친구"
         );
         const complimentMsg = `🌟 이 토론에서 ${isDeep ? 30 : 20}XP를 획득했어요!`;
 
