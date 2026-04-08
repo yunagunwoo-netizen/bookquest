@@ -1548,7 +1548,10 @@
       useEffect(() => {
         if (dataLoaded) {
           const today = getTodayString();
-          if (missionDate !== today) {
+          // 날짜가 바뀌었거나, 기존 미션에 trigger 필드가 없으면 재생성
+          const needsRegen = missionDate !== today ||
+            (dailyMissions.length > 0 && !dailyMissions[0].trigger);
+          if (needsRegen) {
             setDailyMissions(generateDailyMissions());
             setMissionDate(today);
           }
