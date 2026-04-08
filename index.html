@@ -1150,38 +1150,28 @@
       SpeechSynthesis: window.speechSynthesis,
       _cachedVoice: null,
       _voicesLoaded: false,
+      _currentAudio: null,
 
       isSupported() {
-        return !!this.SpeechRecognition && !!this.SpeechSynthesis;
+        return !!this.SpeechRecognition;
       },
 
-      // 앱 시작 시 최적 한국어 음성을 미리 선택
+      // 앱 시작 시 최적 한국어 음성을 미리 선택 (폴백용)
       preloadVoice() {
         if (!this.SpeechSynthesis) return;
         const tryLoad = () => {
           const voices = this.SpeechSynthesis.getVoices();
           if (voices.length === 0) return;
           this._voicesLoaded = true;
-          // 한국어 음성 품질 우선순위 (높은 순)
           const koVoices = voices.filter(v => v.lang.startsWith('ko'));
-          // 1순위: 프리미엄/고품질 음성 (삼성, Google 한국어 여성)
-          const premium = koVoices.find(v =>
-            /samsung|heami|yuna|sora|jian|sunhi|premium|enhanced|natural/i.test(v.name)
-          );
-          // 2순위: Google 한국어 음성 (Chrome 내장)
+          const premium = koVoices.find(v => /samsung|heami|yuna|sora|jian|sunhi|premium|enhanced|natural/i.test(v.name));
           const google = koVoices.find(v => /google/i.test(v.name));
-          // 3순위: Microsoft Online 음성 (Edge)
           const msOnline = koVoices.find(v => /online|neural/i.test(v.name));
-          // 4순위: 아무 한국어 음성
-          const anyKo = koVoices[0];
-
-          this._cachedVoice = premium || google || msOnline || anyKo || null;
-          if (this._cachedVoice) {
-            console.log('[TTS] 선택된 음성:', this._cachedVoice.name, this._cachedVoice.lang);
-          }
+          this._cachedVoice = premium || google || msOnline || koVoices[0] || null;
+          if (this._cachedVoice) console.log('[TTS] 폴백 음성:', this._cachedVoice.name);
         };
         tryLoad();
-        if (!this._voicesLoaded) {
+        if (!this._voicesLoaded && this.SpeechSynthesis) {
           this.SpeechSynthesis.onvoiceschanged = tryLoad;
         }
       },
@@ -1190,8 +1180,9 @@
         if (!this.SpeechRecognition) return null;
         const rec = new this.SpeechRecognition();
         rec.lang = 'ko-KR';
-        rec.continuous = true;
+        rec.continuous = false;
         rec.interimResults = true;
+        rec.maxAlternatives = 1;
         return rec;
       },
 
@@ -1209,36 +1200,46 @@
           .trim();
       },
 
-      // 긴 문장을 호흡 단위(breath group)로 자연스럽게 분리
-      splitIntoBreathGroups(text) {
-        // 1단계: 문장 단위 분리 (마침표, 물음표, 느낌표)
-        const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
-        const groups = [];
+      // ☁️ Google Cloud TTS (메인 음성)
+      async speakCloud(text, callback) {
+        const cleanText = this.cleanForTTS(text);
+        if (!cleanText) { if (callback) callback(true); return; }
 
-        sentences.forEach(sentence => {
-          const s = sentence.trim();
-          if (!s) return;
-          // 2단계: 40자 넘는 문장은 쉼표/접속사 기준으로 분리
-          if (s.length > 40) {
-            const parts = s.split(/(?<=,\s)|(?<=다\s)|(?<=고\s)|(?<=며\s)|(?<=지만\s)|(?<=는데\s)|(?<=해서\s)/);
-            let buffer = '';
-            parts.forEach(part => {
-              if ((buffer + part).length > 50 && buffer.length > 0) {
-                groups.push({ text: buffer.trim(), pause: 150 });
-                buffer = part;
-              } else {
-                buffer += part;
-              }
-            });
-            if (buffer.trim()) groups.push({ text: buffer.trim(), pause: 350 });
-          } else {
-            groups.push({ text: s, pause: s.endsWith('?') ? 500 : 350 });
-          }
-        });
-        return groups;
+        try {
+          const res = await fetch(`${FUNCTIONS_BASE}/textToSpeech`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text: cleanText })
+          });
+          const data = await res.json();
+          if (data.error) throw new Error(data.error);
+
+          // Base64 MP3를 Audio로 재생
+          const audio = new Audio("data:audio/mp3;base64," + data.audio);
+          this._currentAudio = audio;
+
+          audio.onended = () => {
+            this._currentAudio = null;
+            if (callback) callback(true);
+          };
+          audio.onerror = () => {
+            console.warn("[Cloud TTS] 재생 실패, 폴백으로 전환");
+            this._currentAudio = null;
+            this.speakLocal(text, callback);
+          };
+          audio.play().catch(() => {
+            // 자동 재생 차단 시 폴백
+            this._currentAudio = null;
+            this.speakLocal(text, callback);
+          });
+        } catch (e) {
+          console.warn("[Cloud TTS] API 실패, 폴백으로 전환:", e.message);
+          this.speakLocal(text, callback);
+        }
       },
 
-      speak(text, callback) {
+      // 🔊 브라우저 내장 TTS (폴백)
+      speakLocal(text, callback) {
         if (!this.SpeechSynthesis) {
           if (callback) callback(false);
           return;
@@ -1248,66 +1249,46 @@
         const cleanText = this.cleanForTTS(text);
         if (!cleanText) { if (callback) callback(true); return; }
 
-        const groups = this.splitIntoBreathGroups(cleanText);
-        let idx = 0;
-        let cancelled = false;
-        this._currentCancel = () => { cancelled = true; };
+        const utterance = new SpeechSynthesisUtterance(cleanText);
+        utterance.lang = 'ko-KR';
+        utterance.rate = 0.92;
+        utterance.pitch = 1.0;
+        utterance.volume = 1;
 
-        const speakNext = () => {
-          if (cancelled || idx >= groups.length) {
-            if (callback) callback(!cancelled);
-            return;
-          }
-          const group = groups[idx];
-          idx++;
-          if (!group.text) { speakNext(); return; }
+        if (this._cachedVoice) {
+          utterance.voice = this._cachedVoice;
+        }
 
-          const utterance = new SpeechSynthesisUtterance(group.text);
-          utterance.lang = 'ko-KR';
+        utterance.onend = () => { if (callback) callback(true); };
+        utterance.onerror = () => { if (callback) callback(false); };
+        this.SpeechSynthesis.speak(utterance);
+      },
 
-          // 자연스러운 속도/피치 (질문은 피치 살짝 높게)
-          const isQuestion = group.text.endsWith('?');
-          utterance.rate = 0.92;
-          utterance.pitch = isQuestion ? 1.12 : 1.0;
-          utterance.volume = 1;
-
-          // 캐싱된 최적 음성 사용
-          if (this._cachedVoice) {
-            utterance.voice = this._cachedVoice;
-          } else {
-            const voices = this.SpeechSynthesis.getVoices();
-            const koVoice = voices.find(v => v.lang.startsWith('ko') && /google|samsung|heami|yuna/i.test(v.name))
-              || voices.find(v => v.lang.startsWith('ko'));
-            if (koVoice) utterance.voice = koVoice;
-          }
-
-          utterance.onend = () => {
-            // 문장 간 자연스러운 쉼 (pause ms)
-            if (group.pause > 0 && idx < groups.length) {
-              setTimeout(speakNext, group.pause);
-            } else {
-              speakNext();
-            }
-          };
-          utterance.onerror = () => speakNext();
-          this.SpeechSynthesis.speak(utterance);
-        };
-        speakNext();
+      // 메인 speak 함수: Cloud TTS 우선, 실패 시 로컬 폴백
+      speak(text, callback) {
+        this.speakCloud(text, callback);
       },
 
       stopSpeaking() {
-        if (this._currentCancel) this._currentCancel();
+        // Cloud TTS 오디오 중지
+        if (this._currentAudio) {
+          this._currentAudio.pause();
+          this._currentAudio.currentTime = 0;
+          this._currentAudio = null;
+        }
+        // 로컬 TTS 중지
         if (this.SpeechSynthesis) {
           this.SpeechSynthesis.cancel();
         }
       },
 
       isSpeaking() {
+        if (this._currentAudio && !this._currentAudio.paused) return true;
         return this.SpeechSynthesis ? this.SpeechSynthesis.speaking : false;
       }
     };
 
-    // 음성 프리로드 (앱 로드 시 최적 음성 미리 선택)
+    // 음성 프리로드 (폴백용)
     VoiceService.preloadVoice();
 
     // ═══════════════════════════════════════
@@ -1427,6 +1408,7 @@
       const recognizerRef = useRef(null);
       const saveTimerRef = useRef(null);
       const isListeningRef = useRef(false);
+      const chatInputRef = useRef("");
 
       const currentWeek = getWeekNum(startDate);
       const thisWeekBook = BOOKS.find(b => b.week === currentWeek) || BOOKS[0];
@@ -1574,27 +1556,43 @@
       }, [dataLoaded]);
 
       // 🎯 미션 자동 완료 함수
+      // 미션 완료 대기열 (setState 콜백 안에서 다른 setState 호출 방지)
+      const missionCompleteQueue = useRef([]);
+
       const completeMissionByTrigger = (triggerType) => {
         setDailyMissions(prev => {
           const target = prev.find(m => m.trigger === triggerType && !m.completed);
           if (!target) return prev;
           const newMissions = prev.map(m => m.id === target.id ? {...m, completed: true} : m);
-          // XP/코인 지급
-          setCoins(c => c + (target.coin || 3));
-          addXp(target.xp);
-          setTimeout(() => {
-            showCoinGain(target.coin || 3, `미션 완료: ${target.text}`);
-          }, 300);
-          // 전체 미션 완료 보너스
-          if (newMissions.every(m => m.completed)) {
-            setTimeout(() => {
-              setCoins(c => c + 10);
-              showCoinGain(10, "🎉 일일 미션 전체 완료 보너스!");
-            }, 1500);
-          }
+          // 보상을 큐에 넣고 다음 렌더에서 처리
+          missionCompleteQueue.current.push({
+            coin: target.coin || 3,
+            text: target.text,
+            allDone: newMissions.every(m => m.completed)
+          });
           return newMissions;
         });
       };
+
+      // 미션 보상 큐 처리 (렌더 후 안전하게 실행)
+      useEffect(() => {
+        if (missionCompleteQueue.current.length === 0) return;
+        const rewards = missionCompleteQueue.current.splice(0);
+        rewards.forEach(r => {
+          setCoins(c => c + r.coin);
+          setTimeout(() => {
+            setShowCoinPopup({ amount: r.coin, label: `미션 완료: ${r.text}` });
+            setTimeout(() => setShowCoinPopup(null), 2000);
+          }, 300);
+          if (r.allDone) {
+            setTimeout(() => {
+              setCoins(c => c + 10);
+              setShowCoinPopup({ amount: 10, label: "🎉 일일 미션 전체 완료 보너스!" });
+              setTimeout(() => setShowCoinPopup(null), 2000);
+            }, 1500);
+          }
+        });
+      }, [dailyMissions]);
 
       // 💰 출석 보너스 시스템
       const showCoinGain = (amount, label) => {
@@ -1852,62 +1850,64 @@
         }, 500);
       };
 
+      // 누적 텍스트 저장용 ref
+      const accumulatedTextRef = useRef("");
+
       const startListening = () => {
         if (!voiceSupported || isListening) return;
 
-        // 매번 새 인식기 생성 (continuous 모드 재시작 문제 방지)
-        recognizerRef.current = VoiceService.createRecognizer();
-        const recognizer = recognizerRef.current;
-        if (!recognizer) return;
-
         setIsListening(true);
         isListeningRef.current = true;
+        accumulatedTextRef.current = "";
+        chatInputRef.current = "";
         setChatInput("");
 
-        recognizer.onstart = () => {
-          setIsListening(true);
-          isListeningRef.current = true;
-        };
+        const startNewSession = () => {
+          const recognizer = VoiceService.createRecognizer();
+          if (!recognizer) return;
+          recognizerRef.current = recognizer;
 
-        recognizer.onresult = (event) => {
-          let finalText = "";
-          let interimText = "";
-          for (let i = 0; i < event.results.length; i++) {
-            const result = event.results[i];
-            if (result.isFinal) {
-              finalText += result[0].transcript;
-            } else {
-              interimText += result[0].transcript;
+          recognizer.onresult = (event) => {
+            let sessionFinal = "";
+            let sessionInterim = "";
+            for (let i = 0; i < event.results.length; i++) {
+              if (event.results[i].isFinal) {
+                sessionFinal += event.results[i][0].transcript;
+              } else {
+                sessionInterim += event.results[i][0].transcript;
+              }
             }
-          }
-          const fullText = (finalText + interimText).trim();
-          if (fullText) {
-            setChatInput(fullText);
-          }
-        };
+            const display = (accumulatedTextRef.current + " " + sessionFinal + sessionInterim).trim();
+            if (display) {
+              setChatInput(display);
+              chatInputRef.current = display;
+            }
+          };
 
-        recognizer.onerror = (e) => {
-          if (e.error !== 'no-speech') {
+          recognizer.onerror = (e) => {
+            if (e.error !== 'no-speech' && e.error !== 'aborted') {
+              setIsListening(false);
+              isListeningRef.current = false;
+            }
+          };
+
+          recognizer.onend = () => {
+            if (isListeningRef.current) {
+              // 현재까지의 텍스트를 누적하고 새 세션 시작
+              accumulatedTextRef.current = chatInputRef.current;
+              setTimeout(() => {
+                if (isListeningRef.current) startNewSession();
+              }, 100);
+            }
+          };
+
+          try { recognizer.start(); } catch(e) {
             setIsListening(false);
             isListeningRef.current = false;
           }
         };
 
-        recognizer.onend = () => {
-          // continuous 모드에서도 브라우저가 자동 종료할 수 있으므로 재시작
-          if (isListeningRef.current) {
-            try { recognizer.start(); } catch(e) {
-              setIsListening(false);
-              isListeningRef.current = false;
-            }
-          }
-        };
-
-        try {
-          recognizer.start();
-        } catch (e) {
-          setIsListening(false);
-        }
+        startNewSession();
       };
 
       const stopListening = () => {
@@ -1948,15 +1948,12 @@
 
         setChatMessages(prev => [...prev, { role: "ai", text: aiResponse }]);
 
+        // AI 피드백만 읽기 (XP/코인 메시지는 읽지 않음)
         VoiceService.speak(aiResponse, () => {
-          VoiceService.speak(complimentMsg, () => {
-            setIsSpeaking(false);
-          });
-        });
-
-        setTimeout(() => {
+          setIsSpeaking(false);
+          // XP 메시지는 읽지 않고 텍스트로만 표시
           setChatMessages(prev => [...prev, { role: "ai", text: complimentMsg }]);
-        }, 2000);
+        });
 
         // Feature 3: Calculate star rating based on answer length
         const answerLength = userMsg.trim().length;
@@ -2532,6 +2529,10 @@
             {isSpeaking && <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
               <span style={{ fontSize: 20 }}>🔊</span>
               <span style={{ fontSize: 12, color: "#666", fontStyle: "italic" }}>AI가 말하는 중...</span>
+              <button onClick={() => { VoiceService.stopSpeaking(); setIsSpeaking(false); }}
+                style={{ marginLeft: "auto", padding: "4px 12px", borderRadius: 8, border: "1.5px solid #667eea", background: "white", color: "#667eea", fontSize: 11, fontWeight: 700, cursor: "pointer" }}>
+                ⏭️ 건너뛰기
+              </button>
             </div>}
             <div ref={chatEndRef} />
           </div>
