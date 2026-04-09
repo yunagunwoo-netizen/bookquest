@@ -1,36 +1,111 @@
-const CACHE_NAME = 'bookquest-v2';
-const ASSETS = [
+// Service Worker for iCoach App - v30 (custom chibi icons replacing emojis)
+const CACHE_NAME = 'icoach-v36';
+const ASSETS_TO_CACHE = [
   './',
   './index.html',
+  './app.html',
   './manifest.json',
-  './icons/favicon.png',
-  './icons/app-icon-192.png',
-  './icons/app-icon-512.png',
-  './covers/book1.jpg',
-  './covers/book2.jpg',
-  './covers/book3.jpg',
-  './covers/book4.jpg',
-  './covers/book5.jpg'
+  'https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Black+Han+Sans&display=swap'
 ];
 
-self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
+// Install event - cache core assets
+self.addEventListener('install', event => {
+  console.log('Service Worker v10 installing...');
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.addAll(ASSETS_TO_CACHE).catch(err => {
+        console.log('Some assets failed to cache:', err);
+        return Promise.resolve();
+      });
+    })
   );
   self.skipWaiting();
 });
 
-self.addEventListener('activate', e => {
-  e.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
-    )
+// Activate event - delete ALL old caches
+self.addEventListener('activate', event => {
+  console.log('Service Worker v10 activating...');
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheName !== CACHE_NAME) {
+            console.log('Deleting old cache:', cacheName);
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
   );
   self.clients.claim();
 });
 
-self.addEventListener('fetch', e => {
-  e.respondWith(
-    fetch(e.request).catch(() => caches.match(e.request))
+// Fetch event - NETWORK-FIRST for HTML/JS, cache-first for images/fonts
+self.addEventListener('fetch', event => {
+  const url = new URL(event.request.url);
+
+  if (event.request.method !== 'GET') return;
+
+  // Firebase/API - network only
+  if (url.host.includes('firebase') || url.pathname.includes('/api/')) {
+    event.respondWith(
+      fetch(event.request).catch(() => {
+        return caches.match(event.request).then(r => r || new Response(
+          JSON.stringify({ offline: true, message: '오프라인 상태입니다' }),
+          { status: 503, headers: { 'Content-Type': 'application/json' } }
+        ));
+      })
+    );
+    return;
+  }
+
+  // HTML, JS, JSON, manifest - NETWORK FIRST (always get latest)
+  if (event.request.destination === 'document' ||
+      url.pathname.endsWith('.html') ||
+      url.pathname.endsWith('.js') ||
+      url.pathname.endsWith('.json') ||
+      url.pathname === '/' || url.pathname === './') {
+    event.respondWith(
+      fetch(event.request).then(response => {
+        if (response.status === 200) {
+          const cloned = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, cloned));
+        }
+        return response;
+      }).catch(() => {
+        return caches.match(event.request).then(r => r || caches.match('./app.html'));
+      })
+    );
+    return;
+  }
+
+  // Images, fonts, CSS - cache first (with network fallback & update)
+  event.respondWith(
+    caches.match(event.request).then(cachedResponse => {
+      // Return cache but also update in background
+      const fetchPromise = fetch(event.request).then(networkResponse => {
+        if (networkResponse && networkResponse.status === 200) {
+          const cloned = networkResponse.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, cloned));
+        }
+        return networkResponse;
+      }).catch(() => null);
+
+      return cachedResponse || fetchPromise;
+    })
   );
+});
+
+// Handle background sync
+self.addEventListener('sync', event => {
+  if (event.tag === 'sync-analyses') {
+    event.waitUntil(Promise.resolve());
+  }
+});
+
+// Message handler for skip waiting
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
