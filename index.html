@@ -284,6 +284,7 @@
 
     const APP_VERSION = "1.2.0";
     const APP_BUILD_DATE = "2026-04-08";
+    const ADMIN_PIN = "1234";
 
     const CHANGELOG = [
       {
@@ -824,7 +825,9 @@
       { id: "nita", name: "니타", gradient: ["#ef4444","#b91c1c"], img: "avatars/nita.png", imgSm: "avatars/nita_sm.png", free: true },
       { id: "leon", name: "레온", gradient: ["#22c55e","#15803d"], img: "avatars/leon.png", imgSm: "avatars/leon_sm.png", free: true },
       { id: "crow", name: "크로우", gradient: ["#6b7280","#374151"], img: "avatars/crow.png", imgSm: "avatars/crow_sm.png", free: true },
-      { id: "spike", name: "스파이크", gradient: ["#22c55e","#16a34a"], img: "avatars/spike.png", imgSm: "avatars/spike_sm.png", free: true }
+      { id: "spike", name: "스파이크", gradient: ["#22c55e","#16a34a"], img: "avatars/spike.png", imgSm: "avatars/spike_sm.png", free: true },
+      // ─── 오리지널 캐릭터 ───
+      { id: "dash", name: "대시", gradient: ["#f59e0b","#d97706"], img: "avatars/dash.png", imgSm: "avatars/dash_sm.png", free: true }
     ];
     const AVATARS = AVATAR_DATA.map(a => a.id);
 
@@ -967,11 +970,18 @@
     // 콤보 이미지 데이터 URI 반환
     const getComboImagePath = (avatarId, itemId) => {
       const key = `${avatarId}_${itemId}`;
-      return COMBO_IMAGE_DATA[key] || null;
+      // 1) base64 임베딩 데이터 우선
+      if (COMBO_IMAGE_DATA[key]) return COMBO_IMAGE_DATA[key];
+      // 2) 외부 파일 폴백 (오리지널 캐릭터용)
+      if (EXTERNAL_COMBO_AVATARS.includes(avatarId)) return `avatars/combos/${key}.png`;
+      return null;
     };
 
+    // 외부 콤보 이미지 파일을 사용하는 오리지널 캐릭터 목록
+    const EXTERNAL_COMBO_AVATARS = ["dash"];
+
     // 콤보 이미지 지원 아바타 목록
-    const COMBO_AVATARS = ["shelly", "nita", "leon", "crow", "spike"];
+    const COMBO_AVATARS = ["shelly", "nita", "leon", "crow", "spike", "dash"];
 
     // 콤보 이미지가 있는 아이템 ID 목록
     const COMBO_ITEM_IDS = new Set(SHOP_ITEMS.map(item => item.id));
@@ -1445,6 +1455,11 @@
       const [shopCategory, setShopCategory] = useState("avatar");
       const [showChangelog, setShowChangelog] = useState(false);
       const [showRollback, setShowRollback] = useState(false);
+      const [isAdmin, setIsAdmin] = useState(() => sessionStorage.getItem("bq_admin") === "true");
+      const [showAdminLogin, setShowAdminLogin] = useState(false);
+      const [adminPin, setAdminPin] = useState("");
+      const [adminPinError, setAdminPinError] = useState(false);
+      const [adminTab, setAdminTab] = useState("content");
       const [ownedAvatars, setOwnedAvatars] = useState(AVATAR_DATA.filter(a => a.free).map(a => a.id));
       const [lastLoginDate, setLastLoginDate] = useState(null);
       const [showCoinPopup, setShowCoinPopup] = useState(null);
@@ -1468,6 +1483,26 @@
       const saveTimerRef = useRef(null);
       const isListeningRef = useRef(false);
       const chatInputRef = useRef("");
+
+      const handleAdminLogin = () => {
+        if (adminPin === ADMIN_PIN) {
+          setIsAdmin(true);
+          sessionStorage.setItem("bq_admin", "true");
+          setShowAdminLogin(false);
+          setAdminPin("");
+          setAdminPinError(false);
+          setScreen("admin");
+        } else {
+          setAdminPinError(true);
+          setAdminPin("");
+        }
+      };
+
+      const handleAdminLogout = () => {
+        setIsAdmin(false);
+        sessionStorage.removeItem("bq_admin");
+        setScreen("avatar");
+      };
 
       const currentWeek = getWeekNum(startDate);
       const thisWeekBook = BOOKS.find(b => b.week === currentWeek) || BOOKS[0];
@@ -2967,8 +3002,272 @@
               </button>
             </div>
           </div>
+
+          {/* 관리자 모드 */}
+          <div style={{ marginTop: 24, padding: 16, background: "white", borderRadius: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
+            <button onClick={() => isAdmin ? setScreen("admin") : setShowAdminLogin(true)}
+              style={{ width: "100%", padding: "12px", borderRadius: 10, border: "1.5px solid #ef4444", background: isAdmin ? "#ef4444" : "#ef444408", color: isAdmin ? "white" : "#ef4444", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
+              {isAdmin ? "🔓 관리자 패널 열기" : "🔒 관리자 모드"}
+            </button>
+          </div>
         </div>
       );
+
+      // ═══════════════════════════════════════
+      // 🔒 Admin Panel
+      // ═══════════════════════════════════════
+      const AdminPanel = () => {
+        const tabs = [
+          { key: "content", icon: "📚", label: "콘텐츠" },
+          { key: "users", icon: "👥", label: "유저 관리" },
+          { key: "settings", icon: "⚙️", label: "앱 설정" }
+        ];
+
+        return (
+          <div style={{ padding: "0 16px 100px" }}>
+            {/* 헤더 */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 0" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <button onClick={() => setScreen("avatar")} style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer" }}>←</button>
+                <h2 style={{ fontSize: 18, fontWeight: 800, color: "#1a1a2e", margin: 0 }}>🔒 관리자 패널</h2>
+              </div>
+              <button onClick={handleAdminLogout} style={{ padding: "6px 12px", borderRadius: 8, border: "1px solid #ef4444", background: "white", color: "#ef4444", fontSize: 11, fontWeight: 700, cursor: "pointer" }}>로그아웃</button>
+            </div>
+
+            {/* 탭 바 */}
+            <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+              {tabs.map(t => (
+                <button key={t.key} onClick={() => setAdminTab(t.key)}
+                  style={{ flex: 1, padding: "10px 0", borderRadius: 10, border: adminTab === t.key ? "2px solid #667eea" : "1.5px solid #eee", background: adminTab === t.key ? "#667eea" : "white", color: adminTab === t.key ? "white" : "#666", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
+                  {t.icon} {t.label}
+                </button>
+              ))}
+            </div>
+
+            {/* 콘텐츠 관리 탭 */}
+            {adminTab === "content" && (
+              <div>
+                {/* 책 목록 관리 */}
+                <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 12 }}>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>📖 등록된 책 ({BOOKS.length}권)</h4>
+                  {BOOKS.map((book, i) => (
+                    <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: i < BOOKS.length - 1 ? "1px solid #f0f0f0" : "none" }}>
+                      <div>
+                        <div style={{ fontSize: 13, fontWeight: 600 }}>{book.title}</div>
+                        <div style={{ fontSize: 11, color: "#888" }}>{book.week}주차 | 퀴즈 {book.quizzes?.length || 0}개 | 토론 {book.discussionTopics?.length || 0}개</div>
+                      </div>
+                      <span style={{ fontSize: 11, color: "#667eea", fontWeight: 600 }}>{i + 1}주차</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* 미션 템플릿 */}
+                <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 12 }}>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>🎯 미션 템플릿</h4>
+                  <div style={{ fontSize: 12, color: "#666" }}>
+                    {typeof MISSION_TEMPLATES !== 'undefined' && MISSION_TEMPLATES ?
+                      <span>총 {MISSION_TEMPLATES.length}개 미션 템플릿 등록됨</span> :
+                      <span>미션 템플릿 데이터 없음</span>
+                    }
+                  </div>
+                </div>
+
+                {/* 상점 아이템 */}
+                <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 12 }}>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>🛍️ 상점 아이템 ({SHOP_ITEMS.length}개)</h4>
+                  {["frame", "aura", "hat", "face", "pet", "weapon"].map(cat => {
+                    const items = SHOP_ITEMS.filter(i => i.category === cat);
+                    const catNames = { frame: "프레임", aura: "오라", hat: "모자", face: "얼굴", pet: "펫", weapon: "무기" };
+                    return (
+                      <div key={cat} style={{ marginBottom: 8 }}>
+                        <div style={{ fontSize: 12, fontWeight: 700, color: "#667eea", marginBottom: 4 }}>{catNames[cat]} ({items.length}개)</div>
+                        {items.map(item => (
+                          <div key={item.id} style={{ display: "flex", justifyContent: "space-between", fontSize: 11, color: "#666", padding: "2px 8px" }}>
+                            <span>{item.name}</span><span>{item.price} 코인</span>
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* 아바타 */}
+                <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>👤 아바타 ({AVATAR_DATA.length}캐릭터)</h4>
+                  {AVATAR_DATA.map(av => (
+                    <div key={av.id} style={{ display: "flex", alignItems: "center", gap: 10, padding: "6px 0" }}>
+                      <img src={av.img} style={{ width: 36, height: 36, borderRadius: "50%", objectFit: "cover" }} />
+                      <div>
+                        <div style={{ fontSize: 13, fontWeight: 600 }}>{av.name} ({av.id})</div>
+                        <div style={{ fontSize: 11, color: "#888" }}>{COMBO_AVATARS.includes(av.id) ? "콤보 이미지 지원" : "콤보 미지원"} | {av.free ? "무료" : `${av.price || "?"} 코인`}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* 유저 관리 탭 */}
+            {adminTab === "users" && (
+              <div>
+                {/* 현재 유저 정보 */}
+                <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 12 }}>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>👤 현재 유저</h4>
+                  <div style={{ fontSize: 13, color: "#444", lineHeight: 2.2 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>이름</span><span style={{ fontWeight: 600 }}>{profile?.name}</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>학교</span><span style={{ fontWeight: 600 }}>{profile?.school || "미입력"}</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>학년</span><span style={{ fontWeight: 600 }}>{profile?.grade}학년</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>레벨</span><span style={{ fontWeight: 600 }}>Lv.{level}</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>XP</span><span style={{ fontWeight: 600 }}>{xp} XP</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>코인</span><span style={{ fontWeight: 600 }}>{coins} 코인</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>연속출석</span><span style={{ fontWeight: 600 }}>{streak}일</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>배지</span><span style={{ fontWeight: 600 }}>{earnedBadges.length}개</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>아바타</span><span style={{ fontWeight: 600 }}>{profile?.avatar}</span></div>
+                  </div>
+                </div>
+
+                {/* XP/코인 조정 */}
+                <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 12 }}>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>💰 재화 조정</h4>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                    {[
+                      { label: "XP +100", action: () => { setXp(prev => prev + 100); } },
+                      { label: "XP +500", action: () => { setXp(prev => prev + 500); } },
+                      { label: "코인 +50", action: () => { setCoins(prev => prev + 50); } },
+                      { label: "코인 +200", action: () => { setCoins(prev => prev + 200); } },
+                    ].map((btn, i) => (
+                      <button key={i} onClick={() => { btn.action(); alert(btn.label + " 완료!"); }}
+                        style={{ padding: "10px", borderRadius: 10, border: "1.5px solid #22c55e", background: "#22c55e08", color: "#22c55e", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
+                        ➕ {btn.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 진행도 */}
+                <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 12 }}>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>📊 독서 진행도</h4>
+                  {BOOKS.map((book, i) => (
+                    <div key={i} style={{ marginBottom: 8 }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, marginBottom: 4 }}>
+                        <span style={{ fontWeight: 600 }}>{book.title}</span>
+                        <span style={{ color: "#667eea" }}>{bookProgress[book.id] || 0}%</span>
+                      </div>
+                      <div style={{ height: 6, background: "#f0f0f0", borderRadius: 3 }}>
+                        <div style={{ height: "100%", width: `${bookProgress[book.id] || 0}%`, background: "linear-gradient(90deg, #667eea, #764ba2)", borderRadius: 3 }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* 데이터 초기화 */}
+                <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12, color: "#ef4444" }}>⚠️ 위험 영역</h4>
+                  <button onClick={() => {
+                    if (confirm("정말 모든 유저 데이터를 초기화하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) {
+                      if (confirm("정말로요? 프로필, 진행상황, 아이템 모두 삭제됩니다.")) {
+                        localStorage.clear();
+                        sessionStorage.clear();
+                        alert("데이터가 초기화되었습니다. 앱을 새로고침합니다.");
+                        location.reload();
+                      }
+                    }
+                  }}
+                    style={{ width: "100%", padding: "12px", borderRadius: 10, border: "1.5px solid #ef4444", background: "#ef444408", color: "#ef4444", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
+                    🗑️ 전체 데이터 초기화
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* 앱 설정 탭 */}
+            {adminTab === "settings" && (
+              <div>
+                {/* 캐릭터 테마 */}
+                <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 12 }}>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>🎭 캐릭터 테마</h4>
+                  <div style={{ fontSize: 12, color: "#666", marginBottom: 8 }}>현재: 브롤스타즈 + 오리지널 혼합</div>
+                  <div style={{ fontSize: 11, color: "#999", padding: 8, background: "#f8f8f8", borderRadius: 8 }}>
+                    오리지널 캐릭터 10종이 모두 적용된 후 캐릭터 테마 전환이 가능합니다.<br/>
+                    현재 적용: 대시(Dash) 1종
+                  </div>
+                </div>
+
+                {/* 앱 정보 */}
+                <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 12 }}>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>📱 앱 정보</h4>
+                  <div style={{ fontSize: 13, color: "#444", lineHeight: 2.2 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>버전</span><span style={{ fontWeight: 600 }}>v{APP_VERSION}</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>빌드</span><span style={{ fontWeight: 600 }}>{APP_BUILD_DATE}</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>호스팅</span><span style={{ fontWeight: 600 }}>GitHub Pages</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>백엔드</span><span style={{ fontWeight: 600 }}>Firebase Functions</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>캐릭터</span><span style={{ fontWeight: 600 }}>브롤스타즈 5 + 오리지널 {AVATAR_DATA.length - 5}</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>콤보 이미지</span><span style={{ fontWeight: 600 }}>{Object.keys(COMBO_IMAGE_DATA).length + 30}개</span></div>
+                  </div>
+                </div>
+
+                {/* 공지사항 */}
+                <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 12 }}>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>📢 공지사항</h4>
+                  <div style={{ fontSize: 12, color: "#999", padding: 12, background: "#f8f8f8", borderRadius: 8, textAlign: "center" }}>
+                    공지사항 기능은 Firebase 연동 후 사용 가능합니다
+                  </div>
+                </div>
+
+                {/* 기능 토글 */}
+                <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>🔧 기능 상태</h4>
+                  <div style={{ fontSize: 13, color: "#444", lineHeight: 2.2 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span>📖 책에게 질문하기</span><span style={{ color: "#22c55e", fontWeight: 600 }}>활성</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span>💬 토론 코치</span><span style={{ color: "#22c55e", fontWeight: 600 }}>활성</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span>📚 책 추천</span><span style={{ color: "#22c55e", fontWeight: 600 }}>활성</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span>🔊 음성 입출력</span><span style={{ color: voiceSupported ? "#22c55e" : "#ef4444", fontWeight: 600 }}>{voiceSupported ? "활성" : "비활성"}</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span>⏱️ 독서 타이머</span><span style={{ color: "#22c55e", fontWeight: 600 }}>활성</span></div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      };
+
+      // ═══════════════════════════════════════
+      // 🔒 Admin Login Modal
+      // ═══════════════════════════════════════
+      const AdminLoginModal = () => {
+        if (!showAdminLogin) return null;
+        return (
+          <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.5)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center" }}
+            onClick={() => { setShowAdminLogin(false); setAdminPin(""); setAdminPinError(false); }}>
+            <div style={{ background: "white", borderRadius: 20, padding: 24, width: "85%", maxWidth: 320, textAlign: "center" }}
+              onClick={e => e.stopPropagation()}>
+              <div style={{ fontSize: 36, marginBottom: 8 }}>🔒</div>
+              <h3 style={{ fontSize: 16, fontWeight: 800, color: "#1a1a2e", marginBottom: 4 }}>관리자 모드</h3>
+              <p style={{ fontSize: 12, color: "#888", marginBottom: 16 }}>관리자 비밀번호를 입력하세요</p>
+              <input
+                type="password"
+                value={adminPin}
+                onChange={e => { setAdminPin(e.target.value); setAdminPinError(false); }}
+                onKeyDown={e => e.key === "Enter" && handleAdminLogin()}
+                placeholder="비밀번호 입력"
+                style={{ width: "100%", padding: "12px", borderRadius: 10, border: adminPinError ? "2px solid #ef4444" : "1.5px solid #ddd", fontSize: 14, textAlign: "center", letterSpacing: 8, outline: "none", boxSizing: "border-box" }}
+                autoFocus
+              />
+              {adminPinError && <div style={{ fontSize: 11, color: "#ef4444", marginTop: 6 }}>비밀번호가 틀렸습니다</div>}
+              <div style={{ display: "flex", gap: 8, marginTop: 16 }}>
+                <button onClick={() => { setShowAdminLogin(false); setAdminPin(""); setAdminPinError(false); }}
+                  style={{ flex: 1, padding: "10px", borderRadius: 10, border: "1.5px solid #ddd", background: "white", color: "#888", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
+                  취소
+                </button>
+                <button onClick={handleAdminLogin}
+                  style={{ flex: 1, padding: "10px", borderRadius: 10, border: "none", background: "#667eea", color: "white", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
+                  로그인
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      };
 
       // ═══════════════════════════════════════
       // 📅 Schedule Screen
@@ -3642,6 +3941,7 @@
           {profile && screen === "askbook" && AskBookScreen()}
           {profile && screen === "recommend" && RecommendScreen()}
           {profile && screen === "avatar" && AvatarScreen()}
+          {isAdmin && screen === "admin" && AdminPanel()}
           {profile && screen === "schedule" && ScheduleScreen()}
 
           <TabBar />
@@ -3650,6 +3950,7 @@
           <ShopModal />
           <ChangelogModal />
           <RollbackModal />
+          <AdminLoginModal />
 
           {showCoinPopup && (
             <div style={{
