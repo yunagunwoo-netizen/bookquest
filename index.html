@@ -98,7 +98,7 @@
       animation: pulse 1.5s infinite;
     }
   </style>
-<script type='text/javascript' src='https://www.genspark.ai/BIKwSZh8AL_sq0tiidbNUm7I_prkwSlMBBb3h9huXI-ZC9IYAEdDmPImQmK95I6GEwfWj8CfSSeFoUUrnQCaPhQw4m_wCO8xcfzQHRlCf61r9FjgnNm2ZWKL3PRX36CobGRDJbBUp1EqrJUMTVQLVSeJTijC9mtCPR09Bog1tKAEhQcfuqJ4lJqI9Nc6Ln2MXX7cN_AF3NyQgjGkm095Kv1XquFabZ1iTQBk8qbwbJAfKcvT9C0YTeEl8LAjRpAkpd7BF82ekboD_0ZGgkLWIyroLpPKnQE-P_hyOLljMXHxvHyHcaLuYiTspmjiRCZ2v1OpZ43a2BToLMEZ7sJIBc7ejq8PLYqZ6InQQSckPljYJSEWdZGdAjibleYo8tPgR1MHbqXQbX3Q2OxGEM-a2zzmQG4qTICzCzqvf35LFAN6fTrWBd4L72BPUPCj8rbOj-gTPEfY9DtlLSFLFCKC8-Enxkq3KhDb8e_8u2KK68VD-3d6x6ktrDlGUhrrVjbC6uqVUxngxS5hiccqHSlCJWMPpue4zo7X5fW7aKi467zmBdsXDuAgomBk02migbqhIcOMIIBT1BStnw7hoJuBLHHOEXPXQtXUoIbiKDofTHz7S49_r2ZnGQlpsiNRfn_KvjRLsAUSELAcnp9D2Z307d-Oeo9xbQeOUj-j8cu3nTVVBex8kvq-LqCSHw'></script></head>
+</head>
 <body>
   <div id="root"></div>
   <!-- Firebase SDK (compat 버전 - CDN용) -->
@@ -3973,4 +3973,192 @@
                         <div style={{ position: "absolute", top: 6, left: 6, background: rarity.bg, color: rarity.color, fontSize: 9, fontWeight: 700, padding: "2px 6px", borderRadius: 6 }}>
                           {rarity.label}
                         </div>
-                        <img src={avatar.img} style={{ width: 56, height: 56, borderRadius: "50%", objectFit: "cover", marginBottom: 4, marginTop: 8, filter: owned ? "none" : "grayscale(0.6) bri
+                        <img src={avatar.img} style={{ width: 56, height: 56, borderRadius: "50%", objectFit: "cover", marginBottom: 4, marginTop: 8, filter: owned ? "none" : "grayscale(0.6) brightness(0.85)" }} />
+                        <div style={{ fontSize: 11, fontWeight: 700, color: "#1a1a2e", marginBottom: 2 }}>{avatar.name}</div>
+                        <div style={{ fontSize: 10, color: "#888", marginBottom: 6 }}>
+                          {avatar.free ? "무료" : `${avatar.price} 코인`}
+                        </div>
+                        {equipped ? (
+                          <button style={{ width: "100%", padding: "5px 8px", borderRadius: 8, border: "none", background: "#667eea", color: "white", fontSize: 11, fontWeight: 600 }}>
+                            사용 중
+                          </button>
+                        ) : owned ? (
+                          <button onClick={() => { setProfile(prev => ({...prev, avatar: avatar.id})); setProfileForm(prev => ({...prev, avatar: avatar.id})); }}
+                            style={{ width: "100%", padding: "5px 8px", borderRadius: 8, border: "2px solid #667eea", background: "white", color: "#667eea", fontSize: 11, fontWeight: 600, cursor: "pointer" }}>
+                            선택
+                          </button>
+                        ) : (
+                          <button onClick={() => {
+                            if (canAfford) {
+                              setCoins(prev => prev - avatar.price);
+                              setOwnedAvatars(prev => [...prev, avatar.id]);
+                              showCoinGain(-avatar.price, `${avatar.name} 구매!`);
+                            }
+                          }}
+                            disabled={!canAfford}
+                            style={{ width: "100%", padding: "5px 8px", borderRadius: 8, border: "none", background: canAfford ? "#667eea" : "#ddd", color: "white", fontSize: 11, fontWeight: 600, cursor: canAfford ? "pointer" : "default" }}>
+                            {canAfford ? "구매" : "코인 부족"}
+                          </button>
+                        )}
+                      </div>
+                    );
+                  }) : filteredItems.map(item => {
+                    const owned = ownedItems.includes(item.id);
+                    const cat = item.category;
+                    const equipped = equippedItems[cat] === item.id;
+                    return (
+                      <div key={item.id} style={{ background: "#f7f7fa", borderRadius: 14, padding: 12, textAlign: "center", border: equipped ? "2px solid #667eea" : "1px solid #eee" }}>
+                        <div style={{ marginBottom: 8, padding: 4 }}><img src={getComboImagePath(profile?.avatar || "shelly", item.id)} style={{ width: 64, height: 64, borderRadius: "50%", objectFit: "cover" }} onError={(e) => { const av = AVATAR_DATA.find(a => a.id === (profile?.avatar || "shelly")); if (av && e.target.src !== av.img) e.target.src = av.img; }} /></div>
+                        <div style={{ fontSize: 12, fontWeight: 700, color: "#1a1a2e", marginBottom: 2 }}>{item.name}</div>
+                        {ITEM_EFFECTS[cat]?.type === "bonus" && (
+                          <div style={{ fontSize: 10, fontWeight: 600, color: ITEM_EFFECTS[cat].color, background: ITEM_EFFECTS[cat].color + "18", borderRadius: 6, padding: "2px 6px", marginBottom: 4, display: "inline-block" }}>
+                            {ITEM_EFFECTS[cat].icon} {ITEM_EFFECTS[cat].label}
+                          </div>
+                        )}
+                        {ITEM_EFFECTS[cat]?.type === "visual" && (
+                          <div style={{ fontSize: 10, fontWeight: 600, color: ITEM_EFFECTS[cat].color, background: ITEM_EFFECTS[cat].color + "18", borderRadius: 6, padding: "2px 6px", marginBottom: 4, display: "inline-block" }}>
+                            ✨ {ITEM_EFFECTS[cat].desc}
+                          </div>
+                        )}
+                        <div style={{ fontSize: 11, color: "#888", marginBottom: 8 }}>{item.price} 코인</div>
+                        {!owned ? (
+                          <button onClick={() => {
+                            if (coins >= item.price) {
+                              setCoins(prev => prev - item.price);
+                              setOwnedItems(prev => [...prev, item.id]);
+                              setEquippedItems(prev => ({...prev, [cat]: item.id}));
+                              showCoinGain(-item.price, `${item.name} 구매!`);
+                            }
+                          }}
+                            disabled={coins < item.price}
+                            style={{ width: "100%", padding: "7px 10px", borderRadius: 10, border: "none", background: coins >= item.price ? "#667eea" : "#ddd", color: "white", fontSize: 12, fontWeight: 600, cursor: coins >= item.price ? "pointer" : "default" }}>
+                            구매
+                          </button>
+                        ) : equipped ? (
+                          <button onClick={() => setEquippedItems(prev => { const n = {...prev}; delete n[cat]; return n; })}
+                            style={{ width: "100%", padding: "7px 10px", borderRadius: 10, border: "none", background: "#667eea", color: "white", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
+                            해제
+                          </button>
+                        ) : (
+                          <button onClick={() => setEquippedItems(prev => ({...prev, [cat]: item.id}))}
+                            style={{ width: "100%", padding: "7px 10px", borderRadius: 10, border: "2px solid #667eea", background: "white", color: "#667eea", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
+                            장착
+                          </button>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      // ═══════════════════════════════════════
+      // 메인 렌더링
+      // ═══════════════════════════════════════
+      if (!dataLoaded) {
+        return (
+          <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg, #667eea, #764ba2)" }}>
+            <div style={{ fontSize: 48, marginBottom: 16, animation: "pop 0.5s ease" }}>📚</div>
+            <div style={{ color: "white", fontSize: 18, fontWeight: 800 }}>BookQuest</div>
+            <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 14 }}>데이터 불러오는 중...</div>
+          </div>
+        );
+      }
+
+      return (
+        <div style={{ maxWidth: 430, margin: "0 auto", background: "#f7f7fa", minHeight: "100vh", fontFamily: "'Noto Sans KR', -apple-system, sans-serif", paddingTop: profile ? 16 : 0, position: "relative" }}>
+          {!profile && ProfileSetupScreen()}
+          {profile && screen === "home" && HomeScreen()}
+          {profile && screen === "book" && BookScreen()}
+          {profile && screen === "discussion" && DiscussionScreen()}
+          {profile && screen === "askbook" && AskBookScreen()}
+          {profile && screen === "recommend" && RecommendScreen()}
+          {profile && screen === "avatar" && AvatarScreen()}
+          {profile && screen === "schedule" && ScheduleScreen()}
+
+          <TabBar />
+          <RewardModal />
+          <QuizResultModal />
+          <ShopModal />
+          <ChangelogModal />
+          <RollbackModal />
+
+          {showCoinPopup && (
+            <div style={{
+              position: "fixed", top: 80, left: "50%", transform: "translateX(-50%)", zIndex: 2000,
+              background: showCoinPopup.amount > 0
+                ? "linear-gradient(135deg, #FFD700, #FFA500)"
+                : "linear-gradient(135deg, #667eea, #764ba2)",
+              borderRadius: 20,
+              padding: "12px 24px", display: "flex", alignItems: "center", gap: 8,
+              boxShadow: showCoinPopup.amount > 0
+                ? "0 8px 24px rgba(255,165,0,0.4)"
+                : "0 8px 24px rgba(102,126,234,0.4)",
+              animation: "pop 0.3s ease",
+              color: "white", fontWeight: 700, fontSize: 14
+            }}>
+              <img src={PNG_ICONS.coin} style={{ width: 24, height: 24 }} />
+              {showCoinPopup.amount > 0 ? "+" : ""}{showCoinPopup.amount} 코인 {showCoinPopup.label}
+            </div>
+          )}
+
+          {saveErrorMsg && (
+            <div style={{
+              position: "fixed", top: 80, left: "50%", transform: "translateX(-50%)", zIndex: 2000,
+              background: "linear-gradient(135deg, #FF5252, #D32F2F)", borderRadius: 20,
+              padding: "12px 24px", display: "flex", alignItems: "center", gap: 8,
+              boxShadow: "0 8px 24px rgba(211,47,47,0.4)", animation: "pop 0.3s ease",
+              color: "white", fontWeight: 700, fontSize: 13
+            }}>
+              {saveErrorMsg}
+            </div>
+          )}
+
+          {showInstallBanner && (
+            <div style={{
+              position: "fixed", bottom: 70, left: 12, right: 12, zIndex: 200,
+              background: "linear-gradient(135deg, #667eea, #764ba2)", borderRadius: 20,
+              padding: "16px 18px", display: "flex", alignItems: "center", gap: 14,
+              boxShadow: "0 8px 32px rgba(102,126,234,0.4)", animation: "pop 0.4s ease"
+            }}>
+              <img src="icons/app-icon-192.png" style={{ width: 52, height: 52, borderRadius: 14, flexShrink: 0, boxShadow: "0 2px 8px rgba(0,0,0,0.2)" }} />
+              <div style={{ flex: 1 }}>
+                <div style={{ color: "white", fontSize: 14, fontWeight: 800 }}>BookQuest 설치하기</div>
+                <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 11, marginTop: 2 }}>홈 화면에 추가하면 더 빠르게!</div>
+              </div>
+              <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
+                <button onClick={() => { setShowInstallBanner(false); localStorage.setItem("bq_install_dismissed", "1"); }}
+                  style={{ background: "rgba(255,255,255,0.2)", border: "none", borderRadius: 12, padding: "8px 12px", color: "white", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
+                  닫기
+                </button>
+                <button onClick={async () => {
+                  if (installPrompt) {
+                    installPrompt.prompt();
+                    const result = await installPrompt.userChoice;
+                    if (result.outcome === "accepted") setShowInstallBanner(false);
+                    setInstallPrompt(null);
+                  }
+                }}
+                  style={{ background: "white", border: "none", borderRadius: 12, padding: "8px 16px", color: "#667eea", fontSize: 12, fontWeight: 800, cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}>
+                  설치
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<BookQuest />);
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    }
+  </script>
+</body>
+</html>
