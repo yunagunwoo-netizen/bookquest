@@ -1,10 +1,19 @@
-// Service Worker for iCoach App - v30 (custom chibi icons replacing emojis)
-const CACHE_NAME = 'icoach-v36';
+// Service Worker for iCoach App - v66 (β1.4.15 — detectArmSlot 근본 재수정)
+const CACHE_NAME = 'icoach-v155';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './app.html',
   './manifest.json',
+  './version.js',
+  './ironarm.png',
+  './icon_bug_report.png',
+  './icon_legal.png',
+  './icon_support.png',
+  './icon_form.png',
+  './icon_email.png',
+  './fonts/SpoqaHanSansNeo-Regular.ttf',
+  './fonts/SpoqaHanSansNeo-Bold.ttf',
   'https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Black+Han+Sans&display=swap'
 ];
 
@@ -45,6 +54,10 @@ self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
 
   if (event.request.method !== 'GET') return;
+
+  // β1.2.5 — http/https 이외 스킴 무시 (chrome-extension://, data:, blob:, ws://, etc.)
+  // Cache API 는 이들 스킴을 지원하지 않아 .put() 시 TypeError 폭주 → 메인 스레드 프리즈 유발
+  if (url.protocol !== 'http:' && url.protocol !== 'https:') return;
 
   // Firebase/API - network only
   if (url.host.includes('firebase') || url.pathname.includes('/api/')) {
