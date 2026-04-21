@@ -1,0 +1,72 @@
+{
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "*.docx",
+      "*.md",
+      "*.pdf",
+      "*.jsx",
+      "*.py",
+      "*.sh",
+      "BookQuest.jsx",
+      "backup/**",
+      "_원본이미지/**",
+      "avatars/_original_full_backup/**",
+      "functions/**",
+      "콤보프롬프트/**",
+      "*_backup.html",
+      "*.pre_repair",
+      "avatar-preview.html",
+      "아이템_미리보기.html",
+      "_avatar_grid_preview.png",
+      "하이브리드_*.png",
+      "씨앗.jpg",
+      "우주.jpg",
+      "외교광장.jpg",
+      "*책표지.jpg",
+      "*책표지*.jpg"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "**/*.@(js|css|html)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=3600"
+          }
+        ]
+      },
+      {
+        "source": "**/*.@(png|jpg|jpeg|gif|webp|svg)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=604800"
+          }
+        ]
+      },
+      {
+        "source": "sw.js",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
+      }
+    ]
+  },
+  "functions": {
+    "source": "functions",
+    "runtime": "nodejs20"
+  }
+}

@@ -1,0 +1,46 @@
+# 원본 대용량 이미지 (나노바나나 생성 원본 2048x2048)
+_원본이미지/
+
+# 오리지널 캐릭터 원본
+오리지날 캐릭터/
+
+# 콤보 이미지 처리 전 백업 (롤백용, GitHub에 올릴 필요 없음)
+avatars/combos/_backup_*/
+avatars/items/_backup_raw/
+
+# 오리지널 9캐릭터 최적화 전 원본 (롤백용)
+avatars/_original_full_backup/
+
+# 임시 미리보기 파일
+_preview_*.png
+_avatar_grid_preview.png
+
+# index.html 롤백용 백업들 (GitHub에 올릴 필요 없음)
+*.pre_repair
+index_*_backup.html
+backup/
+
+# 콤보 프롬프트 작업 폴더
+콤보프롬프트/
+
+# 책 PDF 원본 (GitHub에 올릴 필요 없음)
+*.pdf
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temp files
+~$*
+
+# Node.js dependencies (Firebase Functions)
+node_modules/
+functions/node_modules/
+
+# Claude session files
+.claude/
+
+# Firebase/npm logs
+*.log
+firebase-debug.log
+npm-debug.log*

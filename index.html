@@ -818,17 +818,145 @@
     };
 
     // ═══════════════════════════════════════
-    // 👤 아바타 시스템 (5개 무료 캐릭터)
+    // 👤 아바타 시스템 (109 캐릭터: 무료 9 + 일반 40 + 희귀 32 + 에픽 20 + 전설 8)
+    // 희귀도: free / common(300) / rare(600) / epic(1200) / legendary(2500)
     // ═══════════════════════════════════════
+    // 헬퍼: 아바타 엔트리 생성
+    const _av = (id, name, g1, g2, rarity, price) => ({
+      id, name, gradient: [g1, g2],
+      img: `avatars/${id}.png`,
+      imgSm: `avatars/${id}_sm.png`,
+      free: price === 0, rarity, price
+    });
     const AVATAR_DATA = [
-      { id: "shelly", name: "쉘리", gradient: ["#f97316","#ea580c"], img: "avatars/shelly.png", imgSm: "avatars/shelly_sm.png", free: true },
-      { id: "nita", name: "니타", gradient: ["#ef4444","#b91c1c"], img: "avatars/nita.png", imgSm: "avatars/nita_sm.png", free: true },
-      { id: "leon", name: "레온", gradient: ["#22c55e","#15803d"], img: "avatars/leon.png", imgSm: "avatars/leon_sm.png", free: true },
-      { id: "crow", name: "크로우", gradient: ["#6b7280","#374151"], img: "avatars/crow.png", imgSm: "avatars/crow_sm.png", free: true },
-      { id: "spike", name: "스파이크", gradient: ["#22c55e","#16a34a"], img: "avatars/spike.png", imgSm: "avatars/spike_sm.png", free: true },
-      // ─── 오리지널 캐릭터 ───
-      { id: "dash", name: "대시", gradient: ["#f59e0b","#d97706"], img: "avatars/dash.png", imgSm: "avatars/dash_sm.png", free: true }
+      // ─── 무료 기본 (9) : 쉘리/니타/레온/크로우/스파이크 + 오리지널 4 ───
+      _av("shelly",  "쉘리",     "#f97316", "#ea580c", "free", 0),
+      _av("nita",    "니타",     "#ef4444", "#b91c1c", "free", 0),
+      _av("leon",    "레온",     "#22c55e", "#15803d", "free", 0),
+      _av("crow",    "크로우",   "#6b7280", "#374151", "free", 0),
+      _av("spike",   "스파이크", "#22c55e", "#16a34a", "free", 0),
+      _av("dash",    "대시",     "#f59e0b", "#d97706", "free", 0),
+      _av("buddy",   "버디",     "#38bdf8", "#0284c7", "free", 0),
+      _av("monki",   "몽키",     "#a16207", "#78350f", "free", 0),
+      _av("nuts",    "너츠",     "#d97706", "#92400e", "free", 0),
+
+      // ─── 일반 등급 (300코인) × 40 ───
+      _av("bux",         "벅스",       "#eab308", "#ca8a04", "common", 300),
+      _av("8bit",        "8비트",      "#84cc16", "#4d7c0f", "common", 300),
+      _av("barley",      "발리",       "#0891b2", "#164e63", "common", 300),
+      _av("bo",          "보",         "#d97706", "#78350f", "common", 300),
+      _av("bull",        "불",         "#92400e", "#44403c", "common", 300),
+      _av("chark",       "차크",       "#0ea5e9", "#0c4a6e", "common", 300),
+      _av("chuck",       "척",         "#78350f", "#44403c", "common", 300),
+      _av("gray",        "그레이",     "#9ca3af", "#4b5563", "common", 300),
+      _av("griff",       "그리프",     "#059669", "#064e3b", "common", 300),
+      _av("hazel",       "헤이즐",     "#d97706", "#78350f", "common", 300),
+      _av("lari",        "라리",       "#6b7280", "#1f2937", "common", 300),
+      _av("larrylawrie", "래리&로리",  "#6366f1", "#4338ca", "common", 300),
+      _av("maisie",      "메이지",     "#ec4899", "#9d174d", "common", 300),
+      _av("mecha",       "메카",       "#64748b", "#334155", "common", 300),
+      _av("moco",        "모코",       "#f472b6", "#9d174d", "common", 300),
+      _av("moe",         "모이",       "#a16207", "#78350f", "common", 300),
+      _av("mrmike",      "미스터 마이크","#eab308", "#92400e", "common", 300),
+      _av("mrp",         "미스터P",    "#7c3aed", "#4c1d95", "common", 300),
+      _av("ollie",       "올리",       "#f59e0b", "#7c2d12", "common", 300),
+      _av("otis",        "오티스",     "#94a3b8", "#334155", "common", 300),
+      _av("pam",         "팸",         "#a855f7", "#6b21a8", "common", 300),
+      _av("pearl",       "펄",         "#fbbf24", "#d97706", "common", 300),
+      _av("penny",       "페니",       "#ea580c", "#7c2d12", "common", 300),
+      _av("piper",       "파이퍼",     "#ec4899", "#9f1239", "common", 300),
+      _av("poco",        "포코",       "#dc2626", "#7f1d1d", "common", 300),
+      _av("ranch",       "렌치",       "#84cc16", "#4d7c0f", "common", 300),
+      _av("rico",        "리코",       "#6366f1", "#3730a3", "common", 300),
+      _av("rosa",        "로사",       "#22c55e", "#14532d", "common", 300),
+      _av("ruffs",       "러프스 대령","#84cc16", "#3f6212", "common", 300),
+      _av("sam",         "샘",         "#f59e0b", "#b45309", "common", 300),
+      _av("shade",       "셰이드",     "#1f2937", "#111827", "common", 300),
+      _av("spray",       "스프레이",   "#06b6d4", "#0e7490", "common", 300),
+      _av("sprout",      "스프라우트", "#65a30d", "#365314", "common", 300),
+      _av("squeak",      "스퀴크",     "#a855f7", "#6b21a8", "common", 300),
+      _av("stu",         "스투",       "#ef4444", "#991b1b", "common", 300),
+      _av("tara",        "타라",       "#7c3aed", "#4c1d95", "common", 300),
+      _av("ted",         "테드",       "#475569", "#1e293b", "common", 300),
+      _av("tick",        "틱",         "#fbbf24", "#92400e", "common", 300),
+      _av("willow",      "윌로우",     "#22d3ee", "#0891b2", "common", 300),
+      _av("zig",         "지그",       "#fbbf24", "#78350f", "common", 300),
+
+      // ─── 희귀 등급 (600코인) × 32 ───
+      _av("arth",      "아스",      "#16a34a", "#14532d", "rare", 600),
+      _av("mujin",     "무진",      "#65a30d", "#365314", "rare", 600),
+      _av("angelo",    "엔젤로",    "#22d3ee", "#0891b2", "rare", 600),
+      _av("ash",       "애쉬",      "#6b7280", "#374151", "rare", 600),
+      _av("berry",     "베리",      "#ec4899", "#9d174d", "rare", 600),
+      _av("bibi",      "비비",      "#f472b6", "#be185d", "rare", 600),
+      _av("bonnie",    "보니",      "#ec4899", "#831843", "rare", 600),
+      _av("brock",     "브록",      "#dc2626", "#7f1d1d", "rare", 600),
+      _av("carl",      "칼",        "#f59e0b", "#78350f", "rare", 600),
+      _av("charlie",   "찰리",      "#7c3aed", "#4c1d95", "rare", 600),
+      _av("colette",   "콜레트",    "#ec4899", "#9d174d", "rare", 600),
+      _av("colt",      "콜트",      "#dc2626", "#7c2d12", "rare", 600),
+      _av("darryl",    "대릴",      "#a16207", "#78350f", "rare", 600),
+      _av("doug",      "더그",      "#f97316", "#9a3412", "rare", 600),
+      _av("draco",     "드레이코",  "#16a34a", "#14532d", "rare", 600),
+      _av("dynamike",  "다이너마이크","#ca8a04", "#713f12", "rare", 600),
+      _av("emz",       "엠즈",      "#a855f7", "#6b21a8", "rare", 600),
+      _av("eliza",     "일라이자",  "#38bdf8", "#0c4a6e", "rare", 600),
+      _av("frank",     "프랭크",    "#6b7280", "#1f2937", "rare", 600),
+      _av("gene",      "진",        "#a855f7", "#6b21a8", "rare", 600),
+      _av("gus",       "거스",      "#14b8a6", "#134e4a", "rare", 600),
+      _av("jacky",     "재키",      "#f59e0b", "#78350f", "rare", 600),
+      _av("janet",     "자넷",      "#ec4899", "#9d174d", "rare", 600),
+      _av("jessie",    "제시",      "#eab308", "#854d0e", "rare", 600),
+      _av("juju",      "주주",      "#a855f7", "#581c87", "rare", 600),
+      _av("kit",       "키트",      "#64748b", "#334155", "rare", 600),
+      _av("lily",      "릴리",      "#8b5cf6", "#4c1d95", "rare", 600),
+      _av("lou",       "루",        "#38bdf8", "#0369a1", "rare", 600),
+      _av("mandy",     "맨디",      "#f59e0b", "#92400e", "rare", 600),
+      _av("max",       "맥스",      "#eab308", "#713f12", "rare", 600),
+      _av("meg",       "멕",        "#4ade80", "#166534", "rare", 600),
+      _av("nani",      "나니",      "#ec4899", "#9f1239", "rare", 600),
+
+      // ─── 에픽 등급 (1200코인) × 20 ───
+      _av("rix",       "릭스",      "#eab308", "#ca8a04", "epic", 1200),
+      _av("zero",      "제로",      "#ef4444", "#991b1b", "epic", 1200),
+      _av("fang",      "팽",        "#fbbf24", "#78350f", "epic", 1200),
+      _av("edgar",     "에드거",    "#64748b", "#1e293b", "epic", 1200),
+      _av("maverick",  "매버릭",    "#eab308", "#7c2d12", "epic", 1200),
+      _av("sandy",     "샌디",      "#fef08a", "#ca8a04", "epic", 1200),
+      _av("byron",     "바이런",    "#a855f7", "#581c87", "epic", 1200),
+      _av("mico",      "미코",      "#f97316", "#7c2d12", "epic", 1200),
+      _av("hank",      "행크",      "#06b6d4", "#155e75", "epic", 1200),
+      _av("bea",       "비",        "#fde047", "#a16207", "epic", 1200),
+      _av("belle",     "벨",        "#38bdf8", "#1e3a8a", "epic", 1200),
+      _av("gale",      "게일",      "#38bdf8", "#0369a1", "epic", 1200),
+      _av("buzz",      "버즈",      "#f97316", "#7c2d12", "epic", 1200),
+      _av("grom",      "그롬",      "#0ea5e9", "#0c4a6e", "epic", 1200),
+      _av("surge",     "서지",      "#fbbf24", "#854d0e", "epic", 1200),
+      _av("lola",      "롤라",      "#ec4899", "#9d174d", "epic", 1200),
+      _av("chester",   "체스터",    "#a855f7", "#581c87", "epic", 1200),
+      _av("eve",       "이브",      "#4ade80", "#15803d", "epic", 1200),
+      _av("melodie",   "멜로디",    "#f472b6", "#be185d", "epic", 1200),
+      _av("squawk",    "스쿼크",    "#8b5cf6", "#4c1d95", "epic", 1200),
+
+      // ─── 전설 등급 (2500코인) × 8 ───
+      _av("shadow",    "섀도우",      "#1f2937", "#000000", "legendary", 2500),
+      _av("amber",     "엠버",        "#fb7185", "#be123c", "legendary", 2500),
+      _av("kenji",     "켄지",        "#dc2626", "#7f1d1d", "legendary", 2500),
+      _av("cordelius", "코델리우스",  "#7c3aed", "#3b0764", "legendary", 2500),
+      _av("elprimo",   "엘 프리모",   "#dc2626", "#7f1d1d", "legendary", 2500),
+      _av("rt",        "R-T",         "#06b6d4", "#155e75", "legendary", 2500),
+      _av("mortis",    "모티스",      "#6b7280", "#111827", "legendary", 2500),
+      _av("clancy",    "클랜시",      "#16a34a", "#14532d", "legendary", 2500),
     ];
+    // 희귀도별 색/라벨
+    const RARITY_INFO = {
+      free:      { label: "무료",   color: "#6b7280", bg: "#e5e7eb" },
+      common:    { label: "일반",   color: "#16a34a", bg: "#dcfce7" },
+      rare:      { label: "희귀",   color: "#2563eb", bg: "#dbeafe" },
+      epic:      { label: "에픽",   color: "#a855f7", bg: "#f3e8ff" },
+      legendary: { label: "전설",   color: "#f59e0b", bg: "#fef3c7" },
+    };
+    // 전체 아바타 ID 목록
     const AVATARS = AVATAR_DATA.map(a => a.id);
 
     // 아바타 렌더링 함수
@@ -3783,10 +3911,17 @@
       // ═══════════════════════════════════════
       const ShopModal = () => {
         if (!showShop) return null;
+        // 아바타는 희귀도순으로 정렬(무료→일반→희귀→에픽→전설)
+        const RARITY_ORDER = { free: 0, common: 1, rare: 2, epic: 3, legendary: 4 };
+        const sortedAvatars = [...AVATAR_DATA].sort((a, b) =>
+          (RARITY_ORDER[a.rarity] ?? 9) - (RARITY_ORDER[b.rarity] ?? 9)
+        );
         const filteredItems = shopCategory === "avatar"
-          ? AVATAR_DATA
+          ? sortedAvatars
           : SHOP_ITEMS.filter(item => item.category === shopCategory);
         const isAvatarTab = shopCategory === "avatar";
+        const ownedAvatarCount = ownedAvatars.length;
+        const totalAvatarCount = AVATAR_DATA.length;
         return (
           <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "flex-end", zIndex: 1000 }}
             onClick={() => setShowShop(false)}>
@@ -3807,7 +3942,14 @@
                   shape="circle"
                   borderStyle={{ border: "3px solid #667eea", boxShadow: "0 4px 16px rgba(102,126,234,0.3)" }}
                 />
-                <h3 style={{ fontSize: 16, fontWeight: 800, color: "#1a1a2e", marginTop: 6, marginBottom: 0 }}>상점</h3>
+                <h3 style={{ fontSize: 16, fontWeight: 800, color: "#1a1a2e", marginTop: 6, marginBottom: 0 }}>
+                  상점
+                  {isAvatarTab && (
+                    <span style={{ fontSize: 11, fontWeight: 600, color: "#667eea", marginLeft: 8, background: "#eef2ff", padding: "2px 8px", borderRadius: 10 }}>
+                      수집 {ownedAvatarCount} / {totalAvatarCount}
+                    </span>
+                  )}
+                </h3>
               </div>
               <div style={{ display: "flex", gap: 4, overflowX: "auto", paddingBottom: 10, marginBottom: 10, borderBottom: "1px solid #eee", flexShrink: 0 }}>
                 {SHOP_CATEGORIES.map(cat => (
@@ -3824,182 +3966,11 @@
                   {isAvatarTab ? filteredItems.map(avatar => {
                     const owned = ownedAvatars.includes(avatar.id);
                     const equipped = profile?.avatar === avatar.id;
+                    const rarity = RARITY_INFO[avatar.rarity] || RARITY_INFO.free;
+                    const canAfford = coins >= (avatar.price || 0);
                     return (
-                      <div key={avatar.id} style={{ background: "#f7f7fa", borderRadius: 14, padding: 10, textAlign: "center", border: equipped ? "2px solid #667eea" : "1px solid #eee" }}>
-                        <img src={avatar.img} style={{ width: 56, height: 56, borderRadius: "50%", objectFit: "cover", marginBottom: 4 }} />
-                        <div style={{ fontSize: 11, fontWeight: 700, color: "#1a1a2e", marginBottom: 2 }}>{avatar.name}</div>
-                        <div style={{ fontSize: 10, color: "#888", marginBottom: 6 }}>무료</div>
-                        {equipped ? (
-                          <button style={{ width: "100%", padding: "5px 8px", borderRadius: 8, border: "none", background: "#667eea", color: "white", fontSize: 11, fontWeight: 600 }}>
-                            사용 중
-                          </button>
-                        ) : (
-                          <button onClick={() => { setProfile(prev => ({...prev, avatar: avatar.id})); setProfileForm(prev => ({...prev, avatar: avatar.id})); }}
-                            style={{ width: "100%", padding: "5px 8px", borderRadius: 8, border: "2px solid #667eea", background: "white", color: "#667eea", fontSize: 11, fontWeight: 600, cursor: "pointer" }}>
-                            선택
-                          </button>
-                        )}
-                      </div>
-                    );
-                  }) : filteredItems.map(item => {
-                    const owned = ownedItems.includes(item.id);
-                    const cat = item.category;
-                    const equipped = equippedItems[cat] === item.id;
-                    return (
-                      <div key={item.id} style={{ background: "#f7f7fa", borderRadius: 14, padding: 12, textAlign: "center", border: equipped ? "2px solid #667eea" : "1px solid #eee" }}>
-                        <div style={{ marginBottom: 8, padding: 8, display: "flex", justifyContent: "center" }}>
-                          <ItemPreviewIcon category={item.category} itemId={item.id} size={64} avatarId={profile?.avatar} />
+                      <div key={avatar.id} style={{ background: "#f7f7fa", borderRadius: 14, padding: 10, textAlign: "center", border: equipped ? "2px solid #667eea" : "1px solid #eee", position: "relative" }}>
+                        <div style={{ position: "absolute", top: 6, left: 6, background: rarity.bg, color: rarity.color, fontSize: 9, fontWeight: 700, padding: "2px 6px", borderRadius: 6 }}>
+                          {rarity.label}
                         </div>
-                        <div style={{ fontSize: 12, fontWeight: 700, color: "#1a1a2e", marginBottom: 2 }}>{item.name}</div>
-                        {ITEM_EFFECTS[cat]?.type === "bonus" && (
-                          <div style={{ fontSize: 10, fontWeight: 600, color: ITEM_EFFECTS[cat].color, background: ITEM_EFFECTS[cat].color + "18", borderRadius: 6, padding: "2px 6px", marginBottom: 4, display: "inline-block" }}>
-                            {ITEM_EFFECTS[cat].icon} {ITEM_EFFECTS[cat].label}
-                          </div>
-                        )}
-                        {ITEM_EFFECTS[cat]?.type === "visual" && (
-                          <div style={{ fontSize: 10, fontWeight: 600, color: ITEM_EFFECTS[cat].color, background: ITEM_EFFECTS[cat].color + "18", borderRadius: 6, padding: "2px 6px", marginBottom: 4, display: "inline-block" }}>
-                            ✨ {ITEM_EFFECTS[cat].desc}
-                          </div>
-                        )}
-                        <div style={{ fontSize: 11, color: "#888", marginBottom: 8 }}>{item.price} 코인</div>
-                        {!owned ? (
-                          <button onClick={() => {
-                            if (coins >= item.price) {
-                              setCoins(prev => prev - item.price);
-                              setOwnedItems(prev => [...prev, item.id]);
-                              setEquippedItems(prev => ({...prev, [cat]: item.id}));
-                              showCoinGain(-item.price, `${item.name} 구매!`);
-                            }
-                          }}
-                            disabled={coins < item.price}
-                            style={{ width: "100%", padding: "7px 10px", borderRadius: 10, border: "none", background: coins >= item.price ? "#667eea" : "#ddd", color: "white", fontSize: 12, fontWeight: 600, cursor: coins >= item.price ? "pointer" : "default" }}>
-                            구매
-                          </button>
-                        ) : equipped ? (
-                          <button onClick={() => setEquippedItems(prev => { const n = {...prev}; delete n[cat]; return n; })}
-                            style={{ width: "100%", padding: "7px 10px", borderRadius: 10, border: "none", background: "#667eea", color: "white", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
-                            해제
-                          </button>
-                        ) : (
-                          <button onClick={() => setEquippedItems(prev => ({...prev, [cat]: item.id}))}
-                            style={{ width: "100%", padding: "7px 10px", borderRadius: 10, border: "2px solid #667eea", background: "white", color: "#667eea", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
-                            장착
-                          </button>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-      };
-
-      // ═══════════════════════════════════════
-      // 메인 렌더링
-      // ═══════════════════════════════════════
-      if (!dataLoaded) {
-        return (
-          <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg, #667eea, #764ba2)" }}>
-            <div style={{ fontSize: 48, marginBottom: 16, animation: "pop 0.5s ease" }}>📚</div>
-            <div style={{ color: "white", fontSize: 18, fontWeight: 800 }}>BookQuest</div>
-            <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 14 }}>데이터 불러오는 중...</div>
-          </div>
-        );
-      }
-
-      return (
-        <div style={{ maxWidth: 430, margin: "0 auto", background: "#f7f7fa", minHeight: "100vh", fontFamily: "'Noto Sans KR', -apple-system, sans-serif", paddingTop: profile ? 16 : 0, position: "relative" }}>
-          {!profile && ProfileSetupScreen()}
-          {profile && screen === "home" && HomeScreen()}
-          {profile && screen === "book" && BookScreen()}
-          {profile && screen === "discussion" && DiscussionScreen()}
-          {profile && screen === "askbook" && AskBookScreen()}
-          {profile && screen === "recommend" && RecommendScreen()}
-          {profile && screen === "avatar" && AvatarScreen()}
-          {profile && screen === "schedule" && ScheduleScreen()}
-
-          <TabBar />
-          <RewardModal />
-          <QuizResultModal />
-          <ShopModal />
-          <ChangelogModal />
-          <RollbackModal />
-
-          {showCoinPopup && (
-            <div style={{
-              position: "fixed", top: 80, left: "50%", transform: "translateX(-50%)", zIndex: 2000,
-              background: showCoinPopup.amount > 0
-                ? "linear-gradient(135deg, #FFD700, #FFA500)"
-                : "linear-gradient(135deg, #667eea, #764ba2)",
-              borderRadius: 20,
-              padding: "12px 24px", display: "flex", alignItems: "center", gap: 8,
-              boxShadow: showCoinPopup.amount > 0
-                ? "0 8px 24px rgba(255,165,0,0.4)"
-                : "0 8px 24px rgba(102,126,234,0.4)",
-              animation: "pop 0.3s ease",
-              color: "white", fontWeight: 700, fontSize: 14
-            }}>
-              <img src={PNG_ICONS.coin} style={{ width: 24, height: 24 }} />
-              {showCoinPopup.amount > 0 ? "+" : ""}{showCoinPopup.amount} 코인 {showCoinPopup.label}
-            </div>
-          )}
-
-          {saveErrorMsg && (
-            <div style={{
-              position: "fixed", top: 80, left: "50%", transform: "translateX(-50%)", zIndex: 2000,
-              background: "linear-gradient(135deg, #FF5252, #D32F2F)", borderRadius: 20,
-              padding: "12px 24px", display: "flex", alignItems: "center", gap: 8,
-              boxShadow: "0 8px 24px rgba(211,47,47,0.4)", animation: "pop 0.3s ease",
-              color: "white", fontWeight: 700, fontSize: 13
-            }}>
-              {saveErrorMsg}
-            </div>
-          )}
-
-          {showInstallBanner && (
-            <div style={{
-              position: "fixed", bottom: 70, left: 12, right: 12, zIndex: 200,
-              background: "linear-gradient(135deg, #667eea, #764ba2)", borderRadius: 20,
-              padding: "16px 18px", display: "flex", alignItems: "center", gap: 14,
-              boxShadow: "0 8px 32px rgba(102,126,234,0.4)", animation: "pop 0.4s ease"
-            }}>
-              <img src="icons/app-icon-192.png" style={{ width: 52, height: 52, borderRadius: 14, flexShrink: 0, boxShadow: "0 2px 8px rgba(0,0,0,0.2)" }} />
-              <div style={{ flex: 1 }}>
-                <div style={{ color: "white", fontSize: 14, fontWeight: 800 }}>BookQuest 설치하기</div>
-                <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 11, marginTop: 2 }}>홈 화면에 추가하면 더 빠르게!</div>
-              </div>
-              <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
-                <button onClick={() => { setShowInstallBanner(false); localStorage.setItem("bq_install_dismissed", "1"); }}
-                  style={{ background: "rgba(255,255,255,0.2)", border: "none", borderRadius: 12, padding: "8px 12px", color: "white", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
-                  닫기
-                </button>
-                <button onClick={async () => {
-                  if (installPrompt) {
-                    installPrompt.prompt();
-                    const result = await installPrompt.userChoice;
-                    if (result.outcome === "accepted") setShowInstallBanner(false);
-                    setInstallPrompt(null);
-                  }
-                }}
-                  style={{ background: "white", border: "none", borderRadius: 12, padding: "8px 16px", color: "#667eea", fontSize: 12, fontWeight: 800, cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}>
-                  설치
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-      );
-    }
-
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<BookQuest />);
-  </script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js').catch(() => {});
-    }
-  </script>
-</body>
-</html>
+                        <img src={avatar.img} style={{ width: 56, height: 56, borderRadius: "50%", objectFit: "cover", marginBottom: 4, marginTop: 8, filter: owned ? "none" : "grayscale(0.6) bri
