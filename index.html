@@ -2889,7 +2889,7 @@
                     }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                       {item ? (
-                        <ItemPreviewIcon category={item.category} itemId={item.id} size={32} />
+                        <ItemPreviewIcon category={item.category} itemId={item.id} size={32} avatarId={profile?.avatar} />
                       ) : (
                         <div style={{ width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, opacity: 0.3, flexShrink: 0 }}>{effect?.icon}</div>
                       )}
@@ -3848,7 +3848,7 @@
                     return (
                       <div key={item.id} style={{ background: "#f7f7fa", borderRadius: 14, padding: 12, textAlign: "center", border: equipped ? "2px solid #667eea" : "1px solid #eee" }}>
                         <div style={{ marginBottom: 8, padding: 8, display: "flex", justifyContent: "center" }}>
-                          <ItemPreviewIcon category={item.category} itemId={item.id} size={64} />
+                          <ItemPreviewIcon category={item.category} itemId={item.id} size={64} avatarId={profile?.avatar} />
                         </div>
                         <div style={{ fontSize: 12, fontWeight: 700, color: "#1a1a2e", marginBottom: 2 }}>{item.name}</div>
                         {ITEM_EFFECTS[cat]?.type === "bonus" && (
@@ -4000,4 +4000,6 @@
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js').catch(() => {});
     }
- 
+  </script>
+</body>
+</html>
