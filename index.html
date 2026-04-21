@@ -284,7 +284,7 @@
 
     const APP_VERSION = "1.2.0";
     const APP_BUILD_DATE = "2026-04-08";
-    const ADMIN_PIN = "1234";
+    const ADMIN_PIN = "0925";
 
     const CHANGELOG = [
       {
@@ -4078,6 +4078,7 @@
           {profile && screen === "recommend" && RecommendScreen()}
           {profile && screen === "avatar" && AvatarScreen()}
           {profile && screen === "schedule" && ScheduleScreen()}
+          {profile && screen === "admin" && isAdmin && <AdminPanel />}
 
           <TabBar />
           <RewardModal />
@@ -4085,6 +4086,7 @@
           <ShopModal />
           <ChangelogModal />
           <RollbackModal />
+          <AdminLoginModal />
 
           {showCoinPopup && (
             <div style={{
