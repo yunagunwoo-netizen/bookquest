@@ -1984,6 +1984,7 @@
       const [earnedBadges, setEarnedBadges] = useState([]);
       const [streak, setStreak] = useState(1);
       const [bookProgress, setBookProgress] = useState({ 1: 0, 2: 0, 3: 0 });
+      const [bookPage, setBookPage] = useState(0);
       const [discussionState, setDiscussionState] = useState({});
       const [chatMessages, setChatMessages] = useState([]);
       const [chatInput, setChatInput] = useState("");
@@ -2875,27 +2876,76 @@
             </div>
 
             <h3 style={{ fontSize: 14, fontWeight: 600, color: "#888", marginBottom: 10, display: "flex", alignItems: "center", gap: 6 }}><img src={PNG_ICONS.activity_reading} style={{ width: 20, height: 20 }} /> 전체 퀘스트 목록</h3>
-            {BOOKS.filter(b => b.id !== thisWeekBook.id).map(book => (
-              <div key={book.id} onClick={() => { setSelectedBook(book); setBookTab("summary"); setScreen("book"); }}
-                style={{ background: "white", borderRadius: 14, padding: 14, marginBottom: 10, display: "flex", alignItems: "center", gap: 12, cursor: "pointer", boxShadow: "0 2px 6px rgba(0,0,0,0.04)", border: `2px solid ${bookProgress[book.id] === 100 ? "#4CAF50" : "transparent"}`, opacity: book.week > currentWeek ? 0.5 : 1 }}>
-                <div style={{ width: 44, height: 56, borderRadius: 8, flexShrink: 0, overflow: "hidden" }}>
-                  <SvgIcon svg={BOOK_COVERS[book.id]} size={44} style={{ height: 56, width: 44 }} />
-                </div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 2 }}>
-                    <span style={{ fontSize: 10, background: "#f0f0f0", padding: "2px 6px", borderRadius: 6, color: "#888", fontWeight: 600 }}>{book.week}주차</span>
-                    <span style={{ fontSize: 13, fontWeight: 700, color: "#1a1a2e", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{book.title}</span>
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 4 }}>
-                    <div style={{ flex: 1, background: "#eee", borderRadius: 6, height: 5, overflow: "hidden" }}>
-                      <div style={{ background: book.color, height: "100%", width: `${bookProgress[book.id]}%`, borderRadius: 6 }} />
+            {(() => {
+              const otherBooks = BOOKS.filter(b => b.id !== thisWeekBook.id);
+              const pageSize = 5;
+              const totalPages = Math.max(1, Math.ceil(otherBooks.length / pageSize));
+              const safePage = Math.min(Math.max(0, bookPage), totalPages - 1);
+              const start = safePage * pageSize;
+              const pageBooks = otherBooks.slice(start, start + pageSize);
+              return (
+                <>
+                  {pageBooks.map(book => (
+                    <div key={book.id} onClick={() => { setSelectedBook(book); setBookTab("summary"); setScreen("book"); }}
+                      style={{ background: "white", borderRadius: 14, padding: 14, marginBottom: 10, display: "flex", alignItems: "center", gap: 12, cursor: "pointer", boxShadow: "0 2px 6px rgba(0,0,0,0.04)", border: `2px solid ${bookProgress[book.id] === 100 ? "#4CAF50" : "transparent"}`, opacity: book.week > currentWeek ? 0.5 : 1 }}>
+                      <div style={{ width: 44, height: 56, borderRadius: 8, flexShrink: 0, overflow: "hidden" }}>
+                        <SvgIcon svg={BOOK_COVERS[book.id]} size={44} style={{ height: 56, width: 44 }} />
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 2 }}>
+                          <span style={{ fontSize: 10, background: "#f0f0f0", padding: "2px 6px", borderRadius: 6, color: "#888", fontWeight: 600 }}>{book.week}주차</span>
+                          <span style={{ fontSize: 13, fontWeight: 700, color: "#1a1a2e", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{book.title}</span>
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 4 }}>
+                          <div style={{ flex: 1, background: "#eee", borderRadius: 6, height: 5, overflow: "hidden" }}>
+                            <div style={{ background: book.color, height: "100%", width: `${bookProgress[book.id]}%`, borderRadius: 6 }} />
+                          </div>
+                          <span style={{ fontSize: 11, color: "#666", fontWeight: 600 }}>{bookProgress[book.id]}%</span>
+                        </div>
+                      </div>
+                      <div>{bookProgress[book.id] === 100 ? <img src={PNG_ICONS.ui_check} style={{ width: 24, height: 24 }} /> : book.week > currentWeek ? <img src={PNG_ICONS.ui_locked} style={{ width: 24, height: 24 }} /> : <img src={PNG_ICONS.ui_play} style={{ width: 24, height: 24 }} />}</div>
                     </div>
-                    <span style={{ fontSize: 11, color: "#666", fontWeight: 600 }}>{bookProgress[book.id]}%</span>
-                  </div>
-                </div>
-                <div>{bookProgress[book.id] === 100 ? <img src={PNG_ICONS.ui_check} style={{ width: 24, height: 24 }} /> : book.week > currentWeek ? <img src={PNG_ICONS.ui_locked} style={{ width: 24, height: 24 }} /> : <img src={PNG_ICONS.ui_play} style={{ width: 24, height: 24 }} />}</div>
-              </div>
-            ))}
+                  ))}
+                  {totalPages > 1 && (
+                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 8, marginTop: 6, marginBottom: 4 }}>
+                      <button
+                        onClick={() => setBookPage(Math.max(0, safePage - 1))}
+                        disabled={safePage === 0}
+                        style={{
+                          padding: "8px 14px", borderRadius: 10, border: "1.5px solid #e5e7eb",
+                          background: safePage === 0 ? "#f5f5f5" : "white",
+                          color: safePage === 0 ? "#bbb" : "#667eea",
+                          fontSize: 13, fontWeight: 700,
+                          cursor: safePage === 0 ? "default" : "pointer"
+                        }}>← 이전</button>
+                      <div style={{ display: "flex", gap: 6 }}>
+                        {Array.from({ length: totalPages }, (_, i) => (
+                          <button key={i} onClick={() => setBookPage(i)}
+                            style={{
+                              width: 32, height: 32, borderRadius: "50%",
+                              border: "none",
+                              background: i === safePage ? "linear-gradient(135deg, #667eea, #764ba2)" : "#f0f0f0",
+                              color: i === safePage ? "white" : "#666",
+                              fontSize: 12, fontWeight: 700, cursor: "pointer",
+                              boxShadow: i === safePage ? "0 2px 6px rgba(102,126,234,0.35)" : "none"
+                            }}>{i + 1}</button>
+                        ))}
+                      </div>
+                      <button
+                        onClick={() => setBookPage(Math.min(totalPages - 1, safePage + 1))}
+                        disabled={safePage === totalPages - 1}
+                        style={{
+                          padding: "8px 14px", borderRadius: 10, border: "1.5px solid #e5e7eb",
+                          background: safePage === totalPages - 1 ? "#f5f5f5" : "white",
+                          color: safePage === totalPages - 1 ? "#bbb" : "#667eea",
+                          fontSize: 13, fontWeight: 700,
+                          cursor: safePage === totalPages - 1 ? "default" : "pointer"
+                        }}>다음 →</button>
+                    </div>
+                  )}
+                </>
+              );
+            })()}
           </div>
 
           <div style={{ marginBottom: 20 }}>
