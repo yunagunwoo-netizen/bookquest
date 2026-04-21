@@ -1008,7 +1008,7 @@
       const imgSrc = comboData || fallbackImg;
 
       // 장착된 다른 아이템 카테고리 이모지 뱃지 표시
-      const categoryEmojis = { hat: "🎩", face: "🕶️", weapon: "⚔️", pet: "🐾", frame: "🖼️", aura: "✨" };
+      const categoryEmojis = { hat: "🎩", face: "😎", weapon: "⚔️", pet: "🐾", frame: "🎨", aura: "✨" };
       const equippedBadges = [];
       if (equippedItems) {
         for (const cat of priorityOrder) {
@@ -2236,7 +2236,7 @@
                   size={60}
                   avatarId={profile.avatar}
                   equippedItems={equippedItems}
-                  shape="rounded"
+                  shape="circle"
                   borderStyle={{ border: "2px solid rgba(255,255,255,0.3)", boxShadow: "0 4px 12px rgba(0,0,0,0.15)" }}
                   onClick={() => { setShowShop(true); setShopCategory("frame"); }}
                 />
