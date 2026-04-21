@@ -986,42 +986,42 @@
     // 콤보 이미지가 있는 아이템 ID 목록
     const COMBO_ITEM_IDS = new Set(SHOP_ITEMS.map(item => item.id));
 
-    // AvatarWithItems: 콤보 이미지 기반 렌더링
+    // AvatarWithItems: 기본 아바타 + 주변 6방향 아이템 뱃지 (개별 아이템 아이콘 기반)
+    // - main image: 캐릭터 기본 이미지 (아이템에 따라 바뀌지 않음)
+    // - 뱃지: 장착한 아이템을 작은 원으로 표시 (hat/face/weapon/pet = 실제 아이콘, frame/aura = 이모지)
+    const ITEM_ICON_CATS = new Set(["hat", "face", "weapon", "pet"]);
+    const getItemIconPath = (cat, itemId) => {
+      if (!ITEM_ICON_CATS.has(cat) || !itemId) return null;
+      return `avatars/items/${cat}/${itemId}.png`;
+    };
+    // 카테고리별 배치 각도 (12시 = 0°, 시계방향)
+    const ITEM_BADGE_POSITIONS = {
+      hat:    0,    // 12시
+      face:   60,   // 2시
+      aura:   120,  // 4시
+      pet:    150,  // 5시
+      frame:  210,  // 7시
+      weapon: 300,  // 10시
+    };
+    const CATEGORY_EMOJIS = { hat: "🎩", face: "😎", weapon: "⚔️", pet: "🐾", frame: "🎨", aura: "✨" };
+
     const AvatarWithItems = ({ size, avatarId, equippedItems, shape = "circle", borderStyle = {}, onClick = null }) => {
-      const hasCombo = COMBO_AVATARS.includes(avatarId);
+      const avData = AVATAR_DATA.find(a => a.id === avatarId);
+      const baseImg = avData?.img || "avatars/shelly.png";
 
-      // 장착된 아이템 중 첫 번째 유효한 콤보 아이템 찾기 (우선순위: hat > face > weapon > pet > frame > aura)
-      const priorityOrder = ["hat", "face", "weapon", "pet", "frame", "aura"];
-      let comboItemId = null;
-      if (hasCombo && equippedItems) {
-        for (const cat of priorityOrder) {
-          const itemId = equippedItems[cat];
-          if (itemId && COMBO_ITEM_IDS.has(itemId)) {
-            comboItemId = itemId;
-            break;
-          }
-        }
-      }
-
-      const comboData = comboItemId ? getComboImagePath(avatarId, comboItemId) : null;
-      const fallbackImg = AVATAR_DATA.find(a => a.id === avatarId)?.img || "avatars/shelly.png";
-      const imgSrc = comboData || fallbackImg;
-
-      // 장착된 다른 아이템 뱃지 표시 (실제 콤보 이미지 축소판 + 이모지 fallback)
-      const categoryEmojis = { hat: "🎩", face: "😎", weapon: "⚔️", pet: "🐾", frame: "🎨", aura: "✨" };
-      const equippedBadges = [];
+      // 장착된 아이템만 (각도 순서대로)
+      const equippedList = [];
       if (equippedItems) {
-        for (const cat of priorityOrder) {
+        for (const cat of Object.keys(ITEM_BADGE_POSITIONS)) {
           const itemId = equippedItems[cat];
-          if (itemId && COMBO_ITEM_IDS.has(itemId) && itemId !== comboItemId) {
-            const comboImg = hasCombo ? getComboImagePath(avatarId, itemId) : null;
-            equippedBadges.push({ cat, itemId, emoji: categoryEmojis[cat] || "⭐", comboImg });
+          if (itemId) {
+            equippedList.push({ cat, itemId, angle: ITEM_BADGE_POSITIONS[cat] });
           }
         }
       }
 
-      const badgeSize = Math.max(Math.round(size * 0.22), 16);
-      const hasBadges = equippedBadges.length > 0;
+      const badgeSize = Math.max(Math.round(size * 0.28), 22);
+      const radius = size / 2; // 뱃지 중심이 아바타 원 경계에 위치 (절반 오버랩)
 
       return (
         <div
@@ -1036,7 +1036,7 @@
           onClick={onClick}
         >
           <img
-            src={imgSrc}
+            src={baseImg}
             alt="avatar"
             style={{
               width: size, height: size,
@@ -1045,72 +1045,53 @@
               ...borderStyle
             }}
             onError={(e) => {
-              const fallback = AVATAR_DATA.find(a => a.id === avatarId)?.img || "avatars/shelly.png";
-              if (e.target.src !== fallback) e.target.src = fallback;
+              if (e.target.src !== "avatars/shelly.png") e.target.src = "avatars/shelly.png";
             }}
           />
-          {hasBadges && (
-            <div style={{
-              position: "absolute",
-              bottom: -2,
-              right: -2,
-              display: "flex",
-              flexDirection: "column-reverse",
-              gap: 2
-            }}>
-              {equippedBadges.slice(0, 3).map(({ cat, itemId, emoji, comboImg }, idx) => (
-                <div
-                  key={cat}
-                  style={{
-                    width: badgeSize, height: badgeSize,
-                    borderRadius: "50%",
-                    background: "white",
-                    boxShadow: "0 1px 4px rgba(0,0,0,0.25)",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    overflow: "hidden",
-                    lineHeight: 1,
-                    border: `1.5px solid ${(ITEM_EFFECTS[cat] && ITEM_EFFECTS[cat].color) || "#ccc"}`
-                  }}
-                >
-                  {comboImg ? (
-                    <img
-                      src={comboImg}
-                      alt={itemId}
-                      style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }}
-                      onError={(e) => {
-                        // 이미지 로드 실패 시 이모지로 대체
-                        e.target.style.display = "none";
-                        if (e.target.parentElement) {
-                          e.target.parentElement.innerText = emoji;
-                          e.target.parentElement.style.fontSize = Math.round(badgeSize * 0.6) + "px";
-                        }
-                      }}
-                    />
-                  ) : (
-                    <span style={{ fontSize: Math.round(badgeSize * 0.6) }}>{emoji}</span>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-          {equippedBadges.length > 3 && (
-            <div style={{
-              position: "absolute",
-              bottom: -2,
-              left: -2,
-              width: badgeSize, height: badgeSize,
-              borderRadius: "50%",
-              background: "linear-gradient(135deg, #667eea, #764ba2)",
-              color: "white",
-              fontSize: Math.round(badgeSize * 0.55),
-              fontWeight: 700,
-              display: "flex", alignItems: "center", justifyContent: "center",
-              boxShadow: "0 1px 4px rgba(0,0,0,0.25)",
-              border: "1.5px solid white"
-            }}>
-              +{equippedBadges.length - 3}
-            </div>
-          )}
+          {equippedList.map(({ cat, itemId, angle }) => {
+            const rad = (angle - 90) * Math.PI / 180; // 0° = top
+            const cx = size/2 + radius * Math.cos(rad);
+            const cy = size/2 + radius * Math.sin(rad);
+            const iconPath = getItemIconPath(cat, itemId);
+            const emoji = CATEGORY_EMOJIS[cat] || "⭐";
+            const borderColor = (ITEM_EFFECTS[cat] && ITEM_EFFECTS[cat].color) || "#ccc";
+            return (
+              <div
+                key={cat}
+                title={itemId}
+                style={{
+                  position: "absolute",
+                  left: cx - badgeSize/2,
+                  top: cy - badgeSize/2,
+                  width: badgeSize, height: badgeSize,
+                  borderRadius: "50%",
+                  background: "white",
+                  boxShadow: "0 1px 4px rgba(0,0,0,0.25)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  overflow: "hidden",
+                  lineHeight: 1,
+                  border: `1.5px solid ${borderColor}`
+                }}
+              >
+                {iconPath ? (
+                  <img
+                    src={iconPath}
+                    alt={itemId}
+                    style={{ width: "88%", height: "88%", objectFit: "contain" }}
+                    onError={(e) => {
+                      e.target.style.display = "none";
+                      if (e.target.parentElement) {
+                        e.target.parentElement.innerText = emoji;
+                        e.target.parentElement.style.fontSize = Math.round(badgeSize * 0.6) + "px";
+                      }
+                    }}
+                  />
+                ) : (
+                  <span style={{ fontSize: Math.round(badgeSize * 0.6) }}>{emoji}</span>
+                )}
+              </div>
+            );
+          })}
         </div>
       );
     };
@@ -2798,7 +2779,14 @@
                   <div key={catId} onClick={() => { setShowShop(true); setShopCategory(catId); }}
                     style={{ flex: 1, textAlign: "center", padding: 10, borderRadius: 12, background: item ? "#f0f0ff" : "#f7f7fa", border: item ? "2px solid #d0d0ff" : "1px dashed #ddd", cursor: "pointer" }}>
                     {item ? (
-                      <img src={getComboImagePath(profile?.avatar || "shelly", item.id)} style={{ width: 36, height: 36, borderRadius: "50%", objectFit: "cover", margin: "0 auto" }} />
+                      {(() => {
+                        const iconPath = getItemIconPath(item.category, item.id);
+                        return iconPath ? (
+                          <img src={iconPath} style={{ width: 36, height: 36, borderRadius: "50%", objectFit: "contain", margin: "0 auto", background: "#fafaff" }} />
+                        ) : (
+                          <div style={{ width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, margin: "0 auto", background: "#fafaff", borderRadius: "50%" }}>{CATEGORY_EMOJIS[item.category] || "⭐"}</div>
+                        );
+                      })()}
                     ) : (
                       <div style={{ width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, opacity: 0.3, margin: "0 auto" }}>{cat?.emoji}</div>
                     )}
@@ -2830,7 +2818,14 @@
                     }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                       {item ? (
-                        <img src={getComboImagePath(profile?.avatar || "shelly", item.id)} style={{ width: 32, height: 32, borderRadius: "50%", objectFit: "cover", flexShrink: 0 }} />
+                        {(() => {
+                          const iconPath = getItemIconPath(item.category, item.id);
+                          return iconPath ? (
+                            <img src={iconPath} style={{ width: 32, height: 32, borderRadius: "50%", objectFit: "contain", background: "#fafaff", flexShrink: 0 }} />
+                          ) : (
+                            <div style={{ width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, background: "#fafaff", borderRadius: "50%", flexShrink: 0 }}>{CATEGORY_EMOJIS[item.category] || "⭐"}</div>
+                          );
+                        })()}
                       ) : (
                         <div style={{ width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, opacity: 0.3, flexShrink: 0 }}>{effect?.icon}</div>
                       )}
@@ -3788,7 +3783,16 @@
                     const equipped = equippedItems[cat] === item.id;
                     return (
                       <div key={item.id} style={{ background: "#f7f7fa", borderRadius: 14, padding: 12, textAlign: "center", border: equipped ? "2px solid #667eea" : "1px solid #eee" }}>
-                        <div style={{ marginBottom: 8, padding: 4 }}><img src={getComboImagePath(profile?.avatar || "shelly", item.id)} style={{ width: 64, height: 64, borderRadius: "50%", objectFit: "cover" }} onError={(e) => { const av = AVATAR_DATA.find(a => a.id === (profile?.avatar || "shelly")); if (av && e.target.src !== av.img) e.target.src = av.img; }} /></div>
+                        <div style={{ marginBottom: 8, padding: 4 }}>
+                          {(() => {
+                            const iconPath = getItemIconPath(item.category, item.id);
+                            return iconPath ? (
+                              <img src={iconPath} style={{ width: 64, height: 64, borderRadius: "50%", objectFit: "contain", background: "#fafaff" }} />
+                            ) : (
+                              <div style={{ width: 64, height: 64, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 40, background: "#fafaff", borderRadius: "50%", margin: "0 auto" }}>{CATEGORY_EMOJIS[item.category] || "⭐"}</div>
+                            );
+                          })()}
+                        </div>
                         <div style={{ fontSize: 12, fontWeight: 700, color: "#1a1a2e", marginBottom: 2 }}>{item.name}</div>
                         {ITEM_EFFECTS[cat]?.type === "bonus" && (
                           <div style={{ fontSize: 10, fontWeight: 600, color: ITEM_EFFECTS[cat].color, background: ITEM_EFFECTS[cat].color + "18", borderRadius: 6, padding: "2px 6px", marginBottom: 4, display: "inline-block" }}>
