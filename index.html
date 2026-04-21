@@ -1005,20 +1005,97 @@
     };
     const CATEGORY_EMOJIS = { hat: "🎩", face: "😎", weapon: "⚔️", pet: "🐾", frame: "🎨", aura: "✨" };
 
+    // 🖼️ 프레임 (아바타 테두리) - CSS border + inner ring
+    // 각 스타일은 img 엘리먼트에 직접 적용됨
+    const FRAME_STYLES = {
+      deco_frame_gold_crown: { border: "3px solid #fbbf24", boxShadow: "0 0 0 2px #92400e, 0 0 10px rgba(251,191,36,0.7)" },
+      deco_frame_fire:       { border: "3px solid #f97316", boxShadow: "0 0 0 2px #dc2626, 0 0 14px rgba(249,115,22,0.8)" },
+      deco_frame_rainbow:    { border: "3px solid #ec4899", boxShadow: "0 0 0 2px #3b82f6, 0 0 0 4px #22c55e, 0 0 0 6px #facc15" },
+      deco_frame_flower:     { border: "3px dashed #ec4899", boxShadow: "0 0 0 2px #fce7f3" },
+      deco_frame_neon:       { border: "2px solid #22d3ee", boxShadow: "0 0 0 1px #0891b2, 0 0 16px rgba(34,211,238,0.9), 0 0 32px rgba(34,211,238,0.5)" },
+    };
+
+    // ✨ 오라 (아바타 배경 발광) - box-shadow 바깥 글로우
+    const AURA_STYLES = {
+      deco_aura_fire:    { boxShadow: "0 0 24px 8px rgba(249,115,22,0.75), 0 0 48px 16px rgba(239,68,68,0.45)" },
+      deco_aura_ice:     { boxShadow: "0 0 24px 8px rgba(96,165,250,0.75), 0 0 48px 16px rgba(186,230,253,0.5)" },
+      deco_aura_rainbow: { boxShadow: "0 0 14px 5px rgba(239,68,68,0.55), 0 0 26px 10px rgba(250,204,21,0.45), 0 0 38px 15px rgba(34,197,94,0.4), 0 0 50px 20px rgba(59,130,246,0.35)" },
+      deco_aura_galaxy:  { boxShadow: "0 0 28px 10px rgba(99,102,241,0.65), 0 0 56px 20px rgba(139,92,246,0.45)" },
+      deco_aura_cherry:  { boxShadow: "0 0 24px 8px rgba(244,114,182,0.65), 0 0 48px 16px rgba(251,207,232,0.55)" },
+    };
+
+    // 프레임+오라 스타일 병합 (box-shadow는 쉼표로 이어붙임)
+    const mergeFrameAuraStyles = (frameId, auraId) => {
+      const frame = frameId ? FRAME_STYLES[frameId] : null;
+      const aura = auraId ? AURA_STYLES[auraId] : null;
+      if (!frame && !aura) return {};
+      const merged = { ...(frame || {}) };
+      const shadows = [frame?.boxShadow, aura?.boxShadow].filter(Boolean);
+      if (shadows.length > 0) merged.boxShadow = shadows.join(", ");
+      return merged;
+    };
+
+    // 상점 카드 프리뷰용: 작은 스케일로 축소된 아우라 스타일 (카드 밖으로 샤도우 번짐 방지)
+    const AURA_STYLES_PREVIEW = {
+      deco_aura_fire:    { boxShadow: "0 0 10px 3px rgba(249,115,22,0.75), 0 0 18px 5px rgba(239,68,68,0.45)" },
+      deco_aura_ice:     { boxShadow: "0 0 10px 3px rgba(96,165,250,0.75), 0 0 18px 5px rgba(186,230,253,0.5)" },
+      deco_aura_rainbow: { boxShadow: "0 0 6px 2px rgba(239,68,68,0.55), 0 0 12px 4px rgba(250,204,21,0.45), 0 0 18px 6px rgba(34,197,94,0.4), 0 0 24px 8px rgba(59,130,246,0.35)" },
+      deco_aura_galaxy:  { boxShadow: "0 0 12px 4px rgba(99,102,241,0.65), 0 0 22px 6px rgba(139,92,246,0.45)" },
+      deco_aura_cherry:  { boxShadow: "0 0 10px 3px rgba(244,114,182,0.65), 0 0 18px 5px rgba(251,207,232,0.55)" },
+    };
+
+    // 아이템 프리뷰 아이콘 렌더링 (상점·인벤토리 공용)
+    // hat/face/weapon/pet = 아이콘 이미지, frame/aura = 사용자 아바타 미니 + CSS 효과, 그 외 = 이모지
+    // avatarId prop으로 현재 사용자 아바타 전달 (없으면 쉘리로 대체)
+    const ItemPreviewIcon = ({ category, itemId, size = 36, showEffect = true, avatarId = null }) => {
+      const iconPath = getItemIconPath(category, itemId);
+      if (iconPath) {
+        return (
+          <img src={iconPath} style={{
+            width: size, height: size, borderRadius: "50%", objectFit: "contain", background: "#fafaff", margin: "0 auto", display: "block"
+          }} />
+        );
+      }
+      if (showEffect && (category === "frame" || category === "aura")) {
+        const frame = category === "frame" ? FRAME_STYLES[itemId] : null;
+        const aura = category === "aura" ? AURA_STYLES_PREVIEW[itemId] : null;
+        const merged = { ...(frame || {}) };
+        const shadows = [frame?.boxShadow, aura?.boxShadow].filter(Boolean);
+        if (shadows.length > 0) merged.boxShadow = shadows.join(", ");
+        const av = avatarId ? AVATAR_DATA.find(a => a.id === avatarId) : null;
+        const src = av?.img || "avatars/shelly.png";
+        return (
+          <img src={src} alt={itemId} style={{
+            width: size, height: size, borderRadius: "50%", objectFit: "cover", margin: "0 auto", display: "block", ...merged
+          }} onError={(e) => { if (e.target.src !== "avatars/shelly.png") e.target.src = "avatars/shelly.png"; }} />
+        );
+      }
+      return (
+        <div style={{
+          width: size, height: size, display: "flex", alignItems: "center", justifyContent: "center",
+          fontSize: Math.round(size * 0.55), background: "#fafaff", borderRadius: "50%", margin: "0 auto"
+        }}>{CATEGORY_EMOJIS[category] || "⭐"}</div>
+      );
+    };
+
     const AvatarWithItems = ({ size, avatarId, equippedItems, shape = "circle", borderStyle = {}, onClick = null }) => {
       const avData = AVATAR_DATA.find(a => a.id === avatarId);
       const baseImg = avData?.img || "avatars/shelly.png";
 
-      // 장착된 아이템만 (각도 순서대로)
+      // hat/face/weapon/pet만 뱃지로 렌더링 (frame/aura는 아바타에 직접 CSS 효과 적용)
+      const BADGE_ONLY_CATS = ["hat", "face", "weapon", "pet"];
       const equippedList = [];
       if (equippedItems) {
-        for (const cat of Object.keys(ITEM_BADGE_POSITIONS)) {
+        for (const cat of BADGE_ONLY_CATS) {
           const itemId = equippedItems[cat];
-          if (itemId) {
+          if (itemId && ITEM_BADGE_POSITIONS[cat] !== undefined) {
             equippedList.push({ cat, itemId, angle: ITEM_BADGE_POSITIONS[cat] });
           }
         }
       }
+
+      // 프레임 + 오라 CSS 병합
+      const frameAuraCss = mergeFrameAuraStyles(equippedItems?.frame, equippedItems?.aura);
 
       const badgeSize = Math.max(Math.round(size * 0.28), 22);
       const radius = size / 2; // 뱃지 중심이 아바타 원 경계에 위치 (절반 오버랩)
@@ -1042,7 +1119,8 @@
               width: size, height: size,
               borderRadius: shape === "circle" ? "50%" : Math.round(size * 0.15) + "px",
               objectFit: "cover",
-              ...borderStyle
+              ...borderStyle,
+              ...frameAuraCss
             }}
             onError={(e) => {
               if (e.target.src !== "avatars/shelly.png") e.target.src = "avatars/shelly.png";
@@ -2779,14 +2857,7 @@
                   <div key={catId} onClick={() => { setShowShop(true); setShopCategory(catId); }}
                     style={{ flex: 1, textAlign: "center", padding: 10, borderRadius: 12, background: item ? "#f0f0ff" : "#f7f7fa", border: item ? "2px solid #d0d0ff" : "1px dashed #ddd", cursor: "pointer" }}>
                     {item ? (
-                      (() => {
-                        const iconPath = getItemIconPath(item.category, item.id);
-                        return iconPath ? (
-                          <img src={iconPath} style={{ width: 36, height: 36, borderRadius: "50%", objectFit: "contain", margin: "0 auto", background: "#fafaff" }} />
-                        ) : (
-                          <div style={{ width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, margin: "0 auto", background: "#fafaff", borderRadius: "50%" }}>{CATEGORY_EMOJIS[item.category] || "⭐"}</div>
-                        );
-                      })()
+                      <ItemPreviewIcon category={item.category} itemId={item.id} size={36} avatarId={profile?.avatar} />
                     ) : (
                       <div style={{ width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, opacity: 0.3, margin: "0 auto" }}>{cat?.emoji}</div>
                     )}
@@ -2818,14 +2889,7 @@
                     }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                       {item ? (
-                        (() => {
-                          const iconPath = getItemIconPath(item.category, item.id);
-                          return iconPath ? (
-                            <img src={iconPath} style={{ width: 32, height: 32, borderRadius: "50%", objectFit: "contain", background: "#fafaff", flexShrink: 0 }} />
-                          ) : (
-                            <div style={{ width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, background: "#fafaff", borderRadius: "50%", flexShrink: 0 }}>{CATEGORY_EMOJIS[item.category] || "⭐"}</div>
-                          );
-                        })()
+                        <ItemPreviewIcon category={item.category} itemId={item.id} size={32} />
                       ) : (
                         <div style={{ width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, opacity: 0.3, flexShrink: 0 }}>{effect?.icon}</div>
                       )}
@@ -3783,15 +3847,8 @@
                     const equipped = equippedItems[cat] === item.id;
                     return (
                       <div key={item.id} style={{ background: "#f7f7fa", borderRadius: 14, padding: 12, textAlign: "center", border: equipped ? "2px solid #667eea" : "1px solid #eee" }}>
-                        <div style={{ marginBottom: 8, padding: 4 }}>
-                          {(() => {
-                            const iconPath = getItemIconPath(item.category, item.id);
-                            return iconPath ? (
-                              <img src={iconPath} style={{ width: 64, height: 64, borderRadius: "50%", objectFit: "contain", background: "#fafaff" }} />
-                            ) : (
-                              <div style={{ width: 64, height: 64, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 40, background: "#fafaff", borderRadius: "50%", margin: "0 auto" }}>{CATEGORY_EMOJIS[item.category] || "⭐"}</div>
-                            );
-                          })()}
+                        <div style={{ marginBottom: 8, padding: 8, display: "flex", justifyContent: "center" }}>
+                          <ItemPreviewIcon category={item.category} itemId={item.id} size={64} />
                         </div>
                         <div style={{ fontSize: 12, fontWeight: 700, color: "#1a1a2e", marginBottom: 2 }}>{item.name}</div>
                         {ITEM_EFFECTS[cat]?.type === "bonus" && (
@@ -3861,7 +3918,6 @@
           {profile && screen === "askbook" && AskBookScreen()}
           {profile && screen === "recommend" && RecommendScreen()}
           {profile && screen === "avatar" && AvatarScreen()}
-          {isAdmin && screen === "admin" && AdminPanel()}
           {profile && screen === "schedule" && ScheduleScreen()}
 
           <TabBar />
@@ -3870,7 +3926,6 @@
           <ShopModal />
           <ChangelogModal />
           <RollbackModal />
-          <AdminLoginModal />
 
           {showCoinPopup && (
             <div style={{
@@ -3945,6 +4000,4 @@
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js').catch(() => {});
     }
-  </script>
-</body>
-</html>
+ 
