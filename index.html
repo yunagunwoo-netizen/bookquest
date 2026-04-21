@@ -1007,14 +1007,15 @@
       const fallbackImg = AVATAR_DATA.find(a => a.id === avatarId)?.img || "avatars/shelly.png";
       const imgSrc = comboData || fallbackImg;
 
-      // 장착된 다른 아이템 카테고리 이모지 뱃지 표시
+      // 장착된 다른 아이템 뱃지 표시 (실제 콤보 이미지 축소판 + 이모지 fallback)
       const categoryEmojis = { hat: "🎩", face: "😎", weapon: "⚔️", pet: "🐾", frame: "🎨", aura: "✨" };
       const equippedBadges = [];
       if (equippedItems) {
         for (const cat of priorityOrder) {
           const itemId = equippedItems[cat];
           if (itemId && COMBO_ITEM_IDS.has(itemId) && itemId !== comboItemId) {
-            equippedBadges.push({ cat, emoji: categoryEmojis[cat] || "⭐" });
+            const comboImg = hasCombo ? getComboImagePath(avatarId, itemId) : null;
+            equippedBadges.push({ cat, itemId, emoji: categoryEmojis[cat] || "⭐", comboImg });
           }
         }
       }
@@ -1057,7 +1058,7 @@
               flexDirection: "column-reverse",
               gap: 2
             }}>
-              {equippedBadges.slice(0, 3).map(({ cat, emoji }, idx) => (
+              {equippedBadges.slice(0, 3).map(({ cat, itemId, emoji, comboImg }, idx) => (
                 <div
                   key={cat}
                   style={{
@@ -1066,12 +1067,28 @@
                     background: "white",
                     boxShadow: "0 1px 4px rgba(0,0,0,0.25)",
                     display: "flex", alignItems: "center", justifyContent: "center",
-                    fontSize: Math.round(badgeSize * 0.6),
+                    overflow: "hidden",
                     lineHeight: 1,
                     border: `1.5px solid ${(ITEM_EFFECTS[cat] && ITEM_EFFECTS[cat].color) || "#ccc"}`
                   }}
                 >
-                  {emoji}
+                  {comboImg ? (
+                    <img
+                      src={comboImg}
+                      alt={itemId}
+                      style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }}
+                      onError={(e) => {
+                        // 이미지 로드 실패 시 이모지로 대체
+                        e.target.style.display = "none";
+                        if (e.target.parentElement) {
+                          e.target.parentElement.innerText = emoji;
+                          e.target.parentElement.style.fontSize = Math.round(badgeSize * 0.6) + "px";
+                        }
+                      }}
+                    />
+                  ) : (
+                    <span style={{ fontSize: Math.round(badgeSize * 0.6) }}>{emoji}</span>
+                  )}
                 </div>
               ))}
             </div>
