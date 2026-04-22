@@ -15,6 +15,10 @@ avatars/_original_full_backup/
 avatars/V3.5/_original_icon_backup/
 avatars/V3.5/*_icon.png
 
+# UI 아이콘 v1 원본 (리사이즈 전 고화질, 161MB 보관용 - 깃에 올릴 필요 없음)
+icons/v1/_original_icons_backup/
+icons/v1/iconsui*.png
+
 # 임시 미리보기 파일
 _preview_*.png
 _avatar_grid_preview.png
