@@ -587,3 +587,275 @@ exports.runAvatarBattle = functions.https.onRequest(async (req, res) => {
     res.status(500).json({ error: "배틀 생성 실패: " + error.message });
   }
 });
+
+// =============================================================
+//  Interactive Battle (v1.4) — 직접 참여, 객관식 4지선다
+// =============================================================
+const BATTLE_PLAY_DAILY_LIMIT = 3;
+const BATTLE_PLAY_COIN_COST = 30;
+
+function buildInteractivePrompt(myPack, oppPack, myName, oppName, miniDebateOwner) {
+  const debateSection = miniDebateOwner === "me"
+    ? `    {
+      "type": "debate",
+      "mode": "player",
+      "topic": "자유 주제 한 문장",
+      "myOptions": [
+        { "text": "입장·주장 1 (1문장)", "score": 10~90 숫자 (주장 강도) },
+        { "text": "입장·주장 2", "score": 10~90 },
+        { "text": "입장·주장 3", "score": 10~90 },
+        { "text": "입장·주장 4", "score": 10~90 }
+      ],
+      "oppStance": "상대가 고른 입장 1문장",
+      "oppScore": 10~90 숫자,
+      "oppReason": "상대가 왜 이 주장을 했는지 1문장 (상대 독서 수준 기반)"
+    }`
+    : `    {
+      "type": "debate",
+      "mode": "ai",
+      "topic": "자유 주제 한 문장",
+      "myStance": "내 아바타 입장",
+      "oppStance": "상대 입장",
+      "myArgument": "내 아바타 주장 1~2문장",
+      "oppArgument": "상대 주장 1~2문장",
+      "judge": "my" | "opp" | "draw",
+      "reason": "판정 근거 1문장"
+    }`;
+
+  return `너는 어린이 독서 앱 "BookQuest"의 **직접 참여 배틀 문제 생성기**야.
+아이가 자기 아바타를 조종해서 상대 아바타와 3라운드 대결한다.
+
+[규칙]
+- 1~2라운드: Q&A 객관식 4지선다. 책에서 사실 기반 질문 출제 (내 아바타 또는 상대 아바타가 읽은 책 중에서).
+- 각 Q&A 라운드에 정답 1개 + 그럴듯한 오답 3개. answerIdx 는 0~3 중 정답 위치.
+- oppChoiceIdx 는 상대 아바타의 독서 수준·승률을 고려해서 정답 확률 결정 (레벨 높고 승많으면 정답 가능성 큼).
+- 3라운드 미니토론: ${miniDebateOwner === "me" ? "아이가 4개 입장 중 선택" : "AI 자동 토론"}.
+- 초등학생이 읽기 쉬운 어휘·1~2문장.
+- **응답은 반드시 JSON 한 덩어리로만.** 주석·마크다운·설명 금지.
+
+[아바타1 — 플레이어(아이)]
+이름표: ${myName}
+${myPack}
+
+[아바타2 — 상대]
+이름표: ${oppName}
+${oppPack}
+
+[출력 JSON 스키마]
+{
+  "rounds": [
+    {
+      "type": "qa",
+      "book": "책 제목",
+      "question": "질문 1문장",
+      "choices": ["보기1", "보기2", "보기3", "보기4"],
+      "answerIdx": 0~3,
+      "oppChoiceIdx": 0~3,
+      "explanation": "정답 설명 1문장 (교육적)"
+    },
+    {
+      "type": "qa",
+      "book": "...",
+      "question": "...",
+      "choices": ["...", "...", "...", "..."],
+      "answerIdx": 0~3,
+      "oppChoiceIdx": 0~3,
+      "explanation": "..."
+    },
+${debateSection}
+  ]
+}`;
+}
+
+exports.runInteractiveBattle = functions.https.onRequest(async (req, res) => {
+  if (handleCors(req, res)) return;
+
+  try {
+    const { myUid, oppUid, myPack, oppPack, myName, oppName, miniDebateOwner } = req.body || {};
+
+    if (!myUid || !oppUid) {
+      res.status(400).json({ error: "myUid, oppUid 가 필요합니다." });
+      return;
+    }
+    if (!myPack || !oppPack) {
+      res.status(400).json({ error: "myPack, oppPack 이 필요합니다." });
+      return;
+    }
+    if (myUid === oppUid) {
+      res.status(400).json({ error: "자기 자신과는 배틀할 수 없어요." });
+      return;
+    }
+    const owner = miniDebateOwner === "ai" ? "ai" : "me";
+
+    const apiKey = process.env.GEMINI_KEY || process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
+    if (!apiKey) {
+      res.status(500).json({ error: "Gemini API 키가 설정되지 않았습니다." });
+      return;
+    }
+
+    const db = admin.firestore();
+    const today = getTodayKST();
+
+    // 하루 3회 제한 서버 검증 (참여 모드 별도 카운트)
+    const myRef = db.collection("users").doc(myUid);
+    const mySnap = await myRef.get();
+    const myData = mySnap.exists ? (mySnap.data() || {}) : {};
+    if (myData.lastBattlePlayDate === today && (myData.battleTodayPlayCount || 0) >= BATTLE_PLAY_DAILY_LIMIT) {
+      res.status(429).json({ error: "오늘 참여 배틀 3회를 모두 사용했어요. 내일 다시 도전!" });
+      return;
+    }
+
+    // Gemini 호출
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.5-flash",
+      generationConfig: {
+        responseMimeType: "application/json",
+        temperature: 0.85,
+        maxOutputTokens: 8000,
+        thinkingConfig: { thinkingBudget: 0 },
+      },
+    });
+
+    const prompt = buildInteractivePrompt(
+      myPack, oppPack,
+      myName || "내 아바타",
+      oppName || "상대 아바타",
+      owner,
+    );
+    const result = await model.generateContent(prompt);
+    const text = result.response.text();
+    const finishReason = result.response.candidates?.[0]?.finishReason;
+
+    let battle;
+    try {
+      battle = JSON.parse(text);
+    } catch (e) {
+      if (finishReason === "MAX_TOKENS") {
+        throw new Error("Gemini 응답이 토큰 한도를 초과했어요.");
+      }
+      const m = text.match(/\{[\s\S]*\}/);
+      if (!m) throw new Error("Gemini JSON 파싱 실패(finish=" + finishReason + "): " + text.slice(0, 200));
+      battle = JSON.parse(m[0]);
+    }
+
+    if (!Array.isArray(battle.rounds) || battle.rounds.length !== 3) {
+      throw new Error("참여 배틀 형식 오류: rounds가 3개가 아님");
+    }
+
+    // 각 라운드 검증 + 보정
+    battle.rounds.forEach((r, i) => {
+      if (r.type === "qa") {
+        if (!Array.isArray(r.choices) || r.choices.length !== 4) {
+          throw new Error(`라운드 ${i + 1}: choices 배열 4개 필요`);
+        }
+        r.answerIdx = Math.max(0, Math.min(3, Number(r.answerIdx) || 0));
+        r.oppChoiceIdx = Math.max(0, Math.min(3, Number(r.oppChoiceIdx) || 0));
+      }
+    });
+
+    // 문서 저장 (판정은 프론트에서 아이 답변 받은 후 수행, 여기선 문제만 저장)
+    const battleRef = db.collection("battles").doc();
+    await battleRef.set({
+      myUid,
+      oppUid,
+      myName: myName || null,
+      oppName: oppName || null,
+      rounds: battle.rounds,
+      mode: "play",
+      miniDebateOwner: owner,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      dateKST: today,
+      status: "issued", // 아이가 답변 제출하면 "finished"로 업데이트
+    });
+
+    // 참여 카운트 원자적 업데이트 (승/패는 답변 제출 단계에서 별도 처리)
+    const nextPlayCount = myData.lastBattlePlayDate === today
+      ? (myData.battleTodayPlayCount || 0) + 1
+      : 1;
+    await myRef.set({
+      lastBattlePlayDate: today,
+      battleTodayPlayCount: nextPlayCount,
+      lastBattleId: battleRef.id,
+    }, { merge: true });
+
+    res.json({
+      battleId: battleRef.id,
+      rounds: battle.rounds,
+      miniDebateOwner: owner,
+      coinCost: BATTLE_PLAY_COIN_COST,
+      todayPlayCount: nextPlayCount,
+      dailyLimit: BATTLE_PLAY_DAILY_LIMIT,
+      usage: result.response.usageMetadata || null,
+    });
+  } catch (error) {
+    console.error("runInteractiveBattle error:", error);
+    res.status(500).json({ error: "참여 배틀 생성 실패: " + error.message });
+  }
+});
+
+// 참여 배틀 결과 제출 (아이가 답변 완료 후)
+exports.submitInteractiveResult = functions.https.onRequest(async (req, res) => {
+  if (handleCors(req, res)) return;
+
+  try {
+    const { myUid, oppUid, battleId, winner, roundResults } = req.body || {};
+
+    if (!myUid || !oppUid || !battleId) {
+      res.status(400).json({ error: "myUid, oppUid, battleId 필요" });
+      return;
+    }
+    if (!["my", "opp", "draw"].includes(winner)) {
+      res.status(400).json({ error: "winner 값 오류" });
+      return;
+    }
+
+    const db = admin.firestore();
+    const battleRef = db.collection("battles").doc(battleId);
+    const snap = await battleRef.get();
+    if (!snap.exists) {
+      res.status(404).json({ error: "배틀을 찾지 못했어요." });
+      return;
+    }
+    const data = snap.data() || {};
+    if (data.status === "finished") {
+      res.status(409).json({ error: "이미 제출된 배틀입니다." });
+      return;
+    }
+
+    // 배틀 문서 finalize
+    await battleRef.set({
+      winner,
+      roundResults: Array.isArray(roundResults) ? roundResults : [],
+      status: "finished",
+      finishedAt: admin.firestore.FieldValue.serverTimestamp(),
+    }, { merge: true });
+
+    // 통계 업데이트 (참여 모드도 승/패 집계에 반영)
+    const myRef = db.collection("users").doc(myUid);
+    const oppRef = db.collection("users").doc(oppUid);
+    const myWinInc = winner === "my" ? 1 : 0;
+    const myLoseInc = winner === "opp" ? 1 : 0;
+    const myDrawInc = winner === "draw" ? 1 : 0;
+
+    const batch = db.batch();
+    batch.set(myRef, {
+      battleWins: admin.firestore.FieldValue.increment(myWinInc),
+      battleLosses: admin.firestore.FieldValue.increment(myLoseInc),
+      battleDraws: admin.firestore.FieldValue.increment(myDrawInc),
+      weeklyBattleWins: admin.firestore.FieldValue.increment(myWinInc),
+    }, { merge: true });
+    batch.set(oppRef, {
+      battleWins: admin.firestore.FieldValue.increment(myLoseInc),
+      battleLosses: admin.firestore.FieldValue.increment(myWinInc),
+      battleDraws: admin.firestore.FieldValue.increment(myDrawInc),
+      weeklyBattleWins: admin.firestore.FieldValue.increment(myLoseInc),
+    }, { merge: true });
+    await batch.commit();
+
+    res.json({ ok: true, winner });
+  } catch (error) {
+    console.error("submitInteractiveResult error:", error);
+    res.status(500).json({ error: "결과 저장 실패: " + error.message });
+  }
+});

@@ -11,6 +11,10 @@ avatars/items/_backup_raw/
 # 오리지널 9캐릭터 최적화 전 원본 (롤백용)
 avatars/_original_full_backup/
 
+# V3.5 아이콘 원본 (리사이즈 전 고화질, 45MB 보관용 - 깃에 올릴 필요 없음)
+avatars/V3.5/_original_icon_backup/
+avatars/V3.5/*_icon.png
+
 # 임시 미리보기 파일
 _preview_*.png
 _avatar_grid_preview.png
