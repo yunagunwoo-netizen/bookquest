@@ -37,6 +37,13 @@ Thumbs.db
 node_modules/
 functions/node_modules/
 
+# 🔑 API keys / secrets - NEVER commit (CLAUDE_KEY, ALADIN_KEY, GEMINI_KEY)
+.env
+.env.*
+functions/.env
+functions/.env.*
+!.env.example
+
 # Claude session files
 .claude/
 
