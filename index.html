@@ -1889,6 +1889,94 @@
     ];
     AVATAR_DATA.push(...V36_HIDDEN_LEGENDS);
 
+    // ═══════════════════════════════════════
+    // 💎 THEME_PACKS — 히든 전설 테마팩 데이터 (일반화)
+    // 각 팩: avatarId, name, gradient, accentColor, chibiImg,
+    //        wallpapers[], emojis[]
+    // ═══════════════════════════════════════
+    const THEME_PACKS = [
+      {
+        avatarId: "sage_archivist",
+        name: "성소의 파수꾼",
+        gradient: "linear-gradient(135deg, #1E1B4B 0%, #4C1D95 60%, #7C3AED 100%)",
+        accentColor: "#FCD34D",
+        secondaryColor: "#E9D5FF",
+        shadowColor: "rgba(76,29,149,0.35)",
+        borderGlow: "rgba(252,211,77,0.35)",
+        chibiImg: "themes/sage_archivist/chibi_sage_archivist.png",
+        wallpapers: [
+          { src: "themes/sage_archivist/wallpaper_sage_archivist.png", name: "wallpaper_sage.png", label: "홈 배경화면" },
+          { src: "themes/sage_archivist/wallpaper_sage_lockscreen.png", name: "wallpaper_sage_lockscreen.png", label: "잠금화면용" }
+        ],
+        emojis: [
+          { src: "themes/sage_archivist/emoji_sage_happy.png", name: "sage_happy", label: "기쁨" },
+          { src: "themes/sage_archivist/emoji_sage_sad.png", name: "sage_sad", label: "슬픔" },
+          { src: "themes/sage_archivist/emoji_sage_surprised.png", name: "sage_surprised", label: "놀람" },
+          { src: "themes/sage_archivist/emoji_sage_love.png", name: "sage_love", label: "사랑" },
+          { src: "themes/sage_archivist/emoji_sage_thinking.png", name: "sage_thinking", label: "생각" },
+          { src: "themes/sage_archivist/emoji_sage_wink.png", name: "sage_wink", label: "윙크" },
+          { src: "themes/sage_archivist/emoji_sage_sleep.png", name: "sage_sleep", label: "잠" },
+          { src: "themes/sage_archivist/emoji_sage_cheer.png", name: "sage_cheer", label: "응원" }
+        ]
+      }
+      {
+        avatarId: "homer",
+        name: "호메로스",
+        gradient: "linear-gradient(135deg, #92400E 0%, #F59E0B 100%)",
+        accentColor: "#F59E0B",
+        secondaryColor: "#FDE68A",
+        shadowColor: "rgba(146,64,14,0.35)",
+        borderGlow: "rgba(245,158,11,0.35)",
+        chibiImg: "themes/homer/chibi_homer.png",
+        wallpapers: [
+          { src: "themes/homer/wallpaper_homer.png", name: "wallpaper_homer.png", label: "홈 배경화면" },
+          { src: "themes/homer/wallpaper_homer_lockscreen.png", name: "wallpaper_homer_lockscreen.png", label: "잠금화면용" }
+        ],
+        emojis: [
+          { src: "themes/homer/emoji_homer_happy.png", name: "homer_happy", label: "기쁨" },
+          { src: "themes/homer/emoji_homer_sad.png", name: "homer_sad", label: "슬픔" },
+          { src: "themes/homer/emoji_homer_surprised.png", name: "homer_surprised", label: "놀람" },
+          { src: "themes/homer/emoji_homer_love.png", name: "homer_love", label: "사랑" },
+          { src: "themes/homer/emoji_homer_thinking.png", name: "homer_thinking", label: "생각" },
+          { src: "themes/homer/emoji_homer_wink.png", name: "homer_wink", label: "윙크" },
+          { src: "themes/homer/emoji_homer_sleep.png", name: "homer_sleep", label: "잠" },
+          { src: "themes/homer/emoji_homer_cheer.png", name: "homer_cheer", label: "응원" }
+        ]
+      },
+      {
+        avatarId: "scheherazade",
+        name: "셰헤라자데",
+        gradient: "linear-gradient(135deg, #1E40AF 0%, #3B82F6 100%)",
+        accentColor: "#60A5FA",
+        secondaryColor: "#DBEAFE",
+        shadowColor: "rgba(30,64,175,0.35)",
+        borderGlow: "rgba(96,165,250,0.35)",
+        chibiImg: "themes/scheherazade/chibi_scheherazade.png",
+        wallpapers: [
+          { src: "themes/scheherazade/wallpaper_scheherazade.png", name: "wallpaper_scheherazade.png", label: "홈 배경화면" },
+          { src: "themes/scheherazade/wallpaper_scheherazade_lockscreen.png", name: "wallpaper_scheherazade_lockscreen.png", label: "잠금화면용" }
+        ],
+        emojis: [
+          { src: "themes/scheherazade/emoji_scheherazade_happy.png", name: "scheherazade_happy", label: "기쁨" },
+          { src: "themes/scheherazade/emoji_scheherazade_sad.png", name: "scheherazade_sad", label: "슬픔" },
+          { src: "themes/scheherazade/emoji_scheherazade_surprised.png", name: "scheherazade_surprised", label: "놀람" },
+          { src: "themes/scheherazade/emoji_scheherazade_love.png", name: "scheherazade_love", label: "사랑" },
+          { src: "themes/scheherazade/emoji_scheherazade_thinking.png", name: "scheherazade_thinking", label: "생각" },
+          { src: "themes/scheherazade/emoji_scheherazade_wink.png", name: "scheherazade_wink", label: "윙크" },
+          { src: "themes/scheherazade/emoji_scheherazade_sleep.png", name: "scheherazade_sleep", label: "잠" },
+          { src: "themes/scheherazade/emoji_scheherazade_cheer.png", name: "scheherazade_cheer", label: "응원" }
+        ]
+      },
+      { avatarId: "hypatia", name: "히파티아", gradient: "linear-gradient(135deg, #22D3EE 0%, #0E7490 100%)", accentColor: "#22D3EE", secondaryColor: "#CFFAFE", shadowColor: "rgba(14,116,144,0.35)", borderGlow: "rgba(34,211,238,0.35)", chibiImg: "themes/hypatia/chibi_hypatia.png", wallpapers: [ { src: "themes/hypatia/wallpaper_hypatia.png", name: "wallpaper_hypatia.png", label: "홈 배경화면" }, { src: "themes/hypatia/wallpaper_hypatia_lockscreen.png", name: "wallpaper_hypatia_lockscreen.png", label: "잠금화면용" } ], emojis: [ { src: "themes/hypatia/emoji_hypatia_happy.png", name: "hypatia_happy", label: "기쁨" }, { src: "themes/hypatia/emoji_hypatia_sad.png", name: "hypatia_sad", label: "슬픔" }, { src: "themes/hypatia/emoji_hypatia_surprised.png", name: "hypatia_surprised", label: "놀람" }, { src: "themes/hypatia/emoji_hypatia_love.png", name: "hypatia_love", label: "사랑" }, { src: "themes/hypatia/emoji_hypatia_thinking.png", name: "hypatia_thinking", label: "생각" }, { src: "themes/hypatia/emoji_hypatia_wink.png", name: "hypatia_wink", label: "윙크" }, { src: "themes/hypatia/emoji_hypatia_sleep.png", name: "hypatia_sleep", label: "잠자기" }, { src: "themes/hypatia/emoji_hypatia_cheer.png", name: "hypatia_cheer", label: "응원" } ] },
+      { avatarId: "merlin", name: "멀린", gradient: "linear-gradient(135deg, #7C3AED 0%, #4C1D95 100%)", accentColor: "#A78BFA", secondaryColor: "#EDE9FE", shadowColor: "rgba(124,58,237,0.35)", borderGlow: "rgba(167,139,250,0.35)", chibiImg: "themes/merlin/chibi_merlin.png", wallpapers: [ { src: "themes/merlin/wallpaper_merlin.png", name: "wallpaper_merlin.png", label: "홈 배경화면" }, { src: "themes/merlin/wallpaper_merlin_lockscreen.png", name: "wallpaper_merlin_lockscreen.png", label: "잠금화면용" } ], emojis: [ { src: "themes/merlin/emoji_merlin_happy.png", name: "merlin_happy", label: "기쁨" }, { src: "themes/merlin/emoji_merlin_sad.png", name: "merlin_sad", label: "슬픔" }, { src: "themes/merlin/emoji_merlin_surprised.png", name: "merlin_surprised", label: "놀람" }, { src: "themes/merlin/emoji_merlin_love.png", name: "merlin_love", label: "사랑" }, { src: "themes/merlin/emoji_merlin_thinking.png", name: "merlin_thinking", label: "생각" }, { src: "themes/merlin/emoji_merlin_wink.png", name: "merlin_wink", label: "윙크" }, { src: "themes/merlin/emoji_merlin_sleep.png", name: "merlin_sleep", label: "잠자기" }, { src: "themes/merlin/emoji_merlin_cheer.png", name: "merlin_cheer", label: "응원" } ] },
+      { avatarId: "confucius", name: "공자", gradient: "linear-gradient(135deg, #10B981 0%, #065F46 100%)", accentColor: "#34D399", secondaryColor: "#D1FAE5", shadowColor: "rgba(16,185,129,0.35)", borderGlow: "rgba(52,211,153,0.35)", chibiImg: "themes/confucius/chibi_confucius.png", wallpapers: [ { src: "themes/confucius/wallpaper_confucius.png", name: "wallpaper_confucius.png", label: "홈 배경화면" }, { src: "themes/confucius/wallpaper_confucius_lockscreen.png", name: "wallpaper_confucius_lockscreen.png", label: "잠금화면용" } ], emojis: [ { src: "themes/confucius/emoji_confucius_happy.png", name: "confucius_happy", label: "기쁨" }, { src: "themes/confucius/emoji_confucius_sad.png", name: "confucius_sad", label: "슬픔" }, { src: "themes/confucius/emoji_confucius_surprised.png", name: "confucius_surprised", label: "놀람" }, { src: "themes/confucius/emoji_confucius_love.png", name: "confucius_love", label: "사랑" }, { src: "themes/confucius/emoji_confucius_thinking.png", name: "confucius_thinking", label: "생각" }, { src: "themes/confucius/emoji_confucius_wink.png", name: "confucius_wink", label: "윙크" }, { src: "themes/confucius/emoji_confucius_sleep.png", name: "confucius_sleep", label: "잠자기" }, { src: "themes/confucius/emoji_confucius_cheer.png", name: "confucius_cheer", label: "응원" } ] },
+      { avatarId: "socrates", name: "소크라테스", gradient: "linear-gradient(135deg, #84CC16 0%, #3F6212 100%)", accentColor: "#A3E635", secondaryColor: "#ECFCCB", shadowColor: "rgba(132,204,22,0.35)", borderGlow: "rgba(163,230,53,0.35)", chibiImg: "themes/socrates/chibi_socrates.png", wallpapers: [ { src: "themes/socrates/wallpaper_socrates.png", name: "wallpaper_socrates.png", label: "홈 배경화면" }, { src: "themes/socrates/wallpaper_socrates_lockscreen.png", name: "wallpaper_socrates_lockscreen.png", label: "잠금화면용" } ], emojis: [ { src: "themes/socrates/emoji_socrates_happy.png", name: "socrates_happy", label: "기쁨" }, { src: "themes/socrates/emoji_socrates_sad.png", name: "socrates_sad", label: "슬픔" }, { src: "themes/socrates/emoji_socrates_surprised.png", name: "socrates_surprised", label: "놀람" }, { src: "themes/socrates/emoji_socrates_love.png", name: "socrates_love", label: "사랑" }, { src: "themes/socrates/emoji_socrates_thinking.png", name: "socrates_thinking", label: "생각" }, { src: "themes/socrates/emoji_socrates_wink.png", name: "socrates_wink", label: "윙크" }, { src: "themes/socrates/emoji_socrates_sleep.png", name: "socrates_sleep", label: "잠자기" }, { src: "themes/socrates/emoji_socrates_cheer.png", name: "socrates_cheer", label: "응원" } ] },
+      { avatarId: "cleopatra", name: "클레오파트라", gradient: "linear-gradient(135deg, #F59E0B 0%, #78350F 100%)", accentColor: "#FBBF24", secondaryColor: "#FEF3C7", shadowColor: "rgba(245,158,11,0.35)", borderGlow: "rgba(251,191,36,0.35)", chibiImg: "themes/cleopatra/chibi_cleopatra.png", wallpapers: [ { src: "themes/cleopatra/wallpaper_cleopatra.png", name: "wallpaper_cleopatra.png", label: "홈 배경화면" }, { src: "themes/cleopatra/wallpaper_cleopatra_lockscreen.png", name: "wallpaper_cleopatra_lockscreen.png", label: "잠금화면용" } ], emojis: [ { src: "themes/cleopatra/emoji_cleopatra_happy.png", name: "cleopatra_happy", label: "기쁨" }, { src: "themes/cleopatra/emoji_cleopatra_sad.png", name: "cleopatra_sad", label: "슬픔" }, { src: "themes/cleopatra/emoji_cleopatra_surprised.png", name: "cleopatra_surprised", label: "놀람" }, { src: "themes/cleopatra/emoji_cleopatra_love.png", name: "cleopatra_love", label: "사랑" }, { src: "themes/cleopatra/emoji_cleopatra_thinking.png", name: "cleopatra_thinking", label: "생각" }, { src: "themes/cleopatra/emoji_cleopatra_wink.png", name: "cleopatra_wink", label: "윙크" }, { src: "themes/cleopatra/emoji_cleopatra_sleep.png", name: "cleopatra_sleep", label: "잠자기" }, { src: "themes/cleopatra/emoji_cleopatra_cheer.png", name: "cleopatra_cheer", label: "응원" } ] },
+      { avatarId: "galileo", name: "갈릴레오", gradient: "linear-gradient(135deg, #B45309 0%, #1E293B 100%)", accentColor: "#F59E0B", secondaryColor: "#FDE68A", shadowColor: "rgba(180,83,9,0.35)", borderGlow: "rgba(245,158,11,0.35)", chibiImg: "themes/galileo/chibi_galileo.png", wallpapers: [ { src: "themes/galileo/wallpaper_galileo.png", name: "wallpaper_galileo.png", label: "홈 배경화면" }, { src: "themes/galileo/wallpaper_galileo_lockscreen.png", name: "wallpaper_galileo_lockscreen.png", label: "잠금화면용" } ], emojis: [ { src: "themes/galileo/emoji_galileo_happy.png", name: "galileo_happy", label: "기쁨" }, { src: "themes/galileo/emoji_galileo_sad.png", name: "galileo_sad", label: "슬픔" }, { src: "themes/galileo/emoji_galileo_surprised.png", name: "galileo_surprised", label: "놀람" }, { src: "themes/galileo/emoji_galileo_love.png", name: "galileo_love", label: "사랑" }, { src: "themes/galileo/emoji_galileo_thinking.png", name: "galileo_thinking", label: "생각" }, { src: "themes/galileo/emoji_galileo_wink.png", name: "galileo_wink", label: "윙크" }, { src: "themes/galileo/emoji_galileo_sleep.png", name: "galileo_sleep", label: "잠자기" }, { src: "themes/galileo/emoji_galileo_cheer.png", name: "galileo_cheer", label: "응원" } ] },
+      { avatarId: "musashi", name: "미야모토 무사시", gradient: "linear-gradient(135deg, #EC4899 0%, #831843 100%)", accentColor: "#F472B6", secondaryColor: "#FCE7F3", shadowColor: "rgba(236,72,153,0.35)", borderGlow: "rgba(244,114,182,0.35)", chibiImg: "themes/musashi/chibi_musashi.png", wallpapers: [ { src: "themes/musashi/wallpaper_musashi.png", name: "wallpaper_musashi.png", label: "홈 배경화면" }, { src: "themes/musashi/wallpaper_musashi_lockscreen.png", name: "wallpaper_musashi_lockscreen.png", label: "잠금화면용" } ], emojis: [ { src: "themes/musashi/emoji_musashi_happy.png", name: "musashi_happy", label: "기쁨" }, { src: "themes/musashi/emoji_musashi_sad.png", name: "musashi_sad", label: "슬픔" }, { src: "themes/musashi/emoji_musashi_surprised.png", name: "musashi_surprised", label: "놀람" }, { src: "themes/musashi/emoji_musashi_love.png", name: "musashi_love", label: "사랑" }, { src: "themes/musashi/emoji_musashi_thinking.png", name: "musashi_thinking", label: "생각" }, { src: "themes/musashi/emoji_musashi_wink.png", name: "musashi_wink", label: "윙크" }, { src: "themes/musashi/emoji_musashi_sleep.png", name: "musashi_sleep", label: "잠자기" }, { src: "themes/musashi/emoji_musashi_cheer.png", name: "musashi_cheer", label: "응원" } ] },
+      // 🔮 히든 전설 9명 테마팩 완료
+    ];
+
 
     // ═══════════════════════════════════════
     // 🛍️ 상점 표시 정책 (2026-04-22 rev2)
@@ -3004,8 +3092,8 @@
       const [ownedItems, setOwnedItems] = useState([]);
       const [equippedItems, setEquippedItems] = useState({});
       const [showShop, setShowShop] = useState(false);
-      const [themeWallpaperModal, setThemeWallpaperModal] = useState(false);
-      const [themeEmojiModal, setThemeEmojiModal] = useState(false);
+      const [themeWallpaperModal, setThemeWallpaperModal] = useState(null);   // avatarId or null
+      const [themeEmojiModal, setThemeEmojiModal] = useState(null);         // avatarId or null
       const [shopCategory, setShopCategory] = useState("avatar");
       const [avatarRarityFilter, setAvatarRarityFilter] = useState("all");
       const [avatarPage, setAvatarPage] = useState(0);
@@ -5847,41 +5935,46 @@
             </button>
           </div>
 
-          {/* 💎 성소의 파수꾼 테마팩 — sage_archivist 해금 시만 표시 */}
-          {ownedAvatars.includes("sage_archivist") && (
-            <div style={{
+          {/* 💎 테마팩 — THEME_PACKS 데이터 드리븐 렌더링 */}
+          {THEME_PACKS.filter(tp => ownedAvatars.includes(tp.avatarId)).map(tp => (
+            <div key={tp.avatarId} style={{
               position: "relative",
-              background: "linear-gradient(135deg, #1E1B4B 0%, #4C1D95 60%, #7C3AED 100%)",
+              background: tp.gradient,
               borderRadius: 20, padding: "16px 18px", marginBottom: 16, color: "white",
-              boxShadow: "0 8px 28px rgba(76,29,149,0.35), 0 0 0 2px rgba(252,211,77,0.35)",
+              boxShadow: `0 8px 28px ${tp.shadowColor}, 0 0 0 2px ${tp.borderGlow}`,
               overflow: "hidden"
             }}>
-              <div style={{ position: "absolute", top: 0, left: "10%", right: "10%", height: 2, background: "linear-gradient(90deg, transparent, #FCD34D, transparent)" }} />
+              <div style={{ position: "absolute", top: 0, left: "10%", right: "10%", height: 2, background: `linear-gradient(90deg, transparent, ${tp.accentColor}, transparent)` }} />
               <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-                <div style={{ width: 72, height: 72, flexShrink: 0, filter: "drop-shadow(0 4px 14px rgba(252,211,77,0.45))" }}>
-                  <img src="themes/sage_archivist/chibi_sage_archivist.png" alt="sage chibi"
+                <div style={{ width: 72, height: 72, flexShrink: 0, filter: `drop-shadow(0 4px 14px ${tp.accentColor}73)` }}>
+                  <img src={tp.chibiImg} alt={`${tp.name} chibi`}
                     style={{ width: "100%", height: "100%", objectFit: "contain" }} />
                 </div>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 10, fontWeight: 800, color: "#FCD34D", letterSpacing: 2, marginBottom: 3 }}>EXCLUSIVE THEME PACK</div>
-                  <div style={{ fontSize: 16, fontWeight: 900, marginBottom: 3 }}>💎 성소의 파수꾼 테마팩</div>
+                  <div style={{ fontSize: 10, fontWeight: 800, color: tp.accentColor, letterSpacing: 2, marginBottom: 3 }}>EXCLUSIVE THEME PACK</div>
+                  <div style={{ fontSize: 16, fontWeight: 900, marginBottom: 3 }}>{`💎 ${tp.name} 테마팩`}</div>
                   <div style={{ fontSize: 11, color: "rgba(255,255,255,0.85)", lineHeight: 1.5 }}>
-                    배경화면 2종 · 카톡 이모티콘 8종 — 히든 10 완전 수집 보상
+                    {`배경화면 ${tp.wallpapers.length}종 · 카톡 이모티콘 ${tp.emojis.length}종`}
                   </div>
                 </div>
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginTop: 14 }}>
-                <button onClick={() => setThemeWallpaperModal(true)}
-                  style={{ padding: "10px 12px", borderRadius: 12, border: "1px solid rgba(252,211,77,0.4)",
-                    background: "rgba(252,211,77,0.15)", color: "#FCD34D", fontSize: 12, fontWeight: 800, cursor: "pointer",
+                <button onClick={() => setThemeWallpaperModal(tp.avatarId)}
+                  style={{ padding: "10px 12px", borderRadius: 12, border: `1px solid ${tp.accentColor}66`,
+                    background: `${tp.accentColor}26`, color: tp.accentColor, fontSize: 12, fontWeight: 800, cursor: "pointer",
                     backdropFilter: "blur(4px)" }}>
                   🖼️ 배경화면 받기
                 </button>
-                <button onClick={() => setThemeEmojiModal(true)}
-                  style={{ padding: "10px 12px", borderRadius: 12, border: "1px solid rgba(167,139,250,0.4)",
-                    background: "rgba(167,139,250,0.18)", color: "#E9D5FF", fontSize: 12, fontWeight: 800, cursor: "pointer",
+                <button onClick={() => setThemeEmojiModal(tp.avatarId)}
+                  style={{ padding: "10px 12px", borderRadius: 12, border: `1px solid ${tp.secondaryColor}66`,
+                    background: `${tp.secondaryColor}2E`, color: tp.secondaryColor, fontSize: 12, fontWeight: 800, cursor: "pointer",
                     backdropFilter: "blur(4px)" }}>
                   💬 이모티콘 팩
+                </button>
+              </div>
+            </div>
+          ))}
+
                 </button>
               </div>
             </div>
@@ -7817,33 +7910,34 @@
             </div>
           )}
 
-          {themeWallpaperModal && (
-            <div onClick={() => setThemeWallpaperModal(false)}
+          {/* 💎 테마팩 배경화면 모달 — 데이터 드리븐 */}
+          {themeWallpaperModal && (() => {
+            const tp = THEME_PACKS.find(p => p.avatarId === themeWallpaperModal);
+            if (!tp) return null;
+            return (
+            <div onClick={() => setThemeWallpaperModal(null)}
               style={{ position: "fixed", inset: 0, zIndex: 1000, background: "rgba(15,10,35,0.85)", backdropFilter: "blur(8px)", display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
               <div onClick={(e) => e.stopPropagation()}
-                style={{ background: "linear-gradient(145deg, #1E1B4B, #4C1D95)", borderRadius: 20, padding: 20, maxWidth: 430, width: "100%", maxHeight: "90vh", overflow: "auto", color: "white", boxShadow: "0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(252,211,77,0.35)" }}>
+                style={{ background: tp.gradient, borderRadius: 20, padding: 20, maxWidth: 430, width: "100%", maxHeight: "90vh", overflow: "auto", color: "white", boxShadow: `0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px ${tp.borderGlow}` }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
                   <div>
-                    <div style={{ fontSize: 10, fontWeight: 800, color: "#FCD34D", letterSpacing: 2 }}>WALLPAPER DOWNLOAD</div>
-                    <div style={{ fontSize: 18, fontWeight: 900 }}>🖼️ 성소 배경화면</div>
+                    <div style={{ fontSize: 10, fontWeight: 800, color: tp.accentColor, letterSpacing: 2 }}>WALLPAPER DOWNLOAD</div>
+                    <div style={{ fontSize: 18, fontWeight: 900 }}>{`🖼️ ${tp.name} 배경화면`}</div>
                   </div>
-                  <button onClick={() => setThemeWallpaperModal(false)}
+                  <button onClick={() => setThemeWallpaperModal(null)}
                     style={{ background: "rgba(255,255,255,0.1)", border: "none", color: "white", width: 32, height: 32, borderRadius: 10, fontSize: 16, cursor: "pointer" }}>✕</button>
                 </div>
                 <div style={{ fontSize: 11, color: "rgba(255,255,255,0.75)", marginBottom: 14, lineHeight: 1.5 }}>
-                  이미지를 <b style={{ color: "#FCD34D" }}>길게 누르면</b> 사진첩에 저장할 수 있어요.
+                  이미지를 <b style={{ color: tp.accentColor }}>길게 누르면</b> 사진첩에 저장할 수 있어요.
                 </div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-                  {[
-                    { src: "themes/sage_archivist/wallpaper_sage_archivist.png", name: "wallpaper_sage.png", label: "홈 배경화면" },
-                    { src: "themes/sage_archivist/wallpaper_sage_lockscreen.png", name: "wallpaper_sage_lockscreen.png", label: "잠금화면용" }
-                  ].map((w, i) => (
-                    <div key={i} style={{ background: "rgba(0,0,0,0.35)", borderRadius: 14, padding: 8, border: "1px solid rgba(252,211,77,0.25)" }}>
+                  {tp.wallpapers.map((w, i) => (
+                    <div key={i} style={{ background: "rgba(0,0,0,0.35)", borderRadius: 14, padding: 8, border: `1px solid ${tp.accentColor}40` }}>
                       <img src={w.src} alt={w.label}
                         style={{ width: "100%", aspectRatio: "9/19.5", objectFit: "cover", borderRadius: 10, display: "block" }} />
-                      <div style={{ fontSize: 11, fontWeight: 700, textAlign: "center", marginTop: 8, color: "#FCD34D" }}>{w.label}</div>
+                      <div style={{ fontSize: 11, fontWeight: 700, textAlign: "center", marginTop: 8, color: tp.accentColor }}>{w.label}</div>
                       <a href={w.src} download={w.name}
-                        style={{ display: "block", marginTop: 6, padding: "7px 8px", borderRadius: 10, background: "rgba(252,211,77,0.22)", color: "#FCD34D", fontSize: 11, fontWeight: 800, textAlign: "center", textDecoration: "none", border: "1px solid rgba(252,211,77,0.4)" }}>
+                        style={{ display: "block", marginTop: 6, padding: "7px 8px", borderRadius: 10, background: `${tp.accentColor}38`, color: tp.accentColor, fontSize: 11, fontWeight: 800, textAlign: "center", textDecoration: "none", border: `1px solid ${tp.accentColor}66` }}>
                         ⬇ 다운로드
                       </a>
                     </div>
@@ -7851,48 +7945,45 @@
                 </div>
               </div>
             </div>
-          )}
+            );
+          })()}
 
-          {themeEmojiModal && (
-            <div onClick={() => setThemeEmojiModal(false)}
+          {/* 💎 테마팩 이모티콘 모달 — 데이터 드리븐 */}
+          {themeEmojiModal && (() => {
+            const tp = THEME_PACKS.find(p => p.avatarId === themeEmojiModal);
+            if (!tp) return null;
+            return (
+            <div onClick={() => setThemeEmojiModal(null)}
               style={{ position: "fixed", inset: 0, zIndex: 1000, background: "rgba(15,10,35,0.85)", backdropFilter: "blur(8px)", display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
               <div onClick={(e) => e.stopPropagation()}
-                style={{ background: "linear-gradient(145deg, #1E1B4B, #4C1D95)", borderRadius: 20, padding: 20, maxWidth: 430, width: "100%", maxHeight: "90vh", overflow: "auto", color: "white", boxShadow: "0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(167,139,250,0.35)" }}>
+                style={{ background: tp.gradient, borderRadius: 20, padding: 20, maxWidth: 430, width: "100%", maxHeight: "90vh", overflow: "auto", color: "white", boxShadow: `0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px ${tp.secondaryColor}59` }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
                   <div>
-                    <div style={{ fontSize: 10, fontWeight: 800, color: "#E9D5FF", letterSpacing: 2 }}>EMOJI PACK</div>
-                    <div style={{ fontSize: 18, fontWeight: 900 }}>💬 성소 이모티콘 8종</div>
+                    <div style={{ fontSize: 10, fontWeight: 800, color: tp.secondaryColor, letterSpacing: 2 }}>EMOJI PACK</div>
+                    <div style={{ fontSize: 18, fontWeight: 900 }}>{`💬 ${tp.name} 이모티콘 ${tp.emojis.length}종`}</div>
                   </div>
-                  <button onClick={() => setThemeEmojiModal(false)}
+                  <button onClick={() => setThemeEmojiModal(null)}
                     style={{ background: "rgba(255,255,255,0.1)", border: "none", color: "white", width: 32, height: 32, borderRadius: 10, fontSize: 16, cursor: "pointer" }}>✕</button>
                 </div>
                 <div style={{ fontSize: 11, color: "rgba(255,255,255,0.75)", marginBottom: 14, lineHeight: 1.5 }}>
-                  카톡/문자에 사용할 이모티콘. <b style={{ color: "#E9D5FF" }}>길게 누르면</b> 저장 또는 공유할 수 있어요.
+                  카톡/문자에 사용할 이모티콘. <b style={{ color: tp.secondaryColor }}>길게 누르면</b> 저장 또는 공유할 수 있어요.
                 </div>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
-                  {[
-                    { src: "themes/sage_archivist/emoji_sage_happy.png", name: "sage_happy", label: "기쁨" },
-                    { src: "themes/sage_archivist/emoji_sage_sad.png", name: "sage_sad", label: "슬픔" },
-                    { src: "themes/sage_archivist/emoji_sage_surprised.png", name: "sage_surprised", label: "놀람" },
-                    { src: "themes/sage_archivist/emoji_sage_love.png", name: "sage_love", label: "사랑" },
-                    { src: "themes/sage_archivist/emoji_sage_thinking.png", name: "sage_thinking", label: "생각" },
-                    { src: "themes/sage_archivist/emoji_sage_wink.png", name: "sage_wink", label: "윙크" },
-                    { src: "themes/sage_archivist/emoji_sage_sleep.png", name: "sage_sleep", label: "잠" },
-                    { src: "themes/sage_archivist/emoji_sage_cheer.png", name: "sage_cheer", label: "응원" }
-                  ].map((e, i) => (
-                    <a key={i} href={e.src} download={e.name + ".png"} style={{ textDecoration: "none", textAlign: "center" }}>
-                      <div style={{ background: "rgba(255,255,255,0.08)", borderRadius: 12, padding: 6, border: "1px solid rgba(167,139,250,0.25)" }}>
-                        <img src={e.src} alt={e.label}
+                  {tp.emojis.map((em, i) => (
+                    <a key={i} href={em.src} download={em.name + ".png"} style={{ textDecoration: "none", textAlign: "center" }}>
+                      <div style={{ background: "rgba(255,255,255,0.08)", borderRadius: 12, padding: 6, border: `1px solid ${tp.secondaryColor}40` }}>
+                        <img src={em.src} alt={em.label}
                           style={{ width: "100%", aspectRatio: "1/1", objectFit: "contain", display: "block" }} />
                       </div>
-                      <div style={{ fontSize: 10, fontWeight: 700, color: "#E9D5FF", marginTop: 4 }}>{e.label}</div>
+                      <div style={{ fontSize: 10, fontWeight: 700, color: tp.secondaryColor, marginTop: 4 }}>{em.label}</div>
                       <div style={{ fontSize: 9, color: "rgba(255,255,255,0.55)" }}>⬇ 저장</div>
                     </a>
                   ))}
                 </div>
               </div>
             </div>
-          )}
+            );
+          })()}
 
           {showInstallBanner && (
             <div style={{
