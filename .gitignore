@@ -60,3 +60,17 @@ functions/.env.*
 firebase-debug.log
 npm-debug.log*
 index_broken_*.html.bak
+
+# index.html 패치 전 백업 (로컬 롤백용)
+index.html.pre_*
+*.pre_*_backup
+
+# Nano Banana composite 원본 (처리 전 임시 파일)
+temp_icons.png
+temp_icons.png.png
+
+# icons/v1/_unused (잘못 생성된 PNG 보관용, 재활용 가능 시 로컬 유지)
+icons/v1/_unused/
+
+# Claude가 만든 임시 docx (로컬 참조용)
+도메인아이콘_프롬프트.docx
