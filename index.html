@@ -315,11 +315,25 @@
     // 📚 BookQuest — 독서 모험 앱 with Voice
     // ═══════════════════════════════════════
 
-    const APP_VERSION = "1.6.0";
+    const APP_VERSION = "1.7.0";
     const APP_BUILD_DATE = "2026-04-23";
     const ADMIN_PIN = "0925";
 
     const CHANGELOG = [
+      {
+        version: "1.7.0",
+        date: "2026-04-23",
+        title: "프리미엄 UI 아이콘 15종 + 랭킹 히어로 + AI Hub 아바타",
+        changes: [
+          "Nano Banana로 생성한 프리미엄 다크 판타지 UI 아이콘 15종 전면 교체 (치비 스티커에서 마법 아이템 감성으로)",
+          "AI Hub 3카드 아이콘 교체 — 마법 스크롤 말풍선 · 펼쳐진 책+? · 3권 책+나침반 (각 256×256)",
+          "하단 네비바 5탭 아이콘 교체 — 마법 타워 · 퀘스트 스크롤 · 수정구 · 월계수 · 보물상자 (각 128×128)",
+          "상점 카테고리 7탭 아이콘 교체 + shop_avatar 신규 추가 — 황금 액자 · 헤일로 링 · 마법사 고깔 · 크리스탈 안경 · 발자국 메달 · 깃펜+지팡이 · 후드 영웅 실루엣",
+          "주간 랭킹 상단 명예의 전당 히어로 리디자인 — bg_ranking_hall 배경 + HALL OF FAME 골드 타이틀 + 배틀 CTA 글로우 + 내 순위 왕좌 카드",
+          "상점 카테고리 버튼에서 avatar 이모지 fallback 제거 (shop_avatar.png 사용)",
+          "UI_ICON_FALLBACK에 nav_mission · nav_ai · shop_avatar 이모지 폴백 보강"
+        ]
+      },
       {
         version: "1.6.0",
         date: "2026-04-23",
@@ -1998,6 +2012,9 @@
       theme_literature: "📖", theme_science: "🔬", theme_economy: "💰",
       theme_environment: "🌱", theme_philosophy: "💭",
       theme_law: "⚖️", theme_history: "🏛️", theme_media: "📱",
+      nav_mission: "📋",
+      nav_ai: "🤖",
+      shop_avatar: "👤",
     };
     const Icon = ({ name, size = 24, style = {}, alt }) => {
       const src = `icons/v1/${name}.png`;
@@ -6604,6 +6621,7 @@
           {
             key: "avatarChat",
             emoji: "💬",
+            iconSrc: "icons/v1/ai_hub_chat.png",
             title: `${avatarProfile.name}와 대화하기`,
             desc: booksCompletedCount > 0
               ? `같이 읽은 책 ${booksCompletedCount}권을 기억하는 내 아바타와 1:1 토론`
@@ -6616,6 +6634,7 @@
           {
             key: "askbook",
             emoji: "💡",
+            iconSrc: "icons/v1/ai_hub_ask.png",
             title: "책에게 질문하기",
             desc: "읽은 책 내용에 대해 무엇이든 물어보세요. AI가 답해드려요",
             tag: "AI 질문",
@@ -6626,6 +6645,7 @@
           {
             key: "recommend",
             emoji: "📖",
+            iconSrc: "icons/v1/ai_hub_recommend.png",
             title: "다음 책 추천받기",
             desc: `${profile?.name || "건우"}의 독서 이력과 아바타 성향에 딱 맞는 책을 추천`,
             tag: "AI 추천",
@@ -6718,12 +6738,12 @@
                   onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; }}
                 >
                   <div style={{
-                    fontSize: c.primary ? 44 : 36,
-                    width: c.primary ? 64 : 54, height: c.primary ? 64 : 54,
+                    width: c.primary ? 72 : 60, height: c.primary ? 72 : 60,
                     display: "flex", alignItems: "center", justifyContent: "center",
-                    background: "rgba(255,255,255,0.2)", borderRadius: 16, flexShrink: 0
+                    flexShrink: 0, filter: "drop-shadow(0 4px 10px rgba(0,0,0,0.25))"
                   }}>
-                    {c.emoji}
+                    <img src={c.iconSrc} alt={c.key} style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                      onError={(e) => { e.target.style.display = "none"; const s = document.createElement("div"); s.textContent = c.emoji; s.style.fontSize = (c.primary ? 44 : 36) + "px"; e.target.parentNode && e.target.parentNode.appendChild(s); }} />
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
@@ -7311,7 +7331,7 @@
                     style={{ padding: "6px 12px", borderRadius: 20, border: "none", fontSize: 11, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", display: "inline-flex", alignItems: "center", gap: 4,
                       background: shopCategory === cat.id ? "#667eea" : "#f0f0f5",
                       color: shopCategory === cat.id ? "white" : "#666" }}>
-                    {cat.id === "avatar" ? <span>{cat.emoji}</span> : <Icon name={`shop_${cat.id}`} size={14} />} {cat.name}
+                    <Icon name={`shop_${cat.id}`} size={16} /> {cat.name}
                   </button>
                 ))}
               </div>
