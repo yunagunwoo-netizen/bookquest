@@ -12,7 +12,6 @@ const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './manifest.json',
-  './version.js',
   './icon-192x192.png',
   './icon-512x512.png',
 ];
