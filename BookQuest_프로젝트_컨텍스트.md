@@ -9,6 +9,29 @@
 
 ---
 
+## 🚨 Claude 작업 규칙 (필독 — 세션마다 지킬 것)
+
+### 규칙 1: git 명령은 **절대** bash에서 실행하지 않는다
+- **이유**: Claude의 bash는 리눅스 샌드박스에서 도는데 `C:\dev\bookquest`는 윈도우 마운트. 리눅스 쪽 git이 만드는 `.git/index.lock` 등 임시 파일이 윈도우 ACL과 맞지 않아 리눅스 쪽에서 삭제 불가 → 락이 남으면 다음 git 작업이 전부 막힘.
+- **허용**: bash에서는 Python/grep/ls/wc 등 **파일 내용 관련 작업만**.
+- **금지**: `git status`, `git add`, `git commit`, `git push`, `git config`, `git diff` 등 **모든 git 명령**.
+- **대신**: 커밋·푸시가 필요하면 **PowerShell 명령 블록**을 만들어 사용자에게 전달하고, 사용자가 PowerShell에서 직접 실행.
+
+### 규칙 2: index.html (4.76MB)은 Edit 툴 사용 금지
+- Edit 툴이 큰 파일에서 truncation 버그를 일으킴.
+- **대신**: `cat > script.py << 'EOF' … EOF` 로 Python 패치 스크립트를 만들어 byte-level string replace 실행.
+
+### 규칙 3: Write 툴은 8,692 바이트에서 잘림
+- 그 이상은 bash heredoc (`cat > path << 'EOF'`) 사용.
+
+### 규칙 4: 락 파일이 이미 남아있을 때 사용자에게 안내할 명령
+```powershell
+Remove-Item C:\dev\bookquest\.git\index.lock -Force
+```
+또는 `$PROFILE`에 `gitclean` 함수 등록해서 한 번에 정리.
+
+---
+
 ## 핵심 파일 구조
 
 ### 메인 앱

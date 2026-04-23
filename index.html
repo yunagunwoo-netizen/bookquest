@@ -7514,7 +7514,30 @@
   </script>
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js').catch(() => {});
+      let reloading = false;
+      // 새 SW가 장악(activate + clients.claim)하면 페이지 자동 새로고침
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (reloading) return;
+        reloading = true;
+        window.location.reload();
+      });
+
+      navigator.serviceWorker.register('./sw.js').then(reg => {
+        // 1시간마다 sw.js 업데이트 체크 (앱 장시간 열어둔 경우)
+        setInterval(() => reg.update().catch(() => {}), 60 * 60 * 1000);
+
+        // 설치 중인 새 SW 감지 → 기존 탭 바로 갱신
+        reg.addEventListener('updatefound', () => {
+          const installing = reg.installing;
+          if (!installing) return;
+          installing.addEventListener('statechange', () => {
+            if (installing.state === 'installed' && navigator.serviceWorker.controller) {
+              // 새 버전 설치 완료 → skipWaiting 요청 → controllerchange로 reload
+              installing.postMessage({ type: 'SKIP_WAITING' });
+            }
+          });
+        });
+      }).catch(() => {});
     }
   </script>
 </body>

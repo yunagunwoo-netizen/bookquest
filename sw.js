@@ -1,123 +1,106 @@
-// Service Worker for iCoach App - v66 (β1.4.15 — detectArmSlot 근본 재수정)
-const CACHE_NAME = 'icoach-v155';
+// ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??// BookQuest Service Worker
+// ?????????????????????????????????????????????????????
+// ?뵎 CACHE_NAME? 諛고룷???뚮쭏??deploy_bookquest.ps1 ??//    __TIMESTAMP__ ?먮━瑜??꾩옱 ?쒓컖?쇰줈 移섑솚?⑸땲??
+//    ??留?而ㅻ컠留덈떎 sw.js 諛붿씠?멸? ?щ씪?몄꽌 釉뚮씪?곗?媛 ??SW濡?援먯껜.
+// ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??const CACHE_NAME = 'bookquest-v20260423120020';
+
+// ?ㅼ젣濡?議댁옱?섎뒗 ?뚯씪留??꾨━罹먯떆 (install ??addAll)
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
-  './app.html',
   './manifest.json',
   './version.js',
-  './ironarm.png',
-  './icon_bug_report.png',
-  './icon_legal.png',
-  './icon_support.png',
-  './icon_form.png',
-  './icon_email.png',
-  './fonts/SpoqaHanSansNeo-Regular.ttf',
-  './fonts/SpoqaHanSansNeo-Bold.ttf',
-  'https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Black+Han+Sans&display=swap'
+  './icon-192x192.png',
+  './icon-512x512.png',
 ];
 
-// Install event - cache core assets
+// install ??吏???먯궛 ?꾨━罹먯떆 ??利됱떆 ?쒖꽦???湲?嫄대꼫?곌린
 self.addEventListener('install', event => {
-  console.log('Service Worker v10 installing...');
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(ASSETS_TO_CACHE).catch(err => {
-        console.log('Some assets failed to cache:', err);
-        return Promise.resolve();
-      });
-    })
+    caches.open(CACHE_NAME).then(cache =>
+      cache.addAll(ASSETS_TO_CACHE).catch(err => {
+        console.warn('[SW] precache partial fail:', err);
+      })
+    )
   );
   self.skipWaiting();
 });
 
-// Activate event - delete ALL old caches
+// activate ??援щ쾭??罹먯떆 ?꾨? ??젣 + 紐⑤뱺 ???μ븙
 self.addEventListener('activate', event => {
-  console.log('Service Worker v10 activating...');
   event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheName !== CACHE_NAME) {
-            console.log('Deleting old cache:', cacheName);
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
+    caches.keys().then(names =>
+      Promise.all(
+        names
+          .filter(n => n !== CACHE_NAME)
+          .map(n => caches.delete(n))
+      )
+    ).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
-// Fetch event - NETWORK-FIRST for HTML/JS, cache-first for images/fonts
+// fetch ??HTML/JS/JSON? ?ㅽ듃?뚰겕 ?곗꽑, 洹????대?吏쨌?고듃쨌CSS)??罹먯떆 ?곗꽑+諛깃렇?쇱슫??媛깆떊
 self.addEventListener('fetch', event => {
-  const url = new URL(event.request.url);
-
   if (event.request.method !== 'GET') return;
-
-  // β1.2.5 — http/https 이외 스킴 무시 (chrome-extension://, data:, blob:, ws://, etc.)
-  // Cache API 는 이들 스킴을 지원하지 않아 .put() 시 TypeError 폭주 → 메인 스레드 프리즈 유발
+  const url = new URL(event.request.url);
   if (url.protocol !== 'http:' && url.protocol !== 'https:') return;
 
-  // Firebase/API - network only
-  if (url.host.includes('firebase') || url.pathname.includes('/api/')) {
+  // Firebase Cloud Functions ??API????긽 ?ㅽ듃?뚰겕 (?ㅽ봽?쇱씤 ??503)
+  if (url.host.includes('cloudfunctions') || url.pathname.includes('/api/')) {
     event.respondWith(
-      fetch(event.request).catch(() => {
-        return caches.match(event.request).then(r => r || new Response(
-          JSON.stringify({ offline: true, message: '오프라인 상태입니다' }),
-          { status: 503, headers: { 'Content-Type': 'application/json' } }
-        ));
-      })
+      fetch(event.request).catch(() =>
+        new Response(JSON.stringify({ offline: true }), {
+          status: 503,
+          headers: { 'Content-Type': 'application/json' }
+        })
+      )
     );
     return;
   }
 
-  // HTML, JS, JSON, manifest - NETWORK FIRST (always get latest)
-  if (event.request.destination === 'document' ||
-      url.pathname.endsWith('.html') ||
-      url.pathname.endsWith('.js') ||
-      url.pathname.endsWith('.json') ||
-      url.pathname === '/' || url.pathname === './') {
+  // 臾몄꽌쨌?ㅽ겕由쏀듃쨌JSON ???ㅽ듃?뚰겕 ?곗꽑 (?ㅽ뙣 ??罹먯떆)
+  if (
+    event.request.destination === 'document' ||
+    url.pathname.endsWith('.html') ||
+    url.pathname.endsWith('.js') ||
+    url.pathname.endsWith('.json') ||
+    url.pathname === '/' ||
+    url.pathname.endsWith('/')
+  ) {
     event.respondWith(
-      fetch(event.request).then(response => {
-        if (response.status === 200) {
-          const cloned = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, cloned));
-        }
-        return response;
-      }).catch(() => {
-        return caches.match(event.request).then(r => r || caches.match('./app.html'));
-      })
+      fetch(event.request)
+        .then(resp => {
+          if (resp && resp.status === 200) {
+            const cloned = resp.clone();
+            caches.open(CACHE_NAME).then(c => c.put(event.request, cloned));
+          }
+          return resp;
+        })
+        .catch(() =>
+          caches.match(event.request).then(r => r || caches.match('./index.html'))
+        )
     );
     return;
   }
 
-  // Images, fonts, CSS - cache first (with network fallback & update)
+  // ?대?吏쨌?고듃쨌CSS ??罹먯떆 ?곗꽑 + 諛깃렇?쇱슫??媛깆떊 (Stale-While-Revalidate)
   event.respondWith(
-    caches.match(event.request).then(cachedResponse => {
-      // Return cache but also update in background
-      const fetchPromise = fetch(event.request).then(networkResponse => {
-        if (networkResponse && networkResponse.status === 200) {
-          const cloned = networkResponse.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, cloned));
-        }
-        return networkResponse;
-      }).catch(() => null);
-
-      return cachedResponse || fetchPromise;
+    caches.match(event.request).then(cached => {
+      const fetchPromise = fetch(event.request)
+        .then(resp => {
+          if (resp && resp.status === 200) {
+            const cloned = resp.clone();
+            caches.open(CACHE_NAME).then(c => c.put(event.request, cloned));
+          }
+          return resp;
+        })
+        .catch(() => null);
+      return cached || fetchPromise;
     })
   );
 });
 
-// Handle background sync
-self.addEventListener('sync', event => {
-  if (event.tag === 'sync-analyses') {
-    event.waitUntil(Promise.resolve());
-  }
-});
-
-// Message handler for skip waiting
-self.addEventListener('message', event => {
+// index.html ?먯꽌 SKIP_WAITING 硫붿떆吏 蹂대궡硫?利됱떆 ?쒖꽦??self.addEventListener('message', event => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
