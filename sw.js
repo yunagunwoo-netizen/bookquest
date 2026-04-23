@@ -1,10 +1,13 @@
-// ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??// BookQuest Service Worker
-// ?????????????????????????????????????????????????????
-// ?뵎 CACHE_NAME? 諛고룷???뚮쭏??deploy_bookquest.ps1 ??//    __TIMESTAMP__ ?먮━瑜??꾩옱 ?쒓컖?쇰줈 移섑솚?⑸땲??
-//    ??留?而ㅻ컠留덈떎 sw.js 諛붿씠?멸? ?щ씪?몄꽌 釉뚮씪?곗?媛 ??SW濡?援먯껜.
-// ?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧?먥븧??const CACHE_NAME = 'bookquest-v20260423120020';
+// ═══════════════════════════════════════════════════════
+// BookQuest Service Worker
+// ─────────────────────────────────────────────────────
+// CACHE_NAME is bumped on every deploy by deploy_bookquest.ps1
+// (it replaces `bookquest-v<ts>` with a fresh timestamp), so
+// browsers detect sw.js bytes differ and install the new SW.
+// ═══════════════════════════════════════════════════════
+const CACHE_NAME = 'bookquest-v20260423120538';
 
-// ?ㅼ젣濡?議댁옱?섎뒗 ?뚯씪留??꾨━罹먯떆 (install ??addAll)
+// Only precache files that actually exist at repo root.
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -14,7 +17,7 @@ const ASSETS_TO_CACHE = [
   './icon-512x512.png',
 ];
 
-// install ??吏???먯궛 ?꾨━罹먯떆 ??利됱떆 ?쒖꽦???湲?嫄대꼫?곌린
+// install — precache then skip waiting so the new SW activates fast.
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache =>
@@ -26,7 +29,7 @@ self.addEventListener('install', event => {
   self.skipWaiting();
 });
 
-// activate ??援щ쾭??罹먯떆 ?꾨? ??젣 + 紐⑤뱺 ???μ븙
+// activate — delete all stale caches, then take control of all tabs.
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(names =>
@@ -39,13 +42,13 @@ self.addEventListener('activate', event => {
   );
 });
 
-// fetch ??HTML/JS/JSON? ?ㅽ듃?뚰겕 ?곗꽑, 洹????대?吏쨌?고듃쨌CSS)??罹먯떆 ?곗꽑+諛깃렇?쇱슫??媛깆떊
+// fetch — HTML/JS/JSON: network-first. Images/fonts/CSS: stale-while-revalidate.
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
   const url = new URL(event.request.url);
   if (url.protocol !== 'http:' && url.protocol !== 'https:') return;
 
-  // Firebase Cloud Functions ??API????긽 ?ㅽ듃?뚰겕 (?ㅽ봽?쇱씤 ??503)
+  // Firebase Cloud Functions / API — always network (503 when offline).
   if (url.host.includes('cloudfunctions') || url.pathname.includes('/api/')) {
     event.respondWith(
       fetch(event.request).catch(() =>
@@ -58,7 +61,7 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // 臾몄꽌쨌?ㅽ겕由쏀듃쨌JSON ???ㅽ듃?뚰겕 ?곗꽑 (?ㅽ뙣 ??罹먯떆)
+  // Documents / scripts / JSON — network-first, fall back to cache.
   if (
     event.request.destination === 'document' ||
     url.pathname.endsWith('.html') ||
@@ -83,7 +86,7 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // ?대?吏쨌?고듃쨌CSS ??罹먯떆 ?곗꽑 + 諛깃렇?쇱슫??媛깆떊 (Stale-While-Revalidate)
+  // Images / fonts / CSS — cache-first + background update (SWR).
   event.respondWith(
     caches.match(event.request).then(cached => {
       const fetchPromise = fetch(event.request)
@@ -100,7 +103,8 @@ self.addEventListener('fetch', event => {
   );
 });
 
-// index.html ?먯꽌 SKIP_WAITING 硫붿떆吏 蹂대궡硫?利됱떆 ?쒖꽦??self.addEventListener('message', event => {
+// index.html posts SKIP_WAITING when a new SW is installed — activate now.
+self.addEventListener('message', event => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }

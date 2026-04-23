@@ -36,12 +36,13 @@ if (-not (Test-Path $swPath)) {
 $ts = Get-Date -Format "yyyyMMddHHmmss"
 $cacheName = "bookquest-v$ts"
 
-$swContent = Get-Content $swPath -Raw
+# Read explicitly as UTF-8 (PS 5.1 default is ANSI - mangles Korean/emoji)
+$utf8NoBom = New-Object System.Text.UTF8Encoding $false
+$swContent = [System.IO.File]::ReadAllText($swPath, $utf8NoBom)
 $pattern = "bookquest-v[\w_]+"
 $newContent = [System.Text.RegularExpressions.Regex]::Replace($swContent, $pattern, $cacheName)
 
-# Save as UTF-8 (no BOM) to keep sw.js valid JS
-$utf8NoBom = New-Object System.Text.UTF8Encoding $false
+# Write back as UTF-8 (no BOM) to keep sw.js valid JS everywhere.
 [System.IO.File]::WriteAllText($swPath, $newContent, $utf8NoBom)
 
 Write-Host "  - sw.js cache bumped to $cacheName" -ForegroundColor Cyan
