@@ -107,6 +107,8 @@ if ($Version) {
                 "      },"
 
     $indexContent = Read-Utf8 $indexPath
+    $origIndexContent = $indexContent       # keep pristine backup in memory
+    $origLength = $indexContent.Length
 
     $verPattern = 'const\s+APP_VERSION\s*=\s*"[^"]*"\s*;'
     $verReplace = 'const APP_VERSION = "' + $Version + '";'
@@ -131,7 +133,36 @@ if ($Version) {
     if ($nl -lt 0) { $nl = $afterAnchor }
     $indexContent = $indexContent.Substring(0, $nl + 1) + $newEntry + "`r`n" + $indexContent.Substring($nl + 1)
 
+    # ── Safety: in-memory integrity check BEFORE write ──
+    if ($indexContent.Length -lt ($origLength * 0.9)) {
+        Write-Error ("Aborted: new content shrunk to {0} (was {1}, <90%). File NOT written." -f $indexContent.Length, $origLength)
+        exit 1
+    }
+    if (-not $indexContent.Contains("</html>")) {
+        Write-Error "Aborted: new content missing </html>. File NOT written."
+        exit 1
+    }
+    if (-not $indexContent.Contains("<BookQuest />")) {
+        Write-Error "Aborted: new content missing <BookQuest /> mount. File NOT written."
+        exit 1
+    }
+
     Write-Utf8 $indexPath $indexContent
+
+    # ── Safety: verify disk file matches what we intended ──
+    $verify = Read-Utf8 $indexPath
+    if ($verify.Length -lt ($indexContent.Length - 8)) {
+        Write-Warning ("Disk write mismatch: disk={0} memory={1}. Restoring original." -f $verify.Length, $indexContent.Length)
+        Write-Utf8 $indexPath $origIndexContent
+        Write-Error "Aborted deploy due to index.html write corruption."
+        exit 1
+    }
+    if (-not $verify.Contains("</html>")) {
+        Write-Warning "Disk file missing </html>. Restoring original."
+        Write-Utf8 $indexPath $origIndexContent
+        Write-Error "Aborted deploy due to index.html write corruption."
+        exit 1
+    }
 
     # Reset NEXT_RELEASE.md (plain template, no backticks to avoid parse issues)
     $resetTemplate = $K_HEAD + "`r`n`r`n## " + $K_TITLE + "`r`n`r`n`r`n## " + $K_CHANGES + "`r`n`r`n"
