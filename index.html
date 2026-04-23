@@ -315,11 +315,26 @@
     // 📚 BookQuest — 독서 모험 앱 with Voice
     // ═══════════════════════════════════════
 
-    const APP_VERSION = "1.4.2";
-    const APP_BUILD_DATE = "2026-04-22";
+    const APP_VERSION = "1.5.0";
+    const APP_BUILD_DATE = "2026-04-23";
     const ADMIN_PIN = "0925";
 
     const CHANGELOG = [
+      {
+        version: "1.5.0",
+        date: "2026-04-23",
+        title: "아이콘 개편 + PWA 캐시 근본 해결",
+        changes: [
+          "UI 아이콘 PNG 전환 — 네비바 7곳 + 상점 카테고리 6곳 + 메달 Top3 + 도메인 레이더 8축 + 프로필 주력·강점·약점 + Nano Banana로 생성한 법/역사/미디어 아이콘 3종 추가",
+          "V3.4 신규 아바타(crow/shelly/nita/leon/spike) 상점 미리보기 통일 — 옛 base64 합성 150종 제거, 새 포트레이트 + 아이템 아이콘 오버레이로 자동 렌더",
+          "장착 아이템 오버레이 투명화 — 흰 배경/테두리 제거, drop-shadow로 대체",
+          "장착 아이템 뱃지 크기 42%(+1.5배) 확대로 가독성 개선",
+          "파일 크기 4.76MB → 1.70MB (-64%) — 옛 브롤 합성 이미지 일괄 정리",
+          "PWA 캐시 근본 해결 — sw.js를 BookQuest 전용으로 재작성(iCoach 잔재 제거), 매 배포마다 CACHE_NAME 타임스탬프 자동 bump",
+          "`bq-deploy` PowerShell 배포 스크립트 도입 — sw.js 캐시 bump + git add/commit/push 한 번에, 기존 탭 SW 감지 후 자동 새로고침",
+          "프로젝트 컨텍스트에 Claude 작업 규칙 4개 명문화 (git은 PowerShell 전용 등)"
+        ]
+      },
       {
         version: "1.4.2",
         date: "2026-04-22",
