@@ -74,3 +74,7 @@ icons/v1/_unused/
 
 # Claude가 만든 임시 docx (로컬 참조용)
 도메인아이콘_프롬프트.docx
+
+# Background original PNGs (JPG used in production, PNG kept locally for source)
+icons/v1/backgrounds/*.png
+temp_bg.png.png
