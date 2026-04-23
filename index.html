@@ -98,6 +98,59 @@
       animation: pulse 1.5s infinite;
     }
   </style>
+  <style>
+    /* 💎 히든 전설 홀로그래픽 셔머 — V3.6 아바타 전용 */
+    @keyframes bq-holo-shine {
+      0%   { background-position: -200% 50%; }
+      100% { background-position:  200% 50%; }
+    }
+    @keyframes bq-holo-pulse {
+      0%, 100% { opacity: 0.55; transform: scale(1); }
+      50%      { opacity: 1.00; transform: scale(1.03); }
+    }
+    .bq-holo-wrap {
+      position: relative;
+      display: inline-block;
+      border-radius: 50%;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .bq-holo-wrap > img {
+      display: block;
+      position: relative;
+      z-index: 1;
+    }
+    .bq-holo-wrap::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(115deg,
+        transparent 25%,
+        rgba(255, 255, 255, 0.12) 40%,
+        rgba(255, 215, 0, 0.35) 50%,
+        rgba(180, 220, 255, 0.28) 58%,
+        rgba(255, 100, 200, 0.22) 66%,
+        transparent 80%);
+      background-size: 260% 260%;
+      mix-blend-mode: overlay;
+      animation: bq-holo-shine 3.5s linear infinite;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .bq-holo-wrap::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: inherit;
+      box-shadow: 0 0 0 2px rgba(252, 211, 77, 0.55),
+                  0 0 22px 2px rgba(167, 139, 250, 0.55),
+                  inset 0 0 14px rgba(252, 211, 77, 0.18);
+      animation: bq-holo-pulse 2.8s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 3;
+    }
+  </style>
 </head>
 <body>
   <div id="root"></div>
@@ -315,11 +368,24 @@
     // 📚 BookQuest — 독서 모험 앱 with Voice
     // ═══════════════════════════════════════
 
-    const APP_VERSION = "1.7.0";
+    const APP_VERSION = "1.8.0";
     const APP_BUILD_DATE = "2026-04-23";
     const ADMIN_PIN = "0925";
 
     const CHANGELOG = [
+      {
+        version: "1.8.0",
+        date: "2026-04-23",
+        title: "V3.6 히든 전설 10인 + 홀로그래픽 레어 카드 효과",
+        changes: [
+          "Nano Banana로 생성한 V3.6 히든 전설 아바타 10종 오리지널 IP 교체 — 호메로스/셰헤라자데/히파티아/멀린/공자/소크라테스/클레오파트라/갈릴레오/미야모토 무사시/성소의 파수꾼(오리지널)",
+          "IP 이슈 해결 — 기존 포켓몬 5(피카츄/리자몽/이브이/뮤/꼬부기) + 브롤 5(셸리/크로우/레온/스파이크/엘프리모)를 히든 티어에서 분리 (기존 보유자는 계속 사용 가능, 신규는 오리지널 전설 10인 획득)",
+          "홀로그래픽 레어 카드 효과 CSS — 움직이는 무지개 셔머 + 골드/바이올렛 글로우 링 + 펄스 애니메이션. `data.holo = true` 아바타만 자동 적용",
+          "히든 해금 조건 10개 리매핑 (난이도 유지) — 호메로스 3권 완독 → 무사시 배틀 50회 → 성소의 파수꾼 \"7장르 + 다른 9명 전부 해금\" 궁극 보상",
+          "`HIDDEN_LEGEND_IDS` 새 상수 추가, 레거시 배열 유지로 하위 호환",
+          "언락 ctx에 `ownedAvatars` 주입 (파수꾼 규칙 구동용)"
+        ]
+      },
       {
         version: "1.7.0",
         date: "2026-04-23",
@@ -1753,6 +1819,35 @@
     });
 
     // ═══════════════════════════════════════
+    // 💎 V3.6 Hidden Legends (2026-04-23) — 책 속 전설 10인 (오리지널 IP)
+    // 레어 카드 감성: 룬 프레임 + 홀로 셔머 + 황금 림 라이트 (PNG에 베이킹됨)
+    // CSS `.holo-avatar` 클래스로 추가 동적 셔머 오버레이
+    // ═══════════════════════════════════════
+    const _av36 = (id, name, g1, g2) => ({
+      id, name, gradient: [g1, g2],
+      img: `avatars/V3.6/${id}.png`,
+      imgSm: `avatars/V3.6/${id}.png`,
+      iconImg: `avatars/V3.6/${id}.png`,
+      free: false, rarity: "legendary", price: 0,
+      storeHidden: true,
+      holo: true   // 홀로 셔머 효과 플래그
+    });
+    const V36_HIDDEN_LEGENDS = [
+      _av36("homer",          "호메로스",           "#F59E0B", "#92400E"),
+      _av36("scheherazade",   "셰헤라자데",         "#3B82F6", "#1E40AF"),
+      _av36("hypatia",        "히파티아",           "#22D3EE", "#0E7490"),
+      _av36("merlin",         "멀린",               "#7C3AED", "#4C1D95"),
+      _av36("confucius",      "공자",               "#10B981", "#065F46"),
+      _av36("socrates",       "소크라테스",         "#84CC16", "#3F6212"),
+      _av36("cleopatra",      "클레오파트라",       "#F59E0B", "#78350F"),
+      _av36("galileo",        "갈릴레오",           "#B45309", "#1E293B"),
+      _av36("musashi",        "미야모토 무사시",    "#EC4899", "#831843"),
+      _av36("sage_archivist", "성소의 파수꾼",      "#A855F7", "#1E1B4B"),
+    ];
+    AVATAR_DATA.push(...V36_HIDDEN_LEGENDS);
+
+
+    // ═══════════════════════════════════════
     // 🛍️ 상점 표시 정책 (2026-04-22 rev2)
     // - 무료 아바타 = 오리지널 동물 캐릭터 10종만
     // - V3.4/V3.5 Hall of Fame 32종 (영웅/한국영웅/전설/신화) = 상점에 표시
@@ -1767,10 +1862,15 @@
     ];
     // 히든 영웅 2종 (코인 구매 불가, 특정 조건 달성 시 해금)
     const HIDDEN_HERO_IDS = ["jang_yeongsil", "yu_gwansun"];
-    // 히든 포켓몬 5종 (V3.4 포트레이트, 상점 숨김)
-    const HIDDEN_POKEMON_IDS = ["pikachu", "charizard", "eevee", "mew", "squirtle"];
-    // 히든 브롤 5종 (상점 숨김)
-    const HIDDEN_BRAWL_IDS = ["shelly", "crow", "leon", "spike", "elprimo"];
+    // 히든 포켓몬 5종 (V3.4 포트레이트, 상점 숨김) — LEGACY (기존 보유자 유지, 히든 티어에선 제거)
+    const HIDDEN_POKEMON_IDS_LEGACY = ["pikachu", "charizard", "eevee", "mew", "squirtle"];
+    // 히든 브롤 5종 (상점 숨김) — LEGACY (기존 보유자 유지, 히든 티어에선 제거)
+    const HIDDEN_BRAWL_IDS_LEGACY = ["shelly", "crow", "leon", "spike", "elprimo"];
+    // V3.6 히든 전설 10종 (오리지널 IP, 레어 카드 홀로 감성)
+    const HIDDEN_LEGEND_IDS = ["homer","scheherazade","hypatia","merlin","confucius","socrates","cleopatra","galileo","musashi","sage_archivist"];
+    // 하위 호환: HIDDEN_POKEMON_IDS / HIDDEN_BRAWL_IDS 이름을 참조하는 레거시 코드 대응
+    const HIDDEN_POKEMON_IDS = HIDDEN_LEGEND_IDS.slice(0, 5);   // homer, scheherazade, hypatia, merlin, confucius
+    const HIDDEN_BRAWL_IDS   = HIDDEN_LEGEND_IDS.slice(5, 10);  // socrates, cleopatra, galileo, musashi, sage_archivist
     // V3.5 아이콘이 있는 32종 중 상점에 진열되는 30종 (히든 영웅 2종 제외)
     const V34_HOF_VISIBLE_IDS = V35_ICON_IDS.filter(
       id => !HIDDEN_HERO_IDS.includes(id)
@@ -1814,30 +1914,14 @@
       { id: "yu_gwansun",    label: "유관순",  hint: "연속 출석 30일",
         progress: (ctx) => Math.min(ctx.streak, 30), target: 30,
         check: (ctx) => ctx.streak >= 30 },
-      // 🎮 히든 브롤
-      { id: "shelly",    label: "셸리",      hint: "배틀 20승",
-        progress: (ctx) => Math.min(ctx.battleWins, 20), target: 20,
-        check: (ctx) => ctx.battleWins >= 20 },
-      { id: "spike",     label: "스파이크",  hint: "200쪽 이상 책 5권 완독",
-        progress: (ctx) => Math.min(ctx.completedBookList.filter(b => (b.pages||0) >= 200).length, 5), target: 5,
-        check: (ctx) => ctx.completedBookList.filter(b => (b.pages||0) >= 200).length >= 5 },
-      { id: "crow",      label: "크로우",    hint: "주간 배틀 15승",
-        progress: (ctx) => Math.min(ctx.weeklyBattleWins, 15), target: 15,
-        check: (ctx) => ctx.weeklyBattleWins >= 15 },
-      { id: "leon",      label: "레온",      hint: "연속 출석 100일",
-        progress: (ctx) => Math.min(ctx.streak, 100), target: 100,
-        check: (ctx) => ctx.streak >= 100 },
-      { id: "elprimo",   label: "엘프리모",  hint: "배틀 50회 참여",
-        progress: (ctx) => Math.min(ctx.totalBattles, 50), target: 50,
-        check: (ctx) => ctx.totalBattles >= 50 },
-      // ⚡ 히든 포켓몬
-      { id: "squirtle",  label: "꼬부기",    hint: "총 3권 완독 (입문 보상)",
+      // 💎 V3.6 히든 전설 10인 (오리지널 IP, 책 속 영웅)
+      { id: "homer",          label: "호메로스",         hint: "첫 완독 3권 (입문 보상)",
         progress: (ctx) => Math.min(ctx.completedBookList.length, 3), target: 3,
         check: (ctx) => ctx.completedBookList.length >= 3 },
-      { id: "charizard", label: "리자몽",    hint: "총 8권 완독",
+      { id: "scheherazade",   label: "셰헤라자데",       hint: "총 8권 완독 (이야기꾼)",
         progress: (ctx) => Math.min(ctx.completedBookList.length, 8), target: 8,
         check: (ctx) => ctx.completedBookList.length >= 8 },
-      { id: "eevee",     label: "이브이",    hint: "5가지 장르 각 1권 이상",
+      { id: "hypatia",        label: "히파티아",         hint: "5가지 장르 각 1권 이상 (박학)",
         progress: (ctx) => {
           const doms = new Set();
           ctx.completedBookList.forEach(b => (b.domains||[]).forEach(d => doms.add(d)));
@@ -1848,19 +1932,38 @@
           ctx.completedBookList.forEach(b => (b.domains||[]).forEach(d => doms.add(d)));
           return doms.size >= 5;
         } },
-      { id: "pikachu",   label: "피카츄",    hint: "완독 5권 + 배틀 10승",
+      { id: "merlin",         label: "멀린",             hint: "연속 출석 100일 (영원한 마법사)",
+        progress: (ctx) => Math.min(ctx.streak, 100), target: 100,
+        check: (ctx) => ctx.streak >= 100 },
+      { id: "confucius",      label: "공자",             hint: "완독 5권 + 배틀 10승 (문무겸비)",
         progress: (ctx) => Math.min(ctx.completedBookList.length, 5) + Math.min(ctx.battleWins, 10), target: 15,
         check: (ctx) => ctx.completedBookList.length >= 5 && ctx.battleWins >= 10 },
-      { id: "mew",       label: "뮤",        hint: "7가지 모든 장르 제패 (최종)",
+      { id: "socrates",       label: "소크라테스",       hint: "200쪽 이상 책 5권 완독 (깊은 질문)",
+        progress: (ctx) => Math.min(ctx.completedBookList.filter(b => (b.pages||0) >= 200).length, 5), target: 5,
+        check: (ctx) => ctx.completedBookList.filter(b => (b.pages||0) >= 200).length >= 5 },
+      { id: "cleopatra",      label: "클레오파트라",     hint: "배틀 20승 (통치의 예술)",
+        progress: (ctx) => Math.min(ctx.battleWins, 20), target: 20,
+        check: (ctx) => ctx.battleWins >= 20 },
+      { id: "galileo",        label: "갈릴레오",         hint: "주간 배틀 15승 (천체의 관찰)",
+        progress: (ctx) => Math.min(ctx.weeklyBattleWins, 15), target: 15,
+        check: (ctx) => ctx.weeklyBattleWins >= 15 },
+      { id: "musashi",        label: "미야모토 무사시",  hint: "배틀 50회 참여 (검성의 수련)",
+        progress: (ctx) => Math.min(ctx.totalBattles, 50), target: 50,
+        check: (ctx) => ctx.totalBattles >= 50 },
+      { id: "sage_archivist", label: "성소의 파수꾼",    hint: "7가지 장르 + 다른 9명 히든 전부 해금 (궁극)",
         progress: (ctx) => {
           const doms = new Set();
           ctx.completedBookList.forEach(b => (b.domains||[]).forEach(d => doms.add(d)));
-          return Math.min(doms.size, 7);
-        }, target: 7,
+          const nineUnlocked = ["homer","scheherazade","hypatia","merlin","confucius","socrates","cleopatra","galileo","musashi"]
+            .filter(id => (ctx.ownedAvatars||[]).includes(id)).length;
+          return Math.min(doms.size, 7) + nineUnlocked;
+        }, target: 16,
         check: (ctx) => {
           const doms = new Set();
           ctx.completedBookList.forEach(b => (b.domains||[]).forEach(d => doms.add(d)));
-          return doms.size >= 7;
+          const nineUnlocked = ["homer","scheherazade","hypatia","merlin","confucius","socrates","cleopatra","galileo","musashi"]
+            .filter(id => (ctx.ownedAvatars||[]).includes(id)).length;
+          return doms.size >= 7 && nineUnlocked >= 9;
         } },
     ];
 
@@ -1969,8 +2072,19 @@
     const AvatarIcon = ({ avatarId, size = 40, style = {}, portrait = false }) => {
       const data = AVATAR_DATA.find(a => a.id === avatarId);
       if (!data) return React.createElement("span", { style: { fontSize: size * 0.6, ...style } }, "👤");
-      // portrait=true 전달 시 명시적으로 포트레이트(img) 사용 (갤러리/상세용)
       const src = portrait ? data.img : (data.iconImg || data.img);
+      const img = React.createElement("img", {
+        src,
+        alt: data.name,
+        style: { width: size, height: size, borderRadius: "50%", objectFit: "cover", flexShrink: 0, display: "block" }
+      });
+      if (data.holo) {
+        // 💎 히든 전설 홀로 셔머 래퍼
+        return React.createElement("span", {
+          className: "bq-holo-wrap",
+          style: { width: size, height: size, ...style }
+        }, img);
+      }
       return React.createElement("img", {
         src,
         alt: data.name,
@@ -3375,6 +3489,7 @@
           battleWins: battleWins || 0,
           weeklyBattleWins: weeklyBattleWins || 0,
           totalBattles,
+          ownedAvatars: ownedAvatars || [],
         };
         HIDDEN_UNLOCK_RULES.forEach(rule => {
           if (ownedAvatars.includes(rule.id)) return; // 이미 보유
@@ -7655,7 +7770,6 @@
   <script>
     if ('serviceWorker' in navigator) {
       let reloading = false;
-      // 새 SW가 장악(activate + clients.claim)하면 페이지 자동 새로고침
       navigator.serviceWorker.addEventListener('controllerchange', () => {
         if (reloading) return;
         reloading = true;
@@ -7663,16 +7777,12 @@
       });
 
       navigator.serviceWorker.register('./sw.js').then(reg => {
-        // 1시간마다 sw.js 업데이트 체크 (앱 장시간 열어둔 경우)
         setInterval(() => reg.update().catch(() => {}), 60 * 60 * 1000);
-
-        // 설치 중인 새 SW 감지 → 기존 탭 바로 갱신
         reg.addEventListener('updatefound', () => {
           const installing = reg.installing;
           if (!installing) return;
           installing.addEventListener('statechange', () => {
             if (installing.state === 'installed' && navigator.serviceWorker.controller) {
-              // 새 버전 설치 완료 → skipWaiting 요청 → controllerchange로 reload
               installing.postMessage({ type: 'SKIP_WAITING' });
             }
           });
