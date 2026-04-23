@@ -376,6 +376,21 @@
       {
         version: "1.8.0",
         date: "2026-04-23",
+        title: "V3.6 히든 전설 10인 + 홀로 레어 카드 효과 + 성소의 파수꾼 테마팩",
+        changes: [
+          "V3.6 히든 전설 오리지널 IP 10종 교체 — 호메로스/셰헤라자데/히파티아/멀린/공자/소크라테스/클레오파트라/갈릴레오/무사시/성소의 파수꾼",
+          "홀로그래픽 레어 카드 CSS 효과 — 무지개 셔머 애니메이션 + 골드/바이올렛 글로우 링. `data.holo = true` 아바타 자동 적용",
+          "해금 규칙 10개 리매핑 (난이도 유지) — 파수꾼은 \"7장르 + 다른 9명 전부 해금\" 궁극 보상",
+          "성소의 파수꾼 테마팩 UI 도입 — 프로필에 전용 카드, sage_archivist 해금 시만 표시",
+          "배경화면 다운로드 모달 — 홈/잠금화면 2종 1080×2340 PNG 다운로드 (PC 클릭 / 모바일 길게 누르기)",
+          "카톡 이모티콘 팩 모달 — 8 표정(기쁨·슬픔·놀람·사랑·생각·윙크·잠·응원) 개별 저장",
+          "Nano Banana로 생성한 11개 자산 세트 (`themes/sage_archivist/`) 추가",
+          "기존 포켓몬/브롤 10개는 AVATAR_DATA에 보존 (기존 보유자 유지), 히든 티어에선 분리"
+        ]
+      },
+      {
+        version: "1.8.0",
+        date: "2026-04-23",
         title: "V3.6 히든 전설 10인 + 홀로그래픽 레어 카드 효과",
         changes: [
           "Nano Banana로 생성한 V3.6 히든 전설 아바타 10종 오리지널 IP 교체 — 호메로스/셰헤라자데/히파티아/멀린/공자/소크라테스/클레오파트라/갈릴레오/미야모토 무사시/성소의 파수꾼(오리지널)",
@@ -2966,6 +2981,8 @@
       const [ownedItems, setOwnedItems] = useState([]);
       const [equippedItems, setEquippedItems] = useState({});
       const [showShop, setShowShop] = useState(false);
+      const [themeWallpaperModal, setThemeWallpaperModal] = useState(false);
+      const [themeEmojiModal, setThemeEmojiModal] = useState(false);
       const [shopCategory, setShopCategory] = useState("avatar");
       const [avatarRarityFilter, setAvatarRarityFilter] = useState("all");
       const [avatarPage, setAvatarPage] = useState(0);
@@ -5807,6 +5824,46 @@
             </button>
           </div>
 
+          {/* 💎 성소의 파수꾼 테마팩 — sage_archivist 해금 시만 표시 */}
+          {ownedAvatars.includes("sage_archivist") && (
+            <div style={{
+              position: "relative",
+              background: "linear-gradient(135deg, #1E1B4B 0%, #4C1D95 60%, #7C3AED 100%)",
+              borderRadius: 20, padding: "16px 18px", marginBottom: 16, color: "white",
+              boxShadow: "0 8px 28px rgba(76,29,149,0.35), 0 0 0 2px rgba(252,211,77,0.35)",
+              overflow: "hidden"
+            }}>
+              <div style={{ position: "absolute", top: 0, left: "10%", right: "10%", height: 2, background: "linear-gradient(90deg, transparent, #FCD34D, transparent)" }} />
+              <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                <div style={{ width: 72, height: 72, flexShrink: 0, filter: "drop-shadow(0 4px 14px rgba(252,211,77,0.45))" }}>
+                  <img src="themes/sage_archivist/chibi_sage_archivist.png" alt="sage chibi"
+                    style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 10, fontWeight: 800, color: "#FCD34D", letterSpacing: 2, marginBottom: 3 }}>EXCLUSIVE THEME PACK</div>
+                  <div style={{ fontSize: 16, fontWeight: 900, marginBottom: 3 }}>💎 성소의 파수꾼 테마팩</div>
+                  <div style={{ fontSize: 11, color: "rgba(255,255,255,0.85)", lineHeight: 1.5 }}>
+                    배경화면 2종 · 카톡 이모티콘 8종 — 히든 10 완전 수집 보상
+                  </div>
+                </div>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginTop: 14 }}>
+                <button onClick={() => setThemeWallpaperModal(true)}
+                  style={{ padding: "10px 12px", borderRadius: 12, border: "1px solid rgba(252,211,77,0.4)",
+                    background: "rgba(252,211,77,0.15)", color: "#FCD34D", fontSize: 12, fontWeight: 800, cursor: "pointer",
+                    backdropFilter: "blur(4px)" }}>
+                  🖼️ 배경화면 받기
+                </button>
+                <button onClick={() => setThemeEmojiModal(true)}
+                  style={{ padding: "10px 12px", borderRadius: 12, border: "1px solid rgba(167,139,250,0.4)",
+                    background: "rgba(167,139,250,0.18)", color: "#E9D5FF", fontSize: 12, fontWeight: 800, cursor: "pointer",
+                    backdropFilter: "blur(4px)" }}>
+                  💬 이모티콘 팩
+                </button>
+              </div>
+            </div>
+          )}
+
           <div style={{ background: "white", borderRadius: 16, padding: 20, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 16 }}>
             <button onClick={() => toggleSection("profInfo")}
               style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", background: "none", border: "none", padding: 0, cursor: "pointer", marginBottom: collapsedSections.profInfo ? 0 : 12 }}>
@@ -7728,6 +7785,83 @@
             </div>
           )}
 
+          {themeWallpaperModal && (
+            <div onClick={() => setThemeWallpaperModal(false)}
+              style={{ position: "fixed", inset: 0, zIndex: 1000, background: "rgba(15,10,35,0.85)", backdropFilter: "blur(8px)", display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
+              <div onClick={(e) => e.stopPropagation()}
+                style={{ background: "linear-gradient(145deg, #1E1B4B, #4C1D95)", borderRadius: 20, padding: 20, maxWidth: 430, width: "100%", maxHeight: "90vh", overflow: "auto", color: "white", boxShadow: "0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(252,211,77,0.35)" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
+                  <div>
+                    <div style={{ fontSize: 10, fontWeight: 800, color: "#FCD34D", letterSpacing: 2 }}>WALLPAPER DOWNLOAD</div>
+                    <div style={{ fontSize: 18, fontWeight: 900 }}>🖼️ 성소 배경화면</div>
+                  </div>
+                  <button onClick={() => setThemeWallpaperModal(false)}
+                    style={{ background: "rgba(255,255,255,0.1)", border: "none", color: "white", width: 32, height: 32, borderRadius: 10, fontSize: 16, cursor: "pointer" }}>✕</button>
+                </div>
+                <div style={{ fontSize: 11, color: "rgba(255,255,255,0.75)", marginBottom: 14, lineHeight: 1.5 }}>
+                  이미지를 <b style={{ color: "#FCD34D" }}>길게 누르면</b> 사진첩에 저장할 수 있어요.
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                  {[
+                    { src: "themes/sage_archivist/wallpaper_sage_archivist.png", name: "wallpaper_sage.png", label: "홈 배경화면" },
+                    { src: "themes/sage_archivist/wallpaper_sage_lockscreen.png", name: "wallpaper_sage_lockscreen.png", label: "잠금화면용" }
+                  ].map((w, i) => (
+                    <div key={i} style={{ background: "rgba(0,0,0,0.35)", borderRadius: 14, padding: 8, border: "1px solid rgba(252,211,77,0.25)" }}>
+                      <img src={w.src} alt={w.label}
+                        style={{ width: "100%", aspectRatio: "9/19.5", objectFit: "cover", borderRadius: 10, display: "block" }} />
+                      <div style={{ fontSize: 11, fontWeight: 700, textAlign: "center", marginTop: 8, color: "#FCD34D" }}>{w.label}</div>
+                      <a href={w.src} download={w.name}
+                        style={{ display: "block", marginTop: 6, padding: "7px 8px", borderRadius: 10, background: "rgba(252,211,77,0.22)", color: "#FCD34D", fontSize: 11, fontWeight: 800, textAlign: "center", textDecoration: "none", border: "1px solid rgba(252,211,77,0.4)" }}>
+                        ⬇ 다운로드
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {themeEmojiModal && (
+            <div onClick={() => setThemeEmojiModal(false)}
+              style={{ position: "fixed", inset: 0, zIndex: 1000, background: "rgba(15,10,35,0.85)", backdropFilter: "blur(8px)", display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
+              <div onClick={(e) => e.stopPropagation()}
+                style={{ background: "linear-gradient(145deg, #1E1B4B, #4C1D95)", borderRadius: 20, padding: 20, maxWidth: 430, width: "100%", maxHeight: "90vh", overflow: "auto", color: "white", boxShadow: "0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(167,139,250,0.35)" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
+                  <div>
+                    <div style={{ fontSize: 10, fontWeight: 800, color: "#E9D5FF", letterSpacing: 2 }}>EMOJI PACK</div>
+                    <div style={{ fontSize: 18, fontWeight: 900 }}>💬 성소 이모티콘 8종</div>
+                  </div>
+                  <button onClick={() => setThemeEmojiModal(false)}
+                    style={{ background: "rgba(255,255,255,0.1)", border: "none", color: "white", width: 32, height: 32, borderRadius: 10, fontSize: 16, cursor: "pointer" }}>✕</button>
+                </div>
+                <div style={{ fontSize: 11, color: "rgba(255,255,255,0.75)", marginBottom: 14, lineHeight: 1.5 }}>
+                  카톡/문자에 사용할 이모티콘. <b style={{ color: "#E9D5FF" }}>길게 누르면</b> 저장 또는 공유할 수 있어요.
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
+                  {[
+                    { src: "themes/sage_archivist/emoji_sage_happy.png", name: "sage_happy", label: "기쁨" },
+                    { src: "themes/sage_archivist/emoji_sage_sad.png", name: "sage_sad", label: "슬픔" },
+                    { src: "themes/sage_archivist/emoji_sage_surprised.png", name: "sage_surprised", label: "놀람" },
+                    { src: "themes/sage_archivist/emoji_sage_love.png", name: "sage_love", label: "사랑" },
+                    { src: "themes/sage_archivist/emoji_sage_thinking.png", name: "sage_thinking", label: "생각" },
+                    { src: "themes/sage_archivist/emoji_sage_wink.png", name: "sage_wink", label: "윙크" },
+                    { src: "themes/sage_archivist/emoji_sage_sleep.png", name: "sage_sleep", label: "잠" },
+                    { src: "themes/sage_archivist/emoji_sage_cheer.png", name: "sage_cheer", label: "응원" }
+                  ].map((e, i) => (
+                    <a key={i} href={e.src} download={e.name + ".png"} style={{ textDecoration: "none", textAlign: "center" }}>
+                      <div style={{ background: "rgba(255,255,255,0.08)", borderRadius: 12, padding: 6, border: "1px solid rgba(167,139,250,0.25)" }}>
+                        <img src={e.src} alt={e.label}
+                          style={{ width: "100%", aspectRatio: "1/1", objectFit: "contain", display: "block" }} />
+                      </div>
+                      <div style={{ fontSize: 10, fontWeight: 700, color: "#E9D5FF", marginTop: 4 }}>{e.label}</div>
+                      <div style={{ fontSize: 9, color: "rgba(255,255,255,0.55)" }}>⬇ 저장</div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
           {showInstallBanner && (
             <div style={{
               position: "fixed", bottom: 70, left: 12, right: 12, zIndex: 200,
@@ -7758,7 +7892,6 @@
                 </button>
               </div>
             </div>
-
           )}
         </div>
       );
