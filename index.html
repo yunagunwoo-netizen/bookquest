@@ -4220,8 +4220,8 @@
         return (battleTodayCount || 0) < 1;
       };
 
-      const BATTLE_PLAY_COIN_COST = 30;
-      const BATTLE_PLAY_DAILY_LIMIT = 3;
+      const BATTLE_PLAY_COIN_COST = 50;
+      const BATTLE_PLAY_DAILY_LIMIT = 2;
       const remainingPlayCount = () => {
         if (isAdmin) return 999;
         const today = getKstToday();
@@ -4606,7 +4606,7 @@
                   }}
                   disabled={battleLoading}
                   style={{ width: "100%", padding: "14px", borderRadius: 14, border: "2px solid #fde047", background: "linear-gradient(135deg, #f59e0b, #dc2626)", color: "white", fontSize: 15, fontWeight: 800, cursor: "pointer", marginTop: 14, opacity: battleLoading ? 0.6 : 1 }}>
-                  ⚔️ 직접 참여 ({BATTLE_PLAY_COIN_COST}코인 · {remainingPlayCount()}/{BATTLE_PLAY_DAILY_LIMIT})
+                  <img src="icons/battle-direct.png" alt="" style={{width:20,height:20,verticalAlign:"middle",marginRight:4}} /> 직접 참여 ({BATTLE_PLAY_COIN_COST}코인 · {remainingPlayCount()}/{BATTLE_PLAY_DAILY_LIMIT})
                 </button>
                 <button onClick={exitBattleV2} style={{ width: "100%", marginTop: 10, padding: "10px 22px", borderRadius: 12, border: "none", background: "rgba(255,255,255,0.1)", color: "white", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>랭킹으로 돌아가기</button>
               </div>
@@ -4630,11 +4630,11 @@
                 )}
                 <button onClick={() => launchBattle("watch")} disabled={battleLoading}
                   style={{ width: "100%", padding: "14px", borderRadius: 14, border: "none", background: "linear-gradient(135deg, #a855f7, #7c3aed)", color: "white", fontSize: 15, fontWeight: 800, cursor: "pointer", marginBottom: 10, opacity: battleLoading ? 0.6 : 1 }}>
-                  👀 관람하기 (실시간 중계)
+                  <img src="icons/battle-spectate.png" alt="" style={{width:20,height:20,verticalAlign:"middle",marginRight:4}} /> 관람하기 (실시간 중계)
                 </button>
                 <button onClick={() => launchBattle("auto")} disabled={battleLoading}
                   style={{ width: "100%", padding: "14px", borderRadius: 14, border: "1px solid rgba(255,255,255,0.3)", background: "rgba(255,255,255,0.08)", color: "white", fontSize: 15, fontWeight: 800, cursor: "pointer", marginBottom: 10, opacity: battleLoading ? 0.6 : 1 }}>
-                  🤖 대리 출전 (바로 결과 보기)
+                  <img src="icons/battle-proxy.png" alt="" style={{width:20,height:20,verticalAlign:"middle",marginRight:4}} /> 대리 출전 (바로 결과 보기)
                 </button>
                 <button
                   onClick={() => {
@@ -4644,7 +4644,7 @@
                   }}
                   disabled={battleLoading}
                   style={{ width: "100%", padding: "14px", borderRadius: 14, border: "2px solid #fde047", background: "linear-gradient(135deg, #f59e0b, #dc2626)", color: "white", fontSize: 15, fontWeight: 800, cursor: "pointer", opacity: battleLoading ? 0.6 : 1 }}>
-                  ⚔️ 직접 참여 ({BATTLE_PLAY_COIN_COST}코인 · {remainingPlayCount()}/{BATTLE_PLAY_DAILY_LIMIT})
+                  <img src="icons/battle-direct.png" alt="" style={{width:20,height:20,verticalAlign:"middle",marginRight:4}} /> 직접 참여 ({BATTLE_PLAY_COIN_COST}코인 · {remainingPlayCount()}/{BATTLE_PLAY_DAILY_LIMIT})
                 </button>
                 <div style={{ fontSize: 10, opacity: 0.7, textAlign: "center", marginTop: 8, lineHeight: 1.5 }}>
                   💡 직접 참여: 4지선다 문제를 네가 직접 풀어요
@@ -5305,7 +5305,7 @@
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14, position: "relative" }}>
                   <div>
                     <div style={{ fontSize: 12, color: "#6366f1", fontWeight: 700, letterSpacing: "0.5px" }}>안녕, {profile.name}!</div>
-                    <div style={{ fontSize: 18, fontWeight: 900, color: "#4338ca", letterSpacing: "-0.3px" }}>🧠 내 아바타 상태</div>
+                    <div style={{ fontSize: 18, fontWeight: 900, color: "#4338ca", letterSpacing: "-0.3px" }}><img src="icons/ui-avatar-status.png" alt="status" style={{width:20,height:20,verticalAlign:"middle",marginRight:4}} /> 내 아바타 상태</div>
                   </div>
                   <div style={{ fontSize: 11, color: "#6366f1", fontWeight: 700, background: "white", padding: "4px 10px", borderRadius: 10 }}>{currentTitle}</div>
                 </div>
