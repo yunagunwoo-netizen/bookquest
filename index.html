@@ -5281,99 +5281,6 @@
             </div>
           </div>
 
-          {/* 🔥 독서 스트릭 카드 (Phase 4 v1) */}
-          {(() => {
-            const todayStr = getTodayString();
-            const diffFromLast = daysBetweenDateStrings(lastCompletionDate, todayStr);
-            const hasRead = streak > 0 && lastCompletionDate != null;
-            const isTodayDone = diffFromLast === 0;
-            const isOnGrace = diffFromLast === 1; // 어제 완독 → 오늘 읽어야 스트릭 증가
-            const isUsingGrace = diffFromLast === 2; // 하루 빼먹음 (1일 유예 중)
-            const isBroken = diffFromLast !== null && diffFromLast >= 3; // 리셋될 예정
-            const nextMilestone = getNextStreakMilestone(streak || 0);
-            const prevMilestoneDays = (() => {
-              let prev = 0;
-              for (const m of STREAK_MILESTONES) { if (m.days <= streak) prev = m.days; else break; }
-              return prev;
-            })();
-            const nextDays = nextMilestone ? nextMilestone.days : null;
-            const progressPct = nextMilestone
-              ? Math.min(100, Math.round(((streak - prevMilestoneDays) / (nextDays - prevMilestoneDays)) * 100))
-              : 100;
-            const daysLeft = nextMilestone ? (nextDays - streak) : 0;
-
-            // 상태별 스타일/메시지
-            const cardBg = !hasRead
-              ? "linear-gradient(135deg, #F3F4F6, #E5E7EB)"
-              : isUsingGrace || isBroken
-                ? "linear-gradient(135deg, #FEF3C7, #FDE68A)"
-                : "linear-gradient(135deg, #FEE2E2, #FECACA)";
-            const accentColor = !hasRead ? "#6b7280" : (isUsingGrace || isBroken) ? "#d97706" : "#dc2626";
-            const flameOpacity = !hasRead ? 0.4 : 1;
-            const statusText = !hasRead
-              ? "첫 책을 완독하고 스트릭을 시작해보세요!"
-              : isTodayDone
-                ? "오늘 완독 완료! 🎉"
-                : isOnGrace
-                  ? "오늘 완독하면 스트릭 유지"
-                  : isUsingGrace
-                    ? "⚠️ 유예 중 — 오늘 안 읽으면 리셋"
-                    : isBroken
-                      ? "2일 연속 결석 — 오늘 읽으면 1일부터 다시!"
-                      : "오늘 완독하면 스트릭 시작";
-
-            return (
-              <div style={{ background: cardBg, borderRadius: 18, padding: "12px 14px", marginBottom: 14, border: `1px solid ${accentColor}30`, boxShadow: `0 2px 10px ${accentColor}20`, position: "relative", overflow: "hidden" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                  <div style={{ opacity: flameOpacity, flexShrink: 0, lineHeight: 0 }}>
-                    <Icon
-                      name={
-                        streak >= 100 ? "streak_100_gem" :
-                        streak >= 60  ? "streak_60_trophy" :
-                        streak >= 30  ? "streak_30_glow" :
-                        streak >= 14  ? "streak_14_star" :
-                        streak >= 7   ? "streak_7_flame" :
-                                        "streak_3_seedling"
-                      }
-                      size={36}
-                    />
-                  </div>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ display: "flex", alignItems: "baseline", gap: 6, flexWrap: "wrap" }}>
-                      <span style={{ fontSize: 22, fontWeight: 900, color: accentColor, lineHeight: 1 }}>{streak || 0}일</span>
-                      <span style={{ fontSize: 12, fontWeight: 700, color: accentColor, opacity: 0.8 }}>연속 독서 스트릭</span>
-                    </div>
-                    <div style={{ fontSize: 11, color: "#555", marginTop: 2, fontWeight: 600 }}>{statusText}</div>
-                  </div>
-                  {nextMilestone && (
-                    <div style={{ textAlign: "right", flexShrink: 0 }}>
-                      <div style={{ fontSize: 10, color: accentColor, fontWeight: 700 }}>다음 보상</div>
-                      <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>{nextMilestone.emoji}</div>
-                      <div style={{ fontSize: 10, color: "#666", fontWeight: 700 }}>+{nextMilestone.coins}💰</div>
-                    </div>
-                  )}
-                </div>
-
-                {/* 마일스톤 진행률 바 */}
-                {nextMilestone ? (
-                  <div style={{ marginTop: 8 }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, color: "#555", fontWeight: 700, marginBottom: 3 }}>
-                      <span>{prevMilestoneDays}일</span>
-                      <span>{daysLeft}일 남음 → {nextMilestone.days}일 "{nextMilestone.label}"</span>
-                    </div>
-                    <div style={{ background: "rgba(255,255,255,0.6)", borderRadius: 10, height: 6, overflow: "hidden" }}>
-                      <div style={{ background: `linear-gradient(90deg, ${accentColor}, #f59e0b)`, height: "100%", width: `${progressPct}%`, borderRadius: 10, transition: "width 0.5s" }} />
-                    </div>
-                  </div>
-                ) : (
-                  <div style={{ marginTop: 8, padding: "6px 10px", background: "rgba(255,255,255,0.7)", borderRadius: 10, fontSize: 11, fontWeight: 700, color: "#92400e", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
-                    <Icon name="streak_60_trophy" size={18} />
-                    <span>모든 스트릭 마일스톤 달성! 전설의 독서가!</span>
-                  </div>
-                )}
-              </div>
-            );
-          })()}
 
           {/* 🧠 통합 아바타 상태 카드 (A안: 헤더 + Phase 1 상태창 통합) */}
           {(() => {
@@ -5411,20 +5318,15 @@
                       avatarId={profile?.avatar}
                       equippedItems={equippedItems}
                       shape="circle"
-                      borderStyle={{ border: `${evo.borderWidth}px ${evo.borderStyle} ${evo.color}`, boxShadow: evo.shadow }}
+                      borderStyle={{ border: "3px solid #667eea", boxShadow: "0 4px 12px rgba(102,126,234,0.3)" }}
                       onClick={() => setShowAvatarDetail(true)}
                     />
-                    {/* 진화 3단계 왕관 오버레이 */}
-                    {evo.crown && (
-                      <div style={{ position: "absolute", top: -14, left: "50%", transform: "translateX(-50%)", fontSize: 22, zIndex: 11, filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.3))" }}>{evo.crown}</div>
-                    )}
                     <div onClick={(e) => { e.stopPropagation(); setShowAvatarDetail(true); }} style={{ position: "absolute", bottom: 0, right: 0, background: "#6366f1", borderRadius: "50%", width: 20, height: 20, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10, border: "2px solid white", fontSize: 10, color: "white", cursor: "pointer" }}>🔍</div>
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", marginBottom: 2 }}>
                       <div style={{ fontSize: 16, fontWeight: 800, color: "#1a1a2e" }}>{p.name}</div>
                       <span style={{ fontSize: 10, fontWeight: 700, color: rarityInfo.color, background: rarityInfo.bg, padding: "2px 8px", borderRadius: 8 }}>{rarityInfo.label}</span>
-                      <span style={{ fontSize: 10, fontWeight: 800, color: "white", background: evo.color, padding: "2px 8px", borderRadius: 8, boxShadow: `0 2px 6px ${evo.color}50` }}>{evo.emoji} {evo.name}</span>
                     </div>
                     <div style={{ fontSize: 11, color: "#666", fontWeight: 600, marginBottom: 6 }}>{p.label}</div>
                     <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, marginBottom: 4, fontWeight: 600 }}>
@@ -5567,11 +5469,10 @@
               {/* 아바타 + 이름 */}
               <div style={{ textAlign: "center", marginBottom: 16 }}>
                 <AvatarWithItems size={80} avatarId={profile?.avatar} equippedItems={equippedItems} shape="circle"
-                  borderStyle={{ border: `${evo.borderWidth}px ${evo.borderStyle} ${evo.color}`, boxShadow: evo.shadow }} />
+                  borderStyle={{ border: "3px solid #667eea", boxShadow: "0 4px 12px rgba(102,126,234,0.3)" }} />
                 <div style={{ fontSize: 18, fontWeight: 800, color: "#1a1a2e", marginTop: 8 }}>{p.name}</div>
                 <div style={{ display: "flex", justifyContent: "center", gap: 6, marginTop: 4 }}>
                   <span style={{ fontSize: 10, fontWeight: 700, color: rarityInfo.color, background: rarityInfo.bg, padding: "2px 8px", borderRadius: 8 }}>{rarityInfo.label}</span>
-                  <span style={{ fontSize: 10, fontWeight: 800, color: "white", background: evo.color, padding: "2px 8px", borderRadius: 8 }}>{evo.emoji} {evo.name}</span>
                 </div>
                 <div style={{ fontSize: 12, color: "#888", marginTop: 4 }}>Lv.{level} · IQ {stats.iq} · {p.label}</div>
               </div>
@@ -5968,34 +5869,13 @@
                 borderStyle={{ border: `${evo.borderWidth}px ${evo.borderStyle} ${evo.color}`, boxShadow: evo.shadow }}
                 onClick={() => { setShowShop(true); setShopCategory("frame"); }}
               />
-              {evo.crown && (
-                <div style={{ position: "absolute", top: -18, left: "50%", transform: "translateX(-50%)", fontSize: 32, zIndex: 11, filter: "drop-shadow(0 3px 6px rgba(0,0,0,0.35))" }}>{evo.crown}</div>
-              )}
-              <div style={{ position: "absolute", bottom: 8, right: "calc(50% - 91px)", background: evo.color, borderRadius: "50%", width: 28, height: 28, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10, border: "2px solid white", boxShadow: "0 2px 8px rgba(0,0,0,0.2)", fontSize: 13, color: "white", cursor: "pointer" }}>✎</div>
+              <div style={{ position: "absolute", bottom: 8, right: "calc(50% - 91px)", background: "#667eea", borderRadius: "50%", width: 28, height: 28, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10, border: "2px solid white", boxShadow: "0 2px 8px rgba(0,0,0,0.2)", fontSize: 13, color: "white", cursor: "pointer" }}>✎</div>
             </div>
             <div style={{ fontSize: 22, fontWeight: 800, color: "#1a1a2e" }}>{profile?.name}</div>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 6 }}>
-              <span style={{ fontSize: 11, fontWeight: 800, color: "white", background: evo.color, padding: "3px 10px", borderRadius: 10, boxShadow: `0 2px 8px ${evo.color}55` }}>{evo.emoji} {evo.stage}단계 · {evo.name}</span>
-            </div>
             <div style={{ fontSize: 14, color: "#667eea", fontWeight: 600, marginTop: 6 }}>{currentTitle}</div>
             <div style={{ fontSize: 13, color: "#888", marginTop: 2 }}>
               {profile?.school ? `${profile.school} ` : ""}{profile?.grade}학년 | Level {level}
             </div>
-            <div style={{ fontSize: 11, color: "#666", marginTop: 6, fontStyle: "italic" }}>{evo.tagline}</div>
-            {nextEvo ? (
-              <div style={{ margin: "10px auto 0", maxWidth: 260, background: "white", borderRadius: 12, padding: "8px 12px", border: `1px solid ${evo.color}30` }}>
-                <div style={{ fontSize: 11, color: "#555", fontWeight: 700, marginBottom: 4, display: "flex", justifyContent: "space-between" }}>
-                  <span>다음 진화 {nextEvo.emoji} {nextEvo.name}</span>
-                  <span style={{ color: evo.color }}>{avStats.booksCompleted.length} / {nextEvo.min}권</span>
-                </div>
-                <div style={{ height: 6, background: "#f1f5f9", borderRadius: 6, overflow: "hidden" }}>
-                  <div style={{ width: `${Math.min(100, (avStats.booksCompleted.length / nextEvo.min) * 100)}%`, height: "100%", background: `linear-gradient(90deg, ${evo.color}, ${nextEvo.color})`, borderRadius: 6, transition: "width 0.4s" }} />
-                </div>
-                <div style={{ fontSize: 10, color: "#888", marginTop: 4, textAlign: "center" }}>{booksToNext > 0 ? `다음 진화까지 ${booksToNext}권 남음` : "진화 준비 완료!"}</div>
-              </div>
-            ) : (
-              <div style={{ margin: "10px auto 0", maxWidth: 260, padding: "6px 12px", fontSize: 11, color: evo.color, fontWeight: 800, background: "white", borderRadius: 12, border: `1px solid ${evo.color}40` }}>🏆 최종 진화 단계 달성!</div>
-            )}
           </div>
 
           {/* 💎 테마팩 — THEME_PACKS 데이터 드리븐 렌더링 */}
@@ -8072,3 +7952,4 @@
   </script>
 </body>
 </html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
