@@ -5331,33 +5331,6 @@
                   </div>
                 </div>
 
-                {/* 🏅 최근 배지 3개 (v3: 아바타 상태 옆 진열장) */}
-                <div onClick={() => { /* 스크롤을 배지 컬렉션으로 */ }}
-                  style={{ background: "white", borderRadius: 14, padding: "8px 12px", marginBottom: 10, display: "flex", alignItems: "center", gap: 8, boxShadow: "0 2px 8px rgba(99,102,241,0.08)" }}>
-                  <span style={{ fontSize: 11, color: "#6366f1", fontWeight: 800, flexShrink: 0, letterSpacing: 0.3 }}>🏆 최근</span>
-                  <div style={{ display: "flex", gap: 6, flex: 1, overflowX: "auto", minWidth: 0 }}>
-                    {earnedBadges.length > 0 ? (
-                      earnedBadges
-                        .slice()
-                        .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0))
-                        .slice(0, 3)
-                        .map((eb, i) => {
-                          const badge = BADGES.find(bb => bb.name === eb.name);
-                          if (!badge) return null;
-                          return (
-                            <div key={i} style={{ display: "flex", alignItems: "center", gap: 4, padding: "3px 8px", background: `${badge.color}15`, borderRadius: 10, border: `1px solid ${badge.color}40`, flexShrink: 0 }}>
-                              <SvgIcon svg={badge.svg} size={18} />
-                              <span style={{ fontSize: 10, fontWeight: 700, color: badge.color, whiteSpace: "nowrap" }}>{badge.name}</span>
-                            </div>
-                          );
-                        })
-                    ) : (
-                      <span style={{ fontSize: 10, color: "#aaa", fontStyle: "italic" }}>책을 읽고 배지를 모아보세요</span>
-                    )}
-                  </div>
-                  <span style={{ fontSize: 10, color: "#888", fontWeight: 700, flexShrink: 0 }}>{earnedBadges.length}/{BADGES.length}</span>
-                </div>
-
                 {/* 3종 지표: IQ / 코인 / 연속 */}
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginBottom: 10 }}>
                   <div style={{ background: "white", borderRadius: 14, padding: "10px 6px", textAlign: "center", boxShadow: "0 1px 6px rgba(99,102,241,0.08)" }}>
