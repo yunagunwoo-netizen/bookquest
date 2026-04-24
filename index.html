@@ -1215,14 +1215,14 @@
     // 🧠 Avatar Stats: Domain Metadata (Phase 1)
     // ═══════════════════════════════════════
     const DOMAIN_META = [
-      { id: "economy",     name: "경제",     emoji: "💰", color: "#FFC107" },
-      { id: "environment", name: "환경",     emoji: "🌱", color: "#4CAF50" },
-      { id: "science",     name: "과학",     emoji: "🔬", color: "#3F51B5" },
-      { id: "law",         name: "법",       emoji: "⚖️", color: "#795548" },
-      { id: "history",     name: "역사",     emoji: "🏛️", color: "#FF9800" },
-      { id: "media",       name: "미디어",   emoji: "📱", color: "#E91E63" },
-      { id: "philosophy",  name: "철학",     emoji: "💭", color: "#9C27B0" },
-      { id: "literature",  name: "문학",     emoji: "📖", color: "#00BCD4" }
+      { id: "economy",     name: "경제",     emoji: "💰", color: "#FFC107", icon: "icons/theme-money.png" },
+      { id: "environment", name: "환경",     emoji: "🌱", color: "#4CAF50", icon: "icons/theme-earth.png" },
+      { id: "science",     name: "과학",     emoji: "🔬", color: "#3F51B5", icon: "icons/theme-science.png" },
+      { id: "law",         name: "법",       emoji: "⚖️", color: "#795548", icon: "icons/theme-law.png" },
+      { id: "history",     name: "역사",     emoji: "🏛️", color: "#FF9800", icon: "icons/theme-diplomacy.png" },
+      { id: "media",       name: "미디어",   emoji: "📱", color: "#E91E63", icon: "icons/theme-media.png" },
+      { id: "philosophy",  name: "철학",     emoji: "💭", color: "#9C27B0", icon: "icons/theme-brain.png" },
+      { id: "literature",  name: "문학",     emoji: "📖", color: "#00BCD4", icon: "icons/theme-seeds.png" }
     ];
     const DOMAIN_IDS = DOMAIN_META.map(d => d.id);
 
@@ -2942,7 +2942,7 @@
             const value = domains[ax.id] || 0;
             return (
               <g key={ax.id}>
-                <image href={`icons/v1/theme_${ax.id}.png`} x={labelPt.x - 10} y={labelPt.y - 12}
+                <image href={ax.icon} x={labelPt.x - 10} y={labelPt.y - 12}
                   width={20} height={20} preserveAspectRatio="xMidYMid meet" />
                 <text x={labelPt.x} y={labelPt.y + 14}
                   textAnchor="middle" fontSize={10} fill="#555" fontWeight={600} dominantBaseline="middle">
