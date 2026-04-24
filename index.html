@@ -3948,9 +3948,9 @@
               </div>
 
               <div style={{ marginBottom: 24 }}>
-                <label style={{ fontSize: 13, fontWeight: 600, color: "#555", display: "block", marginBottom: 8 }}>아바타 선택 ({ownedAvatars.length}개 보유)</label>
+                <label style={{ fontSize: 13, fontWeight: 600, color: "#555", display: "block", marginBottom: 8 }}>아바타 선택 ({isAdmin ? "🔓 관리자: 전체" : ownedAvatars.length + "개 보유"})</label>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, maxHeight: 240, overflowY: "auto" }}>
-                  {AVATAR_DATA.filter(a => ownedAvatars.includes(a.id)).map(a => (
+                  {AVATAR_DATA.filter(a => isAdmin || ownedAvatars.includes(a.id)).map(a => (
                     <button key={a.id} onClick={() => setProfileForm(p => ({ ...p, avatar: a.id }))}
                       style={{
                         width: "100%", padding: "8px 0", borderRadius: 16, border: "3px solid",
@@ -5936,7 +5936,7 @@
           </div>
 
           {/* 💎 테마팩 — THEME_PACKS 데이터 드리븐 렌더링 */}
-          {THEME_PACKS.filter(tp => ownedAvatars.includes(tp.avatarId)).map(tp => (
+          {THEME_PACKS.filter(tp => isAdmin || ownedAvatars.includes(tp.avatarId)).map(tp => (
             <div key={tp.avatarId} style={{
               position: "relative",
               background: tp.gradient,
@@ -6392,23 +6392,33 @@
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                     <button onClick={() => {
-                      setLastBattleDate(null);
-                      setBattleTodayCount(0);
-                      setBattleError("");
-                      setBattlePhase("gate");
-                      alert("배틀 일일 카운트 리셋 완료!");
+                      try {
+                        setLastBattleDate(null);
+                        setBattleTodayCount(0);
+                        setLastBattlePlayDate(null);
+                        setBattleTodayPlayCount(0);
+                        setBattleError("");
+                        setBattlePhase("gate");
+                        showCoinGain(0, "배틀 일일 카운트 리셋 완료!");
+                      } catch(e) { console.error("배틀 리셋 오류:", e); }
                     }}
                       style={{ padding: "10px", borderRadius: 10, border: "1.5px solid #667eea", background: "#667eea08", color: "#667eea", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
                       🔄 오늘 배틀 카운트 리셋
                     </button>
                     <button onClick={() => {
-                      if (confirm("배틀 전적(승/패/무) 모두 초기화할까요?")) {
+                      try {
                         setBattleWins(0);
                         setBattleLosses(0);
                         setBattleDraws(0);
                         setWeeklyBattleWins(0);
-                        alert("배틀 전적 초기화 완료!");
-                      }
+                        setLastBattleDate(null);
+                        setBattleTodayCount(0);
+                        setLastBattlePlayDate(null);
+                        setBattleTodayPlayCount(0);
+                        setBattleError("");
+                        setBattlePhase("gate");
+                        showCoinGain(0, "배틀 전적 초기화 완료!");
+                      } catch(e) { console.error("배틀 전적 초기화 오류:", e); }
                     }}
                       style={{ padding: "10px", borderRadius: 10, border: "1.5px solid #f59e0b", background: "#f59e0b08", color: "#f59e0b", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
                       🗑️ 배틀 전적 초기화
