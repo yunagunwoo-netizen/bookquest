@@ -2988,6 +2988,7 @@
       const [rankingData, setRankingData] = useState(null);
       const [rankingLoading, setRankingLoading] = useState(false);
       const [rankingError, setRankingError] = useState(null);
+      const [rankingPage, setRankingPage] = useState(0);
       // Phase 5b: 아바타 배틀 — 누적/주간 승패 기록 (Firestore 저장)
       const [battleWins, setBattleWins] = useState(0);
       const [battleLosses, setBattleLosses] = useState(0);
@@ -3993,6 +3994,7 @@
       const fetchRanking = async () => {
         setRankingLoading(true);
         setRankingError(null);
+        setRankingPage(0);
         try {
           // 1) localStorage 캐시 확인 (15분)
           const cached = (() => {
@@ -5190,15 +5192,30 @@
             {/* Top 20 리스트 */}
             {!rankingLoading && !rankingError && (
               <div>
-                <div style={{ fontSize: 12, fontWeight: 700, color: "#888", marginBottom: 8, padding: "0 2px" }}>
-                  TOP 20
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8, padding: "0 2px" }}>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: "#888" }}>
+                    TOP 20
+                  </div>
+                  {top20.length > 5 && (
+                    <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                      <button onClick={() => setRankingPage(Math.max(0, rankingPage - 1))} disabled={rankingPage === 0}
+                        style={{ width: 28, height: 28, borderRadius: 8, border: "1px solid #ddd", background: rankingPage === 0 ? "#f5f5f5" : "white", color: rankingPage === 0 ? "#ccc" : "#555", fontSize: 13, fontWeight: 700, cursor: rankingPage === 0 ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>‹</button>
+                      {Array.from({ length: Math.ceil(top20.length / 5) }, (_, i) => (
+                        <button key={i} onClick={() => setRankingPage(i)}
+                          style={{ width: 28, height: 28, borderRadius: 8, border: rankingPage === i ? "1.5px solid #667eea" : "1px solid #ddd", background: rankingPage === i ? "#667eea" : "white", color: rankingPage === i ? "white" : "#555", fontSize: 12, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>{i + 1}</button>
+                      ))}
+                      <button onClick={() => setRankingPage(Math.min(Math.ceil(top20.length / 5) - 1, rankingPage + 1))} disabled={rankingPage >= Math.ceil(top20.length / 5) - 1}
+                        style={{ width: 28, height: 28, borderRadius: 8, border: "1px solid #ddd", background: rankingPage >= Math.ceil(top20.length / 5) - 1 ? "#f5f5f5" : "white", color: rankingPage >= Math.ceil(top20.length / 5) - 1 ? "#ccc" : "#555", fontSize: 13, fontWeight: 700, cursor: rankingPage >= Math.ceil(top20.length / 5) - 1 ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>›</button>
+                    </div>
+                  )}
                 </div>
                 {top20.length === 0 ? (
                   <div style={{ textAlign: "center", padding: "40px 20px", color: "#999", fontSize: 13 }}>
                     이번 주엔 아직 완독한 사람이 없어요. 첫 번째가 되어보세요! 📚
                   </div>
                 ) : (
-                  top20.map((it, idx) => {
+                  top20.slice(rankingPage * 5, rankingPage * 5 + 5).map((it, sliceIdx) => {
+                    const idx = rankingPage * 5 + sliceIdx;
                     const isMe = it.uid === myUid;
                     const medalName = idx === 0 ? "medal_gold" : idx === 1 ? "medal_silver" : idx === 2 ? "medal_bronze" : null;
                     return (
