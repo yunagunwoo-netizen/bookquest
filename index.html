@@ -5955,21 +5955,21 @@
           {THEME_PACKS.filter(tp => isAdmin || ownedAvatars.includes(tp.avatarId)).map(tp => (
             <div key={tp.avatarId} style={{
               position: "relative",
-              marginBottom: 16, marginTop: 18
+              marginBottom: 16
             }}>
-              {/* chibi — 카드 바깥에 배치하여 overflow 클리핑 방지 */}
+              {/* chibi — 카드 바깥에 배치, 세로 가운데 정렬 */}
               <img src={tp.chibiImg} alt={`${tp.name} chibi`}
                 style={{
-                  position: "absolute", left: 8, top: -14, zIndex: 2,
-                  width: 120, height: 120, objectFit: "contain",
+                  position: "absolute", left: -6, top: "50%", transform: "translateY(-50%)", zIndex: 2,
+                  width: 150, height: 150, objectFit: "contain",
                   filter: `drop-shadow(0 4px 14px ${tp.accentColor}99)`
                 }} />
               {/* 카드 본체 */}
               <div style={{
                 position: "relative", background: tp.gradient,
-                borderRadius: 20, padding: "16px 18px 16px 130px", color: "white",
+                borderRadius: 20, padding: "16px 18px 16px 138px", color: "white",
                 boxShadow: `0 8px 28px ${tp.shadowColor}, 0 0 0 2px ${tp.borderGlow}`,
-                overflow: "hidden", minHeight: 110
+                overflow: "hidden", minHeight: 120
               }}>
                 <div style={{ position: "absolute", top: 0, left: "10%", right: "10%", height: 2, background: `linear-gradient(90deg, transparent, ${tp.accentColor}, transparent)` }} />
                 <div style={{ textAlign: "center" }}>
