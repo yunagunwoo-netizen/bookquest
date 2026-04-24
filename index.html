@@ -1794,9 +1794,9 @@
       _av34("malala",        "말랄라",         "#ec4899", "#831843", "epic", 1200),
       _av34("louis_braille", "루이 브라이",    "#1e3a8a", "#1e293b", "epic", 1200),
 
-      // ▸ 부록 · 한국 영웅 추가 2종 · epic 1500코인
-      _av34("jang_yeongsil", "장영실",         "#92400e", "#44403c", "epic", 1500),
-      _av34("yu_gwansun",    "유관순",         "#1e3a8a", "#0c4a6e", "epic", 1500),
+      // ▸ 부록 · 한국 영웅 추가 2종 · heroic 800코인
+      _av34("jang_yeongsil", "장영실",         "#92400e", "#44403c", "heroic", 800),
+      _av34("yu_gwansun",    "유관순",         "#1e3a8a", "#0c4a6e", "heroic", 800),
 
       // ▸ 전설 (Legendary) 10종 · legendary 2500코인
       _av34("arthur",        "아서 왕",        "#9ca3af", "#374151", "legendary", 2500),
@@ -1991,8 +1991,8 @@
       "dash", "bux", "zero", "nuts", "buddy",
       "mujin", "monki", "arth", "shade", "rix",
     ];
-    // 히든 영웅 2종 (코인 구매 불가, 특정 조건 달성 시 해금)
-    const HIDDEN_HERO_IDS = ["jang_yeongsil", "yu_gwansun"];
+    // 히든 영웅 (코인 구매 불가, 특정 조건 달성 시 해금) — 장영실/유관순은 영웅으로 이동
+    const HIDDEN_HERO_IDS = [];
     // 히든 포켓몬 5종 (V3.4 포트레이트, 상점 숨김) — LEGACY (기존 보유자 유지, 히든 티어에선 제거)
     const HIDDEN_POKEMON_IDS_LEGACY = ["pikachu", "charizard", "eevee", "mew", "squirtle"];
     // 히든 브롤 5종 (상점 숨김) — LEGACY (기존 보유자 유지, 히든 티어에선 제거)
@@ -2037,14 +2037,6 @@
     // check(ctx) 함수는 { completedBookList, streak, battleWins, weeklyBattleWins, totalBattles }를 받음
     // ═══════════════════════════════════════
     const HIDDEN_UNLOCK_RULES = [
-      // 🇰🇷 히든 영웅 (한국)
-      { id: "jang_yeongsil", label: "장영실",  hint: "과학·역사·철학 책 5권 완독",
-        progress: (ctx) => Math.min(ctx.completedBookList.filter(b => (b.domains||[]).some(d => ["science","history","philosophy"].includes(d))).length, 5),
-        target: 5,
-        check: (ctx) => ctx.completedBookList.filter(b => (b.domains||[]).some(d => ["science","history","philosophy"].includes(d))).length >= 5 },
-      { id: "yu_gwansun",    label: "유관순",  hint: "연속 출석 30일",
-        progress: (ctx) => Math.min(ctx.streak, 30), target: 30,
-        check: (ctx) => ctx.streak >= 30 },
       // 💎 V3.6 히든 전설 10인 (오리지널 IP, 책 속 영웅)
       { id: "homer",          label: "호메로스",         hint: "첫 완독 3권 (입문 보상)",
         progress: (ctx) => Math.min(ctx.completedBookList.length, 3), target: 3,
