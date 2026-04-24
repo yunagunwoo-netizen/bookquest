@@ -7109,13 +7109,7 @@
             {/* 헤더 - 보라색(#6366f1 → #a855f7) 아바타 테마 */}
             <div style={{ padding: "16px 20px", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)", color: "white", flexShrink: 0 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <AvatarWithItems
-                  size={52}
-                  avatarId={profile?.avatar}
-                  equippedItems={equippedItems}
-                  shape="circle"
-                  borderStyle={{ border: `3px solid ${rarityInfo.color}`, boxShadow: `0 0 0 2px white` }}
-                />
+                <AvatarIcon avatarId={profile?.avatar} size={52} style={{ border: `3px solid ${rarityInfo.color}`, boxShadow: `0 0 0 2px white` }} />
                 <div style={{ flex: 1 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                     <div style={{ fontSize: 18, fontWeight: 800 }}>💬 {avatarProfile.name}와 대화</div>
@@ -7133,13 +7127,7 @@
               {avatarChatMessages.map((msg, i) => (
                 <div key={i} style={{ display: "flex", justifyContent: msg.role === "user" ? "flex-end" : "flex-start", marginBottom: 10, alignItems: "flex-end", gap: 6 }}>
                   {msg.role === "ai" && (
-                    <AvatarWithItems
-                      size={36}
-                      avatarId={profile?.avatar}
-                      equippedItems={equippedItems}
-                      shape="circle"
-                      borderStyle={{ border: `2px solid ${rarityInfo.color}`, flexShrink: 0 }}
-                    />
+                    <AvatarIcon avatarId={profile?.avatar} size={36} style={{ border: `2px solid ${rarityInfo.color}`, flexShrink: 0 }} />
                   )}
                   <div style={{
                     maxWidth: "75%", padding: "10px 14px",
@@ -7155,13 +7143,7 @@
               ))}
               {avatarChatLoading && (
                 <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
-                  <AvatarWithItems
-                    size={36}
-                    avatarId={profile?.avatar}
-                    equippedItems={equippedItems}
-                    shape="circle"
-                    borderStyle={{ border: `2px solid ${rarityInfo.color}`, flexShrink: 0 }}
-                  />
+                  <AvatarIcon avatarId={profile?.avatar} size={36} style={{ border: `2px solid ${rarityInfo.color}`, flexShrink: 0 }} />
                   <span style={{ fontSize: 12, color: "#666", fontStyle: "italic" }}>{avatarProfile.name} 생각하는 중...</span>
                 </div>
               )}
