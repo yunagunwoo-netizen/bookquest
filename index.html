@@ -6697,7 +6697,8 @@
           setAskLoading(false);
           completeMissionByTrigger("question");
 
-          VoiceService.speak(answer, () => {}, "ko-KR-Neural2-A");
+          setIsSpeaking(true);
+          VoiceService.speak(answer, () => { setIsSpeaking(false); }, "ko-KR-Neural2-A");
         };
 
         const startAskListening = () => {
@@ -7013,7 +7014,8 @@
           setAvatarChatLoading(false);
           completeMissionByTrigger("question");
 
-          VoiceService.speak(answer, () => {}, "ko-KR-Neural2-A");
+          setIsSpeaking(true);
+          VoiceService.speak(answer, () => { setIsSpeaking(false); }, "ko-KR-Neural2-A");
         };
 
         return (
