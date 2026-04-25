@@ -6758,6 +6758,14 @@
                   <span style={{ fontSize: 12, color: "#666", fontStyle: "italic" }}>책을 찾아보는 중...</span>
                 </div>
               )}
+              {isSpeaking && <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+                <span style={{ fontSize: 20 }}>🔊</span>
+                <span style={{ fontSize: 12, color: "#666", fontStyle: "italic" }}>AI가 말하는 중...</span>
+                <button onClick={() => { VoiceService.stopSpeaking(); setIsSpeaking(false); }}
+                  style={{ marginLeft: "auto", padding: "4px 12px", borderRadius: 8, border: "1.5px solid #667eea", background: "white", color: "#667eea", fontSize: 11, fontWeight: 700, cursor: "pointer" }}>
+                  ⏭️ 건너뛰기
+                </button>
+              </div>}
               <div ref={askEndRef} />
             </div>
 
@@ -7044,6 +7052,14 @@
                   <span style={{ fontSize: 12, color: "#666", fontStyle: "italic" }}>{avatarProfile.name} 생각하는 중...</span>
                 </div>
               )}
+              {isSpeaking && <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+                <span style={{ fontSize: 20 }}>🔊</span>
+                <span style={{ fontSize: 12, color: "#666", fontStyle: "italic" }}>AI가 말하는 중...</span>
+                <button onClick={() => { VoiceService.stopSpeaking(); setIsSpeaking(false); }}
+                  style={{ marginLeft: "auto", padding: "4px 12px", borderRadius: 8, border: "1.5px solid #667eea", background: "white", color: "#667eea", fontSize: 11, fontWeight: 700, cursor: "pointer" }}>
+                  ⏭️ 건너뛰기
+                </button>
+              </div>}
               <div ref={avatarChatEndRef} />
             </div>
 
