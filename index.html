@@ -6451,9 +6451,13 @@
                       };
                       const missionNav = () => {
                         if (completed) return;
-                        if (mission.trigger === "discussion" || mission.trigger === "deep_discussion" || mission.trigger === "reading") setScreen("discussion");
-                        else if (mission.trigger === "question") setScreen("askbook");
-                        else if (mission.trigger === "quiz") { setSelectedBook(thisWeekBook); setBookTab("summary"); setScreen("book"); }
+                        if (mission.trigger === "discussion" || mission.trigger === "deep_discussion" || mission.trigger === "reading") {
+                          setSelectedBook(thisWeekBook); setBookTab("discuss"); setScreen("book");
+                        } else if (mission.trigger === "question") {
+                          setScreen("askbook");
+                        } else if (mission.trigger === "quiz") {
+                          setSelectedBook(thisWeekBook); setBookTab("quiz"); setScreen("book");
+                        }
                       };
                       return (
                         <div key={mission.id} onClick={missionNav} style={{
