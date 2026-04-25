@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="BookQuest">
   <meta name="description" content="BookQuest - 독서 모험 앱">
-  <meta name="theme-color" content="#0f0a1e">
+  <meta name="theme-color" content="#667eea">
   <link rel="icon" href="icons/favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="icons/app-icon-192.png">
   <link rel="manifest" href="manifest.json">
@@ -24,15 +24,15 @@
 
     body {
       font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #0f0a1e;
-      color: #e8dff5;
+      background: #f7f7fa;
+      color: #1a1a2e;
     }
 
     #root {
       width: 100%;
       max-width: 430px;
       margin: 0 auto;
-      background: #0f0a1e;
+      background: #f7f7fa;
       min-height: 100vh;
     }
 
@@ -43,7 +43,7 @@
 
     input:focus {
       outline: none;
-      border-color: #c4a44a !important;
+      border-color: #667eea !important;
     }
 
     ::-webkit-scrollbar {
@@ -51,7 +51,7 @@
     }
 
     ::-webkit-scrollbar-thumb {
-      background: #2d1b69;
+      background: #ddd;
       border-radius: 4px;
     }
 
@@ -68,10 +68,10 @@
 
     @keyframes pulse {
       0%, 100% {
-        box-shadow: 0 0 0 0 rgba(196, 164, 74, 0.7);
+        box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
       }
       50% {
-        box-shadow: 0 0 0 20px rgba(196, 164, 74, 0);
+        box-shadow: 0 0 0 20px rgba(102, 126, 234, 0);
       }
     }
 
@@ -85,8 +85,8 @@
     }
 
     .loader {
-      border: 4px solid #1a1040;
-      border-top: 4px solid #c4a44a;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #667eea;
       border-radius: 50%;
       width: 40px;
       height: 40px;
@@ -1525,7 +1525,7 @@
       name: "노아 선생님",
       shortName: "노아",
       img: RECOMMEND_IMGS.default,
-      color: "#7c3aed",
+      color: "#764ba2",
     };
 
     // ═══════════════════════════════════════
@@ -1568,8 +1568,8 @@
     // frame/aura = 비주얼 오버레이 (아바타에 직접 표시)
     // hat/face/pet/weapon = 효과 카드 (기능 보너스 부여)
     const ITEM_EFFECTS = {
-      frame:  { type: "visual", label: "비주얼", desc: "아바타 테두리 장식", color: "#7c3aed" },
-      aura:   { type: "visual", label: "비주얼", desc: "아바타 배경 이펙트", color: "#5b21b6" },
+      frame:  { type: "visual", label: "비주얼", desc: "아바타 테두리 장식", color: "#667eea" },
+      aura:   { type: "visual", label: "비주얼", desc: "아바타 배경 이펙트", color: "#764ba2" },
       hat:    { type: "bonus", label: "토론 XP +15%", desc: "토론 완료 시 XP 보너스", color: "#FF6B35", icon: "🎩", stat: "discussionXp", value: 0.15 },
       face:   { type: "bonus", label: "퀴즈 코인 +2", desc: "퀴즈 정답 시 추가 코인", color: "#2196F3", icon: "🕶️", stat: "quizCoin", value: 2 },
       pet:    { type: "bonus", label: "출석 코인 +3", desc: "매일 출석 보너스 추가", color: "#4CAF50", icon: "🐾", stat: "loginCoin", value: 3 },
@@ -2101,10 +2101,10 @@
         emoji: "🌱",
         min: 0,
         max: 2,
-        color: "#7c3aed",
+        color: "#667eea",
         borderWidth: 3,
         borderStyle: "solid",
-        shadow: "0 4px 14px rgba(124,58,237,0.25)",
+        shadow: "0 4px 14px rgba(102,126,234,0.25)",
         crown: null,
         tagline: "독서를 막 시작한 단계"
       },
@@ -2920,13 +2920,13 @@
           {/* 데이터 영역 */}
           <polygon
             points={polyPath}
-            fill="rgba(124,58,237,0.25)"
-            stroke="#7c3aed"
+            fill="rgba(102,126,234,0.25)"
+            stroke="#667eea"
             strokeWidth={2}
           />
           {/* 데이터 포인트 */}
           {dataPoints.map((p, i) => (
-            <circle key={i} cx={p.x} cy={p.y} r={3} fill="#7c3aed" />
+            <circle key={i} cx={p.x} cy={p.y} r={3} fill="#667eea" />
           ))}
           {/* 축 레이블 (이모지 + 수치) */}
           {axes.map((ax, i) => {
@@ -3904,38 +3904,38 @@
           <div style={{ width: "100%", maxWidth: 380 }}>
             <div style={{ textAlign: "center", marginBottom: 32 }}>
               <img src="icons/app-icon-192.png" style={{ width: 80, height: 80, marginBottom: 8, borderRadius: 16 }} />
-              <div style={{ fontSize: 28, fontWeight: 900, background: "linear-gradient(135deg, #7c3aed, #c4a44a)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>BookQuest</div>
-              <div style={{ fontSize: 14, color: "#7c6fa0", marginTop: 4 }}>나만의 독서 모험을 시작하세요!</div>
-              <div style={{ fontSize: 12, color: "#7c6fa0", marginTop: 8 }}>📅 {formatDate(today)} {getDayName(today)}요일</div>
+              <div style={{ fontSize: 28, fontWeight: 900, background: "linear-gradient(135deg, #667eea, #764ba2)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>BookQuest</div>
+              <div style={{ fontSize: 14, color: "#888", marginTop: 4 }}>나만의 독서 모험을 시작하세요!</div>
+              <div style={{ fontSize: 12, color: "#aaa", marginTop: 8 }}>📅 {formatDate(today)} {getDayName(today)}요일</div>
             </div>
 
-            <div style={{ background: "#1a1040", borderRadius: 20, padding: 24, boxShadow: "0 4px 20px rgba(124,58,237,0.15)" }}>
-              <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 20, color: "#e8dff5", textAlign: "center" }}>모험가 프로필 만들기</h3>
+            <div style={{ background: "white", borderRadius: 20, padding: 24, boxShadow: "0 4px 20px rgba(0,0,0,0.08)" }}>
+              <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 20, color: "#1a1a2e", textAlign: "center" }}>모험가 프로필 만들기</h3>
 
               <div style={{ marginBottom: 16 }}>
-                <label style={{ fontSize: 13, fontWeight: 600, color: "#9d8ec4", display: "block", marginBottom: 6 }}>이름 *</label>
+                <label style={{ fontSize: 13, fontWeight: 600, color: "#555", display: "block", marginBottom: 6 }}>이름 *</label>
                 <input value={profileForm.name} onChange={e => setProfileForm(p => ({ ...p, name: e.target.value }))}
                   placeholder="이름을 입력하세요"
-                  style={{ width: "100%", padding: "12px 14px", borderRadius: 12, border: "2px solid rgba(124,58,237,0.2)", background: "#150e30", color: "#e8dff5", fontSize: 14, outline: "none", boxSizing: "border-box" }} />
+                  style={{ width: "100%", padding: "12px 14px", borderRadius: 12, border: "2px solid #eee", fontSize: 14, outline: "none", boxSizing: "border-box" }} />
               </div>
 
               <div style={{ marginBottom: 16 }}>
-                <label style={{ fontSize: 13, fontWeight: 600, color: "#9d8ec4", display: "block", marginBottom: 6 }}>학교</label>
+                <label style={{ fontSize: 13, fontWeight: 600, color: "#555", display: "block", marginBottom: 6 }}>학교</label>
                 <input value={profileForm.school} onChange={e => setProfileForm(p => ({ ...p, school: e.target.value }))}
                   placeholder="학교 이름 (선택)"
-                  style={{ width: "100%", padding: "12px 14px", borderRadius: 12, border: "2px solid rgba(124,58,237,0.2)", background: "#150e30", color: "#e8dff5", fontSize: 14, outline: "none", boxSizing: "border-box" }} />
+                  style={{ width: "100%", padding: "12px 14px", borderRadius: 12, border: "2px solid #eee", fontSize: 14, outline: "none", boxSizing: "border-box" }} />
               </div>
 
               <div style={{ marginBottom: 20 }}>
-                <label style={{ fontSize: 13, fontWeight: 600, color: "#9d8ec4", display: "block", marginBottom: 6 }}>학년</label>
+                <label style={{ fontSize: 13, fontWeight: 600, color: "#555", display: "block", marginBottom: 6 }}>학년</label>
                 <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
                   {["4", "5", "6", "중1", "중2", "중3"].map(g => (
                     <button key={g} onClick={() => setProfileForm(p => ({ ...p, grade: g }))}
                       style={{
                         padding: "8px 16px", borderRadius: 20, border: "2px solid",
-                        borderColor: profileForm.grade === g ? "#7c3aed" : "rgba(124,58,237,0.2)",
-                        background: profileForm.grade === g ? "#7c3aed" : "#150e30",
-                        color: profileForm.grade === g ? "white" : "#9d8ec4",
+                        borderColor: profileForm.grade === g ? "#667eea" : "#eee",
+                        background: profileForm.grade === g ? "#667eea" : "white",
+                        color: profileForm.grade === g ? "white" : "#666",
                         fontSize: 13, fontWeight: 600, cursor: "pointer"
                       }}>
                       {g}학년
@@ -3945,25 +3945,25 @@
               </div>
 
               <div style={{ marginBottom: 24 }}>
-                <label style={{ fontSize: 13, fontWeight: 600, color: "#9d8ec4", display: "block", marginBottom: 8 }}>아바타 선택 ({isAdmin ? "🔓 관리자: 전체" : ownedAvatars.length + "개 보유"})</label>
+                <label style={{ fontSize: 13, fontWeight: 600, color: "#555", display: "block", marginBottom: 8 }}>아바타 선택 ({isAdmin ? "🔓 관리자: 전체" : ownedAvatars.length + "개 보유"})</label>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, maxHeight: 240, overflowY: "auto" }}>
                   {AVATAR_DATA.filter(a => isAdmin || ownedAvatars.includes(a.id)).map(a => (
                     <button key={a.id} onClick={() => setProfileForm(p => ({ ...p, avatar: a.id }))}
                       style={{
                         width: "100%", padding: "8px 0", borderRadius: 16, border: "3px solid",
-                        borderColor: profileForm.avatar === a.id ? "#7c3aed" : "rgba(124,58,237,0.15)",
-                        background: profileForm.avatar === a.id ? "rgba(124,58,237,0.1)" : "#150e30",
+                        borderColor: profileForm.avatar === a.id ? "#667eea" : "#f0f0f0",
+                        background: profileForm.avatar === a.id ? "#667eea10" : "#fafafa",
                         cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
-                        transition: "all 0.2s", boxShadow: profileForm.avatar === a.id ? "0 4px 12px rgba(124,58,237,0.25)" : "none"
+                        transition: "all 0.2s", boxShadow: profileForm.avatar === a.id ? "0 4px 12px rgba(102,126,234,0.25)" : "none"
                       }}>
                       <AvatarIcon avatarId={a.id} size={44} />
-                      <span style={{ fontSize: 10, fontWeight: 600, color: profileForm.avatar === a.id ? "#c4a44a" : "#7c6fa0" }}>{a.name}</span>
+                      <span style={{ fontSize: 10, fontWeight: 600, color: profileForm.avatar === a.id ? "#667eea" : "#999" }}>{a.name}</span>
                     </button>
                   ))}
                 </div>
                 <div style={{ textAlign: "center", marginTop: 8 }}>
                   <button onClick={() => { setShowShop(true); setShopCategory("avatar"); }}
-                    style={{ fontSize: 12, color: "#c4a44a", background: "none", border: "none", cursor: "pointer", fontWeight: 600 }}>
+                    style={{ fontSize: 12, color: "#667eea", background: "none", border: "none", cursor: "pointer", fontWeight: 600 }}>
                     + 상점에서 더 많은 아바타 구매하기
                   </button>
                 </div>
@@ -3973,7 +3973,7 @@
                 disabled={!profileForm.name.trim()}
                 style={{
                   width: "100%", padding: "14px", borderRadius: 14, border: "none",
-                  background: profileForm.name.trim() ? "linear-gradient(135deg, #7c3aed, #c4a44a)" : "#2d1b69",
+                  background: profileForm.name.trim() ? "linear-gradient(135deg, #667eea, #764ba2)" : "#ddd",
                   color: "white", fontSize: 16, fontWeight: 700, cursor: profileForm.name.trim() ? "pointer" : "default",
                   transition: "all 0.2s"
                 }}>
@@ -5175,7 +5175,7 @@
 
             {/* 로딩 / 에러 */}
             {rankingLoading && (
-              <div style={{ textAlign: "center", padding: "40px 20px", color: "#7c6fa0", fontSize: 13 }}>
+              <div style={{ textAlign: "center", padding: "40px 20px", color: "#888", fontSize: 13 }}>
                 ⏳ 랭킹 불러오는 중...
               </div>
             )}
@@ -5189,24 +5189,24 @@
             {!rankingLoading && !rankingError && (
               <div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8, padding: "0 2px" }}>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: "#9d8ec4" }}>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: "#888" }}>
                     TOP 20
                   </div>
                   {top20.length > 5 && (
                     <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
                       <button onClick={() => setRankingPage(Math.max(0, rankingPage - 1))} disabled={rankingPage === 0}
-                        style={{ width: 28, height: 28, borderRadius: 8, border: "1px solid rgba(124,58,237,0.2)", background: rankingPage === 0 ? "#150e30" : "#1a1040", color: rankingPage === 0 ? "#7c6fa0" : "#c4b5fd", fontSize: 13, fontWeight: 700, cursor: rankingPage === 0 ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>‹</button>
+                        style={{ width: 28, height: 28, borderRadius: 8, border: "1px solid #ddd", background: rankingPage === 0 ? "#f5f5f5" : "white", color: rankingPage === 0 ? "#ccc" : "#555", fontSize: 13, fontWeight: 700, cursor: rankingPage === 0 ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>‹</button>
                       {Array.from({ length: Math.ceil(top20.length / 5) }, (_, i) => (
                         <button key={i} onClick={() => setRankingPage(i)}
-                          style={{ width: 28, height: 28, borderRadius: 8, border: rankingPage === i ? "1.5px solid #7c3aed" : "1px solid rgba(124,58,237,0.2)", background: rankingPage === i ? "#7c3aed" : "#1a1040", color: rankingPage === i ? "white" : "#9d8ec4", fontSize: 12, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>{i + 1}</button>
+                          style={{ width: 28, height: 28, borderRadius: 8, border: rankingPage === i ? "1.5px solid #667eea" : "1px solid #ddd", background: rankingPage === i ? "#667eea" : "white", color: rankingPage === i ? "white" : "#555", fontSize: 12, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>{i + 1}</button>
                       ))}
                       <button onClick={() => setRankingPage(Math.min(Math.ceil(top20.length / 5) - 1, rankingPage + 1))} disabled={rankingPage >= Math.ceil(top20.length / 5) - 1}
-                        style={{ width: 28, height: 28, borderRadius: 8, border: "1px solid rgba(124,58,237,0.2)", background: rankingPage >= Math.ceil(top20.length / 5) - 1 ? "#150e30" : "#1a1040", color: rankingPage >= Math.ceil(top20.length / 5) - 1 ? "#7c6fa0" : "#c4b5fd", fontSize: 13, fontWeight: 700, cursor: rankingPage >= Math.ceil(top20.length / 5) - 1 ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>›</button>
+                        style={{ width: 28, height: 28, borderRadius: 8, border: "1px solid #ddd", background: rankingPage >= Math.ceil(top20.length / 5) - 1 ? "#f5f5f5" : "white", color: rankingPage >= Math.ceil(top20.length / 5) - 1 ? "#ccc" : "#555", fontSize: 13, fontWeight: 700, cursor: rankingPage >= Math.ceil(top20.length / 5) - 1 ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>›</button>
                     </div>
                   )}
                 </div>
                 {top20.length === 0 ? (
-                  <div style={{ textAlign: "center", padding: "40px 20px", color: "#7c6fa0", fontSize: 13 }}>
+                  <div style={{ textAlign: "center", padding: "40px 20px", color: "#999", fontSize: 13 }}>
                     이번 주엔 아직 완독한 사람이 없어요. 첫 번째가 되어보세요! 📚
                   </div>
                 ) : (
@@ -5216,27 +5216,27 @@
                     const medalName = idx === 0 ? "medal_gold" : idx === 1 ? "medal_silver" : idx === 2 ? "medal_bronze" : null;
                     return (
                       <div key={it.uid} style={{
-                        background: isMe ? "linear-gradient(135deg, #2a1f00, #1a1500)" : "#1a1040",
-                        border: isMe ? "2px solid #c4a44a" : "1px solid rgba(124,58,237,0.2)",
+                        background: isMe ? "linear-gradient(135deg, #fef3c7, #fde68a)" : "white",
+                        border: isMe ? "2px solid #f59e0b" : "1px solid #eee",
                         borderRadius: 14, padding: "10px 12px", marginBottom: 8,
                         display: "flex", alignItems: "center", gap: 10,
-                        boxShadow: isMe ? "0 2px 8px rgba(196,164,74,0.25)" : "0 1px 3px rgba(124,58,237,0.1)"
+                        boxShadow: isMe ? "0 2px 8px rgba(245,158,11,0.2)" : "0 1px 3px rgba(0,0,0,0.04)"
                       }}>
-                        <div style={{ minWidth: 32, fontSize: 16, fontWeight: 900, color: isMe ? "#c4a44a" : "#9d8ec4", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <div style={{ minWidth: 32, fontSize: 16, fontWeight: 900, color: isMe ? "#b45309" : "#555", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center" }}>
                           {medalName ? <Icon name={medalName} size={26} /> : (idx + 1)}
                         </div>
                         <AvatarIcon avatarId={it.avatar} size={36} />
                         <div style={{ flex: 1, minWidth: 0 }}>
-                          <div style={{ fontSize: 14, fontWeight: 700, color: "#e8dff5", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                            {it.name}{isMe && <span style={{ fontSize: 10, color: "#c4a44a", marginLeft: 6, fontWeight: 700 }}>(나)</span>}
+                          <div style={{ fontSize: 14, fontWeight: 700, color: "#1a1a2e", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                            {it.name}{isMe && <span style={{ fontSize: 10, color: "#b45309", marginLeft: 6, fontWeight: 700 }}>(나)</span>}
                           </div>
-                          <div style={{ fontSize: 11, color: "#9d8ec4" }}>
+                          <div style={{ fontSize: 11, color: "#888" }}>
                             레벨 {it.level} · 🔥 {it.streak}일
                           </div>
                         </div>
                         <div style={{ textAlign: "right" }}>
-                          <div style={{ fontSize: 18, fontWeight: 900, color: "#c4a44a" }}>{(it.score || 0).toFixed(1)}</div>
-                          <div style={{ fontSize: 10, color: "#7c6fa0", fontWeight: 700 }}>📚{it.weekly} ⚔️{it.weeklyWins || 0}</div>
+                          <div style={{ fontSize: 18, fontWeight: 900, color: "#667eea" }}>{(it.score || 0).toFixed(1)}</div>
+                          <div style={{ fontSize: 10, color: "#888", fontWeight: 700 }}>📚{it.weekly} ⚔️{it.weeklyWins || 0}</div>
                         </div>
                       </div>
                     );
@@ -5247,11 +5247,11 @@
 
             {/* 하위권 격려 */}
             {!rankingLoading && !isInTop20 && myItem && totalCount > 20 && top20.length > 0 && (
-              <div style={{ marginTop: 16, padding: 14, background: "#150e30", borderRadius: 12, textAlign: "center" }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#c4b5fd" }}>
+              <div style={{ marginTop: 16, padding: 14, background: "#f3f4f6", borderRadius: 12, textAlign: "center" }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#555" }}>
                   💪 TOP 20까지 {Math.max(0.1, ((top20[top20.length - 1].score || 0) - (myItem.score || 0) + 0.1)).toFixed(1)}점 더!
                 </div>
-                <div style={{ fontSize: 11, color: "#7c6fa0", marginTop: 4 }}>
+                <div style={{ fontSize: 11, color: "#888", marginTop: 4 }}>
                   완독하거나 배틀에서 이기면 순위가 올라가요
                 </div>
               </div>
@@ -5267,8 +5267,8 @@
       const HomeScreen = () => (
         <div style={{ padding: "0 16px 100px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12, padding: "0 4px" }}>
-            <div style={{ fontSize: 13, color: "#7c6fa0" }}>📅 {formatDate(today)} {getDayName(today)}요일</div>
-            <div style={{ fontSize: 12, color: "#c4a44a", fontWeight: 600, background: "rgba(196,164,74,0.15)", padding: "4px 10px", borderRadius: 12 }}>
+            <div style={{ fontSize: 13, color: "#888" }}>📅 {formatDate(today)} {getDayName(today)}요일</div>
+            <div style={{ fontSize: 12, color: "#667eea", fontWeight: 600, background: "#667eea15", padding: "4px 10px", borderRadius: 12 }}>
               {currentWeek}주차
             </div>
           </div>
@@ -5289,72 +5289,72 @@
             const strongMeta = p.strongDomains.map(id => DOMAIN_META.find(d => d.id === id)).filter(Boolean);
             const weakMeta = p.weakDomains.map(id => DOMAIN_META.find(d => d.id === id)).filter(Boolean);
             return (
-              <div style={{ background: "linear-gradient(135deg, #1a1040, #150e30)", borderRadius: 24, padding: 18, marginBottom: 20, border: "1px solid rgba(124,58,237,0.2)", position: "relative", overflow: "hidden" }}>
-                <div style={{ position: "absolute", top: -30, right: -30, width: 120, height: 120, borderRadius: "50%", background: "rgba(124,58,237,0.1)" }} />
-                <div style={{ position: "absolute", bottom: -40, left: -20, width: 100, height: 100, borderRadius: "50%", background: "rgba(91,33,182,0.08)" }} />
+              <div style={{ background: "linear-gradient(135deg, #EEF2FF, #F3E8FF)", borderRadius: 24, padding: 18, marginBottom: 20, border: "1px solid #E0E7FF", position: "relative", overflow: "hidden" }}>
+                <div style={{ position: "absolute", top: -30, right: -30, width: 120, height: 120, borderRadius: "50%", background: "rgba(168,85,247,0.08)" }} />
+                <div style={{ position: "absolute", bottom: -40, left: -20, width: 100, height: 100, borderRadius: "50%", background: "rgba(99,102,241,0.06)" }} />
 
                 {/* 상단 헤더 */}
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14, position: "relative" }}>
                   <div>
-                    <div style={{ fontSize: 12, color: "#c4a44a", fontWeight: 700, letterSpacing: "0.5px" }}>안녕, {profile.name}!</div>
-                    <div style={{ fontSize: 18, fontWeight: 900, color: "#e8dff5", letterSpacing: "-0.3px" }}><img src="icons/ui-avatar-status.png" alt="status" style={{width:24,height:24,objectFit:"contain",verticalAlign:"middle",marginRight:4}} /> 내 아바타 상태</div>
+                    <div style={{ fontSize: 12, color: "#6366f1", fontWeight: 700, letterSpacing: "0.5px" }}>안녕, {profile.name}!</div>
+                    <div style={{ fontSize: 18, fontWeight: 900, color: "#4338ca", letterSpacing: "-0.3px" }}><img src="icons/ui-avatar-status.png" alt="status" style={{width:24,height:24,objectFit:"contain",verticalAlign:"middle",marginRight:4}} /> 내 아바타 상태</div>
                   </div>
-                  <div style={{ fontSize: 11, color: "#c4a44a", fontWeight: 700, background: "#1a1040", padding: "4px 10px", borderRadius: 10 }}>{currentTitle}</div>
+                  <div style={{ fontSize: 11, color: "#6366f1", fontWeight: 700, background: "white", padding: "4px 10px", borderRadius: 10 }}>{currentTitle}</div>
                 </div>
 
                 {/* 아바타 정체성 + 레벨/XP */}
-                <div style={{ background: "#1a1040", borderRadius: 18, padding: 14, marginBottom: 10, display: "flex", alignItems: "center", gap: 14, boxShadow: "0 2px 10px rgba(124,58,237,0.15)", position: "relative" }}>
+                <div style={{ background: "white", borderRadius: 18, padding: 14, marginBottom: 10, display: "flex", alignItems: "center", gap: 14, boxShadow: "0 2px 10px rgba(99,102,241,0.08)", position: "relative" }}>
                   <div style={{ position: "relative", flexShrink: 0 }}>
                     <AvatarWithItems
                       size={68}
                       avatarId={profile?.avatar}
                       equippedItems={equippedItems}
                       shape="circle"
-                      borderStyle={{ border: "3px solid #7c3aed", boxShadow: "0 4px 12px rgba(124,58,237,0.3)" }}
+                      borderStyle={{ border: "3px solid #667eea", boxShadow: "0 4px 12px rgba(102,126,234,0.3)" }}
                       onClick={() => setShowAvatarDetail(true)}
                     />
-                    <div onClick={(e) => { e.stopPropagation(); setShowAvatarDetail(true); }} style={{ position: "absolute", bottom: 0, right: 0, background: "#7c3aed", borderRadius: "50%", width: 20, height: 20, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10, border: "2px solid #1a1040", fontSize: 10, color: "white", cursor: "pointer" }}>🔍</div>
+                    <div onClick={(e) => { e.stopPropagation(); setShowAvatarDetail(true); }} style={{ position: "absolute", bottom: 0, right: 0, background: "#6366f1", borderRadius: "50%", width: 20, height: 20, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10, border: "2px solid white", fontSize: 10, color: "white", cursor: "pointer" }}>🔍</div>
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", marginBottom: 2 }}>
-                      <div style={{ fontSize: 16, fontWeight: 800, color: "#e8dff5" }}>{p.name}</div>
+                      <div style={{ fontSize: 16, fontWeight: 800, color: "#1a1a2e" }}>{p.name}</div>
                       <span style={{ fontSize: 10, fontWeight: 700, color: rarityInfo.color, background: rarityInfo.bg, padding: "2px 8px", borderRadius: 8 }}>{rarityInfo.label}</span>
                     </div>
-                    <div style={{ fontSize: 11, color: "#9d8ec4", fontWeight: 600, marginBottom: 6 }}>{p.label}</div>
+                    <div style={{ fontSize: 11, color: "#666", fontWeight: 600, marginBottom: 6 }}>{p.label}</div>
                     <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, marginBottom: 4, fontWeight: 600 }}>
-                      <span style={{ background: "rgba(124,58,237,0.2)", color: "#c4a44a", padding: "2px 8px", borderRadius: 8 }}>Lv.{level}</span>
-                      <span style={{ color: "#7c6fa0" }}>{xp % 100}/100 XP</span>
+                      <span style={{ background: "#eef2ff", color: "#4338ca", padding: "2px 8px", borderRadius: 8 }}>Lv.{level}</span>
+                      <span style={{ color: "#888" }}>{xp % 100}/100 XP</span>
                     </div>
-                    <div style={{ background: "#2d1b69", borderRadius: 10, height: 6, overflow: "hidden" }}>
-                      <div style={{ background: "linear-gradient(90deg, #7c3aed, #c4a44a)", height: "100%", width: `${xp % 100}%`, borderRadius: 10, transition: "width 0.5s" }} />
+                    <div style={{ background: "#f0f0f5", borderRadius: 10, height: 6, overflow: "hidden" }}>
+                      <div style={{ background: "linear-gradient(90deg, #667eea, #a855f7)", height: "100%", width: `${xp % 100}%`, borderRadius: 10, transition: "width 0.5s" }} />
                     </div>
                   </div>
                 </div>
 
                 {/* 3종 지표: IQ / 코인 / 연속 */}
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginBottom: 10 }}>
-                  <div style={{ background: "#1a1040", borderRadius: 14, padding: "10px 6px", textAlign: "center", boxShadow: "0 1px 6px rgba(124,58,237,0.15)" }}>
-                    <div style={{ fontSize: 10, color: "#7c3aed", fontWeight: 700, letterSpacing: 0.5 }}>AVATAR IQ</div>
-                    <div style={{ fontSize: 22, fontWeight: 900, color: "#e8dff5", lineHeight: 1.1, margin: "2px 0" }}>{stats.iq}</div>
-                    <div style={{ fontSize: 9, color: "#7c6fa0" }}>기본 {100 + p.iqBase} + 성장</div>
+                  <div style={{ background: "white", borderRadius: 14, padding: "10px 6px", textAlign: "center", boxShadow: "0 1px 6px rgba(99,102,241,0.08)" }}>
+                    <div style={{ fontSize: 10, color: "#6366f1", fontWeight: 700, letterSpacing: 0.5 }}>AVATAR IQ</div>
+                    <div style={{ fontSize: 22, fontWeight: 900, color: "#1a1a2e", lineHeight: 1.1, margin: "2px 0" }}>{stats.iq}</div>
+                    <div style={{ fontSize: 9, color: "#888" }}>기본 {100 + p.iqBase} + 성장</div>
                   </div>
-                  <div style={{ background: "#1a1040", borderRadius: 14, padding: "10px 6px", textAlign: "center", boxShadow: "0 1px 6px rgba(124,58,237,0.15)" }}>
-                    <div style={{ fontSize: 10, color: "#c4a44a", fontWeight: 700, letterSpacing: 0.5 }}>COINS</div>
-                    <div style={{ fontSize: 22, fontWeight: 900, color: "#e8dff5", lineHeight: 1.1, margin: "2px 0" }}>{coins}</div>
-                    <div style={{ fontSize: 9, color: "#7c6fa0" }}>💰 코인</div>
+                  <div style={{ background: "white", borderRadius: 14, padding: "10px 6px", textAlign: "center", boxShadow: "0 1px 6px rgba(99,102,241,0.08)" }}>
+                    <div style={{ fontSize: 10, color: "#f59e0b", fontWeight: 700, letterSpacing: 0.5 }}>COINS</div>
+                    <div style={{ fontSize: 22, fontWeight: 900, color: "#1a1a2e", lineHeight: 1.1, margin: "2px 0" }}>{coins}</div>
+                    <div style={{ fontSize: 9, color: "#888" }}>💰 코인</div>
                   </div>
-                  <div style={{ background: "#1a1040", borderRadius: 14, padding: "10px 6px", textAlign: "center", boxShadow: "0 1px 6px rgba(124,58,237,0.15)" }}>
+                  <div style={{ background: "white", borderRadius: 14, padding: "10px 6px", textAlign: "center", boxShadow: "0 1px 6px rgba(99,102,241,0.08)" }}>
                     <div style={{ fontSize: 10, color: "#ef4444", fontWeight: 700, letterSpacing: 0.5 }}>STREAK</div>
-                    <div style={{ fontSize: 22, fontWeight: 900, color: "#e8dff5", lineHeight: 1.1, margin: "2px 0" }}>{streak}<span style={{ fontSize: 12 }}>일</span></div>
-                    <div style={{ fontSize: 9, color: "#7c6fa0" }}>🔥 연속</div>
+                    <div style={{ fontSize: 22, fontWeight: 900, color: "#1a1a2e", lineHeight: 1.1, margin: "2px 0" }}>{streak}<span style={{ fontSize: 12 }}>일</span></div>
+                    <div style={{ fontSize: 9, color: "#888" }}>🔥 연속</div>
                   </div>
                 </div>
 
                 {/* 레이더 차트 */}
-                <div style={{ background: "#1a1040", borderRadius: 16, padding: 10, marginBottom: 10, boxShadow: "0 2px 8px rgba(124,58,237,0.15)" }}>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: "#c4b5fd", textAlign: "center", marginBottom: 4 }}>📚 8대 지식 영역</div>
+                <div style={{ background: "white", borderRadius: 16, padding: 10, marginBottom: 10, boxShadow: "0 2px 8px rgba(99,102,241,0.08)" }}>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: "#555", textAlign: "center", marginBottom: 4 }}>📚 8대 지식 영역</div>
                   <RadarChart domains={stats.domains} size={260} maxValue={15} />
-                  <div style={{ textAlign: "center", fontSize: 11, color: "#7c6fa0", marginTop: 2 }}>
+                  <div style={{ textAlign: "center", fontSize: 11, color: "#888", marginTop: 2 }}>
                     {totalDomain > 0 ? (
                       <>주력: <span style={{ color: topDomain.color, fontWeight: 700, display: "inline-flex", alignItems: "center", gap: 4 }}><Icon name={`theme_${topDomain.id}`} size={14} /> {topDomain.name}</span> · 총 지식 {totalDomain}</>
                     ) : "책을 완독하면 지식이 쌓여요"}
@@ -5363,15 +5363,15 @@
 
                 {/* 강점/약점 */}
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 12 }}>
-                  <div style={{ padding: 10, borderRadius: 12, background: "linear-gradient(135deg, #0d2818, #122a1c)", border: "1px solid rgba(16,185,129,0.3)" }}>
-                    <div style={{ fontSize: 10, fontWeight: 700, color: "#34d399", marginBottom: 2 }}>🌟 강점 ×{p.multipliers[p.strongDomains[0]].toFixed(1)}</div>
-                    <div style={{ fontSize: 12, fontWeight: 700, color: "#6ee7b7", display: "flex", flexWrap: "wrap", gap: 6, alignItems: "center" }}>
+                  <div style={{ padding: 10, borderRadius: 12, background: "linear-gradient(135deg, #ECFDF5, #D1FAE5)", border: "1px solid #A7F3D0" }}>
+                    <div style={{ fontSize: 10, fontWeight: 700, color: "#047857", marginBottom: 2 }}>🌟 강점 ×{p.multipliers[p.strongDomains[0]].toFixed(1)}</div>
+                    <div style={{ fontSize: 12, fontWeight: 700, color: "#064e3b", display: "flex", flexWrap: "wrap", gap: 6, alignItems: "center" }}>
                       {strongMeta.map(d => <span key={d.id} style={{ display: "inline-flex", alignItems: "center", gap: 2 }}><Icon name={`theme_${d.id}`} size={14} />{d.name}</span>)}
                     </div>
                   </div>
-                  <div style={{ padding: 10, borderRadius: 12, background: "linear-gradient(135deg, #2a0f0f, #301414)", border: "1px solid rgba(239,68,68,0.3)" }}>
-                    <div style={{ fontSize: 10, fontWeight: 700, color: "#f87171", marginBottom: 2 }}>💧 약점 ×{p.multipliers[p.weakDomains[0]].toFixed(2)}</div>
-                    <div style={{ fontSize: 12, fontWeight: 700, color: "#fca5a5", display: "flex", flexWrap: "wrap", gap: 6, alignItems: "center" }}>
+                  <div style={{ padding: 10, borderRadius: 12, background: "linear-gradient(135deg, #FEF2F2, #FEE2E2)", border: "1px solid #FECACA" }}>
+                    <div style={{ fontSize: 10, fontWeight: 700, color: "#b91c1c", marginBottom: 2 }}>💧 약점 ×{p.multipliers[p.weakDomains[0]].toFixed(2)}</div>
+                    <div style={{ fontSize: 12, fontWeight: 700, color: "#7f1d1d", display: "flex", flexWrap: "wrap", gap: 6, alignItems: "center" }}>
                       {weakMeta.map(d => <span key={d.id} style={{ display: "inline-flex", alignItems: "center", gap: 2 }}><Icon name={`theme_${d.id}`} size={14} />{d.name}</span>)}
                     </div>
                   </div>
@@ -5385,7 +5385,7 @@
                     padding: "14px 16px",
                     borderRadius: 14,
                     border: "none",
-                    background: "linear-gradient(135deg, #7c3aed 0%, #c4a44a 100%)",
+                    background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)",
                     color: "white",
                     fontSize: 15,
                     fontWeight: 800,
@@ -5394,11 +5394,11 @@
                     alignItems: "center",
                     justifyContent: "center",
                     gap: 8,
-                    boxShadow: "0 4px 14px rgba(124,58,237,0.3)"
+                    boxShadow: "0 4px 14px rgba(99, 102, 241, 0.3)"
                   }}>
                   💬 내 아바타와 대화하기
                 </button>
-                <div style={{ fontSize: 10, color: "#9d8ec4", marginTop: 6, textAlign: "center" }}>
+                <div style={{ fontSize: 10, color: "#6366f1", marginTop: 6, textAlign: "center" }}>
                   {stats.booksCompleted.length > 0
                     ? `${p.name}은(는) 내가 읽은 ${stats.booksCompleted.length}권의 책을 기억해!`
                     : `책을 완독하면 ${p.name}이(가) 더 똑똑하게 답해줘!`}
@@ -5426,27 +5426,27 @@
         return (
           <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.5)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}
             onClick={() => setShowAvatarDetail(false)}>
-            <div style={{ background: "#1a1040", borderRadius: 24, padding: 20, width: "100%", maxWidth: 380, maxHeight: "85vh", overflowY: "auto", position: "relative" }}
+            <div style={{ background: "white", borderRadius: 24, padding: 20, width: "100%", maxWidth: 380, maxHeight: "85vh", overflowY: "auto", position: "relative" }}
               onClick={e => e.stopPropagation()}>
               <button onClick={() => setShowAvatarDetail(false)}
-                style={{ position: "absolute", top: 12, right: 12, background: "none", border: "none", fontSize: 20, color: "#7c6fa0", cursor: "pointer" }}>✕</button>
+                style={{ position: "absolute", top: 12, right: 12, background: "none", border: "none", fontSize: 20, color: "#888", cursor: "pointer" }}>✕</button>
 
               {/* 아바타 + 이름 */}
               <div style={{ textAlign: "center", marginBottom: 16 }}>
                 <AvatarWithItems size={80} avatarId={profile?.avatar} equippedItems={equippedItems} shape="circle"
-                  borderStyle={{ border: "3px solid #7c3aed", boxShadow: "0 4px 12px rgba(124,58,237,0.3)" }} />
-                <div style={{ fontSize: 18, fontWeight: 800, color: "#e8dff5", marginTop: 8 }}>{p.name}</div>
+                  borderStyle={{ border: "3px solid #667eea", boxShadow: "0 4px 12px rgba(102,126,234,0.3)" }} />
+                <div style={{ fontSize: 18, fontWeight: 800, color: "#1a1a2e", marginTop: 8 }}>{p.name}</div>
                 <div style={{ display: "flex", justifyContent: "center", gap: 6, marginTop: 4 }}>
                   <span style={{ fontSize: 10, fontWeight: 700, color: rarityInfo.color, background: rarityInfo.bg, padding: "2px 8px", borderRadius: 8 }}>{rarityInfo.label}</span>
                 </div>
-                <div style={{ fontSize: 12, color: "#7c6fa0", marginTop: 4 }}>Lv.{level} · IQ {stats.iq} · {p.label}</div>
+                <div style={{ fontSize: 12, color: "#888", marginTop: 4 }}>Lv.{level} · IQ {stats.iq} · {p.label}</div>
               </div>
 
               {/* 8대 지식 레이더 차트 */}
-              <div style={{ background: "#150e30", borderRadius: 16, padding: 12, marginBottom: 14 }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#c4b5fd", textAlign: "center", marginBottom: 4 }}>📚 8대 지식 영역</div>
+              <div style={{ background: "#f8f9ff", borderRadius: 16, padding: 12, marginBottom: 14 }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#555", textAlign: "center", marginBottom: 4 }}>📚 8대 지식 영역</div>
                 <RadarChart domains={stats.domains} size={240} maxValue={15} />
-                <div style={{ textAlign: "center", fontSize: 11, color: "#7c6fa0", marginTop: 4 }}>
+                <div style={{ textAlign: "center", fontSize: 11, color: "#888", marginTop: 4 }}>
                   {totalDomain > 0 ? (
                     <>주력: <span style={{ color: topDomain.color, fontWeight: 700 }}>{topDomain.name}</span> · 총 지식 {totalDomain}</>
                   ) : "책을 완독하면 지식이 쌓여요"}
@@ -5455,15 +5455,15 @@
 
               {/* 강점/약점 */}
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 14 }}>
-                <div style={{ padding: 10, borderRadius: 12, background: "linear-gradient(135deg, #0d2818, #122a1c)", border: "1px solid rgba(16,185,129,0.3)" }}>
-                  <div style={{ fontSize: 10, fontWeight: 700, color: "#34d399", marginBottom: 2 }}>🌟 강점 ×{p.multipliers[p.strongDomains[0]].toFixed(1)}</div>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: "#6ee7b7", display: "flex", flexWrap: "wrap", gap: 4, alignItems: "center" }}>
+                <div style={{ padding: 10, borderRadius: 12, background: "linear-gradient(135deg, #ECFDF5, #D1FAE5)", border: "1px solid #A7F3D0" }}>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: "#047857", marginBottom: 2 }}>🌟 강점 ×{p.multipliers[p.strongDomains[0]].toFixed(1)}</div>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: "#064e3b", display: "flex", flexWrap: "wrap", gap: 4, alignItems: "center" }}>
                     {strongMeta.map(d => <span key={d.id} style={{ display: "inline-flex", alignItems: "center", gap: 2 }}><Icon name={`theme_${d.id}`} size={14} />{d.name}</span>)}
                   </div>
                 </div>
-                <div style={{ padding: 10, borderRadius: 12, background: "linear-gradient(135deg, #2a0f0f, #301414)", border: "1px solid rgba(239,68,68,0.3)" }}>
-                  <div style={{ fontSize: 10, fontWeight: 700, color: "#f87171", marginBottom: 2 }}>💧 약점 ×{p.multipliers[p.weakDomains[0]].toFixed(2)}</div>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: "#fca5a5", display: "flex", flexWrap: "wrap", gap: 4, alignItems: "center" }}>
+                <div style={{ padding: 10, borderRadius: 12, background: "linear-gradient(135deg, #FEF2F2, #FEE2E2)", border: "1px solid #FECACA" }}>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: "#b91c1c", marginBottom: 2 }}>💧 약점 ×{p.multipliers[p.weakDomains[0]].toFixed(2)}</div>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: "#7f1d1d", display: "flex", flexWrap: "wrap", gap: 4, alignItems: "center" }}>
                     {weakMeta.map(d => <span key={d.id} style={{ display: "inline-flex", alignItems: "center", gap: 2 }}><Icon name={`theme_${d.id}`} size={14} />{d.name}</span>)}
                   </div>
                 </div>
@@ -5471,7 +5471,7 @@
 
               {/* 아바타와 대화 버튼 */}
               <button onClick={() => { setShowAvatarDetail(false); setScreen("avatarChat"); }}
-                style={{ width: "100%", padding: "12px", borderRadius: 14, border: "none", background: "linear-gradient(135deg, #7c3aed, #c4a44a)", color: "white", fontSize: 14, fontWeight: 800, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+                style={{ width: "100%", padding: "12px", borderRadius: 14, border: "none", background: "linear-gradient(135deg, #6366f1, #a855f7)", color: "white", fontSize: 14, fontWeight: 800, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
                 💬 내 아바타와 대화하기
               </button>
             </div>
@@ -5496,13 +5496,13 @@
         return (
           <div style={{ padding: "0 16px 100px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-              <div onClick={() => setScreen("home")} style={{ display: "inline-flex", alignItems: "center", gap: 6, cursor: "pointer", fontSize: 14, color: "#c4a44a", fontWeight: 600 }}>
+              <div onClick={() => setScreen("home")} style={{ display: "inline-flex", alignItems: "center", gap: 6, cursor: "pointer", fontSize: 14, color: "#667eea", fontWeight: 600 }}>
                 ← 돌아가기
               </div>
-              <div style={{ fontSize: 12, color: "#7c6fa0" }}>📅 {formatDate(today)}</div>
+              <div style={{ fontSize: 12, color: "#888" }}>📅 {formatDate(today)}</div>
             </div>
 
-            <div style={{ background: `linear-gradient(135deg, ${book.color}cc, ${book.color}88)`, borderRadius: 20, padding: "24px 20px", marginBottom: 16, color: "#e8dff5" }}>
+            <div style={{ background: `linear-gradient(135deg, ${book.color}cc, ${book.color}88)`, borderRadius: 20, padding: "24px 20px", marginBottom: 16, color: "#1a1a2e" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
                 <SvgIcon svg={BOOK_COVERS[book.id]} size={48} style={{ height: 62, width: 48, borderRadius: 6 }} />
                 <span style={{ background: "rgba(255,255,255,0.6)", padding: "3px 10px", borderRadius: 10, fontSize: 11, fontWeight: 700 }}>{book.week}주차 퀘스트</span>
@@ -5519,7 +5519,7 @@
             <div style={{ display: "flex", gap: 4, marginBottom: 16, overflowX: "auto", paddingBottom: 4 }}>
               {tabs.map(t => (
                 <button key={t.key} onClick={() => setBookTab(t.key)}
-                  style={{ padding: "8px 12px", borderRadius: 20, border: "none", background: bookTab === t.key ? "#7c3aed" : "#150e30", color: bookTab === t.key ? "white" : "#9d8ec4", fontSize: 12, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap" }}>
+                  style={{ padding: "8px 12px", borderRadius: 20, border: "none", background: bookTab === t.key ? "#667eea" : "#f0f0f0", color: bookTab === t.key ? "white" : "#666", fontSize: 12, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap" }}>
                   {t.label}
                 </button>
               ))}
@@ -5527,16 +5527,16 @@
 
             {bookTab === "summary" && (
               <div>
-                <div style={{ background: "#1a1040", borderRadius: 16, padding: 20, boxShadow: "0 2px 8px rgba(124,58,237,0.15)", marginBottom: 16 }}>
-                  <h4 style={{ fontSize: 15, fontWeight: 700, marginBottom: 10, color: "#e8dff5" }}>📝 줄거리</h4>
-                  <p style={{ fontSize: 14, lineHeight: 1.7, color: "#c4b5fd" }}>{book.summary}</p>
+                <div style={{ background: "white", borderRadius: 16, padding: 20, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 16 }}>
+                  <h4 style={{ fontSize: 15, fontWeight: 700, marginBottom: 10, color: "#1a1a2e" }}>📝 줄거리</h4>
+                  <p style={{ fontSize: 14, lineHeight: 1.7, color: "#444" }}>{book.summary}</p>
                 </div>
-                <div style={{ background: "#1a1040", borderRadius: 16, padding: 20, boxShadow: "0 2px 8px rgba(124,58,237,0.15)" }}>
-                  <h4 style={{ fontSize: 15, fontWeight: 700, marginBottom: 10, color: "#e8dff5" }}>⭐ 핵심 포인트</h4>
+                <div style={{ background: "white", borderRadius: 16, padding: 20, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
+                  <h4 style={{ fontSize: 15, fontWeight: 700, marginBottom: 10, color: "#1a1a2e" }}>⭐ 핵심 포인트</h4>
                   {book.keyPoints.map((p, i) => (
                     <div key={i} style={{ display: "flex", gap: 8, marginBottom: 8 }}>
                       <span style={{ color: book.color, fontWeight: 700 }}>•</span>
-                      <span style={{ fontSize: 13, lineHeight: 1.6, color: "#c4b5fd" }}>{p}</span>
+                      <span style={{ fontSize: 13, lineHeight: 1.6, color: "#444" }}>{p}</span>
                     </div>
                   ))}
                 </div>
@@ -5545,10 +5545,10 @@
             {bookTab === "chapters" && (
               <div>
                 {book.chapters.map((ch, i) => (
-                  <div key={i} style={{ background: "#1a1040", borderRadius: 14, padding: 16, marginBottom: 10, boxShadow: "0 2px 6px rgba(124,58,237,0.15)" }}>
-                    <div style={{ fontSize: 14, fontWeight: 700, color: "#e8dff5", marginBottom: 8 }}>{ch.title}</div>
+                  <div key={i} style={{ background: "white", borderRadius: 14, padding: 16, marginBottom: 10, boxShadow: "0 2px 6px rgba(0,0,0,0.04)" }}>
+                    <div style={{ fontSize: 14, fontWeight: 700, color: "#1a1a2e", marginBottom: 8 }}>{ch.title}</div>
                     {ch.topics.map((t, j) => (
-                      <div key={j} style={{ fontSize: 12, color: "#9d8ec4", padding: "3px 0 3px 12px", borderLeft: `2px solid ${book.color}40` }}>{t}</div>
+                      <div key={j} style={{ fontSize: 12, color: "#666", padding: "3px 0 3px 12px", borderLeft: `2px solid ${book.color}40` }}>{t}</div>
                     ))}
                   </div>
                 ))}
@@ -5557,13 +5557,13 @@
             {bookTab === "characters" && (
               <div>
                 {book.characters.map((c, i) => (
-                  <div key={i} style={{ background: "#1a1040", borderRadius: 14, padding: 16, marginBottom: 10, display: "flex", gap: 12, alignItems: "center", boxShadow: "0 2px 6px rgba(124,58,237,0.15)" }}>
+                  <div key={i} style={{ background: "white", borderRadius: 14, padding: 16, marginBottom: 10, display: "flex", gap: 12, alignItems: "center", boxShadow: "0 2px 6px rgba(0,0,0,0.04)" }}>
                     <div style={{ width: 44, height: 44, borderRadius: "50%", background: `${book.color}30`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0 }}>
                       {["👤", "🧑‍🔬", "👩", "📜"][i % 4]}
                     </div>
                     <div>
-                      <div style={{ fontSize: 14, fontWeight: 700, color: "#e8dff5" }}>{c.name}</div>
-                      <div style={{ fontSize: 12, color: "#9d8ec4", marginTop: 2 }}>{c.desc}</div>
+                      <div style={{ fontSize: 14, fontWeight: 700, color: "#1a1a2e" }}>{c.name}</div>
+                      <div style={{ fontSize: 12, color: "#666", marginTop: 2 }}>{c.desc}</div>
                     </div>
                   </div>
                 ))}
@@ -5571,7 +5571,7 @@
             )}
             {bookTab === "discuss" && (
               <div>
-                <div style={{ fontSize: 13, color: "#7c6fa0", marginBottom: 12 }}>🎤 주제를 선택해 음성으로 AI와 토론하세요!</div>
+                <div style={{ fontSize: 13, color: "#888", marginBottom: 12 }}>🎤 주제를 선택해 음성으로 AI와 토론하세요!</div>
                 {book.discussionTopics.map((t, i) => {
                   const key = `${book.id}-disc-${i}`;
                   const done = discussionState[key];
@@ -5583,11 +5583,11 @@
                   };
                   return (
                     <div key={i} onClick={() => startDiscussion(book, i, false)}
-                      style={{ background: done ? "#0d2818" : "#1a1040", borderRadius: 14, padding: 16, marginBottom: 10, cursor: "pointer", boxShadow: "0 2px 6px rgba(124,58,237,0.15)", border: done ? "2px solid #4CAF50" : "2px solid transparent" }}>
+                      style={{ background: done ? "#f0fff0" : "white", borderRadius: 14, padding: 16, marginBottom: 10, cursor: "pointer", boxShadow: "0 2px 6px rgba(0,0,0,0.04)", border: done ? "2px solid #4CAF50" : "2px solid transparent" }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                         <div style={{ flex: 1 }}>
-                          <div style={{ fontSize: 12, color: "#7c3aed", fontWeight: 600, marginBottom: 4 }}>토론 {i + 1} {done ? (stars > 0 ? renderStars(stars) : "✅") : "(+20XP)"}</div>
-                          <div style={{ fontSize: 13, fontWeight: 600, color: "#e8dff5", lineHeight: 1.5 }}>{t.q}</div>
+                          <div style={{ fontSize: 12, color: "#667eea", fontWeight: 600, marginBottom: 4 }}>토론 {i + 1} {done ? (stars > 0 ? renderStars(stars) : "✅") : "(+20XP)"}</div>
+                          <div style={{ fontSize: 13, fontWeight: 600, color: "#1a1a2e", lineHeight: 1.5 }}>{t.q}</div>
                         </div>
                         {!done && <span style={{ fontSize: 20, marginLeft: 8 }}>🎤</span>}
                       </div>
@@ -5598,14 +5598,14 @@
             )}
             {bookTab === "quiz" && (
               <div>
-                <div style={{ fontSize: 13, color: "#7c6fa0", marginBottom: 12 }}>❓ 책 내용을 바탕으로 퀴즈를 풀어보세요! (+10XP)</div>
+                <div style={{ fontSize: 13, color: "#888", marginBottom: 12 }}>❓ 책 내용을 바탕으로 퀴즈를 풀어보세요! (+10XP)</div>
                 {book.quizzes && book.quizzes.map((quiz, i) => {
                   const key = `${book.id}-quiz-${i}`;
                   const answered = quizState[key];
                   return (
-                    <div key={i} style={{ background: "#1a1040", borderRadius: 14, padding: 16, marginBottom: 10, boxShadow: "0 2px 6px rgba(124,58,237,0.15)" }}>
+                    <div key={i} style={{ background: "white", borderRadius: 14, padding: 16, marginBottom: 10, boxShadow: "0 2px 6px rgba(0,0,0,0.04)" }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
-                        <div style={{ fontSize: 13, fontWeight: 600, color: "#e8dff5", flex: 1 }}>Q{i + 1}. {quiz.q}</div>
+                        <div style={{ fontSize: 13, fontWeight: 600, color: "#1a1a2e", flex: 1 }}>Q{i + 1}. {quiz.q}</div>
                         {answered && (answered.correct ? <span style={{ fontSize: 14 }}>✅</span> : <span style={{ fontSize: 14 }}>❌</span>)}
                       </div>
                       {quiz.type === "choice" ? (
@@ -5624,7 +5624,7 @@
                               setShowQuizResult(true);
                             }}
                               disabled={answered}
-                              style={{ padding: "10px 12px", borderRadius: 10, border: "2px solid rgba(124,58,237,0.2)", background: "#150e30", color: "#e8dff5", fontSize: 13, fontWeight: 500, cursor: answered ? "default" : "pointer", opacity: answered ? 0.6 : 1, transition: "all 0.2s" }}>
+                              style={{ padding: "10px 12px", borderRadius: 10, border: "2px solid #eee", background: "white", color: "#1a1a2e", fontSize: 13, fontWeight: 500, cursor: answered ? "default" : "pointer", opacity: answered ? 0.6 : 1, transition: "all 0.2s" }}>
                               {String.fromCharCode(65 + j)}. {opt}
                             </button>
                           ))}
@@ -5645,7 +5645,7 @@
                               setShowQuizResult(true);
                             }}
                               disabled={answered}
-                              style={{ flex: 1, padding: "10px 12px", borderRadius: 10, border: "2px solid rgba(124,58,237,0.2)", background: "#150e30", color: "#e8dff5", fontSize: 13, fontWeight: 500, cursor: answered ? "default" : "pointer", opacity: answered ? 0.6 : 1, transition: "all 0.2s" }}>
+                              style={{ flex: 1, padding: "10px 12px", borderRadius: 10, border: "2px solid #eee", background: "white", color: "#1a1a2e", fontSize: 13, fontWeight: 500, cursor: answered ? "default" : "pointer", opacity: answered ? 0.6 : 1, transition: "all 0.2s" }}>
                               {ans ? "맞음" : "틀림"}
                             </button>
                           ))}
@@ -5658,7 +5658,7 @@
             )}
             {bookTab === "deep" && (
               <div>
-                <div style={{ fontSize: 13, color: "#7c6fa0", marginBottom: 12 }}>🔥 더 깊이 생각해 보는 심화 토론! (+30XP)</div>
+                <div style={{ fontSize: 13, color: "#888", marginBottom: 12 }}>🔥 더 깊이 생각해 보는 심화 토론! (+30XP)</div>
                 {book.deepTopics.map((t, i) => {
                   const key = `${book.id}-deep-${i}`;
                   const done = discussionState[key];
@@ -5670,11 +5670,11 @@
                   };
                   return (
                     <div key={i} onClick={() => startDiscussion(book, i, true)}
-                      style={{ background: done ? "#2a1f00" : "#1a1040", borderRadius: 14, padding: 16, marginBottom: 10, cursor: "pointer", boxShadow: "0 2px 6px rgba(124,58,237,0.15)", border: done ? "2px solid #FFB300" : "2px solid transparent" }}>
+                      style={{ background: done ? "#fff8e1" : "white", borderRadius: 14, padding: 16, marginBottom: 10, cursor: "pointer", boxShadow: "0 2px 6px rgba(0,0,0,0.04)", border: done ? "2px solid #FFB300" : "2px solid transparent" }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                         <div style={{ flex: 1 }}>
-                          <div style={{ fontSize: 12, color: "#c4a44a", fontWeight: 600, marginBottom: 4 }}>심화 {i + 1} {done ? (stars > 0 ? renderStars(stars) : "✅") : "(+30XP)"}</div>
-                          <div style={{ fontSize: 13, fontWeight: 600, color: "#e8dff5", lineHeight: 1.5 }}>{t.q}</div>
+                          <div style={{ fontSize: 12, color: "#FF6F00", fontWeight: 600, marginBottom: 4 }}>심화 {i + 1} {done ? (stars > 0 ? renderStars(stars) : "✅") : "(+30XP)"}</div>
+                          <div style={{ fontSize: 13, fontWeight: 600, color: "#1a1a2e", lineHeight: 1.5 }}>{t.q}</div>
                         </div>
                         {!done && <span style={{ fontSize: 20, marginLeft: 8 }}>🔥</span>}
                       </div>
@@ -5692,7 +5692,7 @@
       // ═══════════════════════════════════════
       const DiscussionScreen = () => (
         <div style={{ display: "flex", flexDirection: "column", height: "100vh", maxHeight: "100vh" }}>
-          <div style={{ background: isDeep ? "linear-gradient(135deg, #FF6F00, #FFB300)" : "linear-gradient(135deg, #7c3aed, #5b21b6)", padding: "16px 20px", color: "white", flexShrink: 0 }}>
+          <div style={{ background: isDeep ? "linear-gradient(135deg, #FF6F00, #FFB300)" : "linear-gradient(135deg, #667eea, #764ba2)", padding: "16px 20px", color: "white", flexShrink: 0 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div onClick={() => setScreen("book")} style={{ cursor: "pointer", fontSize: 13, opacity: 0.8 }}>← 돌아가기</div>
               <div style={{ fontSize: 11, opacity: 0.7 }}>📅 {formatDate(today)}</div>
@@ -5701,7 +5701,7 @@
             <div style={{ fontSize: 12, opacity: 0.8 }}>{isDeep ? "🔥 심화" : "💬"} 토론 {activeDiscussionIdx + 1}</div>
           </div>
 
-          <div style={{ flex: 1, overflowY: "auto", padding: 16, background: "#0f0a1e", display: "flex", flexDirection: "column" }}>
+          <div style={{ flex: 1, overflowY: "auto", padding: 16, background: "#f7f7fa", display: "flex", flexDirection: "column" }}>
             {chatMessages.map((msg, i) => (
               <div key={i} style={{ display: "flex", justifyContent: msg.role === "user" ? "flex-end" : "flex-start", marginBottom: 10, alignItems: "flex-end", gap: 6 }}>
                 {msg.role === "ai" && (
@@ -5712,9 +5712,9 @@
                 <div style={{
                   maxWidth: "75%", padding: "10px 14px",
                   borderRadius: msg.role === "user" ? "16px 16px 4px 16px" : "16px 16px 16px 4px",
-                  background: msg.role === "user" ? "#7c3aed" : "#1a1040",
-                  color: msg.role === "user" ? "white" : "#c4b5fd",
-                  fontSize: 13, lineHeight: 1.6, boxShadow: "0 1px 4px rgba(124,58,237,0.15)"
+                  background: msg.role === "user" ? "#667eea" : "white",
+                  color: msg.role === "user" ? "white" : "#333",
+                  fontSize: 13, lineHeight: 1.6, boxShadow: "0 1px 4px rgba(0,0,0,0.06)"
                 }}>
                   {msg.role === "ai" && <span style={{ fontSize: 11, color: COACH.color, fontWeight: 600, display: "block", marginBottom: 2 }}>{COACH.name}</span>}
                   {msg.text}
@@ -5723,25 +5723,25 @@
             ))}
             {isSpeaking && <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
               <span style={{ fontSize: 20 }}>🔊</span>
-              <span style={{ fontSize: 12, color: "#9d8ec4", fontStyle: "italic" }}>AI가 말하는 중...</span>
+              <span style={{ fontSize: 12, color: "#666", fontStyle: "italic" }}>AI가 말하는 중...</span>
               <button onClick={() => { VoiceService.stopSpeaking(); setIsSpeaking(false); }}
-                style={{ marginLeft: "auto", padding: "4px 12px", borderRadius: 8, border: "1.5px solid #7c3aed", background: "#1a1040", color: "#7c3aed", fontSize: 11, fontWeight: 700, cursor: "pointer" }}>
+                style={{ marginLeft: "auto", padding: "4px 12px", borderRadius: 8, border: "1.5px solid #667eea", background: "white", color: "#667eea", fontSize: 11, fontWeight: 700, cursor: "pointer" }}>
                 ⏭️ 건너뛰기
               </button>
             </div>}
             <div ref={chatEndRef} />
           </div>
 
-          <div style={{ padding: "16px", background: "#1a1040", borderTop: "1px solid rgba(124,58,237,0.2)", flexShrink: 0, display: "flex", flexDirection: "column", gap: 10 }}>
+          <div style={{ padding: "16px", background: "white", borderTop: "1px solid #eee", flexShrink: 0, display: "flex", flexDirection: "column", gap: 10 }}>
             {!showKeyboard ? (
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {isListening && chatInput && (
                   <div style={{
-                    padding: "10px 14px", borderRadius: 12, background: "#150e30",
-                    border: "2px solid #7c3aed", fontSize: 13, color: "#c4b5fd",
+                    padding: "10px 14px", borderRadius: 12, background: "#f0f3ff",
+                    border: "2px solid #667eea", fontSize: 13, color: "#333",
                     lineHeight: 1.6, minHeight: 40, maxHeight: 120, overflowY: "auto"
                   }}>
-                    <span style={{ fontSize: 11, color: "#7c3aed", fontWeight: 600 }}>내가 말한 내용:</span>
+                    <span style={{ fontSize: 11, color: "#667eea", fontWeight: 600 }}>내가 말한 내용:</span>
                     <div style={{ marginTop: 4 }}>{chatInput}</div>
                   </div>
                 )}
@@ -5750,7 +5750,7 @@
                     <button onClick={startListening} disabled={!voiceSupported}
                       style={{
                         flex: 1, padding: "16px", borderRadius: 20, border: "none",
-                        background: "#7c3aed",
+                        background: "#667eea",
                         color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer",
                         display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
                         opacity: voiceSupported ? 1 : 0.5
@@ -5773,8 +5773,8 @@
                   )}
                   <button onClick={() => { stopListening(); setShowKeyboard(true); }}
                     style={{
-                      padding: "14px 16px", borderRadius: 20, border: "2px solid rgba(124,58,237,0.2)",
-                      background: "#150e30", color: "#9d8ec4", fontSize: 12, fontWeight: 600,
+                      padding: "14px 16px", borderRadius: 20, border: "2px solid #eee",
+                      background: "white", color: "#666", fontSize: 12, fontWeight: 600,
                       cursor: "pointer"
                     }}>
                     ⌨️
@@ -5785,16 +5785,16 @@
               <div style={{ display: "flex", gap: 8 }}>
                 <input value={chatInput} onChange={e => setChatInput(e.target.value)} onKeyDown={e => e.key === "Enter" && sendChat()}
                   placeholder={`${profile?.name || ""}의 생각을 써 주세요...`}
-                  style={{ flex: 1, padding: "10px 14px", borderRadius: 20, border: "2px solid rgba(124,58,237,0.2)", background: "#150e30", color: "#e8dff5", fontSize: 13, outline: "none" }} />
+                  style={{ flex: 1, padding: "10px 14px", borderRadius: 20, border: "2px solid #eee", fontSize: 13, outline: "none" }} />
                 <button onClick={() => setShowKeyboard(false)}
                   style={{
-                    padding: "10px 16px", borderRadius: 20, border: "none", background: "#150e30",
-                    color: "#9d8ec4", fontSize: 12, fontWeight: 600, cursor: "pointer"
+                    padding: "10px 16px", borderRadius: 20, border: "none", background: "#f0f0f0",
+                    color: "#666", fontSize: 12, fontWeight: 600, cursor: "pointer"
                   }}>
                   🎤
                 </button>
                 <button onClick={sendChat}
-                  style={{ padding: "10px 18px", borderRadius: 20, border: "none", background: "#7c3aed", color: "white", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+                  style={{ padding: "10px 18px", borderRadius: 20, border: "none", background: "#667eea", color: "white", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
                   전송
                 </button>
               </div>
@@ -5817,12 +5817,12 @@
         return (
         <div style={{ padding: "0 16px 100px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-            <h3 style={{ fontSize: 18, fontWeight: 800, color: "#e8dff5", margin: 0, display: "flex", alignItems: "center", gap: 6 }}>📋 내 프로필</h3>
-            <div style={{ fontSize: 12, color: "#7c6fa0" }}>📅 {formatDate(today)}</div>
+            <h3 style={{ fontSize: 18, fontWeight: 800, color: "#1a1a2e", margin: 0, display: "flex", alignItems: "center", gap: 6 }}>📋 내 프로필</h3>
+            <div style={{ fontSize: 12, color: "#888" }}>📅 {formatDate(today)}</div>
           </div>
 
           {/* ─ 프로필 헤더 카드 (상점 탭 최상단: 프로필 먼저 보이게) ─ */}
-          <div style={{ textAlign: "center", padding: "18px 0 20px", background: "linear-gradient(135deg, #1a1040, #150e30)", borderRadius: 20, marginBottom: 14, border: "1px solid rgba(124,58,237,0.2)" }}>
+          <div style={{ textAlign: "center", padding: "18px 0 20px", background: "linear-gradient(135deg, #EEF2FF, #F3E8FF)", borderRadius: 20, marginBottom: 14, border: "1px solid #E0E7FF" }}>
             {/* AvatarWithItems: 모자/안경 등 아이템이 자연스럽게 집혀지도록 */}
             <div style={{ display: "flex", justifyContent: "center", position: "relative", marginBottom: 10 }}
               onClick={() => { setShowShop(true); setShopCategory("frame"); }}>
@@ -5834,11 +5834,11 @@
                 borderStyle={{ border: `${evo.borderWidth}px ${evo.borderStyle} ${evo.color}`, boxShadow: evo.shadow }}
                 onClick={() => { setShowShop(true); setShopCategory("frame"); }}
               />
-              <div style={{ position: "absolute", bottom: 8, right: "calc(50% - 91px)", background: "#7c3aed", borderRadius: "50%", width: 28, height: 28, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10, border: "2px solid #1a1040", boxShadow: "0 2px 8px rgba(124,58,237,0.3)", fontSize: 13, color: "white", cursor: "pointer" }}>✎</div>
+              <div style={{ position: "absolute", bottom: 8, right: "calc(50% - 91px)", background: "#667eea", borderRadius: "50%", width: 28, height: 28, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10, border: "2px solid white", boxShadow: "0 2px 8px rgba(0,0,0,0.2)", fontSize: 13, color: "white", cursor: "pointer" }}>✎</div>
             </div>
-            <div style={{ fontSize: 22, fontWeight: 800, color: "#e8dff5" }}>{profile?.name}</div>
-            <div style={{ fontSize: 14, color: "#c4a44a", fontWeight: 600, marginTop: 6 }}>{currentTitle}</div>
-            <div style={{ fontSize: 13, color: "#7c6fa0", marginTop: 2 }}>
+            <div style={{ fontSize: 22, fontWeight: 800, color: "#1a1a2e" }}>{profile?.name}</div>
+            <div style={{ fontSize: 14, color: "#667eea", fontWeight: 600, marginTop: 6 }}>{currentTitle}</div>
+            <div style={{ fontSize: 13, color: "#888", marginTop: 2 }}>
               {profile?.school ? `${profile.school} ` : ""}{profile?.grade}학년 | Level {level}
             </div>
           </div>
@@ -5890,14 +5890,14 @@
           ))}
 
           {/* 장착 효과 카드 */}
-          <div style={{ background: "#1a1040", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(124,58,237,0.15)", marginBottom: 12 }}>
+          <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 12 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: collapsedSections.profEffects ? 0 : 10 }}>
               <button onClick={() => toggleSection("profEffects")}
                 style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "space-between", background: "none", border: "none", padding: 0, cursor: "pointer" }}>
-                <h4 style={{ fontSize: 14, fontWeight: 700, margin: 0, color: "#e8dff5" }}>⚡ 장착 효과</h4>
-                <span style={{ fontSize: 14, color: "#7c6fa0", marginRight: 8, transition: "transform 0.2s", transform: collapsedSections.profEffects ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
+                <h4 style={{ fontSize: 14, fontWeight: 700, margin: 0 }}>⚡ 장착 효과</h4>
+                <span style={{ fontSize: 14, color: "#888", marginRight: 8, transition: "transform 0.2s", transform: collapsedSections.profEffects ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
               </button>
-              <button onClick={() => setShowShop(true)} style={{ fontSize: 11, color: "#c4a44a", background: "none", border: "none", cursor: "pointer", fontWeight: 600 }}>상점 가기</button>
+              <button onClick={() => setShowShop(true)} style={{ fontSize: 11, color: "#667eea", background: "none", border: "none", cursor: "pointer", fontWeight: 600 }}>상점 가기</button>
             </div>
             {!collapsedSections.profEffects && (<>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
@@ -5909,8 +5909,8 @@
                   <div key={catId} onClick={() => { setShowShop(true); setShopCategory(catId); }}
                     style={{
                       padding: 10, borderRadius: 12, cursor: "pointer",
-                      background: item ? `linear-gradient(135deg, ${effect.color}08, ${effect.color}15)` : "#150e30",
-                      border: item ? `1.5px solid ${effect.color}40` : "1px dashed rgba(124,58,237,0.3)",
+                      background: item ? `linear-gradient(135deg, ${effect.color}08, ${effect.color}15)` : "#f7f7fa",
+                      border: item ? `1.5px solid ${effect.color}40` : "1px dashed #ddd",
                     }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                       {item ? (
@@ -5919,7 +5919,7 @@
                         <div style={{ width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, opacity: 0.3, flexShrink: 0 }}>{effect?.icon}</div>
                       )}
                       <div style={{ minWidth: 0 }}>
-                        <div style={{ fontSize: 11, fontWeight: 700, color: item ? "#c4b5fd" : "#7c6fa0" }}>{item ? item.name : SHOP_CATEGORIES.find(c => c.id === catId)?.name}</div>
+                        <div style={{ fontSize: 11, fontWeight: 700, color: item ? "#333" : "#bbb" }}>{item ? item.name : SHOP_CATEGORIES.find(c => c.id === catId)?.name}</div>
                         <div style={{ fontSize: 10, color: item ? effect.color : "#ccc", fontWeight: 600, marginTop: 1 }}>
                           {item ? effect.label : "미장착"}
                         </div>
@@ -5933,15 +5933,15 @@
             {(() => {
               const activeEffects = ["hat", "face", "pet", "weapon"].filter(c => equippedItems[c]);
               return activeEffects.length > 0 ? (
-                <div style={{ marginTop: 10, padding: "8px 12px", background: "#150e30", borderRadius: 10, border: "1px solid rgba(124,58,237,0.2)" }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: "#c4b5fd", marginBottom: 4 }}>활성 보너스 {activeEffects.length}개</div>
-                  <div style={{ fontSize: 10, color: "#9d8ec4", lineHeight: 1.6 }}>
+                <div style={{ marginTop: 10, padding: "8px 12px", background: "#f0f7ff", borderRadius: 10, border: "1px solid #e0eaff" }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "#333", marginBottom: 4 }}>활성 보너스 {activeEffects.length}개</div>
+                  <div style={{ fontSize: 10, color: "#666", lineHeight: 1.6 }}>
                     {activeEffects.map(c => ITEM_EFFECTS[c].label).join(" · ")}
                   </div>
                 </div>
               ) : (
-                <div style={{ marginTop: 10, padding: "8px 12px", background: "#150e30", borderRadius: 10, textAlign: "center" }}>
-                  <div style={{ fontSize: 11, color: "#7c6fa0" }}>아이템을 장착하면 보너스 효과가 활성화돼요!</div>
+                <div style={{ marginTop: 10, padding: "8px 12px", background: "#f7f7fa", borderRadius: 10, textAlign: "center" }}>
+                  <div style={{ fontSize: 11, color: "#aaa" }}>아이템을 장착하면 보너스 효과가 활성화돼요!</div>
                 </div>
               );
             })()}
@@ -5949,11 +5949,11 @@
           </div>
 
           {/* 코디 슬롯 전환 */}
-          <div style={{ background: "#1a1040", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(124,58,237,0.15)", marginBottom: 16 }}>
+          <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 16 }}>
             <button onClick={() => toggleSection("profOutfit")}
               style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", background: "none", border: "none", padding: 0, cursor: "pointer", marginBottom: collapsedSections.profOutfit ? 0 : 10 }}>
-              <h4 style={{ fontSize: 14, fontWeight: 700, margin: 0, color: "#e8dff5" }}>👗 코디 슬롯</h4>
-              <span style={{ fontSize: 14, color: "#7c6fa0", transition: "transform 0.2s", transform: collapsedSections.profOutfit ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
+              <h4 style={{ fontSize: 14, fontWeight: 700, margin: 0 }}>👗 코디 슬롯</h4>
+              <span style={{ fontSize: 14, color: "#888", transition: "transform 0.2s", transform: collapsedSections.profOutfit ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
             </button>
             {!collapsedSections.profOutfit && (<>
             <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
@@ -5964,13 +5964,13 @@
                   <button key={idx} onClick={() => switchOutfitSlot(idx)}
                     style={{
                       flex: 1, padding: "10px 8px", borderRadius: 14, cursor: "pointer",
-                      border: isActive ? "2px solid #7c3aed" : "1px solid rgba(124,58,237,0.2)",
-                      background: isActive ? "linear-gradient(135deg, rgba(124,58,237,0.15), rgba(91,33,182,0.15))" : "#150e30",
+                      border: isActive ? "2px solid #667eea" : "1px solid #ddd",
+                      background: isActive ? "linear-gradient(135deg, #667eea15, #764ba215)" : "#f7f7fa",
                       transition: "all 0.2s"
                     }}>
                     <div style={{ fontSize: 18, marginBottom: 4 }}>{idx === 0 ? "🔥" : idx === 1 ? "❄️" : "⚡"}</div>
-                    <div style={{ fontSize: 11, fontWeight: isActive ? 700 : 500, color: isActive ? "#c4a44a" : "#7c6fa0" }}>{slot.name}</div>
-                    <div style={{ fontSize: 9, color: "#7c6fa0", marginTop: 2 }}>{itemCount > 0 ? `${itemCount}개 장착` : "비어있음"}</div>
+                    <div style={{ fontSize: 11, fontWeight: isActive ? 700 : 500, color: isActive ? "#667eea" : "#888" }}>{slot.name}</div>
+                    <div style={{ fontSize: 9, color: "#aaa", marginTop: 2 }}>{itemCount > 0 ? `${itemCount}개 장착` : "비어있음"}</div>
                   </button>
                 );
               })}
@@ -5991,11 +5991,11 @@
           </div>
 
           {/* 📊 4종 통계 (접기/펼치기) */}
-          <div style={{ background: "#1a1040", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(124,58,237,0.15)", marginBottom: 20 }}>
+          <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 20 }}>
             <button onClick={() => toggleSection("profStats")}
               style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", background: "none", border: "none", padding: 0, cursor: "pointer", marginBottom: collapsedSections.profStats ? 0 : 12 }}>
-              <h4 style={{ fontSize: 14, fontWeight: 700, margin: 0, color: "#e8dff5" }}>📊 종합 스탯</h4>
-              <span style={{ fontSize: 14, color: "#7c6fa0", transition: "transform 0.2s", transform: collapsedSections.profStats ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
+              <h4 style={{ fontSize: 14, fontWeight: 700, margin: 0 }}>📊 종합 스탯</h4>
+              <span style={{ fontSize: 14, color: "#888", transition: "transform 0.2s", transform: collapsedSections.profStats ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
             </button>
             {!collapsedSections.profStats && (
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 8 }}>
@@ -6005,10 +6005,10 @@
                   { label: "연속", value: `${streak}일`, icon: PNG_ICONS.stat_streak },
                   { label: "코인", value: coins, icon: PNG_ICONS.coin }
                 ].map((s, i) => (
-                  <div key={i} style={{ background: "#150e30", borderRadius: 12, padding: "10px 4px", textAlign: "center" }}>
+                  <div key={i} style={{ background: "#f8f8fb", borderRadius: 12, padding: "10px 4px", textAlign: "center" }}>
                     <div><img src={s.icon} style={{ width: 24, height: 24, objectFit: "contain" }} /></div>
-                    <div style={{ fontSize: 15, fontWeight: 800, color: "#e8dff5", marginTop: 2 }}>{s.value}</div>
-                    <div style={{ fontSize: 10, color: "#7c6fa0" }}>{s.label}</div>
+                    <div style={{ fontSize: 15, fontWeight: 800, color: "#1a1a2e", marginTop: 2 }}>{s.value}</div>
+                    <div style={{ fontSize: 10, color: "#888" }}>{s.label}</div>
                   </div>
                 ))}
               </div>
@@ -6033,30 +6033,30 @@
             )}
           </div>
 
-          <div style={{ background: "#1a1040", borderRadius: 16, padding: 20, boxShadow: "0 2px 8px rgba(124,58,237,0.15)", marginBottom: 16 }}>
+          <div style={{ background: "white", borderRadius: 16, padding: 20, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 16 }}>
             <button onClick={() => toggleSection("profXP")}
               style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", background: "none", border: "none", padding: 0, cursor: "pointer", marginBottom: collapsedSections.profXP ? 0 : 8 }}>
-              <span style={{ fontSize: 13, fontWeight: 600, color: "#e8dff5" }}>✨ 경험치</span>
-              <span style={{ fontSize: 12, color: "#7c6fa0" }}>
+              <span style={{ fontSize: 13, fontWeight: 600 }}>✨ 경험치</span>
+              <span style={{ fontSize: 12, color: "#888" }}>
                 {xp % 100}/100 XP
                 <span style={{ marginLeft: 8, fontSize: 14, transition: "transform 0.2s", display: "inline-block", transform: collapsedSections.profXP ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
               </span>
             </button>
             {!collapsedSections.profXP && (
-              <div style={{ background: "#2d1b69", borderRadius: 10, height: 14, overflow: "hidden" }}>
-                <div style={{ background: "linear-gradient(90deg, #7c3aed, #c4a44a)", height: "100%", width: `${xp % 100}%`, borderRadius: 10, transition: "width 0.5s" }} />
+              <div style={{ background: "#eee", borderRadius: 10, height: 14, overflow: "hidden" }}>
+                <div style={{ background: "linear-gradient(90deg, #667eea, #764ba2)", height: "100%", width: `${xp % 100}%`, borderRadius: 10, transition: "width 0.5s" }} />
               </div>
             )}
           </div>
 
-          <div style={{ background: "#1a1040", borderRadius: 16, padding: 20, boxShadow: "0 2px 8px rgba(124,58,237,0.15)" }}>
+          <div style={{ background: "white", borderRadius: 16, padding: 20, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
             <button onClick={() => toggleSection("profAchieve")}
               style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", background: "none", border: "none", padding: 0, cursor: "pointer", marginBottom: collapsedSections.profAchieve ? 0 : 12 }}>
-              <h4 style={{ fontSize: 15, fontWeight: 700, margin: 0, display: "flex", alignItems: "center", gap: 6, color: "#e8dff5" }}><img src={PNG_ICONS.stat_trophy} style={{ width: 20, height: 20 }} /> 업적</h4>
-              <span style={{ fontSize: 14, color: "#7c6fa0", transition: "transform 0.2s", transform: collapsedSections.profAchieve ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
+              <h4 style={{ fontSize: 15, fontWeight: 700, margin: 0, display: "flex", alignItems: "center", gap: 6 }}><img src={PNG_ICONS.stat_trophy} style={{ width: 20, height: 20 }} /> 업적</h4>
+              <span style={{ fontSize: 14, color: "#888", transition: "transform 0.2s", transform: collapsedSections.profAchieve ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
             </button>
             {!collapsedSections.profAchieve && (
-              <div style={{ fontSize: 13, color: "#c4b5fd", lineHeight: 2 }}>
+              <div style={{ fontSize: 13, color: "#444", lineHeight: 2 }}>
                 <span style={{ display: "flex", alignItems: "center", gap: 4 }}><img src={PNG_ICONS.activity_reading} style={{ width: 16, height: 16 }} /> 완독한 책: {Object.values(bookProgress).filter(v => v === 100).length}권 / 3권</span>
                 <span style={{ display: "flex", alignItems: "center", gap: 4 }}><img src={PNG_ICONS.ui_speech} style={{ width: 16, height: 16 }} /> 완료한 토론: {Object.keys(discussionState).filter(k => !k.includes("deep")).length}개 / 15개</span>
                 <span style={{ display: "flex", alignItems: "center", gap: 4 }}><img src={PNG_ICONS.stat_streak} style={{ width: 16, height: 16 }} /> 완료한 심화: {Object.keys(discussionState).filter(k => k.includes("deep")).length}개 / 9개</span>
@@ -6066,24 +6066,24 @@
           </div>
 
           <button onClick={() => setProfile(null)}
-            style={{ width: "100%", marginTop: 16, padding: "12px", borderRadius: 12, border: "2px solid rgba(124,58,237,0.2)", background: "#1a1040", color: "#9d8ec4", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+            style={{ width: "100%", marginTop: 16, padding: "12px", borderRadius: 12, border: "2px solid #eee", background: "white", color: "#888", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
             ✏️ 프로필 수정
           </button>
 
           {/* ⚙️ 앱 정보 + 관리자 (하나로 묶어서 접기/펼치기) */}
-          <div style={{ marginTop: 24, padding: 16, background: "#1a1040", borderRadius: 16, boxShadow: "0 2px 8px rgba(124,58,237,0.15)" }}>
+          <div style={{ marginTop: 24, padding: 16, background: "white", borderRadius: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
             <button onClick={() => toggleSection("profApp")}
               style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", background: "none", border: "none", padding: 0, cursor: "pointer", marginBottom: collapsedSections.profApp ? 0 : 12 }}>
-              <span style={{ fontSize: 14, fontWeight: 700, color: "#e8dff5" }}>⚙️ 앱 정보 & 관리</span>
+              <span style={{ fontSize: 14, fontWeight: 700, color: "#1a1a2e" }}>⚙️ 앱 정보 & 관리</span>
               <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ fontSize: 11, color: "#7c6fa0", fontWeight: 600 }}>v{APP_VERSION}</span>
-                <span style={{ fontSize: 14, color: "#7c6fa0", transition: "transform 0.2s", transform: collapsedSections.profApp ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
+                <span style={{ fontSize: 11, color: "#999", fontWeight: 600 }}>v{APP_VERSION}</span>
+                <span style={{ fontSize: 14, color: "#888", transition: "transform 0.2s", transform: collapsedSections.profApp ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
               </span>
             </button>
             {!collapsedSections.profApp && (<>
               <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
                 <button onClick={() => setShowChangelog(true)}
-                  style={{ flex: 1, padding: "10px 0", borderRadius: 10, border: "1.5px solid #7c3aed", background: "rgba(124,58,237,0.08)", color: "#7c3aed", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
+                  style={{ flex: 1, padding: "10px 0", borderRadius: 10, border: "1.5px solid #667eea", background: "#667eea08", color: "#667eea", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
                   📋 업데이트 노트
                 </button>
                 <button onClick={() => setShowRollback(true)}
@@ -6109,28 +6109,28 @@
         return (
           <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.5)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center" }}
             onClick={() => { setShowAdminLogin(false); setAdminPin(""); setAdminPinError(false); }}>
-            <div style={{ background: "#1a1040", borderRadius: 20, padding: 24, width: "85%", maxWidth: 320, textAlign: "center" }}
+            <div style={{ background: "white", borderRadius: 20, padding: 24, width: "85%", maxWidth: 320, textAlign: "center" }}
               onClick={e => e.stopPropagation()}>
               <div style={{ fontSize: 36, marginBottom: 8 }}>🔒</div>
-              <h3 style={{ fontSize: 16, fontWeight: 800, color: "#e8dff5", marginBottom: 4 }}>관리자 모드</h3>
-              <p style={{ fontSize: 12, color: "#7c6fa0", marginBottom: 16 }}>관리자 비밀번호를 입력하세요</p>
+              <h3 style={{ fontSize: 16, fontWeight: 800, color: "#1a1a2e", marginBottom: 4 }}>관리자 모드</h3>
+              <p style={{ fontSize: 12, color: "#888", marginBottom: 16 }}>관리자 비밀번호를 입력하세요</p>
               <input
                 type="password"
                 value={adminPin}
                 onChange={e => { setAdminPin(e.target.value); setAdminPinError(false); }}
                 onKeyDown={e => e.key === "Enter" && handleAdminLogin()}
                 placeholder="비밀번호 입력"
-                style={{ width: "100%", padding: "12px", borderRadius: 10, border: adminPinError ? "2px solid #ef4444" : "1.5px solid rgba(124,58,237,0.3)", background: "#150e30", color: "#e8dff5", fontSize: 14, textAlign: "center", letterSpacing: 8, outline: "none", boxSizing: "border-box" }}
+                style={{ width: "100%", padding: "12px", borderRadius: 10, border: adminPinError ? "2px solid #ef4444" : "1.5px solid #ddd", fontSize: 14, textAlign: "center", letterSpacing: 8, outline: "none", boxSizing: "border-box" }}
                 autoFocus
               />
               {adminPinError && <div style={{ fontSize: 11, color: "#ef4444", marginTop: 6 }}>비밀번호가 틀렸습니다</div>}
               <div style={{ display: "flex", gap: 8, marginTop: 16 }}>
                 <button onClick={() => { setShowAdminLogin(false); setAdminPin(""); setAdminPinError(false); }}
-                  style={{ flex: 1, padding: "10px", borderRadius: 10, border: "1.5px solid rgba(124,58,237,0.3)", background: "#150e30", color: "#9d8ec4", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
+                  style={{ flex: 1, padding: "10px", borderRadius: 10, border: "1.5px solid #ddd", background: "white", color: "#888", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
                   취소
                 </button>
                 <button onClick={handleAdminLogin}
-                  style={{ flex: 1, padding: "10px", borderRadius: 10, border: "none", background: "#7c3aed", color: "white", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
+                  style={{ flex: 1, padding: "10px", borderRadius: 10, border: "none", background: "#667eea", color: "white", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
                   로그인
                 </button>
               </div>
@@ -6150,45 +6150,45 @@
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 0" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <button onClick={() => setScreen("home")} style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer" }}>←</button>
-                <h2 style={{ fontSize: 18, fontWeight: 800, color: "#e8dff5", margin: 0 }}>🔒 관리자 패널</h2>
+                <h2 style={{ fontSize: 18, fontWeight: 800, color: "#1a1a2e", margin: 0 }}>🔒 관리자 패널</h2>
               </div>
               <div style={{ display: "flex", gap: 6 }}>
-                <button onClick={() => setScreen("home")} style={{ padding: "6px 12px", borderRadius: 8, border: "1px solid #7c3aed", background: "#1a1040", color: "#7c3aed", fontSize: 11, fontWeight: 700, cursor: "pointer" }}>🏠 홈</button>
-                <button onClick={handleAdminLogout} style={{ padding: "6px 12px", borderRadius: 8, border: "1px solid #ef4444", background: "#1a1040", color: "#ef4444", fontSize: 11, fontWeight: 700, cursor: "pointer" }}>로그아웃</button>
+                <button onClick={() => setScreen("home")} style={{ padding: "6px 12px", borderRadius: 8, border: "1px solid #667eea", background: "white", color: "#667eea", fontSize: 11, fontWeight: 700, cursor: "pointer" }}>🏠 홈</button>
+                <button onClick={handleAdminLogout} style={{ padding: "6px 12px", borderRadius: 8, border: "1px solid #ef4444", background: "white", color: "#ef4444", fontSize: 11, fontWeight: 700, cursor: "pointer" }}>로그아웃</button>
               </div>
             </div>
             <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
               {tabs.map(t => (
                 <button key={t.key} onClick={() => setAdminTab(t.key)}
-                  style={{ flex: 1, padding: "10px 0", borderRadius: 10, border: adminTab === t.key ? "2px solid #7c3aed" : "1.5px solid rgba(124,58,237,0.2)", background: adminTab === t.key ? "#7c3aed" : "#1a1040", color: adminTab === t.key ? "white" : "#9d8ec4", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
+                  style={{ flex: 1, padding: "10px 0", borderRadius: 10, border: adminTab === t.key ? "2px solid #667eea" : "1.5px solid #eee", background: adminTab === t.key ? "#667eea" : "white", color: adminTab === t.key ? "white" : "#666", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
                   {t.icon} {t.label}
                 </button>
               ))}
             </div>
             {adminTab === "content" && (
               <div>
-                <div style={{ background: "#1a1040", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(124,58,237,0.15)", marginBottom: 12 }}>
-                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12, color: "#e8dff5" }}>📖 등록된 책 ({BOOKS.length}권)</h4>
+                <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 12 }}>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>📖 등록된 책 ({BOOKS.length}권)</h4>
                   {BOOKS.map((book, i) => (
-                    <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: i < BOOKS.length - 1 ? "1px solid rgba(124,58,237,0.2)" : "none" }}>
+                    <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: i < BOOKS.length - 1 ? "1px solid #f0f0f0" : "none" }}>
                       <div>
-                        <div style={{ fontSize: 13, fontWeight: 600, color: "#c4b5fd" }}>{book.title}</div>
-                        <div style={{ fontSize: 11, color: "#7c6fa0" }}>퀴즈 {book.quizzes?.length || 0}개 | 토론 {book.discussionTopics?.length || 0}개</div>
+                        <div style={{ fontSize: 13, fontWeight: 600 }}>{book.title}</div>
+                        <div style={{ fontSize: 11, color: "#888" }}>퀴즈 {book.quizzes?.length || 0}개 | 토론 {book.discussionTopics?.length || 0}개</div>
                       </div>
-                      <span style={{ fontSize: 11, color: "#7c3aed", fontWeight: 600 }}>{book.week}주차</span>
+                      <span style={{ fontSize: 11, color: "#667eea", fontWeight: 600 }}>{book.week}주차</span>
                     </div>
                   ))}
                 </div>
-                <div style={{ background: "#1a1040", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(124,58,237,0.15)", marginBottom: 12 }}>
-                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12, color: "#e8dff5" }}>🛍️ 상점 아이템 ({SHOP_ITEMS.length}개)</h4>
+                <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 12 }}>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>🛍️ 상점 아이템 ({SHOP_ITEMS.length}개)</h4>
                   {["frame", "aura", "hat", "face", "pet", "weapon"].map(cat => {
                     const items = SHOP_ITEMS.filter(i => i.category === cat);
                     const catNames = { frame: "프레임", aura: "오라", hat: "모자", face: "얼굴", pet: "펫", weapon: "무기" };
                     return (
                       <div key={cat} style={{ marginBottom: 8 }}>
-                        <div style={{ fontSize: 12, fontWeight: 700, color: "#7c3aed", marginBottom: 4 }}>{catNames[cat]} ({items.length}개)</div>
+                        <div style={{ fontSize: 12, fontWeight: 700, color: "#667eea", marginBottom: 4 }}>{catNames[cat]} ({items.length}개)</div>
                         {items.map(item => (
-                          <div key={item.id} style={{ display: "flex", justifyContent: "space-between", fontSize: 11, color: "#9d8ec4", padding: "2px 8px" }}>
+                          <div key={item.id} style={{ display: "flex", justifyContent: "space-between", fontSize: 11, color: "#666", padding: "2px 8px" }}>
                             <span>{item.name}</span><span>{item.price} 코인</span>
                           </div>
                         ))}
@@ -6196,14 +6196,14 @@
                     );
                   })}
                 </div>
-                <div style={{ background: "#1a1040", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(124,58,237,0.15)" }}>
-                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12, color: "#e8dff5" }}>👤 아바타 ({AVATAR_DATA.length}캐릭터)</h4>
+                <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>👤 아바타 ({AVATAR_DATA.length}캐릭터)</h4>
                   {AVATAR_DATA.map(av => (
                     <div key={av.id} style={{ display: "flex", alignItems: "center", gap: 10, padding: "6px 0" }}>
-                      <img src={av.img} loading="lazy" decoding="async" width="36" height="36" style={{ width: 36, height: 36, borderRadius: "50%", objectFit: "cover", background: "#150e30" }} />
+                      <img src={av.img} loading="lazy" decoding="async" width="36" height="36" style={{ width: 36, height: 36, borderRadius: "50%", objectFit: "cover", background: "#f0f0f0" }} />
                       <div>
-                        <div style={{ fontSize: 13, fontWeight: 600, color: "#c4b5fd" }}>{av.name} ({av.id})</div>
-                        <div style={{ fontSize: 11, color: "#7c6fa0" }}>{av.free ? "무료" : av.price + " 코인"}</div>
+                        <div style={{ fontSize: 13, fontWeight: 600 }}>{av.name} ({av.id})</div>
+                        <div style={{ fontSize: 11, color: "#888" }}>{av.free ? "무료" : av.price + " 코인"}</div>
                       </div>
                     </div>
                   ))}
@@ -6212,20 +6212,20 @@
             )}
             {adminTab === "users" && (
               <div>
-                <div style={{ background: "#1a1040", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(124,58,237,0.15)", marginBottom: 12 }}>
-                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12, color: "#e8dff5" }}>👤 현재 유저</h4>
-                  <div style={{ fontSize: 13, color: "#c4b5fd", lineHeight: 2.2 }}>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#7c6fa0" }}>이름</span><span style={{ fontWeight: 600 }}>{profile?.name}</span></div>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#7c6fa0" }}>레벨</span><span style={{ fontWeight: 600 }}>Lv.{level}</span></div>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#7c6fa0" }}>XP</span><span style={{ fontWeight: 600 }}>{xp} XP</span></div>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#7c6fa0" }}>코인</span><span style={{ fontWeight: 600 }}>{coins} 코인</span></div>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#7c6fa0" }}>연속출석</span><span style={{ fontWeight: 600 }}>{streak}일</span></div>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#7c6fa0" }}>배지</span><span style={{ fontWeight: 600 }}>{earnedBadges.length}개</span></div>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#7c6fa0" }}>아바타</span><span style={{ fontWeight: 600 }}>{profile?.avatar}</span></div>
+                <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 12 }}>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>👤 현재 유저</h4>
+                  <div style={{ fontSize: 13, color: "#444", lineHeight: 2.2 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>이름</span><span style={{ fontWeight: 600 }}>{profile?.name}</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>레벨</span><span style={{ fontWeight: 600 }}>Lv.{level}</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>XP</span><span style={{ fontWeight: 600 }}>{xp} XP</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>코인</span><span style={{ fontWeight: 600 }}>{coins} 코인</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>연속출석</span><span style={{ fontWeight: 600 }}>{streak}일</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>배지</span><span style={{ fontWeight: 600 }}>{earnedBadges.length}개</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>아바타</span><span style={{ fontWeight: 600 }}>{profile?.avatar}</span></div>
                   </div>
                 </div>
-                <div style={{ background: "#1a1040", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(124,58,237,0.15)", marginBottom: 12 }}>
-                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12, color: "#e8dff5" }}>💰 재화 조정</h4>
+                <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 12 }}>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>💰 재화 조정</h4>
                   <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                     {[
                       { label: "XP +100", action: () => setXp(prev => prev + 100) },
@@ -6240,10 +6240,10 @@
                     ))}
                   </div>
                 </div>
-                <div style={{ background: "#1a1040", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(124,58,237,0.15)", marginBottom: 12 }}>
-                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12, color: "#e8dff5" }}>⚔️ 배틀 관리</h4>
-                  <div style={{ fontSize: 12, color: "#9d8ec4", marginBottom: 10, lineHeight: 1.6 }}>
-                    오늘 배틀: <b style={{ color: "#7c3aed" }}>{battleTodayCount || 0}회</b> / 마지막 배틀일: <b>{lastBattleDate || "없음"}</b>
+                <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 12 }}>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>⚔️ 배틀 관리</h4>
+                  <div style={{ fontSize: 12, color: "#666", marginBottom: 10, lineHeight: 1.6 }}>
+                    오늘 배틀: <b style={{ color: "#667eea" }}>{battleTodayCount || 0}회</b> / 마지막 배틀일: <b>{lastBattleDate || "없음"}</b>
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                     <button onClick={() => {
@@ -6257,7 +6257,7 @@
                         showCoinGain(0, "배틀 일일 카운트 리셋 완료!");
                       } catch(e) { console.error("배틀 리셋 오류:", e); }
                     }}
-                      style={{ padding: "10px", borderRadius: 10, border: "1.5px solid #7c3aed", background: "rgba(124,58,237,0.05)", color: "#7c3aed", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
+                      style={{ padding: "10px", borderRadius: 10, border: "1.5px solid #667eea", background: "#667eea08", color: "#667eea", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
                       🔄 오늘 배틀 카운트 리셋
                     </button>
                     <button onClick={() => {
@@ -6280,21 +6280,21 @@
                     </button>
                   </div>
                 </div>
-                <div style={{ background: "#1a1040", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(124,58,237,0.15)", marginBottom: 12 }}>
-                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12, color: "#e8dff5" }}>📊 독서 진행도</h4>
+                <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 12 }}>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>📊 독서 진행도</h4>
                   {BOOKS.map((book, i) => (
                     <div key={i} style={{ marginBottom: 8 }}>
                       <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, marginBottom: 4 }}>
                         <span style={{ fontWeight: 600 }}>{book.title}</span>
-                        <span style={{ color: "#7c3aed" }}>{bookProgress[book.id] || 0}%</span>
+                        <span style={{ color: "#667eea" }}>{bookProgress[book.id] || 0}%</span>
                       </div>
-                      <div style={{ height: 6, background: "#2d1b69", borderRadius: 3 }}>
-                        <div style={{ height: "100%", width: (bookProgress[book.id] || 0) + "%", background: "linear-gradient(90deg, #7c3aed, #c4a44a)", borderRadius: 3 }} />
+                      <div style={{ height: 6, background: "#f0f0f0", borderRadius: 3 }}>
+                        <div style={{ height: "100%", width: (bookProgress[book.id] || 0) + "%", background: "linear-gradient(90deg, #667eea, #764ba2)", borderRadius: 3 }} />
                       </div>
                     </div>
                   ))}
                 </div>
-                <div style={{ background: "#1a1040", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(124,58,237,0.15)" }}>
+                <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
                   <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12, color: "#ef4444" }}>⚠️ 위험 영역</h4>
                   <button onClick={() => {
                     if (confirm("정말 모든 유저 데이터를 초기화하시겠습니까?")) {
@@ -6312,31 +6312,31 @@
             )}
             {adminTab === "settings" && (
               <div>
-                <div style={{ background: "#1a1040", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(124,58,237,0.15)", marginBottom: 12 }}>
-                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12, color: "#e8dff5" }}>🎭 캐릭터 테마</h4>
-                  <div style={{ fontSize: 12, color: "#9d8ec4", marginBottom: 8 }}>현재: 브롤스타즈 + 오리지널 혼합</div>
-                  <div style={{ fontSize: 11, color: "#7c6fa0", padding: 8, background: "#150e30", borderRadius: 8 }}>
+                <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 12 }}>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>🎭 캐릭터 테마</h4>
+                  <div style={{ fontSize: 12, color: "#666", marginBottom: 8 }}>현재: 브롤스타즈 + 오리지널 혼합</div>
+                  <div style={{ fontSize: 11, color: "#999", padding: 8, background: "#f8f8f8", borderRadius: 8 }}>
                     오리지널 캐릭터 10종이 모두 적용된 후 캐릭터 테마 전환이 가능합니다.
                   </div>
                 </div>
-                <div style={{ background: "#1a1040", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(124,58,237,0.15)", marginBottom: 12 }}>
-                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12, color: "#e8dff5" }}>📱 앱 정보</h4>
-                  <div style={{ fontSize: 13, color: "#c4b5fd", lineHeight: 2.2 }}>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#7c6fa0" }}>버전</span><span style={{ fontWeight: 600 }}>v{APP_VERSION}</span></div>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#7c6fa0" }}>빌드</span><span style={{ fontWeight: 600 }}>{APP_BUILD_DATE}</span></div>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#7c6fa0" }}>호스팅</span><span style={{ fontWeight: 600 }}>GitHub Pages + Firebase</span></div>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#7c6fa0" }}>아바타</span><span style={{ fontWeight: 600 }}>{AVATAR_DATA.length}캐릭터</span></div>
+                <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 12 }}>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>📱 앱 정보</h4>
+                  <div style={{ fontSize: 13, color: "#444", lineHeight: 2.2 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>버전</span><span style={{ fontWeight: 600 }}>v{APP_VERSION}</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>빌드</span><span style={{ fontWeight: 600 }}>{APP_BUILD_DATE}</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>호스팅</span><span style={{ fontWeight: 600 }}>GitHub Pages + Firebase</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>아바타</span><span style={{ fontWeight: 600 }}>{AVATAR_DATA.length}캐릭터</span></div>
                   </div>
                 </div>
-                <div style={{ background: "#1a1040", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(124,58,237,0.15)", marginBottom: 12 }}>
-                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12, color: "#e8dff5" }}>📢 공지사항</h4>
-                  <div style={{ fontSize: 12, color: "#7c6fa0", padding: 12, background: "#150e30", borderRadius: 8, textAlign: "center" }}>
+                <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 12 }}>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>📢 공지사항</h4>
+                  <div style={{ fontSize: 12, color: "#999", padding: 12, background: "#f8f8f8", borderRadius: 8, textAlign: "center" }}>
                     공지사항 기능은 Firebase 연동 후 사용 가능합니다
                   </div>
                 </div>
-                <div style={{ background: "#1a1040", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(124,58,237,0.15)" }}>
-                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12, color: "#e8dff5" }}>🔧 기능 상태</h4>
-                  <div style={{ fontSize: 13, color: "#c4b5fd", lineHeight: 2.2 }}>
+                <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>🔧 기능 상태</h4>
+                  <div style={{ fontSize: 13, color: "#444", lineHeight: 2.2 }}>
                     <div style={{ display: "flex", justifyContent: "space-between" }}><span>📖 책에게 질문하기</span><span style={{ color: "#22c55e", fontWeight: 600 }}>활성</span></div>
                     <div style={{ display: "flex", justifyContent: "space-between" }}><span>💬 토론 코치</span><span style={{ color: "#22c55e", fontWeight: 600 }}>활성</span></div>
                     <div style={{ display: "flex", justifyContent: "space-between" }}><span>📚 책 추천</span><span style={{ color: "#22c55e", fontWeight: 600 }}>활성</span></div>
@@ -6370,20 +6370,20 @@
         return (
           <div style={{ padding: "0 16px 100px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-              <h3 style={{ fontSize: 18, fontWeight: 800, color: "#e8dff5" }}>🎯 {currentWeek}주차 미션</h3>
-              <div style={{ fontSize: 12, color: "#7c6fa0" }}>{formatDate(today)}</div>
+              <h3 style={{ fontSize: 18, fontWeight: 800, color: "#1a1a2e" }}>🎯 {currentWeek}주차 미션</h3>
+              <div style={{ fontSize: 12, color: "#888" }}>{formatDate(today)}</div>
             </div>
 
             {/* 🎯 이번 주 퀘스트 (접기/펼치기) */}
             <div style={{ marginBottom: 20 }}>
               <button onClick={() => toggleSection("scheduleQuest")}
                 style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: collapsedSections.scheduleQuest ? 0 : 12, background: "none", border: "none", padding: 0, cursor: "pointer" }}>
-                <h3 style={{ fontSize: 16, fontWeight: 700, color: "#e8dff5", display: "flex", alignItems: "center", gap: 6, margin: 0 }}><img src={PNG_ICONS.activity_discussion} style={{ width: 24, height: 24 }} /> 이번 주 퀘스트</h3>
+                <h3 style={{ fontSize: 16, fontWeight: 700, color: "#1a1a2e", display: "flex", alignItems: "center", gap: 6, margin: 0 }}><img src={PNG_ICONS.activity_discussion} style={{ width: 24, height: 24 }} /> 이번 주 퀘스트</h3>
                 <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                  <span style={{ fontSize: 11, color: "#7c6fa0" }}>
+                  <span style={{ fontSize: 11, color: "#888" }}>
                     {weekRange.start.getMonth() + 1}/{weekRange.start.getDate()} ~ {weekRange.end.getMonth() + 1}/{weekRange.end.getDate()}
                   </span>
-                  <span style={{ fontSize: 14, color: "#7c6fa0", transition: "transform 0.2s", transform: collapsedSections.scheduleQuest ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
+                  <span style={{ fontSize: 14, color: "#888", transition: "transform 0.2s", transform: collapsedSections.scheduleQuest ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
                 </span>
               </button>
               {!collapsedSections.scheduleQuest && (
@@ -6400,13 +6400,13 @@
                     <SvgIcon svg={BOOK_COVERS[thisWeekBook.id]} size={60} style={{ height: 78, width: 60 }} />
                   </div>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: 16, fontWeight: 800, color: "#e8dff5", marginBottom: 2 }}>{thisWeekBook.title}</div>
-                    <div style={{ fontSize: 12, color: "#7c6fa0", marginBottom: 8 }}>{thisWeekBook.author}</div>
+                    <div style={{ fontSize: 16, fontWeight: 800, color: "#1a1a2e", marginBottom: 2 }}>{thisWeekBook.title}</div>
+                    <div style={{ fontSize: 12, color: "#888", marginBottom: 8 }}>{thisWeekBook.author}</div>
                     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                      <div style={{ flex: 1, background: "#2d1b69", borderRadius: 6, height: 8, overflow: "hidden" }}>
+                      <div style={{ flex: 1, background: "#ddd", borderRadius: 6, height: 8, overflow: "hidden" }}>
                         <div style={{ background: thisWeekBook.color, height: "100%", width: `${bookProgress[thisWeekBook.id]}%`, borderRadius: 6, transition: "width 0.5s" }} />
                       </div>
-                      <span style={{ fontSize: 12, color: "#9d8ec4", fontWeight: 700 }}>{bookProgress[thisWeekBook.id]}%</span>
+                      <span style={{ fontSize: 12, color: "#666", fontWeight: 700 }}>{bookProgress[thisWeekBook.id]}%</span>
                     </div>
                   </div>
                 </div>
@@ -6418,8 +6418,8 @@
             <div style={{ marginBottom: 20 }}>
               <button onClick={() => toggleSection("scheduleMission")}
                 style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: collapsedSections.scheduleMission ? 0 : 12, background: "none", border: "none", padding: 0, cursor: "pointer" }}>
-                <h3 style={{ fontSize: 16, fontWeight: 700, color: "#e8dff5", display: "flex", alignItems: "center", gap: 6, margin: 0 }}><img src="icons/tab-daily.png" style={{ width: 24, height: 24 }} /> 일일 미션</h3>
-                <span style={{ fontSize: 14, color: "#7c6fa0", transition: "transform 0.2s", transform: collapsedSections.scheduleMission ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
+                <h3 style={{ fontSize: 16, fontWeight: 700, color: "#1a1a2e", display: "flex", alignItems: "center", gap: 6, margin: 0 }}><img src="icons/tab-daily.png" style={{ width: 24, height: 24 }} /> 일일 미션</h3>
+                <span style={{ fontSize: 14, color: "#888", transition: "transform 0.2s", transform: collapsedSections.scheduleMission ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
               </button>
               {!collapsedSections.scheduleMission && (
                 dailyMissions.length > 0 ? (
@@ -6435,15 +6435,15 @@
                       };
                       return (
                         <div key={mission.id} style={{
-                          background: completed ? "linear-gradient(135deg, #0d2818, #122a1c)" : "#1a1040",
+                          background: completed ? "linear-gradient(135deg, #f0fff0, #e8f5e9)" : "white",
                           borderRadius: 14, padding: "12px 14px", display: "flex", alignItems: "center", gap: 12,
-                          boxShadow: completed ? "0 2px 8px rgba(76,175,80,0.15)" : "0 2px 6px rgba(124,58,237,0.15)",
-                          border: completed ? "2px solid #4CAF50" : "1px solid rgba(124,58,237,0.2)",
+                          boxShadow: completed ? "0 2px 8px rgba(76,175,80,0.15)" : "0 2px 6px rgba(0,0,0,0.04)",
+                          border: completed ? "2px solid #4CAF50" : "1px solid #eee",
                           transition: "all 0.3s ease"
                         }}>
                           <div style={{
                             width: 36, height: 36, borderRadius: 10,
-                            background: completed ? "#4CAF50" : "#150e30",
+                            background: completed ? "#4CAF50" : "#f5f5f5",
                             display: "flex", alignItems: "center", justifyContent: "center",
                             fontSize: 18, flexShrink: 0,
                             transition: "all 0.3s ease"
@@ -6451,13 +6451,13 @@
                             {completed ? "✅" : "⬜"}
                           </div>
                           <div style={{ flex: 1 }}>
-                            <div style={{ fontSize: 13, fontWeight: 600, color: completed ? "#34d399" : "#e8dff5", textDecoration: completed ? "line-through" : "none" }}>{mission.text}</div>
-                            <div style={{ fontSize: 11, color: completed ? "#66bb6a" : "#7c6fa0", marginTop: 2 }}>
+                            <div style={{ fontSize: 13, fontWeight: 600, color: completed ? "#2e7d32" : "#1a1a2e", textDecoration: completed ? "line-through" : "none" }}>{mission.text}</div>
+                            <div style={{ fontSize: 11, color: completed ? "#66bb6a" : "#888", marginTop: 2 }}>
                               {completed ? `✓ +${mission.xp}XP +${mission.coin || 3}코인 획득!` : (triggerHints[mission.trigger] || `+${mission.xp}XP +${mission.coin || 3}코인`)}
                             </div>
                           </div>
                           {!completed && (
-                            <div style={{ fontSize: 11, fontWeight: 700, color: "#c4a44a", background: "rgba(196,164,74,0.15)", padding: "4px 8px", borderRadius: 8, whiteSpace: "nowrap" }}>
+                            <div style={{ fontSize: 11, fontWeight: 700, color: "#667eea", background: "#667eea15", padding: "4px 8px", borderRadius: 8, whiteSpace: "nowrap" }}>
                               +{mission.xp}XP
                             </div>
                           )}
@@ -6471,7 +6471,7 @@
                     )}
                   </div>
                 ) : (
-                  <div style={{ background: "#1a1040", borderRadius: 14, padding: 16, textAlign: "center", color: "#7c6fa0" }}>미션 로딩 중...</div>
+                  <div style={{ background: "white", borderRadius: 14, padding: 16, textAlign: "center", color: "#888" }}>미션 로딩 중...</div>
                 )
               )}
             </div>
@@ -6480,8 +6480,8 @@
             <div style={{ marginBottom: 24 }}>
               <button onClick={() => toggleSection("scheduleBooks")}
                 style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: collapsedSections.scheduleBooks ? 0 : 12, background: "none", border: "none", padding: 0, cursor: "pointer" }}>
-                <h3 style={{ fontSize: 16, fontWeight: 700, color: "#e8dff5", display: "flex", alignItems: "center", gap: 6, margin: 0 }}><img src={PNG_ICONS.activity_reading} style={{ width: 24, height: 24 }} /> 전체 퀘스트 목록</h3>
-                <span style={{ fontSize: 14, color: "#7c6fa0", transition: "transform 0.2s", transform: collapsedSections.scheduleBooks ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
+                <h3 style={{ fontSize: 16, fontWeight: 700, color: "#1a1a2e", display: "flex", alignItems: "center", gap: 6, margin: 0 }}><img src={PNG_ICONS.activity_reading} style={{ width: 24, height: 24 }} /> 전체 퀘스트 목록</h3>
+                <span style={{ fontSize: 14, color: "#888", transition: "transform 0.2s", transform: collapsedSections.scheduleBooks ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
               </button>
               {!collapsedSections.scheduleBooks && (
               <div>
@@ -6496,20 +6496,20 @@
                   <>
                     {pageBooks.map(book => (
                       <div key={book.id} onClick={() => { setSelectedBook(book); setBookTab("summary"); setScreen("book"); }}
-                        style={{ background: "#1a1040", borderRadius: 14, padding: 14, marginBottom: 10, display: "flex", alignItems: "center", gap: 12, cursor: "pointer", boxShadow: "0 2px 6px rgba(124,58,237,0.15)", border: `2px solid ${bookProgress[book.id] === 100 ? "#4CAF50" : "transparent"}`, opacity: book.week > currentWeek ? 0.5 : 1 }}>
+                        style={{ background: "white", borderRadius: 14, padding: 14, marginBottom: 10, display: "flex", alignItems: "center", gap: 12, cursor: "pointer", boxShadow: "0 2px 6px rgba(0,0,0,0.04)", border: `2px solid ${bookProgress[book.id] === 100 ? "#4CAF50" : "transparent"}`, opacity: book.week > currentWeek ? 0.5 : 1 }}>
                         <div style={{ width: 44, height: 56, borderRadius: 8, flexShrink: 0, overflow: "hidden" }}>
                           <SvgIcon svg={BOOK_COVERS[book.id]} size={44} style={{ height: 56, width: 44 }} />
                         </div>
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 2 }}>
-                            <span style={{ fontSize: 10, background: "#150e30", padding: "2px 6px", borderRadius: 6, color: "#7c6fa0", fontWeight: 600 }}>{book.week}주차</span>
-                            <span style={{ fontSize: 13, fontWeight: 700, color: "#e8dff5", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{book.title}</span>
+                            <span style={{ fontSize: 10, background: "#f0f0f0", padding: "2px 6px", borderRadius: 6, color: "#888", fontWeight: 600 }}>{book.week}주차</span>
+                            <span style={{ fontSize: 13, fontWeight: 700, color: "#1a1a2e", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{book.title}</span>
                           </div>
                           <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 4 }}>
-                            <div style={{ flex: 1, background: "#2d1b69", borderRadius: 6, height: 5, overflow: "hidden" }}>
+                            <div style={{ flex: 1, background: "#eee", borderRadius: 6, height: 5, overflow: "hidden" }}>
                               <div style={{ background: book.color, height: "100%", width: `${bookProgress[book.id]}%`, borderRadius: 6 }} />
                             </div>
-                            <span style={{ fontSize: 11, color: "#9d8ec4", fontWeight: 600 }}>{bookProgress[book.id]}%</span>
+                            <span style={{ fontSize: 11, color: "#666", fontWeight: 600 }}>{bookProgress[book.id]}%</span>
                           </div>
                         </div>
                         <div>{bookProgress[book.id] === 100 ? <img src={PNG_ICONS.ui_check} style={{ width: 24, height: 24 }} /> : book.week > currentWeek ? <img src={PNG_ICONS.ui_locked} style={{ width: 24, height: 24 }} /> : <img src={PNG_ICONS.ui_play} style={{ width: 24, height: 24 }} />}</div>
@@ -6521,9 +6521,9 @@
                           onClick={() => setBookPage(Math.max(0, safePage - 1))}
                           disabled={safePage === 0}
                           style={{
-                            padding: "8px 14px", borderRadius: 10, border: "1.5px solid rgba(124,58,237,0.2)",
-                            background: safePage === 0 ? "#150e30" : "#1a1040",
-                            color: safePage === 0 ? "#7c6fa0" : "#c4a44a",
+                            padding: "8px 14px", borderRadius: 10, border: "1.5px solid #e5e7eb",
+                            background: safePage === 0 ? "#f5f5f5" : "white",
+                            color: safePage === 0 ? "#bbb" : "#667eea",
                             fontSize: 13, fontWeight: 700,
                             cursor: safePage === 0 ? "default" : "pointer"
                           }}>← 이전</button>
@@ -6533,10 +6533,10 @@
                               style={{
                                 width: 32, height: 32, borderRadius: "50%",
                                 border: "none",
-                                background: i === safePage ? "linear-gradient(135deg, #7c3aed, #5b21b6)" : "#150e30",
-                                color: i === safePage ? "white" : "#9d8ec4",
+                                background: i === safePage ? "linear-gradient(135deg, #667eea, #764ba2)" : "#f0f0f0",
+                                color: i === safePage ? "white" : "#666",
                                 fontSize: 12, fontWeight: 700, cursor: "pointer",
-                                boxShadow: i === safePage ? "0 2px 6px rgba(124,58,237,0.35)" : "none"
+                                boxShadow: i === safePage ? "0 2px 6px rgba(102,126,234,0.35)" : "none"
                               }}>{i + 1}</button>
                           ))}
                         </div>
@@ -6544,9 +6544,9 @@
                           onClick={() => setBookPage(Math.min(totalPages - 1, safePage + 1))}
                           disabled={safePage === totalPages - 1}
                           style={{
-                            padding: "8px 14px", borderRadius: 10, border: "1.5px solid rgba(124,58,237,0.2)",
-                            background: safePage === totalPages - 1 ? "#150e30" : "#1a1040",
-                            color: safePage === totalPages - 1 ? "#7c6fa0" : "#c4a44a",
+                            padding: "8px 14px", borderRadius: 10, border: "1.5px solid #e5e7eb",
+                            background: safePage === totalPages - 1 ? "#f5f5f5" : "white",
+                            color: safePage === totalPages - 1 ? "#bbb" : "#667eea",
                             fontSize: 13, fontWeight: 700,
                             cursor: safePage === totalPages - 1 ? "default" : "pointer"
                           }}>다음 →</button>
@@ -6560,47 +6560,47 @@
             </div>
 
             {/* ─── 이번 주 스케줄 (접기/펼치기) ─── */}
-            <div style={{ margin: "20px 0 12px", paddingTop: 16, borderTop: "2px dashed rgba(124,58,237,0.2)" }}>
+            <div style={{ margin: "20px 0 12px", paddingTop: 16, borderTop: "2px dashed #e5e7eb" }}>
               <button onClick={() => toggleSection("scheduleWeekly")}
                 style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", background: "none", border: "none", padding: 0, cursor: "pointer" }}>
-                <h3 style={{ fontSize: 16, fontWeight: 800, color: "#e8dff5", display: "flex", alignItems: "center", gap: 6, margin: 0 }}>📅 이번 주 스케줄</h3>
-                <span style={{ fontSize: 14, color: "#7c6fa0", transition: "transform 0.2s", transform: collapsedSections.scheduleWeekly ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
+                <h3 style={{ fontSize: 16, fontWeight: 800, color: "#1a1a2e", display: "flex", alignItems: "center", gap: 6, margin: 0 }}>📅 이번 주 스케줄</h3>
+                <span style={{ fontSize: 14, color: "#888", transition: "transform 0.2s", transform: collapsedSections.scheduleWeekly ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
               </button>
             </div>
 
             {!collapsedSections.scheduleWeekly && (<>
-            <div style={{ background: "linear-gradient(135deg, rgba(124,58,237,0.15), rgba(91,33,182,0.15))", borderRadius: 14, padding: 14, marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
+            <div style={{ background: "linear-gradient(135deg, #667eea15, #764ba215)", borderRadius: 14, padding: 14, marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
               <SvgIcon svg={BOOK_COVERS[cwBook.id]} size={36} style={{ height: 46, width: 36, borderRadius: 4 }} />
               <div>
-                <div style={{ fontSize: 12, color: "#c4a44a", fontWeight: 600 }}>{currentWeek}주차 퀘스트</div>
-                <div style={{ fontSize: 14, fontWeight: 700, color: "#e8dff5" }}>{cwBook.title}</div>
-                <div style={{ fontSize: 11, color: "#7c6fa0" }}>
+                <div style={{ fontSize: 12, color: "#667eea", fontWeight: 600 }}>{currentWeek}주차 퀘스트</div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "#1a1a2e" }}>{cwBook.title}</div>
+                <div style={{ fontSize: 11, color: "#888" }}>
                   {weekRange.start.getMonth() + 1}/{weekRange.start.getDate()} ~ {weekRange.end.getMonth() + 1}/{weekRange.end.getDate()}
                 </div>
               </div>
             </div>
 
-            <div style={{ background: "#1a1040", borderRadius: 16, overflow: "hidden", boxShadow: "0 2px 8px rgba(124,58,237,0.15)", marginBottom: 24 }}>
+            <div style={{ background: "white", borderRadius: 16, overflow: "hidden", boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 24 }}>
               {schedule.map((s, i) => (
                 <div key={i} style={{
                   display: "flex", alignItems: "center", gap: 14, padding: "14px 16px",
-                  borderBottom: i < 6 ? "1px solid rgba(124,58,237,0.1)" : "none",
-                  background: i === todayIdx ? "rgba(124,58,237,0.08)" : "transparent"
+                  borderBottom: i < 6 ? "1px solid #f0f0f0" : "none",
+                  background: i === todayIdx ? "#667eea08" : "transparent"
                 }}>
                   <div style={{
                     width: 36, height: 36, borderRadius: "50%",
-                    background: i === todayIdx ? "#7c3aed" : i < todayIdx ? "rgba(76,175,80,0.15)" : "#150e30",
-                    color: i === todayIdx ? "white" : i < todayIdx ? "#4CAF50" : "#9d8ec4",
+                    background: i === todayIdx ? "#667eea" : i < todayIdx ? "#4CAF5020" : "#f0f0f0",
+                    color: i === todayIdx ? "white" : i < todayIdx ? "#4CAF50" : "#666",
                     display: "flex", alignItems: "center", justifyContent: "center",
                     fontSize: 13, fontWeight: 700, flexShrink: 0
                   }}>
                     {i < todayIdx ? "✓" : s.day}
                   </div>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: 13, fontWeight: i === todayIdx ? 700 : 500, color: "#e8dff5" }}>{s.task}</div>
-                    {s.book && <div style={{ fontSize: 11, color: "#7c6fa0" }}>{s.book.title}</div>}
+                    <div style={{ fontSize: 13, fontWeight: i === todayIdx ? 700 : 500, color: "#1a1a2e" }}>{s.task}</div>
+                    {s.book && <div style={{ fontSize: 11, color: "#888" }}>{s.book.title}</div>}
                   </div>
-                  {i === todayIdx && <span style={{ fontSize: 11, color: "#c4a44a", fontWeight: 700, background: "rgba(196,164,74,0.15)", padding: "3px 8px", borderRadius: 8 }}>오늘</span>}
+                  {i === todayIdx && <span style={{ fontSize: 11, color: "#667eea", fontWeight: 700, background: "#667eea15", padding: "3px 8px", borderRadius: 8 }}>오늘</span>}
                 </div>
               ))}
             </div>
@@ -6608,9 +6608,9 @@
 
             {/* 📋 전체 일정 (접기/펼치기) */}
             <button onClick={() => toggleSection("scheduleOverview")}
-              style={{ width: "100%", padding: "12px 16px", background: "#1a1040", border: "1px solid rgba(124,58,237,0.2)", borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "space-between", cursor: "pointer", marginBottom: 10, boxShadow: "0 2px 6px rgba(124,58,237,0.15)" }}>
-              <h3 style={{ fontSize: 16, fontWeight: 700, color: "#e8dff5", margin: 0 }}>🗓️ 전체 일정 ({BOOKS.length}주)</h3>
-              <span style={{ fontSize: 14, color: "#7c6fa0", transition: "transform 0.2s", transform: collapsedSections.scheduleOverview ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
+              style={{ width: "100%", padding: "12px 16px", background: "white", border: "1px solid #eee", borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "space-between", cursor: "pointer", marginBottom: 10, boxShadow: "0 2px 6px rgba(0,0,0,0.04)" }}>
+              <h3 style={{ fontSize: 16, fontWeight: 700, color: "#1a1a2e", margin: 0 }}>🗓️ 전체 일정 ({BOOKS.length}주)</h3>
+              <span style={{ fontSize: 14, color: "#888", transition: "transform 0.2s", transform: collapsedSections.scheduleOverview ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
             </button>
             {!collapsedSections.scheduleOverview && BOOKS.map(book => {
               const wr = getWeekRange(startDate, book.week);
@@ -6618,21 +6618,21 @@
               const isPast = book.week < currentWeek;
               return (
                 <div key={book.id} style={{
-                  background: isCurrent ? `${book.color}15` : "#1a1040",
+                  background: isCurrent ? `${book.color}15` : "white",
                   borderRadius: 14, padding: 14, marginBottom: 10,
                   border: isCurrent ? `2px solid ${book.color}60` : "2px solid transparent",
-                  boxShadow: "0 2px 6px rgba(124,58,237,0.15)"
+                  boxShadow: "0 2px 6px rgba(0,0,0,0.04)"
                 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                     <SvgIcon svg={BOOK_COVERS[book.id]} size={30} style={{ height: 38, width: 30, borderRadius: 4 }} />
                     <div style={{ flex: 1 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                        <span style={{ fontSize: 12, fontWeight: 700, color: isCurrent ? book.color : "#7c6fa0" }}>{book.week}주차</span>
+                        <span style={{ fontSize: 12, fontWeight: 700, color: isCurrent ? book.color : "#888" }}>{book.week}주차</span>
                         {isCurrent && <span style={{ fontSize: 10, background: book.color, color: "white", padding: "1px 6px", borderRadius: 6 }}>진행 중</span>}
                         {isPast && <span style={{ fontSize: 10, color: "#4CAF50" }}>✅</span>}
                       </div>
-                      <div style={{ fontSize: 13, fontWeight: 600, color: "#e8dff5" }}>{book.title}</div>
-                      <div style={{ fontSize: 11, color: "#7c6fa0" }}>
+                      <div style={{ fontSize: 13, fontWeight: 600, color: "#1a1a2e" }}>{book.title}</div>
+                      <div style={{ fontSize: 11, color: "#888" }}>
                         {wr.start.getMonth() + 1}/{wr.start.getDate()} ({getDayName(wr.start)}) ~ {wr.end.getMonth() + 1}/{wr.end.getDate()} ({getDayName(wr.end)})
                       </div>
                     </div>
@@ -6715,7 +6715,7 @@
               <div style={{ fontSize: 12, opacity: 0.9, marginTop: 4 }}>읽은 책 내용을 바탕으로 궁금한 걸 물어봐!</div>
             </div>
 
-            <div style={{ flex: 1, overflowY: "auto", padding: 16, background: "#0f0a1e", display: "flex", flexDirection: "column" }}>
+            <div style={{ flex: 1, overflowY: "auto", padding: 16, background: "#f7f7fa", display: "flex", flexDirection: "column" }}>
               {askMessages.map((msg, i) => (
                 <div key={i} style={{ display: "flex", justifyContent: msg.role === "user" ? "flex-end" : "flex-start", marginBottom: 10, alignItems: "flex-end", gap: 6 }}>
                   {msg.role === "ai" && (
@@ -6726,9 +6726,9 @@
                   <div style={{
                     maxWidth: "75%", padding: "10px 14px",
                     borderRadius: msg.role === "user" ? "16px 16px 4px 16px" : "16px 16px 16px 4px",
-                    background: msg.role === "user" ? "#f5576c" : "#1a1040",
-                    color: msg.role === "user" ? "white" : "#c4b5fd",
-                    fontSize: 13, lineHeight: 1.6, boxShadow: "0 1px 4px rgba(124,58,237,0.15)"
+                    background: msg.role === "user" ? "#f5576c" : "white",
+                    color: msg.role === "user" ? "white" : "#333",
+                    fontSize: 13, lineHeight: 1.6, boxShadow: "0 1px 4px rgba(0,0,0,0.06)"
                   }}>
                     {msg.role === "ai" && <span style={{ fontSize: 11, color: BOOK_HELPER.color, fontWeight: 600, display: "block", marginBottom: 2 }}>{BOOK_HELPER.name}</span>}
                     {msg.text}
@@ -6739,15 +6739,15 @@
                 <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
                   <img src={BOOK_HELPER.expressions.thinking} alt={BOOK_HELPER.shortName}
                     style={{ width: 36, height: 36, borderRadius: "50%", border: `2px solid ${BOOK_HELPER.color}`, objectFit: "cover" }} />
-                  <span style={{ fontSize: 12, color: "#9d8ec4", fontStyle: "italic" }}>책을 찾아보는 중...</span>
+                  <span style={{ fontSize: 12, color: "#666", fontStyle: "italic" }}>책을 찾아보는 중...</span>
                 </div>
               )}
               <div ref={askEndRef} />
             </div>
 
-            <div style={{ padding: 16, background: "#1a1040", borderTop: "1px solid rgba(124,58,237,0.2)", flexShrink: 0 }}>
+            <div style={{ padding: 16, background: "white", borderTop: "1px solid #eee", flexShrink: 0 }}>
               {askListening && askInput && (
-                <div style={{ padding: "8px 12px", marginBottom: 8, borderRadius: 12, background: "#150e30", border: "2px solid #f5576c", fontSize: 13, color: "#c4b5fd", maxHeight: 80, overflowY: "auto" }}>
+                <div style={{ padding: "8px 12px", marginBottom: 8, borderRadius: 12, background: "#fff0f3", border: "2px solid #f5576c", fontSize: 13, maxHeight: 80, overflowY: "auto" }}>
                   <span style={{ fontSize: 11, color: "#f5576c", fontWeight: 600 }}>내 질문:</span>
                   <div style={{ marginTop: 2 }}>{askInput}</div>
                 </div>
@@ -6768,7 +6768,7 @@
                   onKeyDown={e => e.key === "Enter" && sendAskMessage()}
                   placeholder="타이핑으로 질문..."
                   disabled={askLoading}
-                  style={{ flex: 1, padding: "10px 14px", borderRadius: 20, border: "2px solid rgba(124,58,237,0.2)", background: "#150e30", color: "#e8dff5", fontSize: 13 }} />
+                  style={{ flex: 1, padding: "10px 14px", borderRadius: 20, border: "2px solid #eee", fontSize: 13 }} />
                 <button onClick={() => sendAskMessage()} disabled={askLoading || !askInput.trim()}
                   style={{ padding: "10px 16px", borderRadius: 20, border: "none", background: "#f5576c", color: "white", fontSize: 13, fontWeight: 600, cursor: "pointer", opacity: askLoading || !askInput.trim() ? 0.5 : 1 }}>
                   전송
@@ -6868,11 +6868,11 @@
                 </div>
                 <div style={{
                   flex: 1,
-                  background: "#1a1040",
-                  color: "#c4b5fd",
+                  background: "rgba(255,255,255,0.95)",
+                  color: "#1a1a2e",
                   padding: "10px 14px",
                   borderRadius: "16px 16px 16px 4px",
-                  boxShadow: "0 6px 20px rgba(124,58,237,0.2)",
+                  boxShadow: "0 6px 20px rgba(0,0,0,0.35)",
                   position: "relative",
                   fontSize: 13, fontWeight: 600, lineHeight: 1.5
                 }}>
@@ -6937,10 +6937,10 @@
             {/* Tip 카드 */}
             <div style={{ padding: "16px", marginTop: 4 }}>
               <div style={{
-                background: "#1a1040", borderRadius: 14, padding: 14,
-                border: "1px dashed rgba(124,58,237,0.3)", fontSize: 11.5, color: "#c4b5fd", lineHeight: 1.65
+                background: "white", borderRadius: 14, padding: 14,
+                border: "1px dashed #c7d2fe", fontSize: 11.5, color: "#555", lineHeight: 1.65
               }}>
-                <div style={{ fontSize: 12, fontWeight: 800, color: "#c4a44a", marginBottom: 6 }}>💡 이런 걸 해볼 수 있어요</div>
+                <div style={{ fontSize: 12, fontWeight: 800, color: "#6366f1", marginBottom: 6 }}>💡 이런 걸 해볼 수 있어요</div>
                 • 아바타에게 <b>"가장 기억에 남는 책이 뭐야?"</b>라고 물어보기<br/>
                 • 책 내용 중 <b>궁금한 단어나 인물</b> 질문하기<br/>
                 • <b>읽은 책과 비슷한 주제</b>의 다음 책 추천받기
@@ -6988,9 +6988,9 @@
         return (
           <div style={{ display: "flex", flexDirection: "column", height: "100vh", paddingBottom: 70 }}>
             {/* 헤더 - 보라색(#6366f1 → #a855f7) 아바타 테마 */}
-            <div style={{ padding: "16px 20px", background: "linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%)", color: "white", flexShrink: 0 }}>
+            <div style={{ padding: "16px 20px", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)", color: "white", flexShrink: 0 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <AvatarIcon avatarId={profile?.avatar} size={52} style={{ border: `3px solid ${rarityInfo.color}`, boxShadow: `0 0 0 2px #1a1040` }} />
+                <AvatarIcon avatarId={profile?.avatar} size={52} style={{ border: `3px solid ${rarityInfo.color}`, boxShadow: `0 0 0 2px white` }} />
                 <div style={{ flex: 1 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                     <div style={{ fontSize: 18, fontWeight: 800 }}>💬 {avatarProfile.name}와 대화</div>
@@ -7004,7 +7004,7 @@
               </div>
             </div>
 
-            <div style={{ flex: 1, overflowY: "auto", padding: 16, background: "#0f0a1e", display: "flex", flexDirection: "column" }}>
+            <div style={{ flex: 1, overflowY: "auto", padding: 16, background: "#f7f7fa", display: "flex", flexDirection: "column" }}>
               {avatarChatMessages.map((msg, i) => (
                 <div key={i} style={{ display: "flex", justifyContent: msg.role === "user" ? "flex-end" : "flex-start", marginBottom: 10, alignItems: "flex-end", gap: 6 }}>
                   {msg.role === "ai" && (
@@ -7013,9 +7013,9 @@
                   <div style={{
                     maxWidth: "75%", padding: "10px 14px",
                     borderRadius: msg.role === "user" ? "16px 16px 4px 16px" : "16px 16px 16px 4px",
-                    background: msg.role === "user" ? "#7c3aed" : "#1a1040",
-                    color: msg.role === "user" ? "white" : "#c4b5fd",
-                    fontSize: 13, lineHeight: 1.6, boxShadow: "0 1px 4px rgba(124,58,237,0.15)"
+                    background: msg.role === "user" ? "#6366f1" : "white",
+                    color: msg.role === "user" ? "white" : "#333",
+                    fontSize: 13, lineHeight: 1.6, boxShadow: "0 1px 4px rgba(0,0,0,0.06)"
                   }}>
                     {msg.role === "ai" && <span style={{ fontSize: 11, color: rarityInfo.color, fontWeight: 700, display: "block", marginBottom: 2 }}>{avatarProfile.name}</span>}
                     {msg.text}
@@ -7025,7 +7025,7 @@
               {avatarChatLoading && (
                 <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
                   <AvatarIcon avatarId={profile?.avatar} size={36} style={{ border: `2px solid ${rarityInfo.color}`, flexShrink: 0 }} />
-                  <span style={{ fontSize: 12, color: "#9d8ec4", fontStyle: "italic" }}>{avatarProfile.name} 생각하는 중...</span>
+                  <span style={{ fontSize: 12, color: "#666", fontStyle: "italic" }}>{avatarProfile.name} 생각하는 중...</span>
                 </div>
               )}
               <div ref={avatarChatEndRef} />
@@ -7033,7 +7033,7 @@
 
             {/* 빠른 질문 제안 */}
             {avatarChatMessages.length <= 1 && !avatarChatLoading && (
-              <div style={{ padding: "8px 16px", background: "#1a1040", borderTop: "1px solid rgba(124,58,237,0.2)", display: "flex", flexWrap: "wrap", gap: 6 }}>
+              <div style={{ padding: "8px 16px", background: "white", borderTop: "1px solid #eee", display: "flex", flexWrap: "wrap", gap: 6 }}>
                 {[
                   "가장 기억에 남는 책이 뭐야?",
                   strongNames ? `${avatarProfile.strongDomains[0] ? (DOMAIN_META.find(d => d.id === avatarProfile.strongDomains[0])?.name + "에 대해 알려줘") : "가장 잘하는 게 뭐야?"}` : "가장 잘하는 게 뭐야?",
@@ -7047,15 +7047,15 @@
               </div>
             )}
 
-            <div style={{ padding: 16, background: "#1a1040", borderTop: "1px solid rgba(124,58,237,0.2)", flexShrink: 0 }}>
+            <div style={{ padding: 16, background: "white", borderTop: "1px solid #eee", flexShrink: 0 }}>
               <div style={{ display: "flex", gap: 8 }}>
                 <input value={avatarChatInput} onChange={e => setAvatarChatInput(e.target.value)}
                   onKeyDown={e => e.key === "Enter" && sendAvatarMessage()}
                   placeholder={`${avatarProfile.name}에게 물어봐...`}
                   disabled={avatarChatLoading}
-                  style={{ flex: 1, padding: "12px 14px", borderRadius: 20, border: "2px solid rgba(124,58,237,0.2)", background: "#150e30", color: "#e8dff5", fontSize: 13 }} />
+                  style={{ flex: 1, padding: "12px 14px", borderRadius: 20, border: "2px solid #eee", fontSize: 13 }} />
                 <button onClick={() => sendAvatarMessage()} disabled={avatarChatLoading || !avatarChatInput.trim()}
-                  style={{ padding: "10px 18px", borderRadius: 20, border: "none", background: "linear-gradient(135deg, #7c3aed, #c4a44a)", color: "white", fontSize: 13, fontWeight: 700, cursor: "pointer", opacity: avatarChatLoading || !avatarChatInput.trim() ? 0.5 : 1 }}>
+                  style={{ padding: "10px 18px", borderRadius: 20, border: "none", background: "linear-gradient(135deg, #6366f1, #a855f7)", color: "white", fontSize: 13, fontWeight: 700, cursor: "pointer", opacity: avatarChatLoading || !avatarChatInput.trim() ? 0.5 : 1 }}>
                   전송
                 </button>
               </div>
@@ -7091,26 +7091,26 @@
         return (
           <div style={{ padding: "0 20px 90px", maxWidth: 430 }}>
             <div style={{ padding: "16px 0 12px", marginBottom: 12 }}>
-              <div style={{ fontSize: 22, fontWeight: 900, color: "#e8dff5" }}>📖 추천 도서</div>
-              <div style={{ fontSize: 13, color: "#7c6fa0", marginTop: 4 }}>읽은 책을 바탕으로 다음에 읽으면 좋을 책을 추천해줘!</div>
+              <div style={{ fontSize: 22, fontWeight: 900, color: "#1a1a2e" }}>📖 추천 도서</div>
+              <div style={{ fontSize: 13, color: "#888", marginTop: 4 }}>읽은 책을 바탕으로 다음에 읽으면 좋을 책을 추천해줘!</div>
             </div>
 
             {readBooks.length === 0 ? (
-              <div style={{ display: "flex", gap: 10, alignItems: "flex-start", background: "#1a1040", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(124,58,237,0.15)" }}>
+              <div style={{ display: "flex", gap: 10, alignItems: "flex-start", background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
                 <img src={RECOMMENDER.img} alt={RECOMMENDER.shortName}
                   style={{ width: 44, height: 44, borderRadius: "50%", border: `2px solid ${RECOMMENDER.color}`, flexShrink: 0, objectFit: "cover" }} />
                 <div>
                   <span style={{ fontSize: 11, color: RECOMMENDER.color, fontWeight: 600 }}>{RECOMMENDER.name}</span>
-                  <div style={{ fontSize: 13, color: "#c4b5fd", marginTop: 4, lineHeight: 1.6 }}>아직 읽은 책이 없구나! 책을 읽고 토론을 시작하면 딱 맞는 책을 추천해줄게!</div>
+                  <div style={{ fontSize: 13, color: "#333", marginTop: 4, lineHeight: 1.6 }}>아직 읽은 책이 없구나! 책을 읽고 토론을 시작하면 딱 맞는 책을 추천해줄게!</div>
                 </div>
               </div>
             ) : recLoading ? (
-              <div style={{ display: "flex", gap: 10, alignItems: "flex-start", background: "#1a1040", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(124,58,237,0.15)" }}>
+              <div style={{ display: "flex", gap: 10, alignItems: "flex-start", background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
                 <img src={RECOMMENDER.img} alt={RECOMMENDER.shortName}
                   style={{ width: 44, height: 44, borderRadius: "50%", border: `2px solid ${RECOMMENDER.color}`, flexShrink: 0, objectFit: "cover", animation: "pop 0.8s ease infinite alternate" }} />
                 <div>
                   <span style={{ fontSize: 11, color: RECOMMENDER.color, fontWeight: 600 }}>{RECOMMENDER.name}</span>
-                  <div style={{ fontSize: 13, color: "#c4b5fd", marginTop: 4 }}>도서관에서 책을 찾는 중... 잠시만 기다려!</div>
+                  <div style={{ fontSize: 13, color: "#333", marginTop: 4 }}>도서관에서 책을 찾는 중... 잠시만 기다려!</div>
                 </div>
               </div>
             ) : recommendations.length > 0 ? (
@@ -7118,28 +7118,28 @@
                 <div style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 16 }}>
                   <img src={RECOMMENDER.img} alt={RECOMMENDER.shortName}
                     style={{ width: 44, height: 44, borderRadius: "50%", border: `2px solid ${RECOMMENDER.color}`, flexShrink: 0, objectFit: "cover" }} />
-                  <div style={{ background: "#1a1040", borderRadius: "16px 16px 16px 4px", padding: "10px 14px", boxShadow: "0 1px 4px rgba(124,58,237,0.15)" }}>
+                  <div style={{ background: "white", borderRadius: "16px 16px 16px 4px", padding: "10px 14px", boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
                     <span style={{ fontSize: 11, color: RECOMMENDER.color, fontWeight: 600, display: "block", marginBottom: 2 }}>{RECOMMENDER.name}</span>
-                    <span style={{ fontSize: 13, color: "#c4b5fd", lineHeight: 1.6 }}>{readBooks.length}권의 책을 분석해서 추천했어! 한번 살펴봐!</span>
+                    <span style={{ fontSize: 13, color: "#333", lineHeight: 1.6 }}>{readBooks.length}권의 책을 분석해서 추천했어! 한번 살펴봐!</span>
                   </div>
                 </div>
                 {recommendations.map((book, i) => (
                   <div key={i} style={{
-                    background: "#1a1040", borderRadius: 16, padding: 16, marginBottom: 12,
-                    boxShadow: "0 2px 8px rgba(124,58,237,0.15)", display: "flex", gap: 12
+                    background: "white", borderRadius: 16, padding: 16, marginBottom: 12,
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.06)", display: "flex", gap: 12
                   }}>
                     {book.cover ? (
                       <img src={book.cover} alt={book.title}
                         style={{ width: 70, height: 100, borderRadius: 8, objectFit: "cover", flexShrink: 0 }} />
                     ) : (
-                      <div style={{ width: 70, height: 100, borderRadius: 8, background: "linear-gradient(135deg, #7c3aed, #5b21b6)", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <div style={{ width: 70, height: 100, borderRadius: 8, background: "linear-gradient(135deg, #667eea, #764ba2)", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
                         <span style={{ fontSize: 28 }}>📕</span>
                       </div>
                     )}
                     <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 14, fontWeight: 700, color: "#e8dff5", marginBottom: 4 }}>{book.title}</div>
-                      <div style={{ fontSize: 11, color: "#7c6fa0", marginBottom: 6 }}>{book.author}</div>
-                      <div style={{ fontSize: 12, color: "#c4a44a", fontWeight: 600, background: "rgba(124,58,237,0.15)", padding: "6px 10px", borderRadius: 8, lineHeight: 1.5 }}>
+                      <div style={{ fontSize: 14, fontWeight: 700, color: "#1a1a2e", marginBottom: 4 }}>{book.title}</div>
+                      <div style={{ fontSize: 11, color: "#888", marginBottom: 6 }}>{book.author}</div>
+                      <div style={{ fontSize: 12, color: "#667eea", fontWeight: 600, background: "#f0f3ff", padding: "6px 10px", borderRadius: 8, lineHeight: 1.5 }}>
                         💡 {book.reason}
                       </div>
                       {book.link && (
@@ -7152,16 +7152,16 @@
                   </div>
                 ))}
                 <button onClick={loadRecommendations}
-                  style={{ width: "100%", padding: 14, borderRadius: 16, border: "none", background: "linear-gradient(135deg, #7c3aed, #c4a44a)", color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer", marginTop: 8 }}>
+                  style={{ width: "100%", padding: 14, borderRadius: 16, border: "none", background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer", marginTop: 8 }}>
                   🔄 다른 책 추천받기
                 </button>
               </div>
             ) : recLoaded ? (
-              <div style={{ textAlign: "center", padding: 40, background: "#1a1040", borderRadius: 16 }}>
+              <div style={{ textAlign: "center", padding: 40, background: "white", borderRadius: 16 }}>
                 <div style={{ fontSize: 48, marginBottom: 12 }}>😅</div>
-                <div style={{ fontSize: 14, fontWeight: 600, color: "#e8dff5" }}>추천을 가져오지 못했어요</div>
+                <div style={{ fontSize: 14, fontWeight: 600 }}>추천을 가져오지 못했어요</div>
                 <button onClick={loadRecommendations}
-                  style={{ marginTop: 12, padding: "10px 24px", borderRadius: 16, border: "none", background: "#7c3aed", color: "white", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+                  style={{ marginTop: 12, padding: "10px 24px", borderRadius: 16, border: "none", background: "#667eea", color: "white", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
                   다시 시도
                 </button>
               </div>
@@ -7179,15 +7179,15 @@
         return (
           <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}
             onClick={() => setShowQuizResult(false)}>
-            <div style={{ background: "#1a1040", borderRadius: 24, padding: "32px 24px", textAlign: "center", maxWidth: 320, width: "90%", animation: "pop 0.3s ease" }}
+            <div style={{ background: "white", borderRadius: 24, padding: "32px 24px", textAlign: "center", maxWidth: 320, width: "90%", animation: "pop 0.3s ease" }}
               onClick={e => e.stopPropagation()}>
               <img src={correct ? PNG_ICONS.quiz_correct : PNG_ICONS.quiz_wrong} style={{ width: 100, height: 100, marginBottom: 12 }} />
-              <div style={{ fontSize: 20, fontWeight: 800, color: "#e8dff5", marginBottom: 8 }}>{correct ? "정답!" : "틀렸어요"}</div>
-              <div style={{ fontSize: 14, color: "#9d8ec4", marginBottom: 16, lineHeight: 1.6 }}>{explanation}</div>
-              {!correct && <div style={{ fontSize: 13, color: "#7c6fa0", marginBottom: 12 }}>정답: {answer}</div>}
+              <div style={{ fontSize: 20, fontWeight: 800, color: "#1a1a2e", marginBottom: 8 }}>{correct ? "정답!" : "틀렸어요"}</div>
+              <div style={{ fontSize: 14, color: "#666", marginBottom: 16, lineHeight: 1.6 }}>{explanation}</div>
+              {!correct && <div style={{ fontSize: 13, color: "#888", marginBottom: 12 }}>정답: {answer}</div>}
               {correct && <div style={{ fontSize: 13, color: "#4CAF50", fontWeight: 600, marginBottom: 12 }}>+10XP, +3코인!</div>}
               <button onClick={() => setShowQuizResult(false)}
-                style={{ padding: "12px 32px", borderRadius: 20, border: "none", background: "#7c3aed", color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
+                style={{ padding: "12px 32px", borderRadius: 20, border: "none", background: "#667eea", color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
                 확인
               </button>
             </div>
@@ -7203,20 +7203,20 @@
         return (
           <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}
             onClick={() => setShowReward(false)}>
-            <div style={{ background: "#1a1040", borderRadius: 24, padding: "32px 24px", textAlign: "center", maxWidth: 300, width: "90%", animation: "pop 0.3s ease" }}
+            <div style={{ background: "white", borderRadius: 24, padding: "32px 24px", textAlign: "center", maxWidth: 300, width: "90%", animation: "pop 0.3s ease" }}
               onClick={e => e.stopPropagation()}>
               <div style={{ fontSize: 60, marginBottom: 12 }}>🎉</div>
-              <div style={{ fontSize: 20, fontWeight: 800, color: "#e8dff5", marginBottom: 8 }}>레벨 업!</div>
-              <div style={{ fontSize: 40, fontWeight: 800, color: "#c4a44a", marginBottom: 8 }}>Lv.{rewardInfo.level}</div>
-              <div style={{ fontSize: 16, color: "#c4b5fd", marginBottom: 8 }}>새로운 칭호: <b style={{ color: "#FFB300" }}>{rewardInfo.title}</b></div>
-              <div style={{ fontSize: 14, color: "#7c3aed", fontWeight: 600, marginBottom: 4 }}>+{rewardInfo.coins} 코인</div>
+              <div style={{ fontSize: 20, fontWeight: 800, color: "#1a1a2e", marginBottom: 8 }}>레벨 업!</div>
+              <div style={{ fontSize: 40, fontWeight: 800, color: "#667eea", marginBottom: 8 }}>Lv.{rewardInfo.level}</div>
+              <div style={{ fontSize: 16, color: "#444", marginBottom: 8 }}>새로운 칭호: <b style={{ color: "#FFB300" }}>{rewardInfo.title}</b></div>
+              <div style={{ fontSize: 14, color: "#667eea", fontWeight: 600, marginBottom: 4 }}>+{rewardInfo.coins} 코인</div>
               {rewardInfo.bonusItem && (
-                <div style={{ fontSize: 13, color: "#34d399", fontWeight: 600, marginBottom: 8, padding: "6px 12px", background: "rgba(16,185,129,0.15)", borderRadius: 10 }}>
+                <div style={{ fontSize: 13, color: "#4CAF50", fontWeight: 600, marginBottom: 8, padding: "6px 12px", background: "#E8F5E9", borderRadius: 10 }}>
                   보너스 아이템: {rewardInfo.bonusItem}
                 </div>
               )}
               <button onClick={() => setShowReward(false)}
-                style={{ padding: "12px 32px", borderRadius: 20, border: "none", background: "linear-gradient(135deg, #7c3aed, #c4a44a)", color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer", marginTop: 8 }}>
+                style={{ padding: "12px 32px", borderRadius: 20, border: "none", background: "#667eea", color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer", marginTop: 8 }}>
                 좋아요! 🎮
               </button>
             </div>
@@ -7247,8 +7247,8 @@
         return (
           <div style={{
             position: "fixed", bottom: 0, left: 0, right: 0,
-            background: "rgba(15,10,30,0.96)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)",
-            borderTop: "1px solid rgba(124,58,237,0.2)",
+            background: "rgba(255,255,255,0.96)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)",
+            borderTop: "1px solid rgba(0,0,0,0.06)",
             display: "flex", justifyContent: "space-around", padding: "6px 0 env(safe-area-inset-bottom, 6px)", zIndex: 100
           }}>
             {tabs.map(t => {
@@ -7263,13 +7263,13 @@
                   }}>
                   <img src={iconSrc} alt={t.label}
                     style={{ width: 32, height: 32, objectFit: "contain",
-                      filter: active ? "drop-shadow(0 2px 6px rgba(196,164,74,0.35))" : "none",
+                      filter: active ? "drop-shadow(0 2px 6px rgba(102,126,234,0.35))" : "none",
                       transform: active ? "scale(1.08)" : "scale(1)",
                       transition: "all 0.2s ease"
                     }} />
                   <span style={{
                     fontSize: 10, fontWeight: active ? 800 : 500,
-                    color: active ? "#c4a44a" : "#7c6fa0",
+                    color: active ? "#667eea" : "#9CA3AF",
                     transition: "all 0.2s"
                   }}>{t.label}</span>
                 </button>
@@ -7288,28 +7288,28 @@
         return (
           <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1100, padding: 20 }}
             onClick={() => setShowChangelog(false)}>
-            <div style={{ background: "#1a1040", borderRadius: 20, padding: 24, maxWidth: 400, width: "100%", maxHeight: "80vh", overflowY: "auto", animation: "pop 0.3s ease" }}
+            <div style={{ background: "white", borderRadius: 20, padding: 24, maxWidth: 400, width: "100%", maxHeight: "80vh", overflowY: "auto", animation: "pop 0.3s ease" }}
               onClick={e => e.stopPropagation()}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
-                <h3 style={{ fontSize: 18, fontWeight: 800, color: "#e8dff5" }}>📋 업데이트 노트</h3>
+                <h3 style={{ fontSize: 18, fontWeight: 800, color: "#1a1a2e" }}>📋 업데이트 노트</h3>
                 <button onClick={() => setShowChangelog(false)}
-                  style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer", color: "#7c6fa0" }}>✕</button>
+                  style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer", color: "#999" }}>✕</button>
               </div>
               {CHANGELOG.map((entry, i) => (
                 <div key={entry.version} style={{
                   padding: 14, marginBottom: 12, borderRadius: 14,
-                  background: i === 0 ? "linear-gradient(135deg, rgba(124,58,237,0.1), rgba(91,33,182,0.1))" : "#150e30",
-                  border: i === 0 ? "1.5px solid rgba(124,58,237,0.3)" : "1px solid rgba(124,58,237,0.15)"
+                  background: i === 0 ? "linear-gradient(135deg, #667eea15, #764ba215)" : "#f8f8f8",
+                  border: i === 0 ? "1.5px solid #667eea40" : "1px solid #eee"
                 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
                     <span style={{
                       fontSize: 11, fontWeight: 800, padding: "2px 8px", borderRadius: 6,
-                      background: i === 0 ? "#7c3aed" : "#7c6fa0", color: "white"
+                      background: i === 0 ? "#667eea" : "#ccc", color: "white"
                     }}>v{entry.version}</span>
-                    <span style={{ fontSize: 12, fontWeight: 700, color: "#e8dff5", flex: 1 }}>{entry.title}</span>
-                    <span style={{ fontSize: 10, color: "#7c6fa0" }}>{entry.date}</span>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: "#1a1a2e", flex: 1 }}>{entry.title}</span>
+                    <span style={{ fontSize: 10, color: "#999" }}>{entry.date}</span>
                   </div>
-                  <div style={{ fontSize: 12, color: "#c4b5fd", lineHeight: 1.7 }}>
+                  <div style={{ fontSize: 12, color: "#555", lineHeight: 1.7 }}>
                     {entry.changes.map((c, j) => (
                       <div key={j} style={{ paddingLeft: 8 }}>• {c}</div>
                     ))}
@@ -7330,14 +7330,14 @@
         return (
           <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1100, padding: 20 }}
             onClick={() => setShowRollback(false)}>
-            <div style={{ background: "#1a1040", borderRadius: 20, padding: 24, maxWidth: 400, width: "100%", animation: "pop 0.3s ease" }}
+            <div style={{ background: "white", borderRadius: 20, padding: 24, maxWidth: 400, width: "100%", animation: "pop 0.3s ease" }}
               onClick={e => e.stopPropagation()}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
-                <h3 style={{ fontSize: 18, fontWeight: 800, color: "#e8dff5" }}>⏪ 버전 복원</h3>
+                <h3 style={{ fontSize: 18, fontWeight: 800, color: "#1a1a2e" }}>⏪ 버전 복원</h3>
                 <button onClick={() => setShowRollback(false)}
-                  style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer", color: "#7c6fa0" }}>✕</button>
+                  style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer", color: "#999" }}>✕</button>
               </div>
-              <div style={{ fontSize: 12, color: "#c4a44a", marginBottom: 16, lineHeight: 1.6, padding: "10px 12px", background: "rgba(196,164,74,0.1)", borderRadius: 10, border: "1px solid rgba(196,164,74,0.3)" }}>
+              <div style={{ fontSize: 12, color: "#888", marginBottom: 16, lineHeight: 1.6, padding: "10px 12px", background: "#fff8e1", borderRadius: 10, border: "1px solid #ffe082" }}>
                 ⚠️ 버전을 복원하면 현재 앱 화면이 해당 버전으로 전환됩니다. 사용자 데이터(프로필, 코인 등)는 Firestore에 저장되어 있어 유지됩니다.
               </div>
               {versions.map(([ver, info]) => {
@@ -7346,20 +7346,20 @@
                 return (
                   <div key={ver} style={{
                     padding: 14, marginBottom: 10, borderRadius: 14,
-                    background: isCurrent ? "linear-gradient(135deg, rgba(124,58,237,0.1), rgba(91,33,182,0.1))" : "#150e30",
-                    border: isCurrent ? "2px solid #7c3aed" : "1.5px solid rgba(124,58,237,0.2)",
+                    background: isCurrent ? "linear-gradient(135deg, #667eea10, #764ba210)" : "#f8f8f8",
+                    border: isCurrent ? "2px solid #667eea" : "1.5px solid #eee",
                     display: "flex", alignItems: "center", gap: 12
                   }}>
                     <div style={{ flex: 1 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
                         <span style={{
                           fontSize: 11, fontWeight: 800, padding: "2px 8px", borderRadius: 6,
-                          background: isCurrent ? "#7c3aed" : "#7c6fa0", color: "white"
+                          background: isCurrent ? "#667eea" : "#aaa", color: "white"
                         }}>v{ver}</span>
-                        {isCurrent && <span style={{ fontSize: 10, color: "#c4a44a", fontWeight: 700 }}>현재</span>}
+                        {isCurrent && <span style={{ fontSize: 10, color: "#667eea", fontWeight: 700 }}>현재</span>}
                       </div>
-                      <div style={{ fontSize: 13, fontWeight: 700, color: "#e8dff5" }}>{info.label}</div>
-                      {log && <div style={{ fontSize: 11, color: "#7c6fa0", marginTop: 2 }}>{log.date}</div>}
+                      <div style={{ fontSize: 13, fontWeight: 700, color: "#1a1a2e" }}>{info.label}</div>
+                      {log && <div style={{ fontSize: 11, color: "#888", marginTop: 2 }}>{log.date}</div>}
                     </div>
                     {!isCurrent && (
                       <button onClick={() => {
@@ -7454,7 +7454,7 @@
         const ownedAvatarCount = ownedAvatars.filter(id => visibleAvatarIds.has(id)).length;
         const totalAvatarCount = visibleAvatarIds.size;
         const RARITY_TABS = [
-          { id: "all",       label: "전체",   color: "#7c3aed" },
+          { id: "all",       label: "전체",   color: "#667eea" },
           { id: "free",      label: "무료",   color: "#10b981" },
           { id: "hero",      label: "영웅",   color: "#a855f7" },
           { id: "legendary", label: "전설",   color: "#f59e0b" },
@@ -7464,38 +7464,38 @@
         return (
           <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "flex-end", zIndex: 1000 }}
             onClick={() => setShowShop(false)}>
-            <div style={{ background: "#1a1040", borderRadius: "24px 24px 0 0", padding: "16px 16px 20px", maxHeight: "92vh", width: "100%", display: "flex", flexDirection: "column", animation: "pop 0.3s ease" }}
+            <div style={{ background: "white", borderRadius: "24px 24px 0 0", padding: "16px 16px 20px", maxHeight: "92vh", width: "100%", display: "flex", flexDirection: "column", animation: "pop 0.3s ease" }}
               onClick={e => e.stopPropagation()}>
               {/* 상점 헤더: 큰 아바타 프리뷰 + 타이틀 */}
               <div style={{ textAlign: "center", padding: "8px 0 4px", position: "relative" }}>
                 <div style={{ display: "flex", justifyContent: "flex-end", position: "absolute", top: 0, right: 0, gap: 12, alignItems: "center" }}>
-                  <span style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 14, fontWeight: 700, color: "#c4a44a" }}>
+                  <span style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 14, fontWeight: 700, color: "#667eea" }}>
                     <img src={PNG_ICONS.coin} style={{ width: 18, height: 18 }} /> {coins}
                   </span>
-                  <button onClick={() => setShowShop(false)} style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer", padding: 0, color: "#7c6fa0" }}>✕</button>
+                  <button onClick={() => setShowShop(false)} style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer", padding: 0 }}>✕</button>
                 </div>
                 <AvatarWithItems
                   size={80}
                   avatarId={profile?.avatar}
                   equippedItems={equippedItems}
                   shape="circle"
-                  borderStyle={{ border: "3px solid #7c3aed", boxShadow: "0 4px 16px rgba(124,58,237,0.3)" }}
+                  borderStyle={{ border: "3px solid #667eea", boxShadow: "0 4px 16px rgba(102,126,234,0.3)" }}
                 />
-                <h3 style={{ fontSize: 16, fontWeight: 800, color: "#e8dff5", marginTop: 6, marginBottom: 0 }}>
+                <h3 style={{ fontSize: 16, fontWeight: 800, color: "#1a1a2e", marginTop: 6, marginBottom: 0 }}>
                   상점
                   {isAvatarTab && (
-                    <span style={{ fontSize: 11, fontWeight: 600, color: "#c4a44a", marginLeft: 8, background: "rgba(124,58,237,0.15)", padding: "2px 8px", borderRadius: 10 }}>
+                    <span style={{ fontSize: 11, fontWeight: 600, color: "#667eea", marginLeft: 8, background: "#eef2ff", padding: "2px 8px", borderRadius: 10 }}>
                       수집 {ownedAvatarCount} / {totalAvatarCount}
                     </span>
                   )}
                 </h3>
               </div>
-              <div style={{ display: "flex", gap: 4, overflowX: "auto", paddingBottom: 10, marginBottom: 10, borderBottom: "1px solid rgba(124,58,237,0.2)", flexShrink: 0 }}>
+              <div style={{ display: "flex", gap: 4, overflowX: "auto", paddingBottom: 10, marginBottom: 10, borderBottom: "1px solid #eee", flexShrink: 0 }}>
                 {SHOP_CATEGORIES.map(cat => (
                   <button key={cat.id} onClick={() => setShopCategory(cat.id)}
                     style={{ padding: "6px 12px", borderRadius: 20, border: "none", fontSize: 11, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", display: "inline-flex", alignItems: "center", gap: 4,
-                      background: shopCategory === cat.id ? "#7c3aed" : "#150e30",
-                      color: shopCategory === cat.id ? "white" : "#9d8ec4" }}>
+                      background: shopCategory === cat.id ? "#667eea" : "#f0f0f5",
+                      color: shopCategory === cat.id ? "white" : "#666" }}>
                     <Icon name={`shop_${cat.id}`} size={16} /> {cat.name}
                   </button>
                 ))}
@@ -7512,8 +7512,8 @@
                     return (
                       <button key={rt.id} onClick={() => { setAvatarRarityFilter(rt.id); setAvatarPage(0); }}
                         style={{ padding: "4px 10px", borderRadius: 16, border: "none", fontSize: 11, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap",
-                          background: active ? rt.color : "#150e30",
-                          color: active ? "white" : "#9d8ec4" }}>
+                          background: active ? rt.color : "#f0f0f5",
+                          color: active ? "white" : "#666" }}>
                         {rt.label} {count}
                       </button>
                     );
@@ -7535,26 +7535,26 @@
                       const progressPct = Math.min(100, Math.round((progress / target) * 100));
                       const hint = avatar._rule?.hint || "";
                       return (
-                        <div key={avatar.id} style={{ background: owned ? "#1a0f2e" : "#150e30", borderRadius: 14, padding: 10, textAlign: "center", border: equipped ? "2px solid #7c3aed" : owned ? "1px solid rgba(236,72,153,0.3)" : "1px solid rgba(124,58,237,0.2)", position: "relative" }}>
-                          <div style={{ position: "absolute", top: 6, left: 6, background: owned ? "rgba(236,72,153,0.15)" : "rgba(124,58,237,0.15)", color: owned ? "#f472b6" : "#7c6fa0", fontSize: 9, fontWeight: 700, padding: "2px 6px", borderRadius: 6 }}>
+                        <div key={avatar.id} style={{ background: owned ? "#fdf2f8" : "#f9fafb", borderRadius: 14, padding: 10, textAlign: "center", border: equipped ? "2px solid #667eea" : owned ? "1px solid #f9a8d4" : "1px solid #e5e7eb", position: "relative" }}>
+                          <div style={{ position: "absolute", top: 6, left: 6, background: owned ? "#fce7f3" : "#f3f4f6", color: owned ? "#9d174d" : "#6b7280", fontSize: 9, fontWeight: 700, padding: "2px 6px", borderRadius: 6 }}>
                             {owned ? "🔓 해금" : "🔒 히든"}
                           </div>
                           <img src={avatar.img} style={{ width: 56, height: 56, borderRadius: "50%", objectFit: "cover", marginBottom: 4, marginTop: 8, filter: owned ? "none" : "grayscale(1) brightness(0.7)" }} />
-                          <div style={{ fontSize: 11, fontWeight: 700, color: owned ? "#e8dff5" : "#7c6fa0", marginBottom: 2 }}>{avatar.name}</div>
-                          <div style={{ fontSize: 9, color: "#7c6fa0", marginBottom: 4, lineHeight: 1.3, minHeight: 24, padding: "0 2px" }}>
+                          <div style={{ fontSize: 11, fontWeight: 700, color: owned ? "#1a1a2e" : "#6b7280", marginBottom: 2 }}>{avatar.name}</div>
+                          <div style={{ fontSize: 9, color: "#6b7280", marginBottom: 4, lineHeight: 1.3, minHeight: 24, padding: "0 2px" }}>
                             {hint}
                           </div>
-                          <div style={{ height: 6, background: "#2d1b69", borderRadius: 3, overflow: "hidden", marginBottom: 4 }}>
+                          <div style={{ height: 6, background: "#e5e7eb", borderRadius: 3, overflow: "hidden", marginBottom: 4 }}>
                             <div style={{ width: `${progressPct}%`, height: "100%", background: owned ? "#10b981" : "#ec4899", transition: "width 0.3s" }} />
                           </div>
-                          <div style={{ fontSize: 9, color: owned ? "#059669" : "#f472b6", marginBottom: 6, fontWeight: 600 }}>{progress} / {target}</div>
+                          <div style={{ fontSize: 9, color: owned ? "#059669" : "#9d174d", marginBottom: 6, fontWeight: 600 }}>{progress} / {target}</div>
                           {equipped ? (
-                            <button style={{ width: "100%", padding: "5px 8px", borderRadius: 8, border: "none", background: "#7c3aed", color: "white", fontSize: 11, fontWeight: 600 }}>
+                            <button style={{ width: "100%", padding: "5px 8px", borderRadius: 8, border: "none", background: "#667eea", color: "white", fontSize: 11, fontWeight: 600 }}>
                               사용 중
                             </button>
                           ) : owned ? (
                             <button onClick={() => { setProfile(prev => ({...prev, avatar: avatar.id})); setProfileForm(prev => ({...prev, avatar: avatar.id})); }}
-                              style={{ width: "100%", padding: "5px 8px", borderRadius: 8, border: "2px solid #7c3aed", background: "#1a1040", color: "#7c3aed", fontSize: 11, fontWeight: 600, cursor: "pointer" }}>
+                              style={{ width: "100%", padding: "5px 8px", borderRadius: 8, border: "2px solid #667eea", background: "white", color: "#667eea", fontSize: 11, fontWeight: 600, cursor: "pointer" }}>
                               선택
                             </button>
                           ) : (
@@ -7569,22 +7569,22 @@
 
                     const canAfford = coins >= (avatar.price || 0);
                     return (
-                      <div key={avatar.id} style={{ background: "#150e30", borderRadius: 14, padding: 10, textAlign: "center", border: equipped ? "2px solid #7c3aed" : "1px solid rgba(124,58,237,0.2)", position: "relative" }}>
+                      <div key={avatar.id} style={{ background: "white", borderRadius: 14, padding: 10, textAlign: "center", border: equipped ? "2px solid #667eea" : "1px solid #eee", position: "relative" }}>
                         <div style={{ position: "absolute", top: 6, left: 6, background: rarity.bg, color: rarity.color, fontSize: 9, fontWeight: 700, padding: "2px 6px", borderRadius: 6 }}>
                           {rarity.label}
                         </div>
                         <img src={avatar.img} style={{ width: 56, height: 56, borderRadius: "50%", objectFit: "cover", marginBottom: 4, marginTop: 8, filter: owned ? "none" : "grayscale(0.6) brightness(0.85)" }} />
-                        <div style={{ fontSize: 11, fontWeight: 700, color: "#e8dff5", marginBottom: 2 }}>{avatar.name}</div>
-                        <div style={{ fontSize: 10, color: "#7c6fa0", marginBottom: 6 }}>
+                        <div style={{ fontSize: 11, fontWeight: 700, color: "#1a1a2e", marginBottom: 2 }}>{avatar.name}</div>
+                        <div style={{ fontSize: 10, color: "#888", marginBottom: 6 }}>
                           {avatar.free ? "무료" : `${avatar.price} 코인`}
                         </div>
                         {equipped ? (
-                          <button style={{ width: "100%", padding: "5px 8px", borderRadius: 8, border: "none", background: "#7c3aed", color: "white", fontSize: 11, fontWeight: 600 }}>
+                          <button style={{ width: "100%", padding: "5px 8px", borderRadius: 8, border: "none", background: "#667eea", color: "white", fontSize: 11, fontWeight: 600 }}>
                             사용 중
                           </button>
                         ) : owned ? (
                           <button onClick={() => { setProfile(prev => ({...prev, avatar: avatar.id})); setProfileForm(prev => ({...prev, avatar: avatar.id})); }}
-                            style={{ width: "100%", padding: "5px 8px", borderRadius: 8, border: "2px solid #7c3aed", background: "#1a1040", color: "#7c3aed", fontSize: 11, fontWeight: 600, cursor: "pointer" }}>
+                            style={{ width: "100%", padding: "5px 8px", borderRadius: 8, border: "2px solid #667eea", background: "white", color: "#667eea", fontSize: 11, fontWeight: 600, cursor: "pointer" }}>
                             선택
                           </button>
                         ) : (
@@ -7596,7 +7596,7 @@
                             }
                           }}
                             disabled={!canAfford}
-                            style={{ width: "100%", padding: "5px 8px", borderRadius: 8, border: "none", background: canAfford ? "#7c3aed" : "#2d1b69", color: "white", fontSize: 11, fontWeight: 600, cursor: canAfford ? "pointer" : "default" }}>
+                            style={{ width: "100%", padding: "5px 8px", borderRadius: 8, border: "none", background: canAfford ? "#667eea" : "#ddd", color: "white", fontSize: 11, fontWeight: 600, cursor: canAfford ? "pointer" : "default" }}>
                             {canAfford ? "구매" : "코인 부족"}
                           </button>
                         )}
@@ -7607,7 +7607,7 @@
                     const cat = item.category;
                     const equipped = equippedItems[cat] === item.id;
                     return (
-                      <div key={item.id} style={{ background: "#150e30", borderRadius: 14, padding: 12, textAlign: "center", border: equipped ? "2px solid #7c3aed" : "1px solid rgba(124,58,237,0.2)" }}>
+                      <div key={item.id} style={{ background: "white", borderRadius: 14, padding: 12, textAlign: "center", border: equipped ? "2px solid #667eea" : "1px solid #eee" }}>
                         <div style={{ marginBottom: 8, padding: 4, position: "relative", width: 64, height: 64, margin: "0 auto" }}>
                           {(() => {
                             const avId = profile?.avatar || "shelly";
@@ -7637,7 +7637,7 @@
                             );
                           })()}
                         </div>
-                        <div style={{ fontSize: 12, fontWeight: 700, color: "#e8dff5", marginBottom: 2 }}>{item.name}</div>
+                        <div style={{ fontSize: 12, fontWeight: 700, color: "#1a1a2e", marginBottom: 2 }}>{item.name}</div>
                         {ITEM_EFFECTS[cat]?.type === "bonus" && (
                           <div style={{ fontSize: 10, fontWeight: 600, color: ITEM_EFFECTS[cat].color, background: ITEM_EFFECTS[cat].color + "18", borderRadius: 6, padding: "2px 6px", marginBottom: 4, display: "inline-block" }}>
                             {ITEM_EFFECTS[cat].icon} {ITEM_EFFECTS[cat].label}
@@ -7648,7 +7648,7 @@
                             ✨ {ITEM_EFFECTS[cat].desc}
                           </div>
                         )}
-                        <div style={{ fontSize: 11, color: "#7c6fa0", marginBottom: 8 }}>{item.price} 코인</div>
+                        <div style={{ fontSize: 11, color: "#888", marginBottom: 8 }}>{item.price} 코인</div>
                         {!owned ? (
                           <button onClick={() => {
                             if (coins >= item.price) {
@@ -7659,17 +7659,17 @@
                             }
                           }}
                             disabled={coins < item.price}
-                            style={{ width: "100%", padding: "7px 10px", borderRadius: 10, border: "none", background: coins >= item.price ? "#7c3aed" : "#2d1b69", color: "white", fontSize: 12, fontWeight: 600, cursor: coins >= item.price ? "pointer" : "default" }}>
+                            style={{ width: "100%", padding: "7px 10px", borderRadius: 10, border: "none", background: coins >= item.price ? "#667eea" : "#ddd", color: "white", fontSize: 12, fontWeight: 600, cursor: coins >= item.price ? "pointer" : "default" }}>
                             구매
                           </button>
                         ) : equipped ? (
                           <button onClick={() => setEquippedItems(prev => { const n = {...prev}; delete n[cat]; return n; })}
-                            style={{ width: "100%", padding: "7px 10px", borderRadius: 10, border: "none", background: "#7c3aed", color: "white", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
+                            style={{ width: "100%", padding: "7px 10px", borderRadius: 10, border: "none", background: "#667eea", color: "white", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
                             해제
                           </button>
                         ) : (
                           <button onClick={() => setEquippedItems(prev => ({...prev, [cat]: item.id}))}
-                            style={{ width: "100%", padding: "7px 10px", borderRadius: 10, border: "2px solid #7c3aed", background: "#1a1040", color: "#7c3aed", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
+                            style={{ width: "100%", padding: "7px 10px", borderRadius: 10, border: "2px solid #667eea", background: "white", color: "#667eea", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
                             장착
                           </button>
                         )}
@@ -7681,26 +7681,26 @@
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "12px 0 4px", flexShrink: 0 }}>
                     <button onClick={() => setAvatarPage(Math.max(0, safePage - 1))}
                       disabled={safePage === 0}
-                      style={{ padding: "6px 12px", borderRadius: 10, border: "none", background: safePage === 0 ? "#2d1b69" : "#7c3aed", color: safePage === 0 ? "#7c6fa0" : "white", fontSize: 12, fontWeight: 700, cursor: safePage === 0 ? "default" : "pointer" }}>
+                      style={{ padding: "6px 12px", borderRadius: 10, border: "none", background: safePage === 0 ? "#eee" : "#667eea", color: safePage === 0 ? "#aaa" : "white", fontSize: 12, fontWeight: 700, cursor: safePage === 0 ? "default" : "pointer" }}>
                       ‹ 이전
                     </button>
                     <div style={{ display: "flex", gap: 4 }}>
                       {Array.from({ length: totalPages }, (_, i) => (
                         <button key={i} onClick={() => setAvatarPage(i)}
-                          style={{ width: 28, height: 28, borderRadius: "50%", border: "none", background: i === safePage ? "#7c3aed" : "#150e30", color: i === safePage ? "white" : "#9d8ec4", fontSize: 11, fontWeight: 700, cursor: "pointer" }}>
+                          style={{ width: 28, height: 28, borderRadius: "50%", border: "none", background: i === safePage ? "#667eea" : "#f0f0f5", color: i === safePage ? "white" : "#666", fontSize: 11, fontWeight: 700, cursor: "pointer" }}>
                           {i + 1}
                         </button>
                       ))}
                     </div>
                     <button onClick={() => setAvatarPage(Math.min(totalPages - 1, safePage + 1))}
                       disabled={safePage >= totalPages - 1}
-                      style={{ padding: "6px 12px", borderRadius: 10, border: "none", background: safePage >= totalPages - 1 ? "#2d1b69" : "#7c3aed", color: safePage >= totalPages - 1 ? "#7c6fa0" : "white", fontSize: 12, fontWeight: 700, cursor: safePage >= totalPages - 1 ? "default" : "pointer" }}>
+                      style={{ padding: "6px 12px", borderRadius: 10, border: "none", background: safePage >= totalPages - 1 ? "#eee" : "#667eea", color: safePage >= totalPages - 1 ? "#aaa" : "white", fontSize: 12, fontWeight: 700, cursor: safePage >= totalPages - 1 ? "default" : "pointer" }}>
                       다음 ›
                     </button>
                   </div>
                 )}
                 {isAvatarTab && (
-                  <div style={{ textAlign: "center", fontSize: 10, color: "#7c6fa0", paddingTop: 4, paddingBottom: 4 }}>
+                  <div style={{ textAlign: "center", fontSize: 10, color: "#aaa", paddingTop: 4, paddingBottom: 4 }}>
                     {rarityFilteredAvatars.length}개 중 {safePage * 12 + 1}–{Math.min((safePage + 1) * 12, rarityFilteredAvatars.length)}번째
                   </div>
                 )}
@@ -7715,7 +7715,7 @@
       // ═══════════════════════════════════════
       if (!dataLoaded) {
         return (
-          <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg, #7c3aed, #5b21b6)" }}>
+          <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg, #667eea, #764ba2)" }}>
             <div style={{ fontSize: 48, marginBottom: 16, animation: "pop 0.5s ease" }}>📚</div>
             <div style={{ color: "white", fontSize: 18, fontWeight: 800 }}>BookQuest</div>
             <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 14 }}>데이터 불러오는 중...</div>
@@ -7724,7 +7724,7 @@
       }
 
       return (
-        <div style={{ maxWidth: 430, margin: "0 auto", background: "#0f0a1e", minHeight: "100vh", fontFamily: "'Noto Sans KR', -apple-system, sans-serif", paddingTop: profile ? 16 : 0, position: "relative" }}>
+        <div style={{ maxWidth: 430, margin: "0 auto", background: "#f7f7fa", minHeight: "100vh", fontFamily: "'Noto Sans KR', -apple-system, sans-serif", paddingTop: profile ? 16 : 0, position: "relative" }}>
           {!profile && ProfileSetupScreen()}
           {profile && screen === "home" && HomeScreen()}
           {profile && screen === "book" && BookScreen()}
@@ -7753,7 +7753,7 @@
               position: "fixed", top: 80, left: "50%", transform: "translateX(-50%)", zIndex: 2000,
               background: showCoinPopup.amount > 0
                 ? "linear-gradient(135deg, #FFD700, #FFA500)"
-                : "linear-gradient(135deg, #7c3aed, #5b21b6)",
+                : "linear-gradient(135deg, #667eea, #764ba2)",
               borderRadius: 20,
               padding: "12px 24px", display: "flex", alignItems: "center", gap: 8,
               boxShadow: showCoinPopup.amount > 0
@@ -7857,9 +7857,9 @@
           {showInstallBanner && (
             <div style={{
               position: "fixed", bottom: 70, left: 12, right: 12, zIndex: 200,
-              background: "linear-gradient(135deg, #7c3aed, #5b21b6)", borderRadius: 20,
+              background: "linear-gradient(135deg, #667eea, #764ba2)", borderRadius: 20,
               padding: "16px 18px", display: "flex", alignItems: "center", gap: 14,
-              boxShadow: "0 8px 32px rgba(124,58,237,0.4)", animation: "pop 0.4s ease"
+              boxShadow: "0 8px 32px rgba(102,126,234,0.4)", animation: "pop 0.4s ease"
             }}>
               <img src="icons/app-icon-192.png" style={{ width: 52, height: 52, borderRadius: 14, flexShrink: 0, boxShadow: "0 2px 8px rgba(0,0,0,0.2)" }} />
               <div style={{ flex: 1 }}>
@@ -7879,7 +7879,7 @@
                     setInstallPrompt(null);
                   }
                 }}
-                  style={{ background: "#c4a44a", border: "none", borderRadius: 12, padding: "8px 16px", color: "white", fontSize: 12, fontWeight: 800, cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.2)" }}>
+                  style={{ background: "white", border: "none", borderRadius: 12, padding: "8px 16px", color: "#667eea", fontSize: 12, fontWeight: 800, cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}>
                   설치
                 </button>
               </div>
