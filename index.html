@@ -7882,6 +7882,41 @@
                 <div style={{ fontSize: 11, color: "rgba(255,255,255,0.75)", marginBottom: 14, lineHeight: 1.5 }}>
                   카톡/문자에 사용할 이모티콘. <b style={{ color: tp.secondaryColor }}>길게 누르면</b> 저장 또는 공유할 수 있어요.
                 </div>
+                {(() => {
+                  const seenKey = "bq_emoji_tutorial_seen";
+                  const [showGuide, setShowGuide] = React.useState(!localStorage.getItem(seenKey));
+                  React.useEffect(() => { if (!localStorage.getItem(seenKey)) localStorage.setItem(seenKey, "1"); }, []);
+                  return (
+                    <div style={{ marginBottom: 14 }}>
+                      {!showGuide && (
+                        <button onClick={() => setShowGuide(true)}
+                          style={{ background: "rgba(255,255,255,0.1)", border: `1px solid ${tp.secondaryColor}60`, borderRadius: 10, padding: "6px 12px", color: tp.secondaryColor, fontSize: 11, fontWeight: 700, cursor: "pointer", width: "100%" }}>
+                          📖 카카오톡 사용법 보기
+                        </button>
+                      )}
+                      {showGuide && (
+                        <div style={{ background: "rgba(0,0,0,0.25)", borderRadius: 14, padding: 14, border: `1px solid ${tp.secondaryColor}40` }}>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+                            <div style={{ fontSize: 13, fontWeight: 800, color: tp.secondaryColor }}>📖 카카오톡에서 사용하는 법</div>
+                            <button onClick={() => setShowGuide(false)}
+                              style={{ background: "none", border: "none", color: "rgba(255,255,255,0.5)", fontSize: 12, cursor: "pointer" }}>접기</button>
+                          </div>
+                          <div style={{ fontSize: 11, color: "rgba(255,255,255,0.85)", lineHeight: 1.8 }}>
+                            <div style={{ fontWeight: 700, color: tp.secondaryColor, marginBottom: 4 }}>방법 1. 이미지로 전송하기</div>
+                            <div>① 원하는 이모티콘을 <b>길게 누르기</b> → 저장</div>
+                            <div>② 카카오톡 채팅방 열기</div>
+                            <div>③ <b>+ 버튼</b> → 갤러리/사진 → 저장한 이모티콘 선택 → 전송</div>
+                            <div style={{ fontWeight: 700, color: tp.secondaryColor, marginTop: 10, marginBottom: 4 }}>방법 2. 카카오 이모티콘 스튜디오 제출</div>
+                            <div>① <b>emoticonstudio.kakao.com</b> 접속</div>
+                            <div>② 개인 이모티콘 제안하기 → 이미지 업로드</div>
+                            <div>③ 승인되면 카톡 이모티콘샵에서 사용 가능!</div>
+                            <div style={{ fontSize: 10, color: "rgba(255,255,255,0.5)", marginTop: 8 }}>* 스튜디오 제출은 360×360px 이상의 투명 PNG가 필요해요</div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
                   {tp.emojis.map((em, i) => (
                     <a key={i} href={em.src} download={em.name + ".png"} style={{ textDecoration: "none", textAlign: "center" }}>
@@ -7898,6 +7933,7 @@
             </div>
             );
           })()}
+
 
           {showInstallBanner && (
             <div style={{
@@ -7962,4 +7998,3 @@
   </script>
 </body>
 </html>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
