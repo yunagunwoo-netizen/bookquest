@@ -6449,13 +6449,20 @@
                         quiz: "책 상세에서 퀴즈를 맞추면 달성!",
                         reading: "토론/책 화면에서 5분 이상 머물면 달성!"
                       };
+                      const missionNav = () => {
+                        if (completed) return;
+                        if (mission.trigger === "discussion" || mission.trigger === "deep_discussion" || mission.trigger === "reading") setScreen("discussion");
+                        else if (mission.trigger === "question") setScreen("askbook");
+                        else if (mission.trigger === "quiz") { setSelectedBook(thisWeekBook); setBookTab("summary"); setScreen("book"); }
+                      };
                       return (
-                        <div key={mission.id} style={{
+                        <div key={mission.id} onClick={missionNav} style={{
                           background: completed ? "linear-gradient(135deg, #f0fff0, #e8f5e9)" : "white",
                           borderRadius: 14, padding: "12px 14px", display: "flex", alignItems: "center", gap: 12,
                           boxShadow: completed ? "0 2px 8px rgba(76,175,80,0.15)" : "0 2px 6px rgba(0,0,0,0.04)",
                           border: completed ? "2px solid #4CAF50" : "1px solid #eee",
-                          transition: "all 0.3s ease"
+                          transition: "all 0.3s ease",
+                          cursor: completed ? "default" : "pointer"
                         }}>
                           <div style={{
                             width: 36, height: 36, borderRadius: 10,
