@@ -151,6 +151,34 @@
       z-index: 3;
     }
   </style>
+  <style>
+    /* ⚔️ 배틀 v2 카드 배틀 애니메이션 */
+    @keyframes bq-shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)} }
+    @keyframes bq-damage-pop { 0%{transform:scale(0) translateY(0);opacity:0} 50%{transform:scale(1.3) translateY(-20px);opacity:1} 100%{transform:scale(1) translateY(-30px);opacity:0} }
+    @keyframes bq-hp-flash { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    @keyframes bq-bounce-win { 0%,100%{transform:translateY(0)} 30%{transform:translateY(-12px)} 60%{transform:translateY(-6px)} }
+    @keyframes bq-timer-pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.15)} }
+    @keyframes bq-card-idle-l { 0%,100%{transform:rotate(-4deg) translateY(0)} 50%{transform:rotate(-4deg) translateY(-4px)} }
+    @keyframes bq-card-idle-r { 0%,100%{transform:rotate(4deg) translateY(0)} 50%{transform:rotate(4deg) translateY(-4px)} }
+    @keyframes bq-card-atk-r { 0%{transform:rotate(-4deg)} 25%{transform:rotate(0deg) translateX(40px) scale(1.08)} 50%{transform:rotate(2deg) translateX(50px) scale(1.1)} 100%{transform:rotate(-4deg) translateX(0) scale(1)} }
+    @keyframes bq-card-atk-l { 0%{transform:rotate(4deg)} 25%{transform:rotate(0deg) translateX(-40px) scale(1.08)} 50%{transform:rotate(-2deg) translateX(-50px) scale(1.1)} 100%{transform:rotate(4deg) translateX(0) scale(1)} }
+    @keyframes bq-card-hurt-r { 0%{filter:brightness(1)} 20%{filter:brightness(2)} 40%{transform:rotate(8deg)} 60%{transform:rotate(-6deg)} 100%{filter:brightness(1);transform:rotate(4deg)} }
+    @keyframes bq-card-hurt-l { 0%{filter:brightness(1)} 20%{filter:brightness(2)} 40%{transform:rotate(-8deg)} 60%{transform:rotate(6deg)} 100%{filter:brightness(1);transform:rotate(-4deg)} }
+    @keyframes bq-card-ko { 0%{transform:rotate(0) scale(1);opacity:1;filter:none} 100%{transform:rotate(15deg) scale(0.7);opacity:0.3;filter:grayscale(1) brightness(0.5)} }
+    @keyframes bq-clash-spark { 0%{transform:translate(-50%,-50%) scale(0);opacity:1} 50%{transform:translate(-50%,-50%) scale(1.8);opacity:0.8} 100%{transform:translate(-50%,-50%) scale(2.5);opacity:0} }
+    @keyframes bq-card-shine { 0%{left:-100%} 100%{left:200%} }
+    .bq-shake { animation: bq-shake 0.4s ease-in-out; }
+    .bq-bounce-win { animation: bq-bounce-win 0.6s ease-in-out 3; }
+    .bq-grayscale { filter: grayscale(1) brightness(0.7); transform: scale(0.9); transition: all 0.5s; }
+    .bq-timer-danger { animation: bq-timer-pulse 0.5s ease-in-out infinite; color: #ef4444 !important; }
+    .bq-card-idle-l { animation: bq-card-idle-l 2.5s ease-in-out infinite; transform: rotate(-4deg); }
+    .bq-card-idle-r { animation: bq-card-idle-r 2.5s ease-in-out infinite; transform: rotate(4deg); }
+    .bq-card-atk-r { animation: bq-card-atk-r 0.6s ease-out; }
+    .bq-card-atk-l { animation: bq-card-atk-l 0.6s ease-out; }
+    .bq-card-hurt-r { animation: bq-card-hurt-r 0.5s ease-out; }
+    .bq-card-hurt-l { animation: bq-card-hurt-l 0.5s ease-out; }
+    .bq-card-ko { animation: bq-card-ko 0.8s forwards; }
+  </style>
 </head>
 <body>
   <div id="root"></div>
@@ -1869,6 +1897,11 @@
       if (a) a.iconImg = `avatars/V3.5/avatars_${id}.png`;
     });
 
+    // V3.7 카드 일러스트 (2026-04-25) — 배틀 카드 전용 이미지
+    AVATAR_DATA.forEach(a => {
+      a.cardImg = `avatars/card/${a.id}.png`;
+    });
+
     // ═══════════════════════════════════════
     // 💎 V3.6 Hidden Legends (2026-04-23) — 책 속 전설 10인 (오리지널 IP)
     // 레어 카드 감성: 룬 프레임 + 홀로 셔머 + 황금 림 라이트 (PNG에 베이킹됨)
@@ -3020,6 +3053,16 @@
       const [interactiveRoundIdx, setInteractiveRoundIdx] = useState(0);
       const [roundAnswers, setRoundAnswers] = useState([]); // [{ myChoice, oppChoice, winner, ... }]
       const [showRoundResult, setShowRoundResult] = useState(false);
+      // 배틀 v2: HP 시스템
+      const [myHP, setMyHP] = useState(100);
+      const [oppHP, setOppHP] = useState(100);
+      const [myMaxHP, setMyMaxHP] = useState(100);
+      const [oppMaxHP, setOppMaxHP] = useState(100);
+      const [battleTimer, setBattleTimer] = useState(0);
+      const [battleTimerActive, setBattleTimerActive] = useState(false);
+      const [lastDamage, setLastDamage] = useState(null); // { target: "my"|"opp", amount, type: "strong"|"weak"|"ultimate" }
+      const [battleAnim, setBattleAnim] = useState(null); // "attack-my"|"attack-opp"|"hit-my"|"hit-opp"|"ultimate"|"victory"|"defeat"
+      const battleTimerRef = useRef(null);
       const [bookProgress, setBookProgress] = useState({ 1: 0, 2: 0, 3: 0 });
       const [bookPage, setBookPage] = useState(0);
       const [discussionState, setDiscussionState] = useState({});
@@ -4223,6 +4266,46 @@
 
       const BATTLE_PLAY_COIN_COST = 50;
       const BATTLE_PLAY_DAILY_LIMIT = 2;
+
+      // ⚔️ 배틀 v2: HP 시스템 상수
+      const BATTLE_V2 = {
+        BASE_HP: 100,
+        BOOK_HP_BONUS: 5,       // 완독 1권당
+        MAX_BOOK_BONUS: 50,
+        LEVEL_HP_BONUS: 3,      // 레벨당
+        MAX_LEVEL_BONUS: 30,
+        DMG_STRONG: [20, 30],   // 정답 강공격 범위
+        DMG_WEAK: [5, 10],      // 오답 약공격 범위
+        DMG_ULTIMATE_HIT: [40, 50],
+        DMG_ULTIMATE_MISS: 10,
+        DOMAIN_STRONG_MULT: 1.5,
+        DOMAIN_WEAK_MULT: 0.7,
+        TIMER_SECONDS: 10,
+        TIMER_ULTIMATE: 30,
+        ROUNDS: 5,
+      };
+
+      const calcMaxHP = (booksCompleted, playerLevel) => {
+        const bookBonus = Math.min((booksCompleted || 0) * BATTLE_V2.BOOK_HP_BONUS, BATTLE_V2.MAX_BOOK_BONUS);
+        const lvlBonus = Math.min((playerLevel || 1) * BATTLE_V2.LEVEL_HP_BONUS, BATTLE_V2.MAX_LEVEL_BONUS);
+        return BATTLE_V2.BASE_HP + bookBonus + lvlBonus;
+      };
+
+      const rollDamage = (range) => {
+        if (typeof range === "number") return range;
+        return Math.floor(Math.random() * (range[1] - range[0] + 1)) + range[0];
+      };
+      const RARITY_LABEL = { free: "BASIC", common: "COMMON", rare: "RARE", epic: "EPIC", legendary: "LEGEND", heroic: "HEROIC", mythic: "MYTHIC", hidden: "HIDDEN" };
+      const RARITY_BADGE_STYLE = {
+        free: { background: "rgba(156,163,175,0.3)", color: "#d1d5db" },
+        common: { background: "rgba(34,197,94,0.3)", color: "#4ade80" },
+        rare: { background: "rgba(59,130,246,0.3)", color: "#60a5fa" },
+        epic: { background: "rgba(168,85,247,0.3)", color: "#c084fc" },
+        legendary: { background: "rgba(234,179,8,0.3)", color: "#fde047" },
+        heroic: { background: "rgba(59,130,246,0.3)", color: "#60a5fa" },
+        mythic: { background: "rgba(236,72,153,0.3)", color: "#f472b6" },
+        hidden: { background: "rgba(139,92,246,0.3)", color: "#a78bfa" },
+      };
       const remainingPlayCount = () => {
         if (isAdmin) return 999;
         const today = getKstToday();
@@ -4246,6 +4329,11 @@
         setBattleNarration("");
         setBattleLoading(false);
         setBattleError("");
+        // v2 HP reset
+        setMyHP(100); setOppHP(100); setMyMaxHP(100); setOppMaxHP(100);
+        setLastDamage(null); setBattleAnim(null);
+        setBattleTimer(0); setBattleTimerActive(false);
+        if (battleTimerRef.current) clearInterval(battleTimerRef.current);
       };
 
       const exitBattleV2 = () => {
@@ -4367,12 +4455,21 @@
         setRoundAnswers([]);
         setInteractiveRoundIdx(0);
         setShowRoundResult(false);
+        setLastDamage(null);
+        setBattleAnim(null);
 
         try {
           const myUid = FirestoreService.getUserId();
           const opp = battleOpponent || pickBattleOpponent(myUid, level, rankingData);
           if (!opp) throw new Error("상대를 찾지 못했어요. 잠시 후 다시 시도해줘!");
           setBattleOpponent(opp);
+
+          // v2: HP 초기화
+          const completedBooks = BOOKS.filter(b => (bookProgress[b.id] || 0) >= 100);
+          const mHP = calcMaxHP(completedBooks.length, level);
+          const oHP = calcMaxHP(0, opp.level || 1); // 상대는 독서 데이터 없으므로 레벨만 반영
+          setMyHP(mHP); setMyMaxHP(mHP);
+          setOppHP(oHP); setOppMaxHP(oHP);
 
           const myAvatarId = profile?.avatar || "shelly";
           const oppAvatarId = opp.avatar || "shelly";
@@ -4398,6 +4495,14 @@
           }
 
           setBattlePhase("play-round");
+
+          // 첫 라운드 타이머 시작
+          const firstRound = result.rounds[0];
+          if (firstRound?.type === "qa") {
+            setTimeout(() => startBattleTimer(BATTLE_V2.TIMER_SECONDS), 300);
+          } else if (firstRound?.type === "debate" && debateOwner === "me") {
+            setTimeout(() => startBattleTimer(BATTLE_V2.TIMER_ULTIMATE), 300);
+          }
         } catch (e) {
           console.error("launchInteractiveBattle 실패:", e);
           setBattleError(e.message || "배틀 생성에 실패했어요.");
@@ -4470,18 +4575,113 @@
           }
         }
 
+        // ── HP 데미지 계산 ──
+        let myDmg = 0;   // 내가 받는 데미지
+        let oppDmg = 0;  // 상대가 받는 데미지
+
+        if (roundResult.type === "qa") {
+          // 내가 맞히면 상대에게 강공격, 틀리면 약공격
+          oppDmg = roundResult.myCorrect
+            ? rollDamage(BATTLE_V2.DMG_STRONG)
+            : rollDamage(BATTLE_V2.DMG_WEAK);
+          // 상대가 맞히면 나에게 강공격, 틀리면 약공격
+          myDmg = roundResult.oppCorrect
+            ? rollDamage(BATTLE_V2.DMG_STRONG)
+            : rollDamage(BATTLE_V2.DMG_WEAK);
+        } else {
+          // 토론: 이긴 쪽이 강공격, 진 쪽이 약공격
+          if (roundResult.judge === "my") {
+            oppDmg = rollDamage(BATTLE_V2.DMG_STRONG);
+            myDmg = rollDamage(BATTLE_V2.DMG_WEAK);
+          } else if (roundResult.judge === "opp") {
+            oppDmg = rollDamage(BATTLE_V2.DMG_WEAK);
+            myDmg = rollDamage(BATTLE_V2.DMG_STRONG);
+          } else {
+            oppDmg = rollDamage(BATTLE_V2.DMG_WEAK);
+            myDmg = rollDamage(BATTLE_V2.DMG_WEAK);
+          }
+        }
+
+        // HP 적용 (0 이하로 내려가지 않게)
+        setMyHP(prev => Math.max(0, prev - myDmg));
+        setOppHP(prev => Math.max(0, prev - oppDmg));
+
+        // 데미지 표시용 상태
+        setLastDamage({ myDmg, oppDmg, judge: roundResult.judge });
+
+        // 애니메이션 트리거
+        setBattleAnim("hit");
+        setTimeout(() => setBattleAnim(null), 600);
+
+        // roundResult에 데미지 정보 추가
+        roundResult.myDmg = myDmg;
+        roundResult.oppDmg = oppDmg;
+
         const nextAnswers = [...roundAnswers, roundResult];
         setRoundAnswers(nextAnswers);
+
+        // 타이머 정지
+        setBattleTimerActive(false);
+        if (battleTimerRef.current) clearInterval(battleTimerRef.current);
+
         setShowRoundResult(true);
       };
 
+      // 타이머 시작 함수
+      const startBattleTimer = (seconds) => {
+        if (battleTimerRef.current) clearInterval(battleTimerRef.current);
+        setBattleTimer(seconds);
+        setBattleTimerActive(true);
+        battleTimerRef.current = setInterval(() => {
+          setBattleTimer(prev => {
+            if (prev <= 1) {
+              clearInterval(battleTimerRef.current);
+              battleTimerRef.current = null;
+              setBattleTimerActive(false);
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+      };
+
+      // 타이머 0 도달 시 자동 오답 제출 (타이머가 실제로 돌다가 0이 된 경우만)
+      const battleTimerWasActive = useRef(false);
+      React.useEffect(() => {
+        if (battleTimerActive) {
+          battleTimerWasActive.current = true;
+        }
+        if (battleTimer === 0 && !battleTimerActive && battleTimerWasActive.current && battlePhase === "play-round" && !showRoundResult && interactiveRounds) {
+          battleTimerWasActive.current = false;
+          const round = interactiveRounds[interactiveRoundIdx];
+          if (round && round.type === "qa") {
+            // 타임아웃 → 오답으로 처리 (존재하지 않는 인덱스)
+            submitRoundAnswer(-1);
+          }
+        }
+      }, [battleTimer, battleTimerActive]);
+
       const goToNextRound = async () => {
         setShowRoundResult(false);
+        setLastDamage(null);
         const nextIdx = interactiveRoundIdx + 1;
+
+        // HP가 0인 쪽이 있으면 즉시 종료
+        if (myHP <= 0 || oppHP <= 0) {
+          await finalizeInteractiveBattle();
+          return;
+        }
+
         if (nextIdx < (interactiveRounds?.length || 0)) {
           setInteractiveRoundIdx(nextIdx);
-          // AI가 미니토론 담당이면 자동 처리
+          // 다음 라운드 타이머 시작
           const nextRound = interactiveRounds[nextIdx];
+          if (nextRound.type === "qa") {
+            startBattleTimer(BATTLE_V2.TIMER_SECONDS);
+          } else if (nextRound.type === "debate" && miniDebateOwner === "me") {
+            startBattleTimer(BATTLE_V2.TIMER_ULTIMATE);
+          }
+          // AI가 미니토론 담당이면 자동 처리
           if (nextRound.type === "debate" && miniDebateOwner === "ai") {
             await submitRoundAnswer(0); // AI 담당은 선택 없이 자동
           }
@@ -4494,22 +4694,29 @@
       const finalizeInteractiveBattle = async () => {
         const myWins = roundAnswers.filter(r => r.judge === "my").length;
         const oppWins = roundAnswers.filter(r => r.judge === "opp").length;
+
+        // HP 기반 승리 판정 (v2)
         let winner;
-        if (myWins > oppWins) winner = "my";
-        else if (myWins < oppWins) winner = "opp";
-        else winner = "draw";
+        if (myHP > oppHP) winner = "my";
+        else if (myHP < oppHP) winner = "opp";
+        else {
+          // HP 동점이면 라운드 승수로 판정
+          if (myWins > oppWins) winner = "my";
+          else if (myWins < oppWins) winner = "opp";
+          else winner = "draw";
+        }
 
         setBattleWinner(winner);
         setBattleRounds(roundAnswers);
 
-        // 내러티브 생성
+        // 내러티브 생성 (HP 표시 포함)
         const myName = profile?.name || "나";
         const oppName = battleOpponent?.name || "상대";
         const narration = winner === "my"
-          ? `${myName}의 집중력이 ${oppName}를 이겼어요! ${myWins}승 ${oppWins}패로 승리 🏆`
+          ? `${myName}의 집중력이 ${oppName}를 이겼어요! HP ${myHP} vs ${oppHP} 🏆`
           : winner === "opp"
-          ? `${oppName}가 ${myWins}승 ${oppWins}패로 앞섰어요. 다음엔 꼭 복수하자!`
-          : `${myWins}승 ${oppWins}패, 팽팽한 무승부!`;
+          ? `${oppName}가 HP ${oppHP} vs ${myHP}로 앞섰어요. 다음엔 꼭 복수하자!`
+          : `HP ${myHP} vs ${oppHP}, 팽팽한 무승부!`;
         setBattleNarration(narration);
 
         try {
@@ -4685,9 +4892,138 @@
               const roundAns = roundAnswers[interactiveRoundIdx];
               const myName = profile?.name || "나";
               const oppName = battleOpponent?.name || "상대";
+              const myHPPct = myMaxHP > 0 ? Math.max(0, (myHP / myMaxHP) * 100) : 0;
+              const oppHPPct = oppMaxHP > 0 ? Math.max(0, (oppHP / oppMaxHP) * 100) : 0;
+              const hpColor = (pct) => pct > 50 ? "#22c55e" : pct > 25 ? "#f59e0b" : "#ef4444";
+              const timerDanger = battleTimer <= 3 && battleTimerActive;
+              const myAvatarData = AVATAR_DATA.find(a => a.id === (profile?.avatar || "shelly")) || AVATAR_DATA[0];
+              const oppAvatarData = AVATAR_DATA.find(a => a.id === (opp?.avatar || "shelly")) || AVATAR_DATA[0];
+              const myAvatarSrc = myAvatarData.cardImg || myAvatarData.iconImg || myAvatarData.img;
+              const oppAvatarSrc = oppAvatarData.cardImg || oppAvatarData.iconImg || oppAvatarData.img;
+              const myRarity = myAvatarData.rarity || "free";
+              const oppRarity = oppAvatarData.rarity || "free";
+              const myGrad = myAvatarData.gradient || ["#7c3aed","#a855f7"];
+              const oppGrad = oppAvatarData.gradient || ["#ef4444","#dc2626"];
+              // 카드 애니메이션 클래스
+              const myCardAnim = battleAnim === "hit"
+                ? (lastDamage?.oppDmg > 0 ? "bq-card-atk-r" : (lastDamage?.myDmg > 0 ? "bq-card-hurt-l" : "bq-card-idle-l"))
+                : myHP <= 0 ? "bq-card-ko" : "bq-card-idle-l";
+              const oppCardAnim = battleAnim === "hit"
+                ? (lastDamage?.myDmg > 0 ? "bq-card-atk-l" : (lastDamage?.oppDmg > 0 ? "bq-card-hurt-r" : "bq-card-idle-r"))
+                : oppHP <= 0 ? "bq-card-ko" : "bq-card-idle-r";
+
+              // 포켓몬카드 스타일 배틀 카드 컴포넌트
+              const CARD_TYPE = { free: "노멀", common: "노멀", rare: "레어", epic: "영웅", legendary: "전설", heroic: "영웅", mythic: "신화", hidden: "히든" };
+              const CARD_TYPE_ICON = { free: "⭐", common: "⭐", rare: "💎", epic: "🛡️", legendary: "👑", heroic: "🛡️", mythic: "🌙", hidden: "🔮" };
+              const CARD_SKILL = {
+                free: [{ name: "기본 공격", dmg: 10, icon: "📖" }, { name: "지식 던지기", dmg: 20, icon: "💡" }],
+                common: [{ name: "퀴즈 어택", dmg: 15, icon: "❓" }, { name: "독서 파워", dmg: 25, icon: "📚" }],
+                rare: [{ name: "논리 공격", dmg: 20, icon: "🧠" }, { name: "지혜의 일격", dmg: 30, icon: "✨" }],
+                epic: [{ name: "토론 스매시", dmg: 25, icon: "💬" }, { name: "영웅의 각성", dmg: 35, icon: "⚡" }],
+                legendary: [{ name: "전설의 서", dmg: 30, icon: "📜" }, { name: "궁극의 지식", dmg: 40, icon: "🔥" }],
+                heroic: [{ name: "토론 스매시", dmg: 25, icon: "💬" }, { name: "영웅의 각성", dmg: 35, icon: "⚡" }],
+                mythic: [{ name: "신의 심판", dmg: 35, icon: "⚡" }, { name: "천상의 지혜", dmg: 45, icon: "🌟" }],
+                hidden: [{ name: "그림자 일격", dmg: 30, icon: "🌀" }, { name: "비밀의 힘", dmg: 40, icon: "🔮" }],
+              };
+              const BattleCard = ({ name, lvl, hp, maxHp, hpPct, avatarSrc, grad, rarity, dmg, isOpp, animClass, title }) => {
+                const badge = RARITY_BADGE_STYLE[rarity] || RARITY_BADGE_STYLE.free;
+                const badgeColor = badge.color || "#d1d5db";
+                const skills = CARD_SKILL[rarity] || CARD_SKILL.free;
+                const typeLabel = CARD_TYPE[rarity] || "노멀";
+                const typeIcon = CARD_TYPE_ICON[rarity] || "⭐";
+                // 아바타 이미지: cardImg 로드 실패 시 iconImg/img 폴백
+                const fallbackSrc = avatarSrc?.replace("avatars/card/", "avatars/").replace(".png", "_sm.png") || "avatars/dash.png";
+                return (
+                  <div className={animClass} style={{ width: 152, borderRadius: 12, position: "relative", transformOrigin: "bottom center" }}>
+                    <div style={{ borderRadius: 10, overflow: "hidden", background: `linear-gradient(180deg, ${grad[0]}, ${grad[1]})`, border: `2px solid ${badgeColor}66`, position: "relative" }}>
+                      {/* 샤인 오버레이 */}
+                      <div style={{ position: "absolute", top: 0, left: "-100%", width: "50%", height: "100%", background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)", animation: "bq-card-shine 3s infinite", pointerEvents: "none", zIndex: 5 }} />
+
+                      {/* ─ 카드 상단: 이름 + HP ─ */}
+                      <div style={{ padding: "5px 7px 3px", display: "flex", justifyContent: "space-between", alignItems: "center", background: "rgba(0,0,0,0.25)" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 3 }}>
+                          <span style={{ fontSize: 10 }}>{typeIcon}</span>
+                          <span style={{ fontSize: 11, fontWeight: 900 }}>{name}</span>
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center", gap: 3 }}>
+                          <span style={{ fontSize: 9, opacity: 0.8, fontWeight: 700 }}>HP</span>
+                          <span style={{ fontSize: 14, fontWeight: 900, color: badgeColor }}>{hp}</span>
+                        </div>
+                      </div>
+
+                      {/* ─ 아바타 이미지 영역 ─ */}
+                      <div style={{ position: "relative", height: 110, display: "flex", alignItems: "center", justifyContent: "center", background: `linear-gradient(180deg, ${grad[0]}55, ${grad[1]}33)`, overflow: "hidden", margin: "0 6px", borderRadius: 6, marginTop: 4 }}>
+                        <img src={avatarSrc} alt={name}
+                          style={{ maxWidth: "90%", maxHeight: "100%", objectFit: "contain", filter: hp <= 0 ? "grayscale(1) brightness(0.5)" : `drop-shadow(0 2px 6px rgba(0,0,0,0.5))`, transform: isOpp ? "scaleX(-1)" : "none" }}
+                          onError={(e) => { e.target.onerror = null; e.target.src = fallbackSrc; }} />
+                        {/* 레어리티 뱃지 */}
+                        <div style={{ position: "absolute", bottom: 4, right: 4, fontSize: 7, fontWeight: 900, padding: "1px 5px", borderRadius: 3, letterSpacing: 0.8, ...badge }}>{RARITY_LABEL[rarity]}</div>
+                        {/* 레벨 */}
+                        <div style={{ position: "absolute", bottom: 4, left: 4, fontSize: 8, fontWeight: 900, padding: "1px 5px", borderRadius: 3, background: "rgba(0,0,0,0.4)" }}>Lv.{lvl}</div>
+                      </div>
+
+                      {/* ─ 칭호 ─ */}
+                      <div style={{ textAlign: "center", padding: "3px 0 1px", fontSize: 8, fontWeight: 700, color: badgeColor, opacity: 0.9, letterSpacing: 0.5 }}>
+                        {title || getTitle(lvl)}
+                      </div>
+
+                      {/* ─ 기술 목록 (포켓몬카드 스타일) ─ */}
+                      <div style={{ padding: "0 6px 4px" }}>
+                        {skills.map((sk, i) => (
+                          <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "3px 4px", marginBottom: 1, borderTop: i === 0 ? `1px solid ${badgeColor}33` : "none", borderBottom: `1px solid ${badgeColor}22` }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: 3 }}>
+                              <span style={{ fontSize: 9 }}>{sk.icon}</span>
+                              <span style={{ fontSize: 9, fontWeight: 700 }}>{sk.name}</span>
+                            </div>
+                            <span style={{ fontSize: 10, fontWeight: 900, color: "#fde047" }}>{sk.dmg}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* ─ HP 바 ─ */}
+                      <div style={{ padding: "2px 6px 5px" }}>
+                        <div style={{ height: 7, background: "rgba(0,0,0,0.4)", borderRadius: 4, overflow: "hidden" }}>
+                          <div style={{ width: `${hpPct}%`, height: "100%", borderRadius: 4, background: `linear-gradient(90deg, ${hpColor(hpPct)}, ${hpColor(hpPct)}cc)`, transition: "width 0.8s ease-out", animation: dmg && dmg > 0 ? "bq-hp-flash 0.3s" : "none" }} />
+                        </div>
+                        <div style={{ display: "flex", justifyContent: "space-between", fontSize: 7, fontWeight: 900, opacity: 0.5, marginTop: 1 }}>
+                          <span>{typeLabel} 타입</span><span>{hp}/{maxHp}</span>
+                        </div>
+                      </div>
+                    </div>
+                    {/* 데미지 팝업 */}
+                    {dmg != null && dmg > 0 && (
+                      <div style={{ position: "absolute", top: -10, [isOpp ? "left" : "right"]: -6, fontSize: 16, fontWeight: 900, color: isOpp ? "#22c55e" : "#ef4444", textShadow: "0 2px 6px rgba(0,0,0,0.6)", animation: "bq-damage-pop 0.8s forwards", zIndex: 10 }}>-{dmg}</div>
+                    )}
+                  </div>
+                );
+              };
 
               return (
                 <div>
+                  {/* ── 카드 대면 영역 ── */}
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0 8px", position: "relative" }}>
+                    <BattleCard
+                      name={myName} lvl={level || 1} hp={myHP} maxHp={myMaxHP} hpPct={myHPPct}
+                      avatarSrc={myAvatarSrc} grad={myGrad} rarity={myRarity}
+                      dmg={lastDamage?.myDmg} isOpp={false} animClass={myCardAnim}
+                      title={getTitle(level || 1)}
+                    />
+                    {/* 중앙 타이머 + 스파크 */}
+                    <div style={{ textAlign: "center", zIndex: 5, position: "relative", minWidth: 40 }}>
+                      {battleAnim === "hit" && (
+                        <div style={{ position: "absolute", left: "50%", top: "50%", width: 50, height: 50, borderRadius: "50%", background: "radial-gradient(circle, rgba(253,224,71,0.7) 0%, rgba(255,165,0,0.3) 40%, transparent 70%)", animation: "bq-clash-spark 0.5s forwards", pointerEvents: "none" }} />
+                      )}
+                      <div className={timerDanger ? "bq-timer-danger" : ""} style={{ fontSize: 22, fontWeight: 900, color: timerDanger ? "#ef4444" : "#fde047", lineHeight: 1, textShadow: "0 2px 8px rgba(0,0,0,0.4)" }}>{battleTimerActive ? battleTimer : "⚔️"}</div>
+                      {battleTimerActive && <div style={{ fontSize: 9, opacity: 0.7, fontWeight: 700 }}>초</div>}
+                    </div>
+                    <BattleCard
+                      name={oppName} lvl={opp?.level || 1} hp={oppHP} maxHp={oppMaxHP} hpPct={oppHPPct}
+                      avatarSrc={oppAvatarSrc} grad={oppGrad} rarity={oppRarity}
+                      dmg={lastDamage?.oppDmg} isOpp={true} animClass={oppCardAnim}
+                      title={getTitle(opp?.level || 1)}
+                    />
+                  </div>
+
                   {/* 진행 표시 */}
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14, padding: "10px 14px", background: "rgba(255,255,255,0.08)", borderRadius: 12 }}>
                     <div style={{ fontSize: 12, fontWeight: 700 }}>라운드 {interactiveRoundIdx + 1}/{total}</div>
@@ -4750,6 +5086,13 @@
                           />
                         </div>
                         <div style={{ fontSize: 16, fontWeight: 900 }}>{roundAns.judge === "my" ? "이 라운드 승!" : roundAns.judge === "opp" ? "이 라운드 패" : "무승부"}</div>
+                        {/* 데미지 표시 */}
+                        {roundAns.myDmg != null && (
+                          <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 8, fontSize: 12 }}>
+                            <span>상대에게 <b style={{color:"#22c55e"}}>-{roundAns.oppDmg}</b></span>
+                            <span>내가 받은 <b style={{color:"#ef4444"}}>-{roundAns.myDmg}</b></span>
+                          </div>
+                        )}
                       </div>
 
                       {roundAns.type === "qa" && (
@@ -4834,30 +5177,131 @@
             )}
 
             {/* RESULT */}
-            {battlePhase === "result" && (
-              <div>
-                <div style={{ textAlign: "center", padding: "30px 20px", background: battleWinner === "my" ? "linear-gradient(135deg, rgba(34,197,94,0.3), rgba(16,185,129,0.2))" : battleWinner === "opp" ? "linear-gradient(135deg, rgba(239,68,68,0.3), rgba(220,38,38,0.2))" : "rgba(255,255,255,0.1)", borderRadius: 16, marginBottom: 16 }}>
-                  <div style={{ marginBottom: 10, lineHeight: 0 }}>
-                    {battleWinner === "my" ? (
-                      <Icon name="medal_gold" size={56} />
-                    ) : battleWinner === "opp" ? (
-                      <span style={{ fontSize: 48 }}>😢</span>
-                    ) : (
-                      <Icon name="draw_handshake" size={56} />
-                    )}
+            {battlePhase === "result" && (() => {
+              const myHPPct = myMaxHP > 0 ? Math.max(0, (myHP / myMaxHP) * 100) : 0;
+              const oppHPPct = oppMaxHP > 0 ? Math.max(0, (oppHP / oppMaxHP) * 100) : 0;
+              const hpColor = (pct) => pct > 50 ? "#22c55e" : pct > 25 ? "#f59e0b" : "#ef4444";
+              const myName = profile?.name || "나";
+              const oppName = battleOpponent?.name || "상대";
+              const myAvD = AVATAR_DATA.find(a => a.id === (profile?.avatar || "shelly")) || AVATAR_DATA[0];
+              const oppAvD = AVATAR_DATA.find(a => a.id === (opp?.avatar || "shelly")) || AVATAR_DATA[0];
+              const myAvSrc = myAvD.cardImg || myAvD.iconImg || myAvD.img;
+              const oppAvSrc = oppAvD.cardImg || oppAvD.iconImg || oppAvD.img;
+              const myGrad = myAvD.gradient || ["#7c3aed","#a855f7"];
+              const oppGrad = oppAvD.gradient || ["#ef4444","#dc2626"];
+              const myBadge = RARITY_BADGE_STYLE[myAvD.rarity||"free"] || RARITY_BADGE_STYLE.free;
+              const oppBadge = RARITY_BADGE_STYLE[oppAvD.rarity||"free"] || RARITY_BADGE_STYLE.free;
+              const CARD_TYPE_R = { free: "노멀", common: "노멀", rare: "레어", epic: "영웅", legendary: "전설", heroic: "영웅", mythic: "신화", hidden: "히든" };
+              const CARD_TYPE_ICON_R = { free: "⭐", common: "⭐", rare: "💎", epic: "🛡️", legendary: "👑", heroic: "🛡️", mythic: "🌙", hidden: "🔮" };
+              const CARD_SKILL_R = {
+                free: [{ name: "기본 공격", dmg: 10, icon: "📖" }, { name: "지식 던지기", dmg: 20, icon: "💡" }],
+                common: [{ name: "퀴즈 어택", dmg: 15, icon: "❓" }, { name: "독서 파워", dmg: 25, icon: "📚" }],
+                rare: [{ name: "논리 공격", dmg: 20, icon: "🧠" }, { name: "지혜의 일격", dmg: 30, icon: "✨" }],
+                epic: [{ name: "토론 스매시", dmg: 25, icon: "💬" }, { name: "영웅의 각성", dmg: 35, icon: "⚡" }],
+                legendary: [{ name: "전설의 서", dmg: 30, icon: "📜" }, { name: "궁극의 지식", dmg: 40, icon: "🔥" }],
+                heroic: [{ name: "토론 스매시", dmg: 25, icon: "💬" }, { name: "영웅의 각성", dmg: 35, icon: "⚡" }],
+                mythic: [{ name: "신의 심판", dmg: 35, icon: "⚡" }, { name: "천상의 지혜", dmg: 45, icon: "🌟" }],
+                hidden: [{ name: "그림자 일격", dmg: 30, icon: "🌀" }, { name: "비밀의 힘", dmg: 40, icon: "🔮" }],
+              };
+
+              // 포켓몬카드 스타일 결과 카드
+              const ResultCard = ({ name, lvl, hp, maxHp, avatarSrc, grad, rarity, badge, isWinner, isOpp }) => {
+                const hpPctVal = maxHp > 0 ? Math.max(0, hp/maxHp*100) : 0;
+                const badgeColor = badge?.color || "#d1d5db";
+                const skills = CARD_SKILL_R[rarity] || CARD_SKILL_R.free;
+                const typeLabel = CARD_TYPE_R[rarity] || "노멀";
+                const typeIcon = CARD_TYPE_ICON_R[rarity] || "⭐";
+                const fallbackSrc = avatarSrc?.replace("avatars/card/", "avatars/").replace(".png", "_sm.png") || "avatars/dash.png";
+                const loser = !isWinner && battleWinner !== "draw";
+                return (
+                <div className={isWinner ? "bq-bounce-win" : loser ? "bq-grayscale" : ""} style={{ width: 130, borderRadius: 10, transformOrigin: "bottom center", border: isWinner ? "2px solid #fde047" : "none" }}>
+                  <div style={{ borderRadius: 8, overflow: "hidden", background: `linear-gradient(180deg, ${grad[0]}, ${grad[1]})`, border: `1.5px solid ${badgeColor}66`, position: "relative" }}>
+                    {/* 상단: 이름 + HP */}
+                    <div style={{ padding: "4px 6px 2px", display: "flex", justifyContent: "space-between", alignItems: "center", background: "rgba(0,0,0,0.25)" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 2 }}>
+                        <span style={{ fontSize: 8 }}>{typeIcon}</span>
+                        <span style={{ fontSize: 9, fontWeight: 900 }}>{name}</span>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center", gap: 2 }}>
+                        <span style={{ fontSize: 7, opacity: 0.8, fontWeight: 700 }}>HP</span>
+                        <span style={{ fontSize: 11, fontWeight: 900, color: badgeColor }}>{hp}</span>
+                      </div>
+                    </div>
+                    {/* 아바타 */}
+                    <div style={{ position: "relative", height: 80, display: "flex", alignItems: "center", justifyContent: "center", background: `linear-gradient(180deg, ${grad[0]}55, ${grad[1]}33)`, overflow: "hidden", margin: "0 4px", borderRadius: 5, marginTop: 3 }}>
+                      <img src={avatarSrc} alt={name}
+                        style={{ maxWidth: "85%", maxHeight: "95%", objectFit: "contain", filter: loser ? "grayscale(0.8) brightness(0.5)" : isWinner ? `drop-shadow(0 0 8px ${grad[0]}aa)` : `drop-shadow(0 2px 4px rgba(0,0,0,0.5))`, transform: isOpp ? "scaleX(-1)" : "none" }}
+                        onError={(e) => { e.target.onerror = null; e.target.src = fallbackSrc; }} />
+                      <div style={{ position: "absolute", bottom: 3, right: 3, fontSize: 6, fontWeight: 900, padding: "1px 4px", borderRadius: 3, letterSpacing: 0.5, ...badge }}>{RARITY_LABEL[rarity||"free"]}</div>
+                      <div style={{ position: "absolute", bottom: 3, left: 3, fontSize: 7, fontWeight: 900, padding: "1px 4px", borderRadius: 3, background: "rgba(0,0,0,0.4)" }}>Lv.{lvl}</div>
+                    </div>
+                    {/* 칭호 */}
+                    <div style={{ textAlign: "center", padding: "2px 0 1px", fontSize: 7, fontWeight: 700, color: badgeColor, opacity: 0.9, letterSpacing: 0.4 }}>
+                      {getTitle(lvl)}
+                    </div>
+                    {/* 기술 (축약) */}
+                    <div style={{ padding: "0 4px 3px" }}>
+                      {skills.map((sk, i) => (
+                        <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "2px 3px", borderTop: i === 0 ? `1px solid ${badgeColor}33` : "none", borderBottom: `1px solid ${badgeColor}22` }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: 2 }}>
+                            <span style={{ fontSize: 7 }}>{sk.icon}</span>
+                            <span style={{ fontSize: 7, fontWeight: 700 }}>{sk.name}</span>
+                          </div>
+                          <span style={{ fontSize: 8, fontWeight: 900, color: "#fde047" }}>{sk.dmg}</span>
+                        </div>
+                      ))}
+                    </div>
+                    {/* HP 바 */}
+                    <div style={{ padding: "1px 4px 4px" }}>
+                      <div style={{ height: 5, background: "rgba(0,0,0,0.4)", borderRadius: 3, overflow: "hidden" }}>
+                        <div style={{ width: `${hpPctVal}%`, height: "100%", borderRadius: 3, background: `linear-gradient(90deg, ${hpColor(hpPctVal)}, ${hpColor(hpPctVal)}cc)`, transition: "width 0.5s" }} />
+                      </div>
+                      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 6, fontWeight: 900, opacity: 0.5, marginTop: 1 }}>
+                        <span>{typeLabel} 타입</span><span>{hp}/{maxHp}</span>
+                      </div>
+                    </div>
                   </div>
-                  <div style={{ fontSize: 22, fontWeight: 900, marginBottom: 4 }}>{battleWinner === "my" ? "승리!" : battleWinner === "opp" ? "패배" : "무승부"}</div>
-                  {battleNarration && <div style={{ fontSize: 13, opacity: 0.9, marginTop: 10, lineHeight: 1.6 }}>{battleNarration}</div>}
+                  {/* 승리 크라운 */}
+                  {isWinner && <div style={{ textAlign: "center", marginTop: 4, fontSize: 16 }}>👑</div>}
                 </div>
+                );
+              };
+
+              return (
+              <div>
+                <div style={{ textAlign: "center", padding: "24px 12px", background: battleWinner === "my" ? "linear-gradient(135deg, rgba(34,197,94,0.3), rgba(16,185,129,0.2))" : battleWinner === "opp" ? "linear-gradient(135deg, rgba(239,68,68,0.3), rgba(220,38,38,0.2))" : "rgba(255,255,255,0.1)", borderRadius: 16, marginBottom: 16 }}>
+
+                  {/* 카드 대면 결과 */}
+                  <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 10, marginBottom: 10 }}>
+                    <ResultCard name={myName} lvl={level||1} hp={myHP} maxHp={myMaxHP} avatarSrc={myAvSrc} grad={myGrad} rarity={myAvD.rarity} badge={myBadge} isWinner={battleWinner==="my"} isOpp={false} />
+                    <div style={{ fontSize: 16, fontWeight: 900, opacity: 0.5 }}>VS</div>
+                    <ResultCard name={oppName} lvl={opp?.level||1} hp={oppHP} maxHp={oppMaxHP} avatarSrc={oppAvSrc} grad={oppGrad} rarity={oppAvD.rarity} badge={oppBadge} isWinner={battleWinner==="opp"} isOpp={true} />
+                  </div>
+
+                  <div className={battleWinner === "my" ? "bq-bounce-win" : ""} style={{ fontSize: 22, fontWeight: 900, marginBottom: 4 }}>{battleWinner === "my" ? "승리!" : battleWinner === "opp" ? "패배" : "무승부"}</div>
+                  {battleNarration && <div style={{ fontSize: 12, opacity: 0.9, marginTop: 8, lineHeight: 1.6 }}>{battleNarration}</div>}
+                </div>
+
+                {/* 라운드별 데미지 로그 */}
                 {battleRounds && battleRounds.map((r, i) => (
                   <div key={i} style={{ background: "rgba(255,255,255,0.08)", borderRadius: 12, padding: 12, marginBottom: 10, fontSize: 12 }}>
-                    <div style={{ fontWeight: 800, marginBottom: 6, opacity: 0.9 }}>라운드 {i + 1} · {r.type === "qa" ? (r.book || "책 Q&A") : "미니 토론"} — {r.judge === "my" ? "승" : r.judge === "opp" ? "패" : "무"}</div>
-                    <div style={{ opacity: 0.8, lineHeight: 1.5 }}>{r.reason}</div>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                      <div style={{ fontWeight: 800, opacity: 0.9 }}>라운드 {i + 1} · {r.type === "qa" ? (r.book || "책 Q&A") : "미니 토론"}</div>
+                      <div style={{ fontWeight: 800, color: r.judge === "my" ? "#22c55e" : r.judge === "opp" ? "#ef4444" : "#fde047" }}>{r.judge === "my" ? "승" : r.judge === "opp" ? "패" : "무"}</div>
+                    </div>
+                    {r.myDmg != null && (
+                      <div style={{ display: "flex", gap: 12, fontSize: 11, opacity: 0.8 }}>
+                        <span>나 받은 데미지: <b style={{color:"#ef4444"}}>-{r.myDmg}</b></span>
+                        <span>상대 받은 데미지: <b style={{color:"#22c55e"}}>-{r.oppDmg}</b></span>
+                      </div>
+                    )}
+                    {r.reason && <div style={{ opacity: 0.7, lineHeight: 1.5, marginTop: 4 }}>{r.reason}</div>}
                   </div>
                 ))}
                 <button onClick={exitBattleV2} style={{ width: "100%", padding: 14, borderRadius: 14, border: "none", background: "white", color: "#4c1d95", fontSize: 14, fontWeight: 800, cursor: "pointer", marginTop: 10 }}>랭킹으로 돌아가기</button>
               </div>
-            )}
+              );
+            })()}
           </div>
         );
       };
@@ -5533,10 +5977,10 @@
               <div style={{ fontSize: 12, marginTop: 4, opacity: 0.8 }}>진행률 {bookProgress[book.id]}%</div>
             </div>
 
-            <div style={{ display: "flex", gap: 4, marginBottom: 16, overflowX: "auto", paddingBottom: 4 }}>
+            <div style={{ display: "flex", gap: 3, marginBottom: 16, flexWrap: "wrap" }}>
               {tabs.map(t => (
                 <button key={t.key} onClick={() => setBookTab(t.key)}
-                  style={{ padding: "8px 12px", borderRadius: 20, border: "none", background: bookTab === t.key ? "#667eea" : "#f0f0f0", color: bookTab === t.key ? "white" : "#666", fontSize: 12, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap" }}>
+                  style={{ padding: "7px 9px", borderRadius: 20, border: "none", background: bookTab === t.key ? "#667eea" : "#f0f0f0", color: bookTab === t.key ? "white" : "#666", fontSize: 11, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap" }}>
                   {t.label}
                 </button>
               ))}
@@ -6866,12 +7310,41 @@
           }
         ];
 
-        // 아바타 말풍선 인사말 (완독 수에 따라 변화)
-        const greeting = booksCompletedCount >= 3
-          ? `우와! ${booksCompletedCount}권이나 읽었네. 오늘은 뭐가 궁금해?`
-          : booksCompletedCount > 0
-          ? `${booksCompletedCount}권 함께 읽었지. 또 얘기해볼래?`
-          : `안녕 ${profile?.name || "친구"}! 책 하나 골라서 같이 읽어보자`;
+        // 아바타 말풍선 인사말 — 접속할 때마다 랜덤
+        const pName = profile?.name || "친구";
+        const avName = avatarProfile.name;
+        const greetPool0 = [
+          `안녕 ${pName}! 책 하나 골라서 같이 읽어보자`,
+          `${pName}, 오늘은 어떤 책이 끌려?`,
+          `반가워 ${pName}! 오늘 같이 모험 떠날래?`,
+          `${pName}! 나랑 같이 책 읽으면 재밌을 거야!`,
+          `어서 와! 오늘은 어떤 이야기를 만날까?`,
+          `${pName}, 재미있는 책 찾아볼까?`,
+          `오늘도 왔구나! 어떤 책으로 시작할까?`,
+          `${pName}! 내가 재밌는 책 골라줄까?`,
+        ];
+        const greetPool1 = [
+          `${booksCompletedCount}권 함께 읽었지! 또 얘기해볼래?`,
+          `오늘도 왔네! 이번엔 어떤 책 읽어볼까?`,
+          `${pName}, 지난번 책 재밌었어? 또 골라볼까!`,
+          `${pName}! 오늘은 내가 퀴즈 하나 낼까?`,
+          `좋은 하루야! 같이 책 한 권 더 읽자!`,
+          `${pName}, 요즘 뭐에 관심 있어? 책으로 찾아볼까!`,
+          `우리 벌써 ${booksCompletedCount}권이나 읽었어! 대단해!`,
+          `또 만났다! 오늘은 뭐가 궁금해?`,
+        ];
+        const greetPool3 = [
+          `우와! ${booksCompletedCount}권이나 읽었네. 오늘은 뭐가 궁금해?`,
+          `${pName}, 독서왕이 다 됐는걸? 오늘도 힘내자!`,
+          `${booksCompletedCount}권 달성! 축하해! 다음 목표는 뭐야?`,
+          `역시 ${pName}! 벌써 ${booksCompletedCount}권이라니 멋지다!`,
+          `오늘도 열심히 읽어볼까? 내가 응원할게!`,
+          `${pName}, 요즘 실력이 엄청 늘었어! 느껴져?`,
+          `오! 또 왔구나! 오늘은 어떤 모험을 할까?`,
+          `${pName}의 독서 실력이 레벨업 중이야! 계속 가자!`,
+        ];
+        const pool = booksCompletedCount >= 3 ? greetPool3 : booksCompletedCount > 0 ? greetPool1 : greetPool0;
+        const greeting = pool[Math.floor(Math.random() * pool.length)];
         const avatarSrc = AVATAR_DATA.find(a => a.id === profile?.avatar)?.img || "avatars/shelly.png";
 
         return (

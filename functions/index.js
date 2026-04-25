@@ -325,8 +325,14 @@ ${uniqueBooks
 });
 
 // ═══════════════════════════════════════
-// 🔊 4. Google Cloud TTS (자연스러운 한국어 음성)
+// 🔊 4. TTS — Google Chirp 3 HD (메인) → OpenAI (2순위) → Google Neural2 (최종 폴백)
 // ═══════════════════════════════════════
+// .env 설정으로 엔진 전환:
+//   TTS_ENGINE=chirp   → Chirp 3 HD 우선 (기본값)
+//   TTS_ENGINE=openai  → OpenAI 우선
+//   TTS_ENGINE=neural2 → Neural2만 사용
+// OpenAI 음성: alloy, ash, ballad, coral, echo, fable, nova, onyx, sage, shimmer
+// Chirp 3 HD 음성: ko-KR-Chirp3-HD-Achernar 등 (여러 음색)
 const ttsClient = new TextToSpeechClient();
 
 exports.textToSpeech = functions.https.onRequest(async (req, res) => {
@@ -340,35 +346,81 @@ exports.textToSpeech = functions.https.onRequest(async (req, res) => {
       return;
     }
 
-    // 텍스트 길이 제한 (Cloud TTS 최대 5000바이트, 한국어 약 2500자)
     const trimmedText = text.slice(0, 2500);
+    const ttsEngine = (process.env.TTS_ENGINE || "chirp").toLowerCase();
+    const openaiKey = process.env.OPENAI_KEY || process.env.OPENAI_API_KEY;
 
-    // 한국어 Neural2 음성 (가장 자연스러움)
-    // 옵션: ko-KR-Neural2-A (여성), ko-KR-Neural2-B (여성), ko-KR-Neural2-C (남성)
+    // ── 1순위: Google Chirp 3 HD ──
+    if (ttsEngine === "chirp" || ttsEngine === "chirp3") {
+      try {
+        const chirpVoice = voice || "ko-KR-Chirp3-HD-Achernar";
+        const [response] = await ttsClient.synthesizeSpeech({
+          input: { text: trimmedText },
+          voice: { languageCode: "ko-KR", name: chirpVoice },
+          audioConfig: {
+            audioEncoding: "MP3",
+            speakingRate: 0.95,
+            volumeGainDb: 2.0,
+          },
+        });
+        const audioBase64 = response.audioContent.toString("base64");
+        res.json({ audio: audioBase64, format: "mp3", textLength: trimmedText.length, engine: "chirp3-hd" });
+        return;
+      } catch (chirpErr) {
+        console.warn("[TTS] Chirp 3 HD 실패, 다음 엔진으로 폴백:", chirpErr.message);
+      }
+    }
+
+    // ── 2순위: OpenAI TTS ──
+    if (openaiKey && ttsEngine !== "neural2") {
+      try {
+        const openaiVoices = ["alloy","ash","ballad","coral","echo","fable","nova","onyx","sage","shimmer"];
+        const openaiVoice = openaiVoices.includes(voice) ? voice : "nova";
+
+        const ttsRes = await fetch("https://api.openai.com/v1/audio/speech", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${openaiKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model: "tts-1",
+            input: trimmedText,
+            voice: openaiVoice,
+            response_format: "mp3",
+            speed: 0.95,
+          }),
+        });
+
+        if (!ttsRes.ok) {
+          const errText = await ttsRes.text();
+          throw new Error(`OpenAI TTS ${ttsRes.status}: ${errText.slice(0, 200)}`);
+        }
+
+        const arrayBuf = await ttsRes.arrayBuffer();
+        const audioBase64 = Buffer.from(arrayBuf).toString("base64");
+        res.json({ audio: audioBase64, format: "mp3", textLength: trimmedText.length, engine: "openai" });
+        return;
+      } catch (openaiErr) {
+        console.warn("[TTS] OpenAI 실패, Neural2로 폴백:", openaiErr.message);
+      }
+    }
+
+    // ── 3순위: Google Neural2 (최종 폴백) ──
     const voiceName = voice || "ko-KR-Neural2-C";
-
     const [response] = await ttsClient.synthesizeSpeech({
       input: { text: trimmedText },
-      voice: {
-        languageCode: "ko-KR",
-        name: voiceName,
-      },
+      voice: { languageCode: "ko-KR", name: voiceName },
       audioConfig: {
         audioEncoding: "MP3",
-        speakingRate: 0.95,   // 약간 느리게 (아이가 듣기 편하도록)
-        pitch: 1.0,           // 기본 피치
+        speakingRate: 0.95,
+        pitch: 1.0,
         volumeGainDb: 2.0,
       },
     });
 
-    // Base64로 인코딩하여 반환
     const audioBase64 = response.audioContent.toString("base64");
-
-    res.json({
-      audio: audioBase64,
-      format: "mp3",
-      textLength: trimmedText.length,
-    });
+    res.json({ audio: audioBase64, format: "mp3", textLength: trimmedText.length, engine: "neural2" });
   } catch (error) {
     console.error("textToSpeech error:", error);
     res.status(500).json({ error: "음성 생성 실패: " + error.message });
