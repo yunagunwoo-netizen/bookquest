@@ -1,5 +1,8 @@
 # BookQuest Changelog
 
+## 2026-04-25
+- UI 아이콘 4종 크기 24×24px 고정 + flexbox 정렬. 배틀 직접참여 50코인/2회로 변경. 장영실·유관순 heroic(800) 이동. 홈 화면 배지 섹션 제거. Enchanted Abyss 다크 스킨 적용 후 롤백(revert e2f3740). 총 156종 / 진열 42 / 숨김 114.
+
 ## 2026-04-24
 - 기술 부채 정리: `version.js`(iCoach 잔재, APP_VERSION β1.4.15) 삭제 + `sw.js` precache에서 제거. 레거시 `icons/tab-{home,question,explore,profile}.png` 4개 삭제(참조 0회 검증), `tab-daily.png`는 L6451 일일 미션 헤더에서 직접 참조 중이라 유지. `PNG_ICONS` 맵의 tab_* 5키 dead entry 제거(−212바이트). `icons/v1/_unused/` 폴더 3장(theme_art/global/psychology) 삭제. index.html 156종 / 숨김 116 산술 오차 저녁 핸드오프·CHANGELOG 동시 수정. Babel 재파싱 OK, `</html>` 정상 종료.
 
