@@ -4262,7 +4262,7 @@
         setBattleError("");
         setBattleLoading(true);
         setBattlePhase("playing");
-        setBattleMessages([{ kind: "banner", text: mode === "watch" ? "관람 모드 — 내 아바타와 상대가 토론합니다" : "대리 출전 모드 — 아바타가 자동으로 싸웁니다" }]);
+        setBattleMessages([{ kind: "banner", text: mode === "watch" ? "관전 모드 — 내 아바타와 상대가 토론합니다" : "자동진행 모드 — 아바타가 자동으로 싸웁니다" }]);
 
         try {
           const myUid = FirestoreService.getUserId();
@@ -4583,7 +4583,7 @@
               <div style={{ textAlign: "center", padding: "50px 20px" }}>
                 <div style={{ fontSize: 56, marginBottom: 14 }}>⏳</div>
                 <div style={{ fontSize: 18, fontWeight: 800, marginBottom: 8 }}>오늘 배틀은 끝!</div>
-                <div style={{ fontSize: 13, opacity: 0.8, lineHeight: 1.6 }}>관람/대리 1회 + 직접 참여 {BATTLE_PLAY_DAILY_LIMIT}회 모두 썼어요.<br />내일 다시 만나요 🌙</div>
+                <div style={{ fontSize: 13, opacity: 0.8, lineHeight: 1.6 }}>관전/자동진행 1회 + 배틀시작 {BATTLE_PLAY_DAILY_LIMIT}회 모두 썼어요.<br />내일 다시 만나요 🌙</div>
                 <button onClick={exitBattleV2} style={{ marginTop: 22, padding: "10px 22px", borderRadius: 12, border: "none", background: "white", color: "#4c1d95", fontSize: 13, fontWeight: 800, cursor: "pointer" }}>랭킹으로 돌아가기</button>
               </div>
             )}
@@ -4594,7 +4594,7 @@
                 <div style={{ textAlign: "center", padding: "20px 20px 10px" }}>
                   <div style={{ fontSize: 44, marginBottom: 10 }}>⚔️</div>
                   <div style={{ fontSize: 16, fontWeight: 800, marginBottom: 6 }}>관람/대리 배틀은 끝!</div>
-                  <div style={{ fontSize: 12, opacity: 0.85, lineHeight: 1.6 }}>직접 참여 배틀은 아직 {remainingPlayCount()}회 남았어요.<br/>코인 {BATTLE_PLAY_COIN_COST}개로 도전 가능!</div>
+                  <div style={{ fontSize: 12, opacity: 0.85, lineHeight: 1.6 }}>배틀시작 아직 {remainingPlayCount()}회 남았어요.<br/>코인 {BATTLE_PLAY_COIN_COST}개로 도전 가능!</div>
                 </div>
                 {battleError && !isAdmin && (
                   <div style={{ background: "rgba(239,68,68,0.2)", border: "1px solid rgba(239,68,68,0.5)", borderRadius: 12, padding: 12, fontSize: 12, margin: "12px 0" }}>{battleError}</div>
@@ -4605,8 +4605,8 @@
                     setBattlePhase("debate-choice");
                   }}
                   disabled={battleLoading}
-                  style={{ width: "100%", padding: "14px", borderRadius: 14, border: "2px solid #fde047", background: "linear-gradient(135deg, #f59e0b, #dc2626)", color: "white", fontSize: 15, fontWeight: 800, cursor: "pointer", marginTop: 14, opacity: battleLoading ? 0.6 : 1, display:"flex", alignItems:"center", justifyContent:"center", gap:6 }}>
-                  <img src="icons/battle-direct.png" alt="" style={{width:24,height:24,objectFit:"contain"}} /> 직접 참여 ({BATTLE_PLAY_COIN_COST}코인 · {remainingPlayCount()}/{BATTLE_PLAY_DAILY_LIMIT})
+                  style={{ width: "100%", padding: "14px 16px", borderRadius: 14, border: "2px solid #fde047", background: "linear-gradient(135deg, #f59e0b, #dc2626)", color: "white", fontSize: 15, fontWeight: 800, cursor: "pointer", marginTop: 14, opacity: battleLoading ? 0.6 : 1, display:"flex", alignItems:"center", justifyContent:"flex-start", gap:10 }}>
+                  <img src="icons/battle-direct.png" alt="" style={{width:32,height:32,objectFit:"contain",flexShrink:0}} /> 배틀시작 ({BATTLE_PLAY_COIN_COST}코인 · {remainingPlayCount()}/{BATTLE_PLAY_DAILY_LIMIT})
                 </button>
                 <button onClick={exitBattleV2} style={{ width: "100%", marginTop: 10, padding: "10px 22px", borderRadius: 12, border: "none", background: "rgba(255,255,255,0.1)", color: "white", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>랭킹으로 돌아가기</button>
               </div>
@@ -4629,12 +4629,12 @@
                   <div style={{ background: "rgba(239,68,68,0.2)", border: "1px solid rgba(239,68,68,0.5)", borderRadius: 12, padding: 12, fontSize: 12, marginBottom: 12 }}>{battleError}</div>
                 )}
                 <button onClick={() => launchBattle("watch")} disabled={battleLoading}
-                  style={{ width: "100%", padding: "14px", borderRadius: 14, border: "none", background: "linear-gradient(135deg, #a855f7, #7c3aed)", color: "white", fontSize: 15, fontWeight: 800, cursor: "pointer", marginBottom: 10, opacity: battleLoading ? 0.6 : 1, display:"flex", alignItems:"center", justifyContent:"center", gap:6 }}>
-                  <img src="icons/battle-spectate.png" alt="" style={{width:24,height:24,objectFit:"contain"}} /> 관람하기 (실시간 중계)
+                  style={{ width: "100%", padding: "14px 16px", borderRadius: 14, border: "none", background: "linear-gradient(135deg, #a855f7, #7c3aed)", color: "white", fontSize: 15, fontWeight: 800, cursor: "pointer", marginBottom: 10, opacity: battleLoading ? 0.6 : 1, display:"flex", alignItems:"center", justifyContent:"flex-start", gap:10 }}>
+                  <img src="icons/battle-spectate.png" alt="" style={{width:32,height:32,objectFit:"contain",flexShrink:0}} /> 관전하기 (실시간 중계)
                 </button>
                 <button onClick={() => launchBattle("auto")} disabled={battleLoading}
-                  style={{ width: "100%", padding: "14px", borderRadius: 14, border: "1px solid rgba(255,255,255,0.3)", background: "rgba(255,255,255,0.08)", color: "white", fontSize: 15, fontWeight: 800, cursor: "pointer", marginBottom: 10, opacity: battleLoading ? 0.6 : 1, display:"flex", alignItems:"center", justifyContent:"center", gap:6 }}>
-                  <img src="icons/battle-proxy.png" alt="" style={{width:24,height:24,objectFit:"contain"}} /> 대리 출전 (바로 결과 보기)
+                  style={{ width: "100%", padding: "14px 16px", borderRadius: 14, border: "1px solid rgba(255,255,255,0.3)", background: "rgba(255,255,255,0.08)", color: "white", fontSize: 15, fontWeight: 800, cursor: "pointer", marginBottom: 10, opacity: battleLoading ? 0.6 : 1, display:"flex", alignItems:"center", justifyContent:"flex-start", gap:10 }}>
+                  <img src="icons/battle-proxy.png" alt="" style={{width:32,height:32,objectFit:"contain",flexShrink:0}} /> 자동진행 (바로 결과 보기)
                 </button>
                 <button
                   onClick={() => {
@@ -4643,11 +4643,11 @@
                     setBattlePhase("debate-choice");
                   }}
                   disabled={battleLoading}
-                  style={{ width: "100%", padding: "14px", borderRadius: 14, border: "2px solid #fde047", background: "linear-gradient(135deg, #f59e0b, #dc2626)", color: "white", fontSize: 15, fontWeight: 800, cursor: "pointer", opacity: battleLoading ? 0.6 : 1, display:"flex", alignItems:"center", justifyContent:"center", gap:6 }}>
-                  <img src="icons/battle-direct.png" alt="" style={{width:24,height:24,objectFit:"contain"}} /> 직접 참여 ({BATTLE_PLAY_COIN_COST}코인 · {remainingPlayCount()}/{BATTLE_PLAY_DAILY_LIMIT})
+                  style={{ width: "100%", padding: "14px 16px", borderRadius: 14, border: "2px solid #fde047", background: "linear-gradient(135deg, #f59e0b, #dc2626)", color: "white", fontSize: 15, fontWeight: 800, cursor: "pointer", opacity: battleLoading ? 0.6 : 1, display:"flex", alignItems:"center", justifyContent:"flex-start", gap:10 }}>
+                  <img src="icons/battle-direct.png" alt="" style={{width:32,height:32,objectFit:"contain",flexShrink:0}} /> 배틀시작 ({BATTLE_PLAY_COIN_COST}코인 · {remainingPlayCount()}/{BATTLE_PLAY_DAILY_LIMIT})
                 </button>
                 <div style={{ fontSize: 10, opacity: 0.7, textAlign: "center", marginTop: 8, lineHeight: 1.5 }}>
-                  💡 직접 참여: 4지선다 문제를 네가 직접 풀어요
+                  💡 배틀시작: 4지선다 문제를 네가 직접 풀어요
                 </div>
               </div>
             ) : null}
