@@ -4472,6 +4472,8 @@
           const r = replay.rounds[i];
           const header = r.type === "qa"
             ? `— 라운드 ${i + 1} · 책 Q&A (${r.book || "책"}) —`
+            : r.type === "complete"
+            ? `— 라운드 ${i + 1} · 문장 완성 (${r.book || "책"}) —`
             : `— 라운드 ${i + 1} · 미니 토론 —`;
           setBattleMessages(prev => [...prev, { kind: "banner", text: header }]);
           await wait(700);
@@ -4481,6 +4483,14 @@
             setBattleMessages(prev => [...prev, { kind: "me", name: myName, text: r.myAnswer }]);
             await wait(800);
             setBattleMessages(prev => [...prev, { kind: "opp", name: oppName, text: r.oppAnswer }]);
+          } else if (r.type === "complete") {
+            setBattleMessages(prev => [...prev, { kind: "system", text: `✏️ ${r.sentence}` }]);
+            await wait(900);
+            const myAns = r.completions?.[r.myChoiceIdx] || "?";
+            const oppAns = r.completions?.[r.oppChoiceIdx] || "?";
+            setBattleMessages(prev => [...prev, { kind: "me", name: myName, text: myAns }]);
+            await wait(800);
+            setBattleMessages(prev => [...prev, { kind: "opp", name: oppName, text: oppAns }]);
           } else {
             setBattleMessages(prev => [...prev, { kind: "system", text: `💭 주제: ${r.topic}` }]);
             await wait(900);
@@ -4560,7 +4570,7 @@
 
           // 첫 라운드 타이머 시작
           const firstRound = result.rounds[0];
-          if (firstRound?.type === "qa") {
+          if (firstRound?.type === "qa" || firstRound?.type === "complete") {
             setTimeout(() => startBattleTimer(BATTLE_V2.TIMER_SECONDS), 300);
           } else if (firstRound?.type === "debate" && debateOwner === "me") {
             setTimeout(() => startBattleTimer(BATTLE_V2.TIMER_ULTIMATE), 300);
@@ -4598,6 +4608,28 @@
             judge,
             question: round.question,
             choices: round.choices,
+            explanation: round.explanation,
+            book: round.book,
+          };
+        } else if (round.type === "complete") {
+          // 문장 완성형 — 정답 맞추면 승
+          const myCorrect = choiceIdx === round.answerIdx;
+          const oppCorrect = round.oppChoiceIdx === round.answerIdx;
+          let judge;
+          if (myCorrect && !oppCorrect) judge = "my";
+          else if (!myCorrect && oppCorrect) judge = "opp";
+          else if (myCorrect && oppCorrect) judge = "draw";
+          else judge = "draw";
+          roundResult = {
+            type: "complete",
+            myChoiceIdx: choiceIdx,
+            oppChoiceIdx: round.oppChoiceIdx,
+            answerIdx: round.answerIdx,
+            myCorrect,
+            oppCorrect,
+            judge,
+            sentence: round.sentence,
+            completions: round.completions,
             explanation: round.explanation,
             book: round.book,
           };
@@ -4641,7 +4673,7 @@
         let myDmg = 0;   // 내가 받는 데미지
         let oppDmg = 0;  // 상대가 받는 데미지
 
-        if (roundResult.type === "qa") {
+        if (roundResult.type === "qa" || roundResult.type === "complete") {
           // 내가 맞히면 상대에게 강공격, 틀리면 약공격
           oppDmg = roundResult.myCorrect
             ? rollDamage(BATTLE_V2.DMG_STRONG)
@@ -4716,7 +4748,7 @@
         if (battleTimer === 0 && !battleTimerActive && battleTimerWasActive.current && battlePhase === "play-round" && !showRoundResult && interactiveRounds) {
           battleTimerWasActive.current = false;
           const round = interactiveRounds[interactiveRoundIdx];
-          if (round && round.type === "qa") {
+          if (round && (round.type === "qa" || round.type === "complete")) {
             // 타임아웃 → 오답으로 처리 (존재하지 않는 인덱스)
             submitRoundAnswer(-1);
           }
@@ -4738,7 +4770,7 @@
           setInteractiveRoundIdx(nextIdx);
           // 다음 라운드 타이머 시작
           const nextRound = interactiveRounds[nextIdx];
-          if (nextRound.type === "qa") {
+          if (nextRound.type === "qa" || nextRound.type === "complete") {
             startBattleTimer(BATTLE_V2.TIMER_SECONDS);
           } else if (nextRound.type === "debate" && miniDebateOwner === "me") {
             startBattleTimer(BATTLE_V2.TIMER_ULTIMATE);
@@ -5089,10 +5121,10 @@
                   {/* 진행 표시 */}
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14, padding: "10px 14px", background: "rgba(255,255,255,0.08)", borderRadius: 12 }}>
                     <div style={{ fontSize: 12, fontWeight: 700 }}>라운드 {interactiveRoundIdx + 1}/{total}</div>
-                    <div style={{ fontSize: 11, opacity: 0.8 }}>{round.type === "qa" ? `📚 ${round.book || "책 Q&A"}` : "💭 미니 토론"}</div>
+                    <div style={{ fontSize: 11, opacity: 0.8 }}>{round.type === "qa" ? `📚 ${round.book || "책 Q&A"}` : round.type === "complete" ? `✏️ ${round.book || "문장 완성"}` : "💭 미니 토론"}</div>
                   </div>
 
-                  {/* 문제 표시 */}
+                  {/* 문제 표시 — Q&A 4지선다 */}
                   {!showRoundResult && round.type === "qa" && (
                     <div>
                       <div style={{ background: "rgba(253,224,71,0.15)", border: "1px solid rgba(253,224,71,0.3)", borderRadius: 14, padding: 16, marginBottom: 14 }}>
@@ -5103,6 +5135,29 @@
                         <button key={i} onClick={() => submitRoundAnswer(i)} disabled={battleLoading}
                           style={{ width: "100%", padding: "14px 16px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.2)", background: "rgba(255,255,255,0.06)", color: "white", fontSize: 13, fontWeight: 600, cursor: "pointer", marginBottom: 8, textAlign: "left", lineHeight: 1.5 }}>
                           <span style={{ fontWeight: 900, marginRight: 8, color: "#fde047" }}>{String.fromCharCode(65 + i)}.</span>{c}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* 문장 완성형 */}
+                  {!showRoundResult && round.type === "complete" && (
+                    <div>
+                      <div style={{ background: "rgba(96,165,250,0.15)", border: "1px solid rgba(96,165,250,0.3)", borderRadius: 14, padding: 16, marginBottom: 14 }}>
+                        <div style={{ fontSize: 11, fontWeight: 800, color: "#60a5fa", marginBottom: 6 }}>✏️ 문장을 완성해봐!</div>
+                        <div style={{ fontSize: 15, fontWeight: 700, lineHeight: 1.7 }}>
+                          {(round.sentence || "").split("___").map((part, idx, arr) =>
+                            idx < arr.length - 1
+                              ? React.createElement(React.Fragment, { key: idx }, part, React.createElement("span", { style: { display: "inline-block", minWidth: 60, borderBottom: "2px dashed #60a5fa", margin: "0 4px", color: "#60a5fa", fontWeight: 900 } }, " ??? "))
+                              : React.createElement(React.Fragment, { key: idx }, part)
+                          )}
+                        </div>
+                      </div>
+                      <div style={{ fontSize: 11, opacity: 0.7, textAlign: "center", marginBottom: 10 }}>빈칸에 들어갈 가장 알맞은 답을 골라봐!</div>
+                      {(round.completions || []).map((c, i) => (
+                        <button key={i} onClick={() => submitRoundAnswer(i)} disabled={battleLoading}
+                          style={{ width: "100%", padding: "14px 16px", borderRadius: 12, border: "1px solid rgba(96,165,250,0.3)", background: "rgba(96,165,250,0.08)", color: "white", fontSize: 13, fontWeight: 600, cursor: "pointer", marginBottom: 8, textAlign: "left", lineHeight: 1.5 }}>
+                          <span style={{ fontWeight: 900, marginRight: 8, color: "#60a5fa" }}>{String.fromCharCode(65 + i)}.</span>{c}
                         </button>
                       ))}
                     </div>
@@ -5169,6 +5224,21 @@
                             <Icon name={roundAns.oppCorrect ? "correct_check" : "wrong_cross"} size={16} />
                           </div>
                           {roundAns.explanation && <div style={{ padding: 10, background: "rgba(253,224,71,0.12)", borderRadius: 8, fontSize: 11, opacity: 0.95 }}>💡 {roundAns.explanation}</div>}
+                        </div>
+                      )}
+
+                      {roundAns.type === "complete" && (
+                        <div style={{ background: "rgba(255,255,255,0.06)", borderRadius: 12, padding: 14, marginBottom: 12, fontSize: 12, lineHeight: 1.6 }}>
+                          <div style={{ marginBottom: 8 }}><b>완성 문장:</b> {(roundAns.sentence || "").replace("___", roundAns.completions[roundAns.answerIdx])}</div>
+                          <div style={{ marginBottom: 6, display: "flex", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
+                            <span>🧒 <b>{myName}</b>: {String.fromCharCode(65 + roundAns.myChoiceIdx)}. {roundAns.completions[roundAns.myChoiceIdx] || "시간 초과"}</span>
+                            <Icon name={roundAns.myCorrect ? "correct_check" : "wrong_cross"} size={16} />
+                          </div>
+                          <div style={{ marginBottom: 10, display: "flex", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
+                            <span>🤖 <b>{oppName}</b>: {String.fromCharCode(65 + roundAns.oppChoiceIdx)}. {roundAns.completions[roundAns.oppChoiceIdx] || "?"}</span>
+                            <Icon name={roundAns.oppCorrect ? "correct_check" : "wrong_cross"} size={16} />
+                          </div>
+                          {roundAns.explanation && <div style={{ padding: 10, background: "rgba(96,165,250,0.12)", borderRadius: 8, fontSize: 11, opacity: 0.95 }}>💡 {roundAns.explanation}</div>}
                         </div>
                       )}
 
@@ -5348,7 +5418,7 @@
                 {battleRounds && battleRounds.map((r, i) => (
                   <div key={i} style={{ background: "rgba(255,255,255,0.08)", borderRadius: 12, padding: 12, marginBottom: 10, fontSize: 12 }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-                      <div style={{ fontWeight: 800, opacity: 0.9 }}>라운드 {i + 1} · {r.type === "qa" ? (r.book || "책 Q&A") : "미니 토론"}</div>
+                      <div style={{ fontWeight: 800, opacity: 0.9 }}>라운드 {i + 1} · {r.type === "qa" ? (r.book || "책 Q&A") : r.type === "complete" ? (r.book || "문장 완성") : "미니 토론"}</div>
                       <div style={{ fontWeight: 800, color: r.judge === "my" ? "#22c55e" : r.judge === "opp" ? "#ef4444" : "#fde047" }}>{r.judge === "my" ? "승" : r.judge === "opp" ? "패" : "무"}</div>
                     </div>
                     {r.myDmg != null && (

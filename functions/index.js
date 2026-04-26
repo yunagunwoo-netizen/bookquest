@@ -723,13 +723,20 @@ function buildInteractivePrompt(myPack, oppPack, myName, oppName, miniDebateOwne
     }`;
 
   return `너는 어린이 독서 앱 "BookQuest"의 **직접 참여 배틀 문제 생성기**야.
-아이가 자기 아바타를 조종해서 상대 아바타와 3라운드 대결한다.
+아이가 자기 아바타를 조종해서 상대 아바타와 5라운드 대결한다.
 
 [규칙]
-- 1~2라운드: Q&A 객관식 4지선다. 책에서 사실 기반 질문 출제 (내 아바타 또는 상대 아바타가 읽은 책 중에서).
+- 라운드 1,2: Q&A 객관식 4지선다. 책에서 사실 기반 질문 출제 (내 아바타 또는 상대 아바타가 읽은 책 중에서).
 - 각 Q&A 라운드에 정답 1개 + 그럴듯한 오답 3개. answerIdx 는 0~3 중 정답 위치.
 - oppChoiceIdx 는 상대 아바타의 독서 수준·승률을 고려해서 정답 확률 결정 (레벨 높고 승많으면 정답 가능성 큼).
-- 3라운드 미니토론: ${miniDebateOwner === "me" ? "아이가 4개 입장 중 선택" : "AI 자동 토론"}.
+- 라운드 3,4: 문장 완성형. 책 내용 기반으로 미완성 문장 + 3개 보기 제시. 아이가 가장 적절한 마무리를 고른다.
+  - sentence: "이 책에서 주인공이 용기를 낸 이유는 ___" 처럼 빈칸(___) 포함 미완성 문장.
+  - completions: 3개 보기. 정답 1개 + 그럴듯한 오답 2개.
+  - answerIdx: 0~2 중 정답 위치.
+  - oppChoiceIdx: 상대 ���바타가 고르는 보기 (독서 수준 기반).
+  - explanation: 왜 정답인지 1문장 설명.
+  - 4지선다보다 **사고력이 필요한** 문장을 만들어. 단순 사실이 아니라 "왜?", "어떻게?", "무엇을 느꼈을까?" 같은 추론·감상 질문.
+- 라운드 5: 미니토론: ${miniDebateOwner === "me" ? "아이가 4개 입장 중 선택" : "AI 자동 토론"}.
 - 초등학생이 읽기 쉬운 어휘·1~2문장.
 - **응답은 반드시 JSON 한 덩어리로만.** 주석·마크다운·설명 금지.
 
@@ -760,6 +767,24 @@ ${oppPack}
       "choices": ["...", "...", "...", "..."],
       "answerIdx": 0~3,
       "oppChoiceIdx": 0~3,
+      "explanation": "..."
+    },
+    {
+      "type": "complete",
+      "book": "책 제목",
+      "sentence": "미완성 문장 ___ 포함",
+      "completions": ["마무리1", "마무리2", "마무리3"],
+      "answerIdx": 0~2,
+      "oppChoiceIdx": 0~2,
+      "explanation": "정답 설명 1문장"
+    },
+    {
+      "type": "complete",
+      "book": "...",
+      "sentence": "...",
+      "completions": ["...", "...", "..."],
+      "answerIdx": 0~2,
+      "oppChoiceIdx": 0~2,
       "explanation": "..."
     },
 ${debateSection}
@@ -839,8 +864,8 @@ exports.runInteractiveBattle = functions.https.onRequest(async (req, res) => {
       battle = JSON.parse(m[0]);
     }
 
-    if (!Array.isArray(battle.rounds) || battle.rounds.length !== 3) {
-      throw new Error("참여 배틀 형식 오류: rounds가 3개가 아님");
+    if (!Array.isArray(battle.rounds) || battle.rounds.length !== 5) {
+      throw new Error("참여 배틀 형식 오류: rounds가 5개가 아님 (got " + (battle.rounds?.length || 0) + ")");
     }
 
     // 각 라운드 검증 + 보정
@@ -851,6 +876,15 @@ exports.runInteractiveBattle = functions.https.onRequest(async (req, res) => {
         }
         r.answerIdx = Math.max(0, Math.min(3, Number(r.answerIdx) || 0));
         r.oppChoiceIdx = Math.max(0, Math.min(3, Number(r.oppChoiceIdx) || 0));
+      } else if (r.type === "complete") {
+        if (!Array.isArray(r.completions) || r.completions.length !== 3) {
+          throw new Error(`라운드 ${i + 1}: completions 배열 3개 필요`);
+        }
+        if (!r.sentence) {
+          throw new Error(`라운드 ${i + 1}: sentence 필드 필요`);
+        }
+        r.answerIdx = Math.max(0, Math.min(2, Number(r.answerIdx) || 0));
+        r.oppChoiceIdx = Math.max(0, Math.min(2, Number(r.oppChoiceIdx) || 0));
       }
     });
 
