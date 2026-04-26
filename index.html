@@ -3865,6 +3865,7 @@
         const newMsgs = [...chatMessages, { role: "user", text: userMsg }];
         setChatMessages(newMsgs);
 
+        try {
         const topics = isDeep ? activeDiscussionBook.deepTopics : activeDiscussionBook.discussionTopics;
         const topic = topics[activeDiscussionIdx];
 
@@ -3990,6 +3991,15 @@
         // 마지막 답변(3번째): 추가 보너스 보상
         if (isLastAnswer) {
           giveReward(true);
+        }
+        } catch (err) {
+          console.error("sendChat 에러:", err);
+          setIsSpeaking(false);
+          setChatMessages(prev => [...prev, { 
+            role: "ai", 
+            text: "⚠️ 답변을 처리하는 중 문제가 발생했어요. 다시 한번 보내 주세요!", 
+            expression: "default" 
+          }]);
         }
       };
 
