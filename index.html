@@ -3191,6 +3191,7 @@
       // PWA Install Prompt
       const [installPrompt, setInstallPrompt] = useState(null);
       const [showInstallBanner, setShowInstallBanner] = useState(false);
+      const [installBannerType, setInstallBannerType] = useState("chrome"); // "chrome" | "ios" | "samsung" | "manual"
 
       const chatEndRef = useRef(null);
       const recognizerRef = useRef(null);
@@ -3202,16 +3203,60 @@
       const thisWeekBook = BOOKS.find(b => b.week === currentWeek) || BOOKS[0];
       const weekRange = getWeekRange(startDate, currentWeek);
 
-      // 📲 PWA 설치 프롬프트 감지
+      // 📲 PWA 설치 프롬프트 — 크로스 브라우저 대응
       useEffect(() => {
+        // ① 이미 standalone(홈화면 설치)으로 실행 중이면 배너 불필요
+        const isStandalone = window.matchMedia("(display-mode: standalone)").matches
+          || window.navigator.standalone === true;
+        if (isStandalone) return;
+
+        // ② 24시간 쿨다운 체크
+        const dismissedAt = localStorage.getItem("bq_install_dismissed_at");
+        const cooldownMs = 24 * 60 * 60 * 1000;
+        if (dismissedAt && (Date.now() - Number(dismissedAt)) < cooldownMs) return;
+
+        // ③ 플랫폼 감지
+        const ua = navigator.userAgent || "";
+        const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+        const isSamsungBrowser = /SamsungBrowser/i.test(ua);
+
+        // ④ iOS Safari → 자체 안내 배너
+        if (isIOS) {
+          const isSafari = !/(CriOS|FxiOS|OPiOS|EdgiOS)/i.test(ua);
+          setInstallBannerType(isSafari ? "ios" : "ios_other");
+          setShowInstallBanner(true);
+          return;
+        }
+
+        // ⑤ Android: beforeinstallprompt 이벤트 대기
         const handler = (e) => {
           e.preventDefault();
           setInstallPrompt(e);
-          const dismissed = localStorage.getItem("bq_install_dismissed");
-          if (!dismissed) setShowInstallBanner(true);
+          setInstallBannerType("chrome");
+          setShowInstallBanner(true);
         };
         window.addEventListener("beforeinstallprompt", handler);
-        return () => window.removeEventListener("beforeinstallprompt", handler);
+
+        // ⑥ 삼성인터넷/기타 브라우저 폴백
+        let fallbackTimer = null;
+        if (isSamsungBrowser) {
+          fallbackTimer = setTimeout(() => {
+            setInstallBannerType("samsung");
+            setShowInstallBanner(true);
+          }, 3000);
+        } else {
+          fallbackTimer = setTimeout(() => {
+            if (!installPrompt) {
+              setInstallBannerType("manual");
+              setShowInstallBanner(true);
+            }
+          }, 5000);
+        }
+
+        return () => {
+          window.removeEventListener("beforeinstallprompt", handler);
+          if (fallbackTimer) clearTimeout(fallbackTimer);
+        };
       }, []);
 
       // 🔙 뒤로가기 버튼 → 앱 내 네비게이션 처리
@@ -8402,37 +8447,125 @@
           })()}
 
 
-          {showInstallBanner && (
-            <div style={{
+          {showInstallBanner && (() => {
+            const dismissBanner = () => {
+              setShowInstallBanner(false);
+              localStorage.setItem("bq_install_dismissed_at", String(Date.now()));
+            };
+            const bannerBase = {
               position: "fixed", bottom: 70, left: 12, right: 12, zIndex: 200,
               background: "linear-gradient(135deg, #667eea, #764ba2)", borderRadius: 20,
-              padding: "16px 18px", display: "flex", alignItems: "center", gap: 14,
-              boxShadow: "0 8px 32px rgba(102,126,234,0.4)", animation: "pop 0.4s ease"
-            }}>
-              <img src="icons/app-icon-192.png" style={{ width: 52, height: 52, borderRadius: 14, flexShrink: 0, boxShadow: "0 2px 8px rgba(0,0,0,0.2)" }} />
-              <div style={{ flex: 1 }}>
-                <div style={{ color: "white", fontSize: 14, fontWeight: 800 }}>BookQuest 설치하기</div>
-                <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 11, marginTop: 2 }}>홈 화면에 추가하면 더 빠르게!</div>
+              padding: "16px 18px", boxShadow: "0 8px 32px rgba(102,126,234,0.4)", animation: "pop 0.4s ease"
+            };
+            const iconStyle = { width: 52, height: 52, borderRadius: 14, flexShrink: 0, boxShadow: "0 2px 8px rgba(0,0,0,0.2)" };
+            const closeBtnStyle = { background: "rgba(255,255,255,0.2)", border: "none", borderRadius: 12, padding: "8px 12px", color: "white", fontSize: 12, fontWeight: 600, cursor: "pointer", flexShrink: 0 };
+
+            // iOS Safari
+            if (installBannerType === "ios") return (
+              <div style={bannerBase}>
+                <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                  <img src="icons/app-icon-192.png" style={iconStyle} />
+                  <div style={{ flex: 1 }}>
+                    <div style={{ color: "white", fontSize: 14, fontWeight: 800 }}>BookQuest 설치하기</div>
+                    <div style={{ color: "rgba(255,255,255,0.9)", fontSize: 12, marginTop: 6, lineHeight: 1.5 }}>
+                      하단의 <span style={{ display: "inline-block", background: "rgba(255,255,255,0.25)", borderRadius: 6, padding: "1px 6px", fontSize: 13 }}>{"⬆️"} 공유</span> 버튼을 누른 뒤{"\n"}
+                      <strong>"홈 화면에 추가"</strong>를 선택하세요!
+                    </div>
+                  </div>
+                  <button onClick={dismissBanner} style={closeBtnStyle}>닫기</button>
+                </div>
+                <div style={{ display: "flex", justifyContent: "center", gap: 6, marginTop: 12 }}>
+                  <div style={{ background: "rgba(255,255,255,0.15)", borderRadius: 10, padding: "6px 12px", display: "flex", alignItems: "center", gap: 6 }}>
+                    <span style={{ fontSize: 18 }}>{"⬆️"}</span>
+                    <span style={{ color: "rgba(255,255,255,0.7)", fontSize: 11 }}>공유 버튼</span>
+                  </div>
+                  <div style={{ color: "rgba(255,255,255,0.5)", display: "flex", alignItems: "center", fontSize: 16 }}>{"→"}</div>
+                  <div style={{ background: "rgba(255,255,255,0.15)", borderRadius: 10, padding: "6px 12px", display: "flex", alignItems: "center", gap: 6 }}>
+                    <span style={{ fontSize: 18 }}>{"➕"}</span>
+                    <span style={{ color: "rgba(255,255,255,0.7)", fontSize: 11 }}>홈 화면에 추가</span>
+                  </div>
+                </div>
               </div>
-              <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
-                <button onClick={() => { setShowInstallBanner(false); localStorage.setItem("bq_install_dismissed", "1"); }}
-                  style={{ background: "rgba(255,255,255,0.2)", border: "none", borderRadius: 12, padding: "8px 12px", color: "white", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
-                  닫기
-                </button>
-                <button onClick={async () => {
-                  if (installPrompt) {
-                    installPrompt.prompt();
-                    const result = await installPrompt.userChoice;
-                    if (result.outcome === "accepted") setShowInstallBanner(false);
-                    setInstallPrompt(null);
-                  }
-                }}
-                  style={{ background: "white", border: "none", borderRadius: 12, padding: "8px 16px", color: "#667eea", fontSize: 12, fontWeight: 800, cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}>
-                  설치
+            );
+            // iOS 비-Safari (Chrome, Firefox 등)
+            if (installBannerType === "ios_other") return (
+              <div style={bannerBase}>
+                <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                  <img src="icons/app-icon-192.png" style={iconStyle} />
+                  <div style={{ flex: 1 }}>
+                    <div style={{ color: "white", fontSize: 14, fontWeight: 800 }}>BookQuest 설치하기</div>
+                    <div style={{ color: "rgba(255,255,255,0.9)", fontSize: 12, marginTop: 6, lineHeight: 1.5 }}>
+                      <strong>Safari</strong>에서 이 페이지를 열어야 홈 화면에 추가할 수 있어요!
+                    </div>
+                  </div>
+                  <button onClick={dismissBanner} style={closeBtnStyle}>닫기</button>
+                </div>
+                <button onClick={() => {
+                  const url = window.location.href;
+                  navigator.clipboard.writeText(url).then(() => alert("링크가 복사되었습니다! Safari에서 붙여넣기 하세요.")).catch(() => {});
+                }} style={{
+                  marginTop: 10, width: "100%", background: "white", border: "none", borderRadius: 12,
+                  padding: "10px", color: "#667eea", fontSize: 13, fontWeight: 800, cursor: "pointer"
+                }}>
+                  Safari에서 열기 위해 링크 복사
                 </button>
               </div>
-            </div>
-          )}
+            );
+            // 삼성인터넷
+            if (installBannerType === "samsung") return (
+              <div style={bannerBase}>
+                <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                  <img src="icons/app-icon-192.png" style={iconStyle} />
+                  <div style={{ flex: 1 }}>
+                    <div style={{ color: "white", fontSize: 14, fontWeight: 800 }}>BookQuest 설치하기</div>
+                    <div style={{ color: "rgba(255,255,255,0.9)", fontSize: 12, marginTop: 6, lineHeight: 1.5 }}>
+                      우측 하단 <strong>{"☰"} 메뉴</strong> {"→"} <strong>"홈 화면에 추가"</strong>를 선택하세요!
+                    </div>
+                  </div>
+                  <button onClick={dismissBanner} style={closeBtnStyle}>닫기</button>
+                </div>
+              </div>
+            );
+            // 기타 Android 브라우저 수동 안내
+            if (installBannerType === "manual") return (
+              <div style={bannerBase}>
+                <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                  <img src="icons/app-icon-192.png" style={iconStyle} />
+                  <div style={{ flex: 1 }}>
+                    <div style={{ color: "white", fontSize: 14, fontWeight: 800 }}>BookQuest 설치하기</div>
+                    <div style={{ color: "rgba(255,255,255,0.9)", fontSize: 12, marginTop: 6, lineHeight: 1.5 }}>
+                      브라우저 <strong>{"⋮"} 메뉴</strong> {"→"} <strong>"홈 화면에 추가"</strong>를 선택하세요!
+                    </div>
+                  </div>
+                  <button onClick={dismissBanner} style={closeBtnStyle}>닫기</button>
+                </div>
+              </div>
+            );
+            // Chrome/Edge — beforeinstallprompt 자동 설치
+            return (
+              <div style={{...bannerBase, display: "flex", alignItems: "center", gap: 14}}>
+                <img src="icons/app-icon-192.png" style={iconStyle} />
+                <div style={{ flex: 1 }}>
+                  <div style={{ color: "white", fontSize: 14, fontWeight: 800 }}>BookQuest 설치하기</div>
+                  <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 11, marginTop: 2 }}>홈 화면에 추가하면 더 빠르게!</div>
+                </div>
+                <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
+                  <button onClick={dismissBanner} style={closeBtnStyle}>닫기</button>
+                  <button onClick={async () => {
+                    if (installPrompt) {
+                      installPrompt.prompt();
+                      const result = await installPrompt.userChoice;
+                      if (result.outcome === "accepted") setShowInstallBanner(false);
+                      setInstallPrompt(null);
+                    }
+                  }}
+                    style={{ background: "white", border: "none", borderRadius: 12, padding: "8px 16px", color: "#667eea", fontSize: 12, fontWeight: 800, cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}>
+                    설치
+                  </button>
+                </div>
+              </div>
+            );
+          })()}
         </div>
       );
     }
