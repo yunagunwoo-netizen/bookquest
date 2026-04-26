@@ -116,7 +116,7 @@ exports.discussionCoach = functions.https.onRequest(async (req, res) => {
   if (handleCors(req, res)) return;
 
   try {
-    const { userAnswer, topic, bookTitle, bookSummary, isDeep, studentName } = req.body;
+    const { userAnswer, topic, bookTitle, bookSummary, isDeep, studentName, chatHistory, roundNumber } = req.body;
 
     if (!userAnswer || !topic) {
       res.status(400).json({ error: "답변과 토론 주제가 필요합니다." });
@@ -134,8 +134,34 @@ exports.discussionCoach = functions.https.onRequest(async (req, res) => {
     const name = fullName.length >= 3 && ["김","이","박","최","정","강","조","윤","장","임","한","오","서","신","권","황","안","송","류","유","홍","전","고","문","양","손","배","백","허","노","남","하","곽","성","차","주","우","민","구","나","진","천","원","심","방","공","염","여","추","도","석","선","설","마","길","연","위","표","명","기","반","왕","금","옥","육","인","맹","제","모","탁","국","어","은","편"].includes(fullName.charAt(0)) ? fullName.slice(1) : fullName;
     const anthropic = new Anthropic({ apiKey });
 
-    const systemPrompt = `너는 '칼 선생님'이야. 초등학교 6학년 학생 "${name}"의 독서 토론을 이끌어주는 호기심 넘치고 열정적인 선생님이야.
-학생이 책을 읽고 토론 질문에 대한 자신의 생각을 말하면, 그 답변을 평가하고 피드백해줘.
+    // 라운드 번호 (1=첫 답변, 2=두 번째, 3=마지막)
+    const round = roundNumber || 1;
+
+    // 라운드별 역할 지시
+    let roundDirective;
+    if (round === 1) {
+      roundDirective = `[1라운드 — 탐색]
+이것은 ${name}의 첫 번째 답변이야.
+- 답변에서 흥미로운 부분을 하나 골라 "왜 그렇게 생각했어?" 또는 "그게 ~와 어떤 관계가 있을까?" 같은 꼬리 질문을 해줘.
+- 칭찬은 구체적으로 하되 한 문장만. 나머지는 사고를 확장하는 질문에 집중해.
+- 아이가 미처 생각 못한 다른 관점 하나를 짧게 힌트로 던져줘.`;
+    } else if (round === 2) {
+      roundDirective = `[2라운드 — 심화]
+이것은 ${name}의 두 번째 답변이야. 이전 대화 맥락을 참고해.
+- 1라운드에서 던진 질문에 잘 답했으면 한 단계 더 깊이 파고드는 질문을 해줘.
+- "반대로 생각하면 어떨까?", "만약 ~라면 어떻게 될까?" 같은 반론이나 가정을 제시해줘.
+- 책의 구체적인 내용이나 실제 사례를 연결해서 생각을 넓혀줘.`;
+    } else {
+      roundDirective = `[3라운드 — 정리]
+이것은 ${name}의 마지막 답변이야. 이전 대화 맥락을 참고해.
+- 세 번의 대화에서 ${name}의 생각이 어떻게 발전했는지 짧게 정리해줘.
+- 처음 답변과 비교해서 깊어진 부분을 구체적으로 짚어줘.
+- 이 주제에 대해 일상에서 더 생각해볼 수 있는 상황 하나를 제안하며 마무리해줘.
+- 따뜻하고 격려하는 톤으로 끝내줘.`;
+    }
+
+    const systemPrompt = `너는 '칼 선생님'이야. 초등학교 6학년 학생 "${name}"의 독서 토론을 이끄는 선생님이야.
+단순히 평가하는 게 아니라, 소크라테스 방식으로 질문을 통해 학생 스스로 더 깊이 생각하게 이끌어줘.
 
 📖 책: ${bookTitle}
 📝 책 요약: ${bookSummary || ""}
@@ -143,34 +169,56 @@ exports.discussionCoach = functions.https.onRequest(async (req, res) => {
 💡 힌트: ${topic.hint}
 난이도: ${isDeep ? "심화" : "기본"}
 학생 이름: ${name}
+현재 라운드: ${round}/3
 
-너의 성격과 말투:
-- 학생 이름 "${name}"을 자연스럽게 불러줘. "너"라고 하지 말고 항상 이름을 사용해.
-- 친근하지만 격식 있는 선생님 말투를 사용해. 완전한 반말도 아니고 존댓말도 아닌, 학생을 가르치는 선생님의 말투야.
-  예시: "${name}, 정말 좋은 생각이야!", "${name}이 말한 것처럼~", "그 부분을 잘 짚었어.", "한번 생각해 볼까?"
-  틀린 예시: "당신이 말씀하신~" (너무 격식), "너 진짜 잘했어" (너라고 부르면 안됨)
-- "오, 대단한데!", "와, 좋은 생각이야!" 같은 감탄사를 자연스럽게 써줘.
-- 학생의 답변을 존중하며, 틀린 부분도 밝은 분위기로 바로잡아줘.
+${roundDirective}
 
-평가 규칙:
-1. 먼저 학생의 답변에서 좋은 점을 구체적으로 칭찬해줘.
-2. 답변의 논리성, 창의성, 책 내용과의 연관성을 평가해줘.
-3. 부족한 부분이 있다면 부드럽게 보완할 점을 제안해줘.
-4. 더 생각해볼 질문을 하나 던져줘.
-5. 초등학교 6학년 수준에 맞는 쉬운 말로 해줘.
+말투 규칙:
+- "${name}"을 자연스럽게 불러줘. "너"라고 하지 말고 항상 이름을 사용해.
+- 친근한 선생님 말투. 예: "${name}, 좋은 생각이야!", "한번 생각해 볼까?"
+- 감탄사를 자연스럽게 써줘. "오!", "와!", "흠, 재밌는 관점이네!"
+- 틀린 부분은 밝은 분위기로 바로잡되, 답을 직접 알려주지 말고 질문으로 유도해.
 
-중요한 작성 규칙:
-- 전체 답변은 반드시 4~5문장, 최대 200자 이내로 간결하게 해줘. 음성으로 읽어주므로 절대 길면 안 돼.
+작성 규칙:
+- 전체 답변은 4~6문장, 최대 300자 이내. 음성으로 읽어주므로 간결해야 해.
 - 반드시 마지막 문장을 완전히 끝내고 마무리해. 문장이 중간에 끊기면 절대 안 돼.
-- 답변이 길어질 것 같으면 과감하게 줄여서라도 완결된 문장으로 끝내.
-- 한국어 맞춤법을 정확하게 지켜줘. 특히 띄어쓰기, 조사 사용에 주의해.
-- 이모지나 마크다운(**굵은 글씨** 등)을 사용하지 마. 순수 텍스트로만 답변해줘.`;
+- 이모지나 마크다운(**굵은 글씨** 등)을 사용하지 마. 순수 텍스트로만 답변해.
+- 한국어 맞춤법, 띄어쓰기, 조사 정확하게 지켜줘.`;
+
+    // 대화 기록이 있으면 이전 맥락을 포함해서 전송
+    let messages = [];
+    if (chatHistory && Array.isArray(chatHistory) && chatHistory.length > 0) {
+      // chatHistory: [{role: "user"|"ai", text: "..."}]
+      for (const msg of chatHistory) {
+        if (msg.role === "user") {
+          messages.push({ role: "user", content: msg.text });
+        } else if (msg.role === "ai" && msg.text) {
+          messages.push({ role: "assistant", content: msg.text });
+        }
+      }
+    }
+    // 현재 답변 추가
+    messages.push({ role: "user", content: userAnswer });
+
+    // 연속된 같은 역할 메시지 병합 (Claude API 요구사항)
+    const mergedMessages = [];
+    for (const msg of messages) {
+      if (mergedMessages.length > 0 && mergedMessages[mergedMessages.length - 1].role === msg.role) {
+        mergedMessages[mergedMessages.length - 1].content += "\n" + msg.content;
+      } else {
+        mergedMessages.push({ ...msg });
+      }
+    }
+    // 첫 메시지가 assistant이면 제거 (Claude API는 user로 시작해야 함)
+    while (mergedMessages.length > 0 && mergedMessages[0].role === "assistant") {
+      mergedMessages.shift();
+    }
 
     const response = await anthropic.messages.create({
       model: "claude-haiku-4-5-20251001",
-      max_tokens: 400,
+      max_tokens: 500,
       system: systemPrompt,
-      messages: [{ role: "user", content: userAnswer }],
+      messages: mergedMessages.length > 0 ? mergedMessages : [{ role: "user", content: userAnswer }],
     });
 
     res.json({

@@ -230,12 +230,12 @@
         }
       },
 
-      async discussionCoach(userAnswer, topic, bookTitle, bookSummary, isDeep, studentName) {
+      async discussionCoach(userAnswer, topic, bookTitle, bookSummary, isDeep, studentName, chatHistory, roundNumber) {
         try {
           const res = await fetch(`${FUNCTIONS_BASE}/discussionCoach`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ userAnswer, topic, bookTitle, bookSummary, isDeep, studentName })
+            body: JSON.stringify({ userAnswer, topic, bookTitle, bookSummary, isDeep, studentName, chatHistory, roundNumber })
           });
           const data = await res.json();
           if (data.error) throw new Error(data.error);
@@ -3871,8 +3871,15 @@
 
         // 실제 Claude AI로 피드백 받기
         setIsSpeaking(true);
+        // 이전 대화에서 user/ai 메시지만 추출 (시스템 메시지 제외)
+        const history = newMsgs
+          .filter(m => m.role === "user" || m.role === "ai")
+          .slice(0, -1)  // 현재 방금 보낸 메시지는 제외 (userAnswer로 별도 전송)
+          .map(m => ({ role: m.role, text: m.text }));
+        const roundNumber = newMsgs.filter(m => m.role === "user").length; // 1, 2, 3...
+
         const aiResponse = await CloudAPI.discussionCoach(
-          userMsg, topic, activeDiscussionBook.title, activeDiscussionBook.summary, isDeep, profile?.name || "친구"
+          userMsg, topic, activeDiscussionBook.title, activeDiscussionBook.summary, isDeep, profile?.name || "친구", history, roundNumber
         );
         setChatMessages(prev => [...prev, { role: "ai", text: aiResponse, expression: "speaking" }]);
 
