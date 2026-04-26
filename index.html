@@ -170,6 +170,14 @@
     .bq-shake { animation: bq-shake 0.4s ease-in-out; }
     .bq-bounce-win { animation: bq-bounce-win 0.6s ease-in-out 3; }
     .bq-grayscale { filter: grayscale(1) brightness(0.7); transform: scale(0.9); transition: all 0.5s; }
+    @keyframes bq-confetti { 0%{transform:translateY(0) rotate(0deg) scale(1);opacity:1} 100%{transform:translateY(420px) rotate(720deg) scale(0.3);opacity:0} }
+    @keyframes bq-result-glow { 0%,100%{box-shadow:0 0 20px rgba(253,224,71,0.3)} 50%{box-shadow:0 0 40px rgba(253,224,71,0.6),0 0 80px rgba(253,224,71,0.2)} }
+    @keyframes bq-result-zoom { 0%{transform:scale(0.5) rotate(-10deg);opacity:0} 60%{transform:scale(1.15) rotate(2deg);opacity:1} 100%{transform:scale(1) rotate(0deg);opacity:1} }
+    @keyframes bq-fade-up { 0%{transform:translateY(20px);opacity:0} 100%{transform:translateY(0);opacity:1} }
+    @keyframes bq-victory-pulse { 0%,100%{text-shadow:0 0 10px rgba(253,224,71,0.5)} 50%{text-shadow:0 0 30px rgba(253,224,71,0.9),0 0 60px rgba(253,224,71,0.3)} }
+    @keyframes bq-defeat-shake { 0%,100%{transform:translateX(0)} 15%{transform:translateX(-5px)} 30%{transform:translateX(5px)} 45%{transform:translateX(-3px)} 60%{transform:translateX(3px)} }
+    .bq-result-card-win { animation: bq-result-zoom 0.8s cubic-bezier(0.34,1.56,0.64,1) forwards, bq-result-glow 2s ease-in-out infinite 0.8s; }
+    .bq-result-card-lose { animation: bq-fade-up 0.5s ease-out 0.3s both; }
     .bq-timer-danger { animation: bq-timer-pulse 0.5s ease-in-out infinite; color: #ef4444 !important; }
     .bq-card-idle-l { animation: bq-card-idle-l 2.5s ease-in-out infinite; transform: rotate(-4deg); }
     .bq-card-idle-r { animation: bq-card-idle-r 2.5s ease-in-out infinite; transform: rotate(4deg); }
@@ -5268,9 +5276,44 @@
               );
             })()}
 
-            {/* PLAYING — 채팅형 중계 */}
-            {battlePhase === "playing" && (
+            {/* PLAYING — 채팅형 중계 + 카드 헤더 */}
+            {battlePhase === "playing" && (() => {
+              const myName_p = profile?.name || "나";
+              const oppName_p = battleOpponent?.name || "상대";
+              const myAvD_p = AVATAR_DATA.find(a => a.id === (profile?.avatar || "shelly")) || AVATAR_DATA[0];
+              const oppAvD_p = AVATAR_DATA.find(a => a.id === (battleOpponent?.avatar || "shelly")) || AVATAR_DATA[0];
+              const myAvSrc_p = myAvD_p.cardImg || myAvD_p.iconImg || myAvD_p.img;
+              const oppAvSrc_p = oppAvD_p.cardImg || oppAvD_p.iconImg || oppAvD_p.img;
+              const myGrad_p = myAvD_p.gradient || ["#7c3aed","#a855f7"];
+              const oppGrad_p = oppAvD_p.gradient || ["#ef4444","#dc2626"];
+              const myBadge_p = RARITY_BADGE_STYLE[myAvD_p.rarity||"free"] || RARITY_BADGE_STYLE.free;
+              const oppBadge_p = RARITY_BADGE_STYLE[oppAvD_p.rarity||"free"] || RARITY_BADGE_STYLE.free;
+              return (
               <div>
+                {/* 미니 카드 대면 헤더 */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 4px 12px", marginBottom: 8 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                    <div style={{ width: 44, height: 44, borderRadius: 8, overflow: "hidden", background: `linear-gradient(135deg, ${myGrad_p[0]}, ${myGrad_p[1]})`, border: `2px solid ${myBadge_p.color}66`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <img src={myAvSrc_p} alt="" style={{ width: "90%", height: "90%", objectFit: "contain" }} onError={(e) => { e.target.onerror=null; e.target.src="avatars/dash.png"; }} />
+                    </div>
+                    <div>
+                      <div style={{ fontSize: 11, fontWeight: 900 }}>{myName_p}</div>
+                      <div style={{ fontSize: 8, opacity: 0.7 }}>Lv.{level||1} · {RARITY_LABEL[myAvD_p.rarity||"free"]}</div>
+                    </div>
+                  </div>
+                  <div style={{ fontSize: 16, fontWeight: 900, opacity: 0.4, animation: "pulse 2s infinite" }}>⚔️</div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                    <div style={{ textAlign: "right" }}>
+                      <div style={{ fontSize: 11, fontWeight: 900 }}>{oppName_p}</div>
+                      <div style={{ fontSize: 8, opacity: 0.7 }}>Lv.{battleOpponent?.level||1} · {RARITY_LABEL[oppAvD_p.rarity||"free"]}</div>
+                    </div>
+                    <div style={{ width: 44, height: 44, borderRadius: 8, overflow: "hidden", background: `linear-gradient(135deg, ${oppGrad_p[0]}, ${oppGrad_p[1]})`, border: `2px solid ${oppBadge_p.color}66`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <img src={oppAvSrc_p} alt="" style={{ width: "90%", height: "90%", objectFit: "contain", transform: "scaleX(-1)" }} onError={(e) => { e.target.onerror=null; e.target.src="avatars/dash.png"; }} />
+                    </div>
+                  </div>
+                </div>
+
+                {/* 채팅 메시지 */}
                 {battleMessages.map((m, i) => {
                   if (m.kind === "banner") return (
                     <div key={i} style={{ textAlign: "center", fontSize: 11, fontWeight: 800, letterSpacing: 1, opacity: 0.6, margin: "14px 0 10px" }}>{m.text}</div>
@@ -5306,7 +5349,8 @@
                   <div style={{ textAlign: "center", padding: 20, opacity: 0.7, fontSize: 12 }}>⚡ 아바타가 생각 중...</div>
                 )}
               </div>
-            )}
+              );
+            })()}
 
             {/* RESULT */}
             {battlePhase === "result" && (() => {
@@ -5399,19 +5443,60 @@
                 );
               };
 
-              return (
-              <div>
-                <div style={{ textAlign: "center", padding: "24px 12px", background: battleWinner === "my" ? "linear-gradient(135deg, rgba(34,197,94,0.3), rgba(16,185,129,0.2))" : battleWinner === "opp" ? "linear-gradient(135deg, rgba(239,68,68,0.3), rgba(220,38,38,0.2))" : "rgba(255,255,255,0.1)", borderRadius: 16, marginBottom: 16 }}>
+              // 폭죽 파티클 생성
+              const confettiColors = ["#fde047","#22c55e","#60a5fa","#f472b6","#a78bfa","#fb923c"];
+              const confettiParticles = battleWinner === "my" ? Array.from({length: 24}, (_, i) => ({
+                left: Math.random() * 100,
+                delay: Math.random() * 1.5,
+                duration: 1.5 + Math.random() * 1.5,
+                color: confettiColors[i % confettiColors.length],
+                size: 4 + Math.random() * 6,
+                rotate: Math.random() * 360,
+              })) : [];
 
-                  {/* 카드 대면 결과 */}
-                  <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 10, marginBottom: 10 }}>
-                    <ResultCard name={myName} lvl={level||1} hp={myHP} maxHp={myMaxHP} avatarSrc={myAvSrc} grad={myGrad} rarity={myAvD.rarity} badge={myBadge} isWinner={battleWinner==="my"} isOpp={false} />
-                    <div style={{ fontSize: 16, fontWeight: 900, opacity: 0.5 }}>VS</div>
-                    <ResultCard name={oppName} lvl={opp?.level||1} hp={oppHP} maxHp={oppMaxHP} avatarSrc={oppAvSrc} grad={oppGrad} rarity={oppAvD.rarity} badge={oppBadge} isWinner={battleWinner==="opp"} isOpp={true} />
+              return (
+              <div style={{ position: "relative", overflow: "hidden" }}>
+                {/* 승리 폭죽 파티클 */}
+                {confettiParticles.map((p, i) => (
+                  <div key={i} style={{
+                    position: "absolute", top: -10, left: `${p.left}%`, width: p.size, height: p.size,
+                    background: p.color, borderRadius: p.size > 7 ? "1px" : "50%",
+                    animation: `bq-confetti ${p.duration}s ease-in ${p.delay}s forwards`,
+                    transform: `rotate(${p.rotate}deg)`, zIndex: 20, pointerEvents: "none",
+                  }} />
+                ))}
+
+                <div style={{ textAlign: "center", padding: "24px 12px", background: battleWinner === "my" ? "linear-gradient(135deg, rgba(34,197,94,0.3), rgba(16,185,129,0.2))" : battleWinner === "opp" ? "linear-gradient(135deg, rgba(239,68,68,0.3), rgba(220,38,38,0.2))" : "rgba(255,255,255,0.1)", borderRadius: 16, marginBottom: 16, position: "relative" }}>
+
+                  {/* 결과 타이틀 — 드라마틱 등장 */}
+                  <div style={{ animation: "bq-fade-up 0.6s ease-out both", marginBottom: 12 }}>
+                    <div style={{
+                      fontSize: battleWinner === "draw" ? 22 : 28, fontWeight: 900,
+                      animation: battleWinner === "my" ? "bq-victory-pulse 1.5s ease-in-out infinite" : battleWinner === "opp" ? "bq-defeat-shake 0.5s ease-in-out 1" : "none",
+                      color: battleWinner === "my" ? "#fde047" : battleWinner === "opp" ? "#fca5a5" : "#e2e8f0",
+                    }}>
+                      {battleWinner === "my" ? "🏆 승리!" : battleWinner === "opp" ? "💀 패배..." : "🤝 무승부"}
+                    </div>
+                    {battleWinner === "my" && (
+                      <div style={{ fontSize: 11, color: "#86efac", fontWeight: 700, marginTop: 4, animation: "bq-fade-up 0.8s ease-out 0.3s both" }}>
+                        +5 코인 획득!
+                      </div>
+                    )}
                   </div>
 
-                  <div className={battleWinner === "my" ? "bq-bounce-win" : ""} style={{ fontSize: 22, fontWeight: 900, marginBottom: 4 }}>{battleWinner === "my" ? "승리!" : battleWinner === "opp" ? "패배" : "무승부"}</div>
-                  {battleNarration && <div style={{ fontSize: 12, opacity: 0.9, marginTop: 8, lineHeight: 1.6 }}>{battleNarration}</div>}
+                  {/* 카드 대면 결과 — 승자 카드 강조 */}
+                  <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-end", gap: 10, marginBottom: 10 }}>
+                    <div className={battleWinner === "my" ? "bq-result-card-win" : "bq-result-card-lose"}>
+                      <ResultCard name={myName} lvl={level||1} hp={myHP} maxHp={myMaxHP} avatarSrc={myAvSrc} grad={myGrad} rarity={myAvD.rarity} badge={myBadge} isWinner={battleWinner==="my"} isOpp={false} />
+                    </div>
+                    <div style={{ fontSize: 20, fontWeight: 900, opacity: 0.4, animation: "bq-fade-up 0.5s ease-out 0.2s both", marginBottom: 50 }}>⚔️</div>
+                    <div className={battleWinner === "opp" ? "bq-result-card-win" : "bq-result-card-lose"}>
+                      <ResultCard name={oppName} lvl={opp?.level||1} hp={oppHP} maxHp={oppMaxHP} avatarSrc={oppAvSrc} grad={oppGrad} rarity={oppAvD.rarity} badge={oppBadge} isWinner={battleWinner==="opp"} isOpp={true} />
+                    </div>
+                  </div>
+
+                  {/* 내러티브 — 지연 페이드 */}
+                  {battleNarration && <div style={{ fontSize: 12, opacity: 0.9, marginTop: 8, lineHeight: 1.6, animation: "bq-fade-up 0.6s ease-out 1s both", fontStyle: "italic" }}>🎬 {battleNarration}</div>}
                 </div>
 
                 {/* 라운드별 데미지 로그 */}
@@ -8081,8 +8166,7 @@
         const matchTier = (a, tier) => {
           if (tier === "all") return true;
           if (tier === "free") return a.rarity === "free";
-          if (tier === "hero") return a.rarity === "epic" && a.price <= 1200;
-          if (tier === "korean_hero") return a.rarity === "epic" && a.price >= 1500;
+          if (tier === "hero") return (a.rarity === "epic" && a.price <= 1200) || a.rarity === "heroic";
           if (tier === "legendary") return a.rarity === "legendary" && a.price <= 2500;
           if (tier === "mythic") return a.rarity === "legendary" && a.price >= 3500;
           return a.rarity === tier;
