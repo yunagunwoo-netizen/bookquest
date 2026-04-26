@@ -1,5 +1,12 @@
 # BookQuest Changelog
 
+## 2026-04-27
+- 배틀 5라운드 확장: 기존 3라운드(Q&A 2 + 토론 1) → 5라운드(Q&A 2 + 문장완성 2 + 토론 1). Cloud Function 프롬프트 + 검증 로직 업데이트. 클라이언트에 complete 타입 UI(파란 테마, 빈칸 시각화, 3지선다), 채점, 타이머, 결과 표시 전부 구현.
+- 배틀 결과 드라마틱 연출: 승리 시 24개 폭죽 파티클 + 승자 카드 줌인/글로우 + 패자 그레이스케일, 결과 타이틀 골드 펄스(승)/흔들림(패), +5코인 보상 표시, 내러티브 지연 페이드인. CSS 7종 추가(bq-confetti/result-glow/result-zoom/fade-up/victory-pulse/defeat-shake/result-card-win).
+- 관전 모드 카드 헤더: playing phase 상단에 미니 아바타 카드 대면 헤더 추가(아이콘+이름+Lv+레어리티). 채팅 중계 유지.
+- 한국영웅 탭 수정: matchTier hero 조건에 heroic rarity 포함. 장영실/유관순이 상점 영웅 탭에 정상 노출.
+- 52장 TCG 프레임 카드 이미지 Pillow 합성(이전 세션에서 완료, 이번에 push).
+
 ## 2026-04-25
 - UI 아이콘 4종 크기 24×24px 고정 + flexbox 정렬. 배틀 직접참여 50코인/2회로 변경. 장영실·유관순 heroic(800) 이동. 홈 화면 배지 섹션 제거. Enchanted Abyss 다크 스킨 적용 후 롤백(revert e2f3740). 총 156종 / 진열 42 / 숨김 114.
 - (Session 2) 배틀 카드 포켓몬카드 스타일 리디자인: BattleCard(152px) + ResultCard(130px) — 타입아이콘/이름/HP, 아바타+Lv뱃지+레어리티뱃지, 칭호, 기술2개(레어리티별), HP바+타입라벨, 샤인 오버레이. CARD_TYPE/CARD_SKILL 상수 추가. RARITY_BADGE_STYLE·RARITY_LABEL에 heroic/mythic/hidden 확장. 카드 이미지 52종(600x840 PNG) Pillow 합성 + cardImg 필드 주입. AI HUB 아바타 랜덤 대사 24종(3단계x8개). rounds[0] 크래시 버그 수정. 책 상세 탭 flexWrap 적용.

@@ -3864,9 +3864,19 @@
         }
       };
 
+      const chatSendingRef = useRef(false);
+      const currentSpeakIdRef = useRef(0);
       const sendChat = async (messageText = null) => {
         const text = messageText || chatInput.trim();
         if (!text) return;
+
+        // 중복 호출 방지
+        if (chatSendingRef.current) return;
+        chatSendingRef.current = true;
+
+        // 이전 AI 음성이 재생 중이면 즉시 중단
+        VoiceService.stopSpeaking();
+        setIsSpeaking(false);
 
         setChatInput("");
         const userMsg = text;
@@ -3891,9 +3901,14 @@
         );
         setChatMessages(prev => [...prev, { role: "ai", text: aiResponse, expression: "speaking" }]);
 
-        // AI 피드백만 읽기
+        // AI 피드백만 읽기 — speakId로 stale 콜백 방지
+        const speakId = Date.now();
+        currentSpeakIdRef.current = speakId;
         VoiceService.speak(aiResponse, () => {
-          setIsSpeaking(false);
+          // 이 콜백이 아직 현재 speak에 해당하는 경우에만 speaking 해제
+          if (currentSpeakIdRef.current === speakId) {
+            setIsSpeaking(false);
+          }
         });
 
         // 이 토론에서 유저 답변 횟수 카운트 (방금 보낸 것 포함)
@@ -4009,12 +4024,15 @@
         }
         } catch (err) {
           console.error("sendChat 에러:", err);
+          VoiceService.stopSpeaking();
           setIsSpeaking(false);
           setChatMessages(prev => [...prev, { 
             role: "ai", 
             text: "⚠️ 답변을 처리하는 중 문제가 발생했어요. 다시 한번 보내 주세요!", 
             expression: "default" 
           }]);
+        } finally {
+          chatSendingRef.current = false;
         }
       };
 
@@ -6449,7 +6467,7 @@
                       말하기 완료
                     </button>
                   )}
-                  <button onClick={() => { stopListening(); setShowKeyboard(true); }}
+                  <button onClick={() => { stopListening(); VoiceService.stopSpeaking(); setIsSpeaking(false); setShowKeyboard(true); }}
                     style={{
                       padding: "14px 16px", borderRadius: 20, border: "2px solid #eee",
                       background: "white", color: "#666", fontSize: 12, fontWeight: 600,
