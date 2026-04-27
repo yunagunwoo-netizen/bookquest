@@ -4673,7 +4673,6 @@
       const currentSpeakIdRef = useRef(0);
       const sendChat = async (messageText = null) => {
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-        if (isMobile) alert("STEP1: sendChat 진입");
         const text = messageText || chatInput.trim();
         if (!text) return;
 
@@ -4683,7 +4682,6 @@
 
         // 이전 AI 음성이 재생 중이면 즉시 중단
         mobileLog("sendChat 시작");
-        if (isMobile) alert("STEP2: stopSpeaking 전");
         VoiceService.stopSpeaking();
         setIsSpeaking(false);
 
@@ -4707,37 +4705,35 @@
         const roundNumber = newMsgs.filter(m => m.role === "user").length; // 1, 2, 3...
 
         mobileLog("API 호출 시작...");
-        if (isMobile) alert("STEP3: API 호출 직전");
         const aiResponse = await CloudAPI.discussionCoach(
           userMsg, topic, activeDiscussionBook.title, activeDiscussionBook.summary, isDeep, profile?.name || "친구", history, roundNumber
         );
-        if (isMobile) alert("STEP4: API 응답=" + aiResponse.substring(0, 30));
         mobileLog("API 응답: " + aiResponse.substring(0, 30) + "...");
         setChatMessages(prev => [...prev, { role: "ai", text: aiResponse, expression: "speaking" }]);
         mobileLog("AI 응답 표시 완료");
-        if (isMobile) alert("STEP5: 메시지 표시 완료");
+        // 📱 모바일: API+메시지 표시 성공 후 나머지 전부 스킵 (크래시 방지)
+        if (isMobile) {
+          mobileLog("모바일: 보상/TTS 스킵");
+          setIsSpeaking(false);
+          chatSendingRef.current = false;
+          return; // ← 여기서 종료! TTS, 보상, 사운드 전부 건너뜀
+        }
         try { getAppSound().sfx.chat_receive(); } catch(e) {}
 
-        // 📱 AI 피드백 TTS — 모바일에서는 TTS 완전 비활성화 (크래시 방지)
-        const isMobileDevice = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-        if (isMobileDevice) {
-          mobileLog("TTS SKIP (mobile)");
-          setIsSpeaking(false);
-        } else {
-          const speakId = Date.now();
-          currentSpeakIdRef.current = speakId;
-          setTimeout(() => {
-            try {
-              VoiceService.speak(aiResponse, () => {
-                if (currentSpeakIdRef.current === speakId) {
-                  setIsSpeaking(false);
-                }
-              });
-            } catch(ttsErr) {
-              setIsSpeaking(false);
-            }
-          }, 200);
-        }
+        // PC 전용: TTS
+        const speakId = Date.now();
+        currentSpeakIdRef.current = speakId;
+        setTimeout(() => {
+          try {
+            VoiceService.speak(aiResponse, () => {
+              if (currentSpeakIdRef.current === speakId) {
+                setIsSpeaking(false);
+              }
+            });
+          } catch(ttsErr) {
+            setIsSpeaking(false);
+          }
+        }, 200);
 
         // 이 토론에서 유저 답변 횟수 카운트 (방금 보낸 것 포함)
         const userMsgCount = newMsgs.filter(m => m.role === "user").length;
@@ -4866,7 +4862,6 @@
           setTimeout(() => { try { giveReward(true); } catch(e) { console.error("보너스 보상 오류:", e); } }, REWARD_DELAY);
         }
         } catch (err) {
-          if (isMobile) alert("ERROR: " + err.message);
           console.error("sendChat 에러:", err);
           mobileLog("sendChat 에러: " + err.message);
           VoiceService.stopSpeaking();
