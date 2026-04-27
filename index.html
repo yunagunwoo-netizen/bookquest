@@ -156,6 +156,9 @@
     padding: 20px 0 30px; scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
   }
+  .screenshots-scroll::after {
+    content: ''; flex: 0 0 1px;
+  }
   .screenshots-scroll::-webkit-scrollbar { display: none; }
   .screenshot-item {
     flex: 0 0 auto; width: 220px; scroll-snap-align: center;
