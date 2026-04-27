@@ -4676,6 +4676,29 @@
         const text = messageText || chatInput.trim();
         if (!text) return;
 
+        // 📱 ZERO MODE: state 변경 0개 — React 렌더 안 함
+        if (isMobile) {
+          const el = document.getElementById("mobile-debug");
+          if (el) el.textContent = "ZERO MODE: " + text;
+          // DOM 직접 조작으로 메시지 표시 (React 우회)
+          const chatArea = document.querySelector("[data-chat-area]");
+          if (chatArea) {
+            const div = document.createElement("div");
+            div.style.cssText = "text-align:right;margin:8px 0";
+            div.innerHTML = '<span style="background:#667eea;color:white;padding:8px 14px;border-radius:16px;display:inline-block;font-size:13px">' + text + '</span>';
+            chatArea.appendChild(div);
+            const div2 = document.createElement("div");
+            div2.style.cssText = "text-align:left;margin:8px 0";
+            div2.innerHTML = '<span style="background:white;color:#333;padding:8px 14px;border-radius:16px;display:inline-block;font-size:13px">테스트 응답이에요!</span>';
+            chatArea.appendChild(div2);
+            chatArea.scrollTop = chatArea.scrollHeight;
+          }
+          // input도 DOM으로 직접 비우기
+          const inp = document.querySelector("input[placeholder]");
+          if (inp) inp.value = "";
+          return;
+        }
+
         // 중복 호출 방지
         if (chatSendingRef.current) return;
         chatSendingRef.current = true;
@@ -7562,7 +7585,7 @@
             <div style={{ fontSize: 12, opacity: 0.8 }}>{isDeep ? "🔥 심화" : "💬"} 토론 {activeDiscussionIdx + 1}</div>
           </div>
 
-          <div style={{ flex: 1, overflowY: "auto", padding: 16, background: "#f7f7fa", display: "flex", flexDirection: "column" }}>
+          <div data-chat-area="1" style={{ flex: 1, overflowY: "auto", padding: 16, background: "#f7f7fa", display: "flex", flexDirection: "column" }}>
             {chatMessages.map((msg, i) => (
               <div key={i} style={{ display: "flex", justifyContent: msg.role === "user" ? "flex-end" : "flex-start", marginBottom: 10, alignItems: "flex-end", gap: 6 }}>
                 {msg.role === "ai" && (
@@ -8595,7 +8618,7 @@
               <div style={{ fontSize: 12, opacity: 0.9, marginTop: 4 }}>읽은 책 내용을 바탕으로 궁금한 걸 물어봐!</div>
             </div>
 
-            <div style={{ flex: 1, overflowY: "auto", padding: 16, background: "#f7f7fa", display: "flex", flexDirection: "column" }}>
+            <div data-chat-area="1" style={{ flex: 1, overflowY: "auto", padding: 16, background: "#f7f7fa", display: "flex", flexDirection: "column" }}>
               {askMessages.map((msg, i) => (
                 <div key={i} style={{ display: "flex", justifyContent: msg.role === "user" ? "flex-end" : "flex-start", marginBottom: 10, alignItems: "flex-end", gap: 6 }}>
                   {msg.role === "ai" && (
@@ -8924,7 +8947,7 @@
               </div>
             </div>
 
-            <div style={{ flex: 1, overflowY: "auto", padding: 16, background: "#f7f7fa", display: "flex", flexDirection: "column" }}>
+            <div data-chat-area="1" style={{ flex: 1, overflowY: "auto", padding: 16, background: "#f7f7fa", display: "flex", flexDirection: "column" }}>
               {avatarChatMessages.map((msg, i) => (
                 <div key={i} style={{ display: "flex", justifyContent: msg.role === "user" ? "flex-end" : "flex-start", marginBottom: 10, alignItems: "flex-end", gap: 6 }}>
                   {msg.role === "ai" && (
