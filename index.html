@@ -2813,7 +2813,40 @@
           .trim();
       },
 
-      // ☁️ Google Cloud TTS (메인 음성)
+      // 🎙️ ElevenLabs TTS (1순위 — 클라이언트 직접 호출)
+      _elevenLabsKey: "sk_388ce66cbc9cc07e7280f28c0c78271176a5e3fdaaf362a9",
+      _elevenLabsVoice: "9BWtsMINqrJLrRacOk9x",
+      _elevenLabsModel: "eleven_flash_v2_5",
+
+      async speakElevenLabs(text, callback) {
+        const cleanText = this.cleanForTTS(text);
+        if (!cleanText) { if (callback) callback(true); return; }
+        try {
+          const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${this._elevenLabsVoice}`, {
+            method: "POST",
+            headers: { "xi-api-key": this._elevenLabsKey, "Content-Type": "application/json", "Accept": "audio/mpeg" },
+            body: JSON.stringify({
+              text: cleanText,
+              model_id: this._elevenLabsModel,
+              voice_settings: { stability: 0.5, similarity_boost: 0.75, style: 0.3, use_speaker_boost: true }
+            })
+          });
+          if (!res.ok) { const e = await res.text(); throw new Error(`ElevenLabs ${res.status}: ${e.slice(0,200)}`); }
+          const blob = await res.blob();
+          const url = URL.createObjectURL(blob);
+          const audio = new Audio(url);
+          this._currentAudio = audio;
+          console.log(`[TTS] \uC5D4\uC9C4: elevenlabs (${cleanText.length}\uC790)`);
+          audio.onended = () => { this._currentAudio = null; URL.revokeObjectURL(url); if (callback) callback(true); };
+          audio.onerror = () => { console.warn("[ElevenLabs] \uC7AC\uC0DD \uC2E4\uD328, Cloud TTS\uB85C \uD3F4\uBC31"); this._currentAudio = null; URL.revokeObjectURL(url); this.speakCloud(text, callback); };
+          audio.play().catch(() => { this._currentAudio = null; URL.revokeObjectURL(url); this.speakCloud(text, callback); });
+        } catch (e) {
+          console.warn("[ElevenLabs] API \uC2E4\uD328, Cloud TTS\uB85C \uD3F4\uBC31:", e.message);
+          this.speakCloud(text, callback);
+        }
+      },
+
+      // \u2601\ufe0f Google Cloud TTS (2\uC21C\uC704 \u2014 Cloud Function \uACBD\uC720)
       async speakCloud(text, callback, voice) {
         const cleanText = this.cleanForTTS(text);
         if (!cleanText) { if (callback) callback(true); return; }
@@ -2883,7 +2916,7 @@
       // 메인 speak 함수: Cloud TTS 우선, 실패 시 로컬 폴백
       // voice: 선택적 음성 (예: "ko-KR-Neural2-A" 여성)
       speak(text, callback, voice) {
-        this.speakCloud(text, callback, voice);
+        this.speakElevenLabs(text, callback);
       },
 
       stopSpeaking() {
