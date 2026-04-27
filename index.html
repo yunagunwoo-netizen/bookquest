@@ -3139,41 +3139,9 @@
     // 음성 프리로드 (폴백용)
     VoiceService.preloadVoice();
 
-    // 📱 React Error Boundary — 렌더링 크래시 포착
-    class ErrorBoundary extends React.Component {
-      constructor(props) {
-        super(props);
-        this.state = { hasError: false, errorMsg: "" };
-      }
-      static getDerivedStateFromError(error) {
-        return { hasError: true, errorMsg: error.message };
-      }
-      componentDidCatch(error, errorInfo) {
-        const el = document.getElementById("crash-log");
-        if (el) el.textContent = "RENDER ERROR: " + error.message;
-        alert("RENDER CRASH: " + error.message + "\n" + (errorInfo.componentStack || "").substring(0, 200));
-      }
-      render() {
-        if (this.state.hasError) {
-          return React.createElement("div", {style:{padding:20,background:"#1a1a2e",color:"#f55",minHeight:"100vh",fontFamily:"monospace"}},
-            React.createElement("h2", null, "앱 렌더링 오류"),
-            React.createElement("pre", {style:{whiteSpace:"pre-wrap",fontSize:12}}, this.state.errorMsg),
-            React.createElement("button", {onClick: () => location.reload(), style:{marginTop:20,padding:"10px 20px",fontSize:14}}, "새로고침")
-          );
-        }
-        return this.props.children;
-      }
-    }
-
     // 📱 전역 에러 핸들러 — 모바일 크래시 원인 포착
     window._mobileErrors = [];
-    // 📱 Heartbeat — 앱 생존 확인 (1초마다)
-    window._heartbeat = 0;
-    setInterval(() => {
-      window._heartbeat++;
-      const el = document.getElementById("heartbeat");
-      if (el) el.textContent = "HB:" + window._heartbeat;
-    }, 1000);
+
     window.onerror = function(msg, url, line, col, err) {
       const errMsg = line + ":" + (col||0) + " " + msg;
       window._mobileErrors.push(errMsg);
@@ -3878,21 +3846,8 @@
       const [startDate] = useState(new Date(2026, 2, 23));
       const [isListening, setIsListening] = useState(false);
       const [isSpeaking, setIsSpeaking] = useState(false);
-      const [mobileDebugLog, setMobileDebugLog] = useState([]);
-      const mobileLog = (msg) => {
-        console.log("[MOBILE]", msg);
-        try {
-          const el = document.getElementById("mobile-debug");
-          if (el) {
-            const line = document.createElement("div");
-            line.textContent = new Date().toLocaleTimeString() + ": " + msg;
-            el.appendChild(line);
-            // Keep only last 8 lines
-            while (el.children.length > 8) el.removeChild(el.firstChild);
-            el.scrollTop = el.scrollHeight;
-          }
-        } catch(e) {}
-      };
+
+      const mobileLog = (msg) => console.log("[MOBILE]", msg);
       const [voiceSupported] = useState(VoiceService.isSupported());
       const [showKeyboard, setShowKeyboard] = useState(false);
       const [dataLoaded, setDataLoaded] = useState(false);
@@ -4705,7 +4660,6 @@
       const chatSendingRef = useRef(false);
       const currentSpeakIdRef = useRef(0);
       const sendChat = async (messageText = null) => {
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
         const text = messageText || chatInput.trim();
         if (!text) return;
 
@@ -7619,11 +7573,7 @@
             <div ref={chatEndRef} />
           </div>
 
-          <div style={{ padding: "6px 12px", background: "#1a1a2e", borderTop: "1px solid #333", fontSize: 10, color: "#0f0", fontFamily: "monospace", maxHeight: 80, overflowY: "auto" }}>
-            <div style={{color:"#888"}}>DEBUG v4 <span id="heartbeat" style={{color:"#0f0"}}>HB:0</span></div>
-            <div id="mobile-debug"></div>
-            <pre id="crash-log" style={{color:"#f55",margin:0,whiteSpace:"pre-wrap"}}></pre>
-          </div>
+
           <div style={{ padding: "16px", background: "white", borderTop: "1px solid #eee", flexShrink: 0, display: "flex", flexDirection: "column", gap: 10 }}>
             {!showKeyboard ? (
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -10074,7 +10024,7 @@
     }
 
     const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<ErrorBoundary><BookQuest /></ErrorBoundary>);
+    root.render(<BookQuest />);
   </script>
   <script>
     if ('serviceWorker' in navigator) {
