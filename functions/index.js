@@ -373,15 +373,21 @@ ${uniqueBooks
 });
 
 // ═══════════════════════════════════════
-// 🔊 4. TTS — Google Chirp 3 HD (메인) → OpenAI (2순위) → Google Neural2 (최종 폴백)
+// 🔊 4. TTS — ElevenLabs (1순위) → Chirp 3 HD (2순위) → OpenAI (3순위) → Neural2 (최종 폴백)
 // ═══════════════════════════════════════
 // .env 설정으로 엔진 전환:
-//   TTS_ENGINE=chirp   → Chirp 3 HD 우선 (기본값)
-//   TTS_ENGINE=openai  → OpenAI 우선
-//   TTS_ENGINE=neural2 → Neural2만 사용
+//   TTS_ENGINE=elevenlabs → ElevenLabs 우선 (기본값)
+//   TTS_ENGINE=chirp      → Chirp 3 HD 우선
+//   TTS_ENGINE=openai     → OpenAI 우선
+//   TTS_ENGINE=neural2    → Neural2만 사용
+// ElevenLabs 음성: voice ID로 지정 (기본: 한국어 여성 "Aria")
+// Chirp 3 HD 음성: ko-KR-Chirp3-HD-Achernar 등
 // OpenAI 음성: alloy, ash, ballad, coral, echo, fable, nova, onyx, sage, shimmer
-// Chirp 3 HD 음성: ko-KR-Chirp3-HD-Achernar 등 (여러 음색)
 const ttsClient = new TextToSpeechClient();
+
+// ElevenLabs 기본 설정
+const ELEVENLABS_DEFAULT_VOICE = "9BWtsMINqrJLrRacOk9x";  // Aria (multilingual, 밝고 친근)
+const ELEVENLABS_MODEL = "eleven_flash_v2_5";              // Flash v2.5 (저지연, 32개 언어)
 
 exports.textToSpeech = functions.https.onRequest(async (req, res) => {
   if (handleCors(req, res)) return;
@@ -395,11 +401,49 @@ exports.textToSpeech = functions.https.onRequest(async (req, res) => {
     }
 
     const trimmedText = text.slice(0, 2500);
-    const ttsEngine = (process.env.TTS_ENGINE || "chirp").toLowerCase();
+    const ttsEngine = (process.env.TTS_ENGINE || "elevenlabs").toLowerCase();
     const openaiKey = process.env.OPENAI_KEY || process.env.OPENAI_API_KEY;
+    const elevenlabsKey = process.env.ELEVENLABS_KEY;
 
-    // ── 1순위: Google Chirp 3 HD ──
-    if (ttsEngine === "chirp" || ttsEngine === "chirp3") {
+    // ── 1순위: ElevenLabs ──
+    if (elevenlabsKey && (ttsEngine === "elevenlabs" || ttsEngine === "11labs")) {
+      try {
+        const voiceId = voice || ELEVENLABS_DEFAULT_VOICE;
+        const ttsRes = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+          method: "POST",
+          headers: {
+            "xi-api-key": elevenlabsKey,
+            "Content-Type": "application/json",
+            "Accept": "audio/mpeg",
+          },
+          body: JSON.stringify({
+            text: trimmedText,
+            model_id: ELEVENLABS_MODEL,
+            voice_settings: {
+              stability: 0.5,
+              similarity_boost: 0.75,
+              style: 0.3,
+              use_speaker_boost: true,
+            },
+          }),
+        });
+
+        if (!ttsRes.ok) {
+          const errBody = await ttsRes.text();
+          throw new Error(`ElevenLabs ${ttsRes.status}: ${errBody.slice(0, 200)}`);
+        }
+
+        const arrayBuf = await ttsRes.arrayBuffer();
+        const audioBase64 = Buffer.from(arrayBuf).toString("base64");
+        res.json({ audio: audioBase64, format: "mp3", textLength: trimmedText.length, engine: "elevenlabs" });
+        return;
+      } catch (elErr) {
+        console.warn("[TTS] ElevenLabs 실패, 다음 엔진으로 폴백:", elErr.message);
+      }
+    }
+
+    // ── 2순위: Google Chirp 3 HD ──
+    if (ttsEngine === "elevenlabs" || ttsEngine === "11labs" || ttsEngine === "chirp" || ttsEngine === "chirp3") {
       try {
         const chirpVoice = voice || "ko-KR-Chirp3-HD-Achernar";
         const [response] = await ttsClient.synthesizeSpeech({
@@ -419,7 +463,7 @@ exports.textToSpeech = functions.https.onRequest(async (req, res) => {
       }
     }
 
-    // ── 2순위: OpenAI TTS ──
+    // ── 3순위: OpenAI TTS ──
     if (openaiKey && ttsEngine !== "neural2") {
       try {
         const openaiVoices = ["alloy","ash","ballad","coral","echo","fable","nova","onyx","sage","shimmer"];
@@ -454,7 +498,7 @@ exports.textToSpeech = functions.https.onRequest(async (req, res) => {
       }
     }
 
-    // ── 3순위: Google Neural2 (최종 폴백) ──
+    // ── 4순위: Google Neural2 (최종 폴백) ──
     const voiceName = voice || "ko-KR-Neural2-C";
     const [response] = await ttsClient.synthesizeSpeech({
       input: { text: trimmedText },

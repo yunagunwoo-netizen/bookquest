@@ -2828,6 +2828,7 @@
           });
           const data = await res.json();
           if (data.error) throw new Error(data.error);
+          if (data.engine) console.log(`[TTS] 엔진: ${data.engine} (${data.textLength}자)`);
 
           // Base64 MP3를 Audio로 재생
           const audio = new Audio("data:audio/mp3;base64," + data.audio);
