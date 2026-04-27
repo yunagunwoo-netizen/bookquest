@@ -3139,6 +3139,23 @@
     // 음성 프리로드 (폴백용)
     VoiceService.preloadVoice();
 
+    // 📱 전역 에러 핸들러 — 모바일 크래시 원인 포착
+    window._mobileErrors = [];
+    window.onerror = function(msg, url, line, col, err) {
+      const errMsg = line + ":" + (col||0) + " " + msg;
+      window._mobileErrors.push(errMsg);
+      console.error("[GLOBAL]", errMsg);
+      // DOM에 직접 표시 (React 상태 없이)
+      const el = document.getElementById("crash-log");
+      if (el) el.textContent = window._mobileErrors.join("\n");
+    };
+    window.onunhandledrejection = function(e) {
+      const errMsg = "Promise: " + (e.reason?.message || e.reason || "unknown");
+      window._mobileErrors.push(errMsg);
+      const el = document.getElementById("crash-log");
+      if (el) el.textContent = window._mobileErrors.join("\n");
+    };
+
     // ═══════════════════════════════════════
     // 🤖 AI Coach Response Generator
     // ═══════════════════════════════════════
@@ -7558,9 +7575,11 @@
             <div ref={chatEndRef} />
           </div>
 
-          {mobileDebugLog.length > 0 && <div style={{ padding: "6px 12px", background: "#1a1a2e", borderTop: "1px solid #333", fontSize: 10, color: "#0f0", fontFamily: "monospace", maxHeight: 60, overflowY: "auto" }}>
+          <div style={{ padding: "6px 12px", background: "#1a1a2e", borderTop: "1px solid #333", fontSize: 10, color: "#0f0", fontFamily: "monospace", maxHeight: 80, overflowY: "auto" }}>
+            <div style={{color:"#888"}}>DEBUG v2</div>
             {mobileDebugLog.map((l,i) => <div key={i}>{l}</div>)}
-          </div>}
+            <pre id="crash-log" style={{color:"#f55",margin:0,whiteSpace:"pre-wrap"}}></pre>
+          </div>
           <div style={{ padding: "16px", background: "white", borderTop: "1px solid #eee", flexShrink: 0, display: "flex", flexDirection: "column", gap: 10 }}>
             {!showKeyboard ? (
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
