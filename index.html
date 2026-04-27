@@ -21,6 +21,11 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://bookquest.co.kr">
 <link rel="icon" href="icons/app-icon-192.png">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/app-icon-192.png">
+<meta name="theme-color" content="#667eea">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -578,6 +583,15 @@
     });
   }, { threshold: 0.3 });
   observer.observe(heroSection);
+
+  // ── Service Worker 등록 (PWA 설치 요건)
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').then(reg => {
+      console.log('[Landing] SW registered:', reg.scope);
+    }).catch(err => {
+      console.warn('[Landing] SW registration failed:', err);
+    });
+  }
 </script>
 
 </body>
