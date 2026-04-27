@@ -2756,49 +2756,91 @@
     };
 
     // ═══════════════════════════════════════
-    // 🎙️ 캐릭터 음성 매칭 시스템
+    // 🎙️ 캐릭터 음성 매칭 시스템 (13종 프로파일 × 156종 개별 매핑)
     // ═══════════════════════════════════════
     const VOICE_PROFILES = {
-      narrator:      { name: "내레이터",       elevenLabs: "21m00Tcm4TlvDq8ikWAM", chirp: "ko-KR-Neural2-A", settings: { stability: 0.6,  similarity_boost: 0.75, style: 0.15 } },
-      male_young:    { name: "젊은 남성",      elevenLabs: "ErXwobaYiN019PkySvjV", chirp: "ko-KR-Neural2-C", settings: { stability: 0.5,  similarity_boost: 0.75, style: 0.3  } },
-      male_deep:     { name: "영웅적 남성",    elevenLabs: "TxGEqnHWrfWFTfGW9XjX", chirp: "ko-KR-Neural2-D", settings: { stability: 0.55, similarity_boost: 0.8,  style: 0.35 } },
-      male_wise:     { name: "지혜로운 남성",  elevenLabs: "pNInz6obpgDQGcFmaJgB", chirp: "ko-KR-Neural2-C", settings: { stability: 0.65, similarity_boost: 0.7,  style: 0.2  } },
-      female_warm:   { name: "따뜻한 여성",    elevenLabs: "21m00Tcm4TlvDq8ikWAM", chirp: "ko-KR-Neural2-A", settings: { stability: 0.55, similarity_boost: 0.75, style: 0.25 } },
-      female_bright: { name: "활기찬 여성",    elevenLabs: "MF3mGyEYCl7XYWbV9V6O", chirp: "ko-KR-Neural2-B", settings: { stability: 0.45, similarity_boost: 0.8,  style: 0.4  } },
+      // ── 내레이터 (토론 코치 / AI 질문 답변) ──
+      narrator:      { name: "내레이터",       elevenLabs: "21m00Tcm4TlvDq8ikWAM", chirp: "ko-KR-Neural2-A", settings: { stability: 0.6,  similarity_boost: 0.75, style: 0.15 } },  // Rachel
+      // ── 소년/소녀 (귀여운·어린 캐릭터) ──
+      child_boy:     { name: "소년",           elevenLabs: "IKne3meq5aSn9XLyUdCD", chirp: "ko-KR-Neural2-C", settings: { stability: 0.4,  similarity_boost: 0.8,  style: 0.45 } },  // Charlie
+      child_girl:    { name: "소녀",           elevenLabs: "jBpfuIE2acCO8z3wKNLl", chirp: "ko-KR-Neural2-B", settings: { stability: 0.4,  similarity_boost: 0.8,  style: 0.45 } },  // Gigi
+      // ── 10대 소년/소녀 ──
+      teen_boy:      { name: "소년 영웅",      elevenLabs: "TX3LPaxmHKxFdv7VOQHJ", chirp: "ko-KR-Neural2-C", settings: { stability: 0.45, similarity_boost: 0.75, style: 0.35 } },  // Liam
+      teen_girl:     { name: "소녀 영웅",      elevenLabs: "MF3mGyEYCl7XYWbV9V6O", chirp: "ko-KR-Neural2-B", settings: { stability: 0.45, similarity_boost: 0.8,  style: 0.4  } },  // Elli
+      // ── 성인 남성 ──
+      male_young:    { name: "청년",           elevenLabs: "ErXwobaYiN019PkySvjV", chirp: "ko-KR-Neural2-C", settings: { stability: 0.5,  similarity_boost: 0.75, style: 0.3  } },  // Antoni
+      male_deep:     { name: "영웅",           elevenLabs: "TxGEqnHWrfWFTfGW9XjX", chirp: "ko-KR-Neural2-D", settings: { stability: 0.55, similarity_boost: 0.8,  style: 0.35 } },  // Josh
+      male_wise:     { name: "현자",           elevenLabs: "JBFqnCBsd6RMkjVDRZzb", chirp: "ko-KR-Neural2-C", settings: { stability: 0.65, similarity_boost: 0.7,  style: 0.2  } },  // George
+      male_villain:  { name: "다크 히어로",    elevenLabs: "2EiwWnXFnvU5JabPnv8n", chirp: "ko-KR-Neural2-D", settings: { stability: 0.6,  similarity_boost: 0.85, style: 0.25 } },  // Clyde
+      // ── 성인 여성 ──
+      female_warm:   { name: "여성 현자",      elevenLabs: "XrExE9yKIg1WjnnlVkGX", chirp: "ko-KR-Neural2-A", settings: { stability: 0.55, similarity_boost: 0.75, style: 0.25 } },  // Matilda
+      female_bright: { name: "여성 영웅",      elevenLabs: "AZnzlk1XvdvUeBnXmlld", chirp: "ko-KR-Neural2-B", settings: { stability: 0.45, similarity_boost: 0.8,  style: 0.4  } },  // Domi
+      female_mystic: { name: "신비로운 여성",  elevenLabs: "XB0fDUnXU5powFXDhCwa", chirp: "ko-KR-Neural2-A", settings: { stability: 0.55, similarity_boost: 0.85, style: 0.3  } },  // Charlotte
+      // ── 로봇/기계 ──
+      robot:         { name: "로봇",           elevenLabs: "VR6AewLTigWG4xSOukaG", chirp: "ko-KR-Neural2-D", settings: { stability: 0.7,  similarity_boost: 0.6,  style: 0.1  } },  // Arnold
     };
 
-    // 여성 캐릭터 ID 목록
-    const FEMALE_AVATAR_IDS = new Set([
-      "shelly","nita","maisie","moco","pam","pearl","penny","piper","rosa",
-      "berry","bibi","bonnie","colette","emz","eliza","janet","jessie",
-      "lily","mandy","max","meg","nani","bea","belle","lola","eve",
-      "melodie","amber","tara","jacky","willow","hazel",
-      "marie_curie","helen_keller","malala","yu_gwansun","joan",
-      "athena","isis","amaterasu","gumiho","mew","eevee",
-      "scheherazade","hypatia","cleopatra"
-    ]);
-    // 깊고 웅장한 남성 음성 캐릭터
-    const DEEP_VOICE_IDS = new Set([
-      "zeus","anubis","thor","dragonking","ganesha","nezha","quetzal",
-      "shadow","kenji","mortis","cordelius","elprimo","frank","bull",
-      "arthur","wukong","honggildong","sejong","yi_sunsin","musashi"
-    ]);
-    // 지혜로운/학자 남성 음성 캐릭터
-    const WISE_VOICE_IDS = new Set([
-      "einstein","davinci","shakespeare","mozart","louis_braille",
-      "jang_yeongsil","confucius","socrates","galileo","homer",
-      "merlin","sage_archivist","aladdin","anansi"
-    ]);
+    // 156종 아바타 → 음성 타입 개별 매핑
+    const AVATAR_VOICE_MAP = {
+      // ── 무료 기본 (9) ──
+      dash: "child_boy", buddy: "child_boy", monki: "child_boy", nuts: "child_boy",
+      spike: "child_boy", shelly: "teen_girl", nita: "child_girl", leon: "teen_boy", crow: "male_villain",
+      // ── 일반 등급 (40) ──
+      bux: "teen_boy", "8bit": "robot", barley: "male_wise", bo: "male_young", bull: "male_deep",
+      chark: "male_young", chuck: "male_young", gray: "male_young", griff: "male_young",
+      hazel: "teen_girl", lari: "male_young", larrylawrie: "teen_boy", maisie: "child_girl",
+      mecha: "robot", moco: "child_girl", moe: "male_young", mrmike: "male_young",
+      mrp: "male_young", ollie: "child_boy", otis: "male_young", pam: "female_warm",
+      pearl: "female_bright", penny: "teen_girl", piper: "female_bright", poco: "male_young",
+      ranch: "male_young", rico: "robot", rosa: "female_warm", ruffs: "male_deep",
+      sam: "male_young", shade: "male_villain", spray: "child_boy", sprout: "robot",
+      squeak: "child_boy", stu: "teen_boy", tara: "female_mystic", ted: "male_young",
+      tick: "robot", willow: "teen_girl", zig: "child_boy",
+      // ── 희귀 등급 (32) ──
+      arth: "male_young", mujin: "male_young", angelo: "child_boy", ash: "teen_boy",
+      berry: "child_girl", bibi: "teen_girl", bonnie: "child_girl", brock: "male_young",
+      carl: "male_young", charlie: "teen_boy", colette: "teen_girl", colt: "male_young",
+      darryl: "robot", doug: "male_wise", draco: "male_deep", dynamike: "male_wise",
+      emz: "teen_girl", eliza: "female_bright", frank: "male_deep", gene: "male_wise",
+      gus: "child_boy", jacky: "female_warm", janet: "female_bright", jessie: "teen_girl",
+      juju: "female_mystic", kit: "child_boy", lily: "female_bright", lou: "robot",
+      mandy: "teen_girl", max: "teen_girl", meg: "teen_girl", nani: "female_bright",
+      // ── 에픽 등급 (20) ──
+      rix: "male_young", zero: "male_villain", fang: "male_young", edgar: "teen_boy",
+      maverick: "male_young", sandy: "teen_boy", byron: "male_wise", mico: "child_boy",
+      hank: "male_deep", bea: "teen_girl", belle: "female_bright", gale: "male_wise",
+      buzz: "male_deep", grom: "male_deep", surge: "robot", lola: "female_bright",
+      chester: "child_boy", eve: "child_girl", melodie: "teen_girl", squawk: "child_boy",
+      // ── 전설 등급 (8) ──
+      shadow: "male_villain", amber: "female_bright", kenji: "male_deep",
+      cordelius: "male_villain", elprimo: "male_deep", rt: "robot",
+      mortis: "male_villain", clancy: "male_deep",
+      // ── 명예의 전당 · 영웅 (12) ──
+      sejong: "male_deep", yi_sunsin: "male_deep", davinci: "male_wise",
+      einstein: "male_wise", marie_curie: "female_warm", helen_keller: "female_warm",
+      mozart: "male_wise", shakespeare: "male_wise", malala: "teen_girl",
+      louis_braille: "male_wise", jang_yeongsil: "male_wise", yu_gwansun: "teen_girl",
+      // ── 명예의 전당 · 전설 (10) ──
+      arthur: "male_deep", robinhood: "male_young", honggildong: "male_young",
+      wukong: "male_young", joan: "female_bright", aladdin: "teen_boy",
+      ivan: "male_young", momotaro: "teen_boy", anansi: "male_wise", thor: "male_deep",
+      // ── 명예의 전당 · 신화 (10) ──
+      zeus: "male_deep", athena: "female_warm", anubis: "male_villain",
+      amaterasu: "female_mystic", isis: "female_mystic", ganesha: "male_wise",
+      quetzal: "male_deep", nezha: "teen_boy", gumiho: "female_mystic", dragonking: "male_deep",
+      // ── 히든 · 포켓몬 (5) ──
+      pikachu: "child_boy", charizard: "male_deep", eevee: "child_girl",
+      mew: "child_girl", squirtle: "child_boy",
+      // ── 히든 · 책 속 전설 V3.6 (10) ──
+      homer: "male_wise", scheherazade: "female_mystic", hypatia: "female_warm",
+      merlin: "male_wise", confucius: "male_wise", socrates: "male_wise",
+      cleopatra: "female_warm", galileo: "male_wise", musashi: "male_deep",
+      sage_archivist: "male_wise",
+    };
 
     const getVoiceType = (avatarId) => {
       if (!avatarId) return "narrator";
-      if (WISE_VOICE_IDS.has(avatarId)) return "male_wise";
-      if (DEEP_VOICE_IDS.has(avatarId)) return "male_deep";
-      if (FEMALE_AVATAR_IDS.has(avatarId)) {
-        const av = AVATAR_DATA.find(a => a.id === avatarId);
-        return (av && (av.rarity === "legendary" || av.price >= 2500)) ? "female_warm" : "female_bright";
-      }
-      return "male_young";
+      return AVATAR_VOICE_MAP[avatarId] || "male_young";
     };
 
     // ═══════════════════════════════════════
