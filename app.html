@@ -8258,6 +8258,15 @@
             <div style={{ fontSize: 13, color: "#888", marginTop: 2 }}>
               {profile?.school ? `${profile.school} ` : ""}{profile?.grade}학년 | Level {level}
             </div>
+            <button onClick={() => setShowShop(true)}
+              style={{
+                marginTop: 14, padding: "10px 28px", borderRadius: 12, border: "none",
+                background: "linear-gradient(135deg, #667eea, #764ba2)",
+                color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer",
+                boxShadow: "0 3px 10px rgba(102,126,234,0.3)"
+              }}>
+              🛍️ 상점 들어가기
+            </button>
           </div>
 
           {/* 💎 테마팩 — THEME_PACKS 데이터 드리븐 렌더링 */}
