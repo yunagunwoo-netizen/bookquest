@@ -2918,26 +2918,38 @@
       // 🎰 승리 보상 룰렛 시스템
       // ═══════════════════════════════════════
       const ROULETTE_REWARDS = [
-        { tier: "normal", label: "+3 코인",    icon: "🪙", reward: { type: "coin", value: 3 } },
-        { tier: "normal", label: "+5 코인",    icon: "🪙", reward: { type: "coin", value: 5 } },
-        { tier: "normal", label: "+10 XP",     icon: "⭐", reward: { type: "xp", value: 10 } },
-        { tier: "normal", label: "+15 XP",     icon: "⭐", reward: { type: "xp", value: 15 } },
-        { tier: "normal", label: "+3 코인",    icon: "🪙", reward: { type: "coin", value: 3 } },
-        { tier: "normal", label: "+8 코인",    icon: "🪙", reward: { type: "coin", value: 8 } },
-        { tier: "normal", label: "+20 XP",     icon: "✨", reward: { type: "xp", value: 20 } },
-        { tier: "good",   label: "+15 코인",   icon: "💰", reward: { type: "coin", value: 15 } },
-        { tier: "good",   label: "+50 XP",     icon: "🌟", reward: { type: "xp", value: 50 } },
-        { tier: "good",   label: "XP 2배 (다음 배틀)", icon: "🔥", reward: { type: "xp_mult", value: 2 } },
-        { tier: "jackpot",label: "+50 코인!",  icon: "💎", reward: { type: "coin", value: 50 } },
+        // Normal (55%) — 기본 보상
+        { tier: "normal", label: "+10 코인",   icon: "🪙", reward: { type: "coin", value: 10 } },
+        { tier: "normal", label: "+15 코인",   icon: "🪙", reward: { type: "coin", value: 15 } },
+        { tier: "normal", label: "+20 코인",   icon: "🪙", reward: { type: "coin", value: 20 } },
+        { tier: "normal", label: "+30 XP",     icon: "⭐", reward: { type: "xp", value: 30 } },
+        { tier: "normal", label: "+40 XP",     icon: "⭐", reward: { type: "xp", value: 40 } },
+        { tier: "normal", label: "+50 XP",     icon: "✨", reward: { type: "xp", value: 50 } },
+        // Good (30%) — 코인/XP + 랜덤 아이템
+        { tier: "good",   label: "+40 코인",   icon: "💰", reward: { type: "coin", value: 40 } },
+        { tier: "good",   label: "+60 코인",   icon: "💰", reward: { type: "coin", value: 60 } },
+        { tier: "good",   label: "+100 XP",    icon: "🌟", reward: { type: "xp", value: 100 } },
+        { tier: "good",   label: "+120 XP",    icon: "🌟", reward: { type: "xp", value: 120 } },
+        { tier: "good",   label: "XP 3배 (다음 배틀)", icon: "🔥", reward: { type: "xp_mult", value: 3 } },
+        { tier: "good",   label: "랜덤 아이템!", icon: "🎁", reward: { type: "random_item" } },
+        { tier: "good",   label: "랜덤 아이템!", icon: "🎁", reward: { type: "random_item" } },
+        // Jackpot (10%) — 대박 보상 + 레어 아바타
+        { tier: "jackpot",label: "+150 코인!", icon: "💎", reward: { type: "coin", value: 150 } },
+        { tier: "jackpot",label: "+300 XP!",   icon: "💫", reward: { type: "xp", value: 300 } },
+        { tier: "jackpot",label: "+200 코인!", icon: "👑", reward: { type: "coin", value: 200 } },
         { tier: "jackpot",label: "랜덤 칭호!", icon: "🏅", reward: { type: "title", value: "배틀 챔피언" } },
+        { tier: "jackpot",label: "랜덤 아이템 2개!", icon: "🎁", reward: { type: "random_item_x2" } },
+        // Legendary (5% — jackpot 내 일부)
+        { tier: "legendary", label: "★ 레어 아바타!", icon: "🦄", reward: { type: "random_avatar" } },
       ];
 
       const spinRoulette = () => {
         const roll = Math.random() * 100;
         let pool;
-        if (roll < 70) pool = ROULETTE_REWARDS.filter(r => r.tier === "normal");
-        else if (roll < 95) pool = ROULETTE_REWARDS.filter(r => r.tier === "good");
-        else pool = ROULETTE_REWARDS.filter(r => r.tier === "jackpot");
+        if (roll < 55) pool = ROULETTE_REWARDS.filter(r => r.tier === "normal");
+        else if (roll < 85) pool = ROULETTE_REWARDS.filter(r => r.tier === "good");
+        else if (roll < 97) pool = ROULETTE_REWARDS.filter(r => r.tier === "jackpot");
+        else pool = ROULETTE_REWARDS.filter(r => r.tier === "legendary");
         return pool[Math.floor(Math.random() * pool.length)];
       };
 
@@ -5882,6 +5894,17 @@
               </div>
             </div>
 
+            {/* 🎰 룰렛 보상 업그레이드 공지 */}
+            {battlePhase === "gate" && (
+              <div style={{ background: "linear-gradient(135deg, rgba(251,191,36,0.25), rgba(168,85,247,0.25))", borderRadius: 14, padding: "10px 14px", marginBottom: 14, border: "1px solid rgba(251,191,36,0.4)", position: "relative" }}>
+                <div style={{ fontSize: 12, fontWeight: 900, color: "#fde047", marginBottom: 4 }}>🎰 승리 룰렛 보상 대폭 UP!</div>
+                <div style={{ fontSize: 10, color: "#e2e8f0", lineHeight: 1.5 }}>
+                  💰 코인·XP 3~4배 상향 | 🎁 랜덤 아이템 드랍<br/>
+                  🦄 <span style={{ color: "#e879f9", fontWeight: 700 }}>전설 등급: 레어 아바타 획득 찬스!</span> (확률 3%)
+                </div>
+              </div>
+            )}
+
             {/* GATE — 일1회 소진 (but 직접 참여는 가능) */}
             {battlePhase === "gate" && !canBattleToday() && !canPlayToday() && (
               <div style={{ textAlign: "center", padding: "50px 20px" }}>
@@ -6602,6 +6625,43 @@
                       if (finalResult.reward.type === "xp") setXp(x => (x || 0) + finalResult.reward.value);
                       if (finalResult.reward.type === "xp_mult") setXpMultiplier(finalResult.reward.value);
                       if (finalResult.reward.type === "title") setCurrentTitle(finalResult.reward.value);
+                      // 🎁 랜덤 아이템 보상
+                      if (finalResult.reward.type === "random_item" || finalResult.reward.type === "random_item_x2") {
+                        const count = finalResult.reward.type === "random_item_x2" ? 2 : 1;
+                        const unowned = SHOP_ITEMS.filter(i => !ownedItems.includes(i.id));
+                        const picked = [];
+                        for (let i = 0; i < count && unowned.length > 0; i++) {
+                          const idx = Math.floor(Math.random() * unowned.length);
+                          picked.push(unowned.splice(idx, 1)[0]);
+                        }
+                        if (picked.length > 0) {
+                          setOwnedItems(prev => [...prev, ...picked.map(p => p.id)]);
+                          finalResult.label = picked.map(p => p.name).join(" + ") + " 획득!";
+                          finalResult.icon = "🎁";
+                        } else {
+                          // 모든 아이템 보유 시 코인으로 대체
+                          const bonusCoin = 80;
+                          setCoins(c => (c || 0) + bonusCoin);
+                          finalResult.label = "아이템 올클리어! +" + bonusCoin + " 코인";
+                          finalResult.icon = "💰";
+                        }
+                      }
+                      // 🦄 랜덤 아바타 보상
+                      if (finalResult.reward.type === "random_avatar") {
+                        const unownedAvatars = AVATAR_DATA.filter(a => !a.free && !ownedAvatars.includes(a.id));
+                        if (unownedAvatars.length > 0) {
+                          const picked = unownedAvatars[Math.floor(Math.random() * unownedAvatars.length)];
+                          setOwnedAvatars(prev => prev.includes(picked.id) ? prev : [...prev, picked.id]);
+                          finalResult.label = picked.name + " 아바타 획득!";
+                          finalResult.icon = "🦄";
+                        } else {
+                          // 모든 아바타 보유 시 대박 코인
+                          const bonusCoin = 300;
+                          setCoins(c => (c || 0) + bonusCoin);
+                          finalResult.label = "아바타 올클리어! +" + bonusCoin + " 코인";
+                          finalResult.icon = "👑";
+                        }
+                      }
                       // 결과를 보여준 뒤 확인 버튼으로 닫도록 setShowRoulette(false) 제거
                     }, 2200);
                   };
@@ -6628,8 +6688,8 @@
                       ) : (
                         <div style={{ animation: "bq-fade-up 0.5s ease-out" }}>
                           <div style={{ fontSize: 40, marginBottom: 8 }}>{rouletteResult.icon}</div>
-                          <div style={{ fontSize: 16, fontWeight: 900, color: rouletteResult.tier === "jackpot" ? "#fde047" : rouletteResult.tier === "good" ? "#22c55e" : "#e2e8f0" }}>
-                            {rouletteResult.tier === "jackpot" ? "🎉 잭��!" : rouletteResult.tier === "good" ? "��� 좋은 보상!" : "보상 획득!"}
+                          <div style={{ fontSize: 16, fontWeight: 900, color: rouletteResult.tier === "legendary" ? "#e879f9" : rouletteResult.tier === "jackpot" ? "#fde047" : rouletteResult.tier === "good" ? "#22c55e" : "#e2e8f0" }}>
+                            {rouletteResult.tier === "legendary" ? "🦄 전설 등급!!" : rouletteResult.tier === "jackpot" ? "🎉 잭팟!" : rouletteResult.tier === "good" ? "👍 좋은 보상!" : "보상 획득!"}}
                           </div>
                           <div style={{ fontSize: 18, fontWeight: 900, marginTop: 4 }}>{rouletteResult.label}</div>
                           {(bookArenaActive || (battleOpponent?.uid && rivalData[battleOpponent.uid])) && (
