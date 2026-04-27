@@ -7,6 +7,7 @@
 - 한국영웅 탭 수정: matchTier hero 조건에 heroic rarity 포함. 장영실/유관순이 상점 영웅 탭에 정상 노출.
 - 레거시 아바타 강제 리셋: 브롤스타즈(shelly/crow/leon/spike/elprimo) + 포켓몬(pikachu/charizard/eevee/mew/squirtle) 아바타 사용자를 기본 캐릭터 "대시"로 자동 전환. 안내 모달(상점 바로가기 버튼) 표시. 전체 fallback을 shelly→dash로 통일.
 - ElevenLabs TTS 1순위 연동: Cloud Function textToSpeech에 ElevenLabs Flash v2.5 엔진 추가. 폴백 체인: ElevenLabs → Chirp 3 HD → OpenAI → Neural2 → 브라우저 내장. TTS_ENGINE 환경변수로 전환 가능. 클라이언트에 엔진명 콘솔 로그 추가.
+- 캐릭터-음성 매칭 시스템: VOICE_PROFILES 6종(narrator/male_young/male_deep/male_wise/female_warm/female_bright) + FEMALE_AVATAR_IDS·DEEP_VOICE_IDS·WISE_VOICE_IDS 분류 + getVoiceType() 함수. ElevenLabs 음성 5종(Rachel/Antoni/Josh/Adam/Elli) 매핑. 아바타 채팅은 캐릭터 음성, 토론·질문은 내레이터 음성 자동 적용. Chirp 폴백에도 음성 프로파일 연동.
 - 52장 TCG 프레임 카드 이미지 Pillow 합성(이전 세션에서 완료, 이번에 push).
 
 ## 2026-04-25

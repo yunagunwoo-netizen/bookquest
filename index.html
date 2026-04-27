@@ -2756,6 +2756,52 @@
     };
 
     // ═══════════════════════════════════════
+    // 🎙️ 캐릭터 음성 매칭 시스템
+    // ═══════════════════════════════════════
+    const VOICE_PROFILES = {
+      narrator:      { name: "내레이터",       elevenLabs: "21m00Tcm4TlvDq8ikWAM", chirp: "ko-KR-Neural2-A", settings: { stability: 0.6,  similarity_boost: 0.75, style: 0.15 } },
+      male_young:    { name: "젊은 남성",      elevenLabs: "ErXwobaYiN019PkySvjV", chirp: "ko-KR-Neural2-C", settings: { stability: 0.5,  similarity_boost: 0.75, style: 0.3  } },
+      male_deep:     { name: "영웅적 남성",    elevenLabs: "TxGEqnHWrfWFTfGW9XjX", chirp: "ko-KR-Neural2-D", settings: { stability: 0.55, similarity_boost: 0.8,  style: 0.35 } },
+      male_wise:     { name: "지혜로운 남성",  elevenLabs: "pNInz6obpgDQGcFmaJgB", chirp: "ko-KR-Neural2-C", settings: { stability: 0.65, similarity_boost: 0.7,  style: 0.2  } },
+      female_warm:   { name: "따뜻한 여성",    elevenLabs: "21m00Tcm4TlvDq8ikWAM", chirp: "ko-KR-Neural2-A", settings: { stability: 0.55, similarity_boost: 0.75, style: 0.25 } },
+      female_bright: { name: "활기찬 여성",    elevenLabs: "MF3mGyEYCl7XYWbV9V6O", chirp: "ko-KR-Neural2-B", settings: { stability: 0.45, similarity_boost: 0.8,  style: 0.4  } },
+    };
+
+    // 여성 캐릭터 ID 목록
+    const FEMALE_AVATAR_IDS = new Set([
+      "shelly","nita","maisie","moco","pam","pearl","penny","piper","rosa",
+      "berry","bibi","bonnie","colette","emz","eliza","janet","jessie",
+      "lily","mandy","max","meg","nani","bea","belle","lola","eve",
+      "melodie","amber","tara","jacky","willow","hazel",
+      "marie_curie","helen_keller","malala","yu_gwansun","joan",
+      "athena","isis","amaterasu","gumiho","mew","eevee",
+      "scheherazade","hypatia","cleopatra"
+    ]);
+    // 깊고 웅장한 남성 음성 캐릭터
+    const DEEP_VOICE_IDS = new Set([
+      "zeus","anubis","thor","dragonking","ganesha","nezha","quetzal",
+      "shadow","kenji","mortis","cordelius","elprimo","frank","bull",
+      "arthur","wukong","honggildong","sejong","yi_sunsin","musashi"
+    ]);
+    // 지혜로운/학자 남성 음성 캐릭터
+    const WISE_VOICE_IDS = new Set([
+      "einstein","davinci","shakespeare","mozart","louis_braille",
+      "jang_yeongsil","confucius","socrates","galileo","homer",
+      "merlin","sage_archivist","aladdin","anansi"
+    ]);
+
+    const getVoiceType = (avatarId) => {
+      if (!avatarId) return "narrator";
+      if (WISE_VOICE_IDS.has(avatarId)) return "male_wise";
+      if (DEEP_VOICE_IDS.has(avatarId)) return "male_deep";
+      if (FEMALE_AVATAR_IDS.has(avatarId)) {
+        const av = AVATAR_DATA.find(a => a.id === avatarId);
+        return (av && (av.rarity === "legendary" || av.price >= 2500)) ? "female_warm" : "female_bright";
+      }
+      return "male_young";
+    };
+
+    // ═══════════════════════════════════════
     // 🎙️ Voice Service with Web Speech API (Enhanced Korean TTS)
     // ═══════════════════════════════════════
     const VoiceService = {
@@ -2813,22 +2859,22 @@
           .trim();
       },
 
-      // 🎙️ ElevenLabs TTS (1순위 — 클라이언트 직접 호출)
+      // 🎙️ ElevenLabs TTS (1순위 — 클라이언트 직접 호출, 캐릭터 음성 매칭)
       _elevenLabsKey: "sk_388ce66cbc9cc07e7280f28c0c78271176a5e3fdaaf362a9",
-      _elevenLabsVoice: "21m00Tcm4TlvDq8ikWAM",  // Rachel (무료 기본 음성, 부드러운 여성)
       _elevenLabsModel: "eleven_flash_v2_5",
 
-      async speakElevenLabs(text, callback) {
+      async speakElevenLabs(text, callback, voiceType) {
         const cleanText = this.cleanForTTS(text);
         if (!cleanText) { if (callback) callback(true); return; }
+        const vp = VOICE_PROFILES[voiceType] || VOICE_PROFILES.narrator;
         try {
-          const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${this._elevenLabsVoice}`, {
+          const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${vp.elevenLabs}`, {
             method: "POST",
             headers: { "xi-api-key": this._elevenLabsKey, "Content-Type": "application/json", "Accept": "audio/mpeg" },
             body: JSON.stringify({
               text: cleanText,
               model_id: this._elevenLabsModel,
-              voice_settings: { stability: 0.5, similarity_boost: 0.75, style: 0.3, use_speaker_boost: true }
+              voice_settings: { ...vp.settings, use_speaker_boost: true }
             })
           });
           if (!res.ok) { const e = await res.text(); throw new Error(`ElevenLabs ${res.status}: ${e.slice(0,200)}`); }
@@ -2836,13 +2882,13 @@
           const url = URL.createObjectURL(blob);
           const audio = new Audio(url);
           this._currentAudio = audio;
-          console.log(`[TTS] \uC5D4\uC9C4: elevenlabs (${cleanText.length}\uC790)`);
+          console.log(`[TTS] \uC5D4\uC9C4: elevenlabs | \uC74C\uC131: ${vp.name} (${cleanText.length}\uC790)`);
           audio.onended = () => { this._currentAudio = null; URL.revokeObjectURL(url); if (callback) callback(true); };
-          audio.onerror = () => { console.warn("[ElevenLabs] \uC7AC\uC0DD \uC2E4\uD328, Cloud TTS\uB85C \uD3F4\uBC31"); this._currentAudio = null; URL.revokeObjectURL(url); this.speakCloud(text, callback); };
-          audio.play().catch(() => { this._currentAudio = null; URL.revokeObjectURL(url); this.speakCloud(text, callback); });
+          audio.onerror = () => { console.warn("[ElevenLabs] \uC7AC\uC0DD \uC2E4\uD328, Cloud TTS\uB85C \uD3F4\uBC31"); this._currentAudio = null; URL.revokeObjectURL(url); this.speakCloud(text, callback, vp.chirp); };
+          audio.play().catch(() => { this._currentAudio = null; URL.revokeObjectURL(url); this.speakCloud(text, callback, vp.chirp); });
         } catch (e) {
           console.warn("[ElevenLabs] API \uC2E4\uD328, Cloud TTS\uB85C \uD3F4\uBC31:", e.message);
-          this.speakCloud(text, callback);
+          this.speakCloud(text, callback, vp.chirp);
         }
       },
 
@@ -2915,8 +2961,10 @@
 
       // 메인 speak 함수: Cloud TTS 우선, 실패 시 로컬 폴백
       // voice: 선택적 음성 (예: "ko-KR-Neural2-A" 여성)
-      speak(text, callback, voice) {
-        this.speakElevenLabs(text, callback);
+      speak(text, callback, avatarId) {
+        const voiceType = avatarId ? getVoiceType(avatarId) : "narrator";
+        console.log(`[TTS] \uCE90\uB9AD\uD130: ${avatarId || "narrator"} \u2192 ${voiceType}`);
+        this.speakElevenLabs(text, callback, voiceType);
       },
 
       stopSpeaking() {
@@ -7427,7 +7475,7 @@
           completeMissionByTrigger("question");
 
           setIsSpeaking(true);
-          VoiceService.speak(answer, () => { setIsSpeaking(false); }, "ko-KR-Neural2-A");
+          VoiceService.speak(answer, () => { setIsSpeaking(false); });
         };
 
         const startAskListening = () => {
@@ -7773,7 +7821,7 @@
           completeMissionByTrigger("question");
 
           setIsSpeaking(true);
-          VoiceService.speak(answer, () => { setIsSpeaking(false); }, "ko-KR-Neural2-A");
+          VoiceService.speak(answer, () => { setIsSpeaking(false); }, profile?.avatar);
         };
 
         return (
@@ -8742,6 +8790,72 @@
 
             // iOS Safari
             if (installBannerType === "ios") return (
+              <div style={bannerBase}>
+                <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                  <img src="icons/app-icon-192.png" style={iconStyle} />
+                  <div style={{ flex: 1 }}>
+                    <div style={{ color: "white", fontSize: 14, fontWeight: 800 }}>BookQuest 설치하기</div>
+                    <div style={{ color: "rgba(255,255,255,0.9)", fontSize: 12, marginTop: 6, lineHeight: 1.5 }}>
+                      하단의 <span style={{ display: "inline-block", background: "rgba(255,255,255,0.25)", borderRadius: 6, padding: "1px 6px", fontSize: 13 }}>{"⬆️"} 공유</span> 버튼을 누른 뒤{"\n"}
+                      <strong>"홈 화면에 추가"</strong>를 선택하세요!
+                    </div>
+                  </div>
+                  <button onClick={dismissBanner} style={closeBtnStyle}>닫기</button>
+                </div>
+                <div style={{ display: "flex", justifyContent: "center", gap: 6, marginTop: 12 }}>
+                  <div style={{ background: "rgba(255,255,255,0.15)", borderRadius: 10, padding: "6px 12px", display: "flex", alignItems: "center", gap: 6 }}>
+                    <span style={{ fontSize: 18 }}>{"⬆️"}</span>
+                    <span style={{ color: "rgba(255,255,255,0.7)", fontSize: 11 }}>공유 버튼</span>
+                  </div>
+                  <div style={{ color: "rgba(255,255,255,0.5)", display: "flex", alignItems: "center", fontSize: 16 }}>{"→"}</div>
+                  <div style={{ background: "rgba(255,255,255,0.15)", borderRadius: 10, padding: "6px 12px", display: "flex", alignItems: "center", gap: 6 }}>
+                    <span style={{ fontSize: 18 }}>{"➕"}</span>
+                    <span style={{ color: "rgba(255,255,255,0.7)", fontSize: 11 }}>홈 화면에 추가</span>
+                  </div>
+                </div>
+              </div>
+            );
+            // iOS 비-Safari (Chrome, Firefox 등)
+            if (installBannerType === "ios_other") return (
+              <div style={bannerBase}>
+                <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                  <img src="icons/app-icon-192.png" style={iconStyle} />
+                  <div style={{ flex: 1 }}>
+                    <div style={{ color: "white", fontSize: 14, fontWeight: 800 }}>BookQuest 설치하기</div>
+                    <div style={{ color: "rgba(255,255,255,0.9)", fontSize: 12, marginTop: 6, lineHeight: 1.5 }}>
+                      <strong>Safari</strong>에서 이 페이지를 열어야 홈 화면에 추가할 수 있어요!
+                    </div>
+                  </div>
+                  <button onClick={dismissBanner} style={closeBtnStyle}>닫기</button>
+                </div>
+                <button onClick={() => {
+                  const url = window.location.href;
+                  navigator.clipboard.writeText(url).then(() => alert("링크가 복사되었습니다! Safari에서 붙여넣기 하세요.")).catch(() => {});
+                }} style={{
+                  marginTop: 10, width: "100%", background: "white", border: "none", borderRadius: 12,
+                  padding: "10px", color: "#667eea", fontSize: 13, fontWeight: 800, cursor: "pointer"
+                }}>
+                  Safari에서 열기 위해 링크 복사
+                </button>
+              </div>
+            );
+            // 삼성인터넷
+            if (installBannerType === "samsung") return (
+              <div style={bannerBase}>
+                <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                  <img src="icons/app-icon-192.png" style={iconStyle} />
+                  <div style={{ flex: 1 }}>
+                    <div style={{ color: "white", fontSize: 14, fontWeight: 800 }}>BookQuest 설치하기</div>
+                    <div style={{ color: "rgba(255,255,255,0.9)", fontSize: 12, marginTop: 6, lineHeight: 1.5 }}>
+                      우측 하단 <strong>{"☰"} 메뉴</strong> {"→"} <strong>"홈 화면에 추가"</strong>를 선택하세요!
+                    </div>
+                  </div>
+                  <button onClick={dismissBanner} style={closeBtnStyle}>닫기</button>
+                </div>
+              </div>
+            );
+            // 기타 Android 브라우저 수동 안내
+            if (installBannerType === "manual") return (
               <div style={bannerBase}>
                 <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
                   <img src="icons/app-icon-192.png" style={iconStyle} />
