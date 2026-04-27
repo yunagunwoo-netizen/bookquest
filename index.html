@@ -3,6 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+// PWA standalone 모드 감지 → 즉시 앱으로 리다이렉트 (랜딩 건너뛰기)
+(function() {
+  var isStandalone = window.matchMedia('(display-mode: standalone)').matches
+    || window.navigator.standalone === true
+    || document.referrer.includes('android-app://');
+  if (isStandalone) {
+    window.location.replace('app.html');
+  }
+})();
+</script>
 <title>BookQuest - AI와 함께하는 어린이 독서 모험</title>
 <meta name="description" content="AI 독서 친구와 함께 책을 읽고, 토론하고, 배틀하는 어린이 독서 앱. 52종 캐릭터 수집, 소크라테스식 토론, 4라운드 배틀 시스템.">
 <meta property="og:title" content="BookQuest - AI와 함께하는 어린이 독서 모험">

@@ -11,9 +11,10 @@ const CACHE_NAME = 'bookquest-v20260424171029';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
+  './app.html',
   './manifest.json',
-  './icon-192x192.png',
-  './icon-512x512.png',
+  './icons/app-icon-192.png',
+  './icons/app-icon-512.png',
 ];
 
 // install — precache then skip waiting so the new SW activates fast.
