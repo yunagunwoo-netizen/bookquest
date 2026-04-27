@@ -57,7 +57,7 @@ exports.askBook = functions.https.onRequest(async (req, res) => {
     const fullName = studentName || "친구";
     const koreanSurnames = ["김","이","박","최","정","강","조","윤","장","임","한","오","서","신","권","황","안","송","류","유","홍","전","고","문","양","손","배","백","허","노","남","하","곽","성","차","주","우","민","구","나","진","천","원","심","방","공","염","여","추","도","석","선","설","마","길","연","위","표","명","기","반","왕","금","옥","육","인","맹","제","모","탁","국","어","은","편"];
     const name = fullName.length >= 3 && koreanSurnames.includes(fullName.charAt(0)) ? fullName.slice(1) : fullName;
-    // "건우" → "건우야", "민석" → "민석아" (받침 유무로 야/아 결정)
+    // "건우" → "건우야", "민석" → "민석아"
     const lastChar = name.charAt(name.length - 1);
     const hasBatchim = lastChar && ((lastChar.charCodeAt(0) - 0xAC00) % 28 !== 0);
     const nickname = name + (hasBatchim ? "아" : "야");
@@ -1000,4 +1000,50 @@ exports.submitInteractiveResult = functions.https.onRequest(async (req, res) => 
 
     const db = admin.firestore();
     const battleRef = db.collection("battles").doc(battleId);
-    const sn
+    const snap = await battleRef.get();
+    if (!snap.exists) {
+      res.status(404).json({ error: "배틀을 찾지 못했어요." });
+      return;
+    }
+    const data = snap.data() || {};
+    if (data.status === "finished") {
+      res.status(409).json({ error: "이미 제출된 배틀입니다." });
+      return;
+    }
+
+    // 배틀 문서 finalize
+    await battleRef.set({
+      winner,
+      roundResults: Array.isArray(roundResults) ? roundResults : [],
+      status: "finished",
+      finishedAt: admin.firestore.FieldValue.serverTimestamp(),
+    }, { merge: true });
+
+    // 통계 업데이트 (참여 모드도 승/패 집계에 반영)
+    const myRef = db.collection("users").doc(myUid);
+    const oppRef = db.collection("users").doc(oppUid);
+    const myWinInc = winner === "my" ? 1 : 0;
+    const myLoseInc = winner === "opp" ? 1 : 0;
+    const myDrawInc = winner === "draw" ? 1 : 0;
+
+    const batch = db.batch();
+    batch.set(myRef, {
+      battleWins: admin.firestore.FieldValue.increment(myWinInc),
+      battleLosses: admin.firestore.FieldValue.increment(myLoseInc),
+      battleDraws: admin.firestore.FieldValue.increment(myDrawInc),
+      weeklyBattleWins: admin.firestore.FieldValue.increment(myWinInc),
+    }, { merge: true });
+    batch.set(oppRef, {
+      battleWins: admin.firestore.FieldValue.increment(myLoseInc),
+      battleLosses: admin.firestore.FieldValue.increment(myWinInc),
+      battleDraws: admin.firestore.FieldValue.increment(myDrawInc),
+      weeklyBattleWins: admin.firestore.FieldValue.increment(myLoseInc),
+    }, { merge: true });
+    await batch.commit();
+
+    res.json({ ok: true, winner });
+  } catch (error) {
+    console.error("submitInteractiveResult error:", error);
+    res.status(500).json({ error: "결과 저장 실패: " + error.message });
+  }
+});
