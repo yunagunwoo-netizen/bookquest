@@ -1911,12 +1911,13 @@
       free: false, rarity, price
     });
     const AVATAR_DATA = [
-      // ─── 무료 기본 (9) : 쉘리/니타/레온/크로우/스파이크 + 오리지널 4 ───
-      _av("shelly",  "쉘리",     "#f97316", "#ea580c", "free", 0),
-      _av("nita",    "니타",     "#ef4444", "#b91c1c", "free", 0),
-      _av("leon",    "레온",     "#22c55e", "#15803d", "free", 0),
-      _av("crow",    "크로우",   "#6b7280", "#374151", "free", 0),
-      _av("spike",   "스파이크", "#22c55e", "#16a34a", "free", 0),
+      // ─── 브롤스타즈 레거시 (히든, 비공개) ───
+      _av("shelly",  "쉘리",     "#f97316", "#ea580c", "common", 300),
+      _av("nita",    "니타",     "#ef4444", "#b91c1c", "common", 300),
+      _av("leon",    "레온",     "#22c55e", "#15803d", "common", 300),
+      _av("crow",    "크로우",   "#6b7280", "#374151", "common", 300),
+      _av("spike",   "스파이크", "#22c55e", "#16a34a", "common", 300),
+      // ─── 무료 기본 (10) : 오리지널 동물 캐릭터 ───
       _av("dash",    "대시",     "#f59e0b", "#d97706", "free", 0),
       _av("buddy",   "버디",     "#38bdf8", "#0284c7", "free", 0),
       _av("monki",   "몽키",     "#a16207", "#78350f", "free", 0),
@@ -2246,14 +2247,14 @@
     // ═══════════════════════════════════════
     const ORIGINAL_ANIMAL_IDS = [
       "dash", "bux", "zero", "nuts", "buddy",
-      "mujin", "monki", "arth", "shade", "rix",
+      "mujin", "monki", "arth", "shadow", "rix",
     ];
     // 히든 영웅 (코인 구매 불가, 특정 조건 달성 시 해금) — 장영실/유관순은 영웅으로 이동
     const HIDDEN_HERO_IDS = [];
     // 히든 포켓몬 5종 (V3.4 포트레이트, 상점 숨김) — LEGACY (기존 보유자 유지, 히든 티어에선 제거)
     const HIDDEN_POKEMON_IDS_LEGACY = ["pikachu", "charizard", "eevee", "mew", "squirtle"];
     // 히든 브롤 5종 (상점 숨김) — LEGACY (기존 보유자 유지, 히든 티어에선 제거)
-    const HIDDEN_BRAWL_IDS_LEGACY = ["shelly", "crow", "leon", "spike", "elprimo"];
+    const HIDDEN_BRAWL_IDS_LEGACY = ["shelly", "crow", "leon", "spike", "elprimo", "nita"];
     // 레거시 아바타 → dash 치환 유틸 (자기 + 상대 모두 적용)
     const LEGACY_AVATAR_IDS = [...HIDDEN_BRAWL_IDS_LEGACY, ...HIDDEN_POKEMON_IDS_LEGACY];
     const sanitizeAvatarId = (id) => (!id || LEGACY_AVATAR_IDS.includes(id)) ? "dash" : id;
@@ -2670,7 +2671,7 @@
     const EXTERNAL_COMBO_AVATARS = ["dash"];
 
     // 콤보 이미지 지원 아바타 목록
-    const COMBO_AVATARS = ["shelly", "nita", "leon", "crow", "spike", "dash"];
+    const COMBO_AVATARS = ["dash", "buddy", "monki", "nuts", "bux", "shadow"];
 
     // 콤보 이미지가 있는 아이템 ID 목록
     const COMBO_ITEM_IDS = new Set(SHOP_ITEMS.map(item => item.id));
@@ -5195,7 +5196,7 @@
           snap.forEach(doc => {
             const d = doc.data() || {};
             const name = d.profile && d.profile.name;
-            const avatar = (d.profile && d.profile.avatar) || "crow";
+            const avatar = (d.profile && d.profile.avatar) || "dash";
             const userWeekStart = d.weekStartDate;
             // 주가 같은 유저만 이번 주 점수 인정, 다른 주는 0
             const weekly = (userWeekStart === currentWeek) ? (d.weeklyReadCount || 0) : 0;
@@ -6950,7 +6951,7 @@
 
       const BattleScreen_RPS_OLD = () => {
         const myUid = FirestoreService.getUserId();
-        const myAvatar = profile?.avatar || "crow";
+        const myAvatar = profile?.avatar || "dash";
         const mySkill = BATTLE_SKILLS.find(s => s.id === battleMySkill);
         const oppSkill = BATTLE_SKILLS.find(s => s.id === battleOppSkill);
         const winRate = (battleWins + battleLosses) > 0
