@@ -4676,6 +4676,17 @@
         const text = messageText || chatInput.trim();
         if (!text) return;
 
+        // 📱 극단적 테스트: 모바일에서 API 호출 없이 가짜 응답만 표시
+        if (isMobile) {
+          mobileLog("FAKE MODE");
+          setChatMessages(prev => [...prev,
+            { role: "user", text: text },
+            { role: "ai", text: "모바일 테스트 응답: 잘 작동하고 있어요!", expression: "default" }
+          ]);
+          setChatInput("");
+          return;
+        }
+
         // 중복 호출 방지
         if (chatSendingRef.current) return;
         chatSendingRef.current = true;
