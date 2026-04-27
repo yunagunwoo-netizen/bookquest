@@ -302,7 +302,7 @@
     <img src="icons/app-icon-192.png" alt="BookQuest">
     BookQuest
   </div>
-  <button class="nav-cta" onclick="scrollToInstall()">앱 설치하기</button>
+  <button class="nav-cta" id="navInstallBtn" onclick="triggerInstall()">앱 설치하기</button>
 </nav>
 
 <!-- HERO -->
@@ -501,7 +501,7 @@
 </footer>
 
 <!-- FLOATING INSTALL BUTTON -->
-<button class="floating-install" id="floatingInstall" onclick="goToApp()">
+<button class="floating-install" id="floatingInstall" onclick="triggerInstall()">
   📲 앱 설치하기
 </button>
 
@@ -516,8 +516,25 @@
     window.location.href = 'app.html';
   }
 
+  // ── PWA Install trigger (shared by nav + floating button)
+  let deferredPrompt = null;
+
+  async function triggerInstall() {
+    if (deferredPrompt) {
+      // Native PWA install prompt available → use it
+      deferredPrompt.prompt();
+      const result = await deferredPrompt.userChoice;
+      if (result.outcome === 'accepted') {
+        document.getElementById('floatingInstall').classList.add('hidden');
+      }
+      deferredPrompt = null;
+    } else {
+      // No install prompt available → scroll to install guide section
+      scrollToInstall();
+    }
+  }
+
   // ── PWA standalone detection
-  // Hide floating button if already installed (running as standalone/PWA)
   function checkInstalled() {
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches
       || window.navigator.standalone === true;
@@ -536,23 +553,9 @@
   });
 
   // ── beforeinstallprompt (Chrome/Android)
-  let deferredPrompt = null;
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    // Change button to use native install
-    document.getElementById('floatingInstall').onclick = async () => {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const result = await deferredPrompt.userChoice;
-        if (result.outcome === 'accepted') {
-          document.getElementById('floatingInstall').classList.add('hidden');
-        }
-        deferredPrompt = null;
-      } else {
-        goToApp();
-      }
-    };
   });
 
   // ── appinstalled event
