@@ -5,6 +5,7 @@
 - 배틀 결과 드라마틱 연출: 승리 시 24개 폭죽 파티클 + 승자 카드 줌인/글로우 + 패자 그레이스케일, 결과 타이틀 골드 펄스(승)/흔들림(패), +5코인 보상 표시, 내러티브 지연 페이드인. CSS 7종 추가(bq-confetti/result-glow/result-zoom/fade-up/victory-pulse/defeat-shake/result-card-win).
 - 관전 모드 카드 헤더: playing phase 상단에 미니 아바타 카드 대면 헤더 추가(아이콘+이름+Lv+레어리티). 채팅 중계 유지.
 - 한국영웅 탭 수정: matchTier hero 조건에 heroic rarity 포함. 장영실/유관순이 상점 영웅 탭에 정상 노출.
+- 레거시 아바타 강제 리셋: 브롤스타즈(shelly/crow/leon/spike/elprimo) + 포켓몬(pikachu/charizard/eevee/mew/squirtle) 아바타 사용자를 기본 캐릭터 "대시"로 자동 전환. 안내 모달(상점 바로가기 버튼) 표시. 전체 fallback을 shelly→dash로 통일.
 - 52장 TCG 프레임 카드 이미지 Pillow 합성(이전 세션에서 완료, 이번에 push).
 
 ## 2026-04-25

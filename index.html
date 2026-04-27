@@ -2541,11 +2541,11 @@
         const shadows = [frame?.boxShadow, aura?.boxShadow].filter(Boolean);
         if (shadows.length > 0) merged.boxShadow = shadows.join(", ");
         const av = avatarId ? AVATAR_DATA.find(a => a.id === avatarId) : null;
-        const src = av?.img || "avatars/shelly.png";
+        const src = av?.img || "avatars/dash.png";
         return (
           <img src={src} alt={itemId} style={{
             width: size, height: size, borderRadius: "50%", objectFit: "cover", margin: "0 auto", display: "block", ...merged
-          }} onError={(e) => { if (e.target.src !== "avatars/shelly.png") e.target.src = "avatars/shelly.png"; }} />
+          }} onError={(e) => { if (e.target.src !== "avatars/dash.png") e.target.src = "avatars/dash.png"; }} />
         );
       }
       return (
@@ -2558,7 +2558,7 @@
 
     const AvatarWithItems = ({ size, avatarId, equippedItems, shape = "circle", borderStyle = {}, onClick = null }) => {
       const avData = AVATAR_DATA.find(a => a.id === avatarId);
-      const baseImg = avData?.img || "avatars/shelly.png";
+      const baseImg = avData?.img || "avatars/dash.png";
 
       // hat/face/weapon/pet만 뱃지로 렌더링 (frame/aura는 아바타에 직접 CSS 효과 적용)
       const BADGE_ONLY_CATS = ["hat", "face", "weapon", "pet"];
@@ -2601,7 +2601,7 @@
               ...frameAuraCss
             }}
             onError={(e) => {
-              if (e.target.src !== "avatars/shelly.png") e.target.src = "avatars/shelly.png";
+              if (e.target.src !== "avatars/dash.png") e.target.src = "avatars/dash.png";
             }}
           />
           {equippedList.map(({ cat, itemId, angle }) => {
@@ -3001,7 +3001,7 @@
     // ═══════════════════════════════════════
     function BookQuest() {
       const [profile, setProfile] = useState(null);
-      const [profileForm, setProfileForm] = useState({ name: "", school: "", grade: "6", avatar: "crow" });
+      const [profileForm, setProfileForm] = useState({ name: "", school: "", grade: "6", avatar: "dash" });
       const [screen, _setScreenRaw] = useState("home");
       const screenRef = useRef("home");
 
@@ -3186,6 +3186,7 @@
       const [lastLoginDate, setLastLoginDate] = useState(null);
       const [showCoinPopup, setShowCoinPopup] = useState(null);
       const [saveErrorMsg, setSaveErrorMsg] = useState(null);
+      const [avatarResetNotice, setAvatarResetNotice] = useState(false);
 
       // Feature 6: 코디 슬롯 시스템 (3개 의상 프리셋)
       const DEFAULT_OUTFIT_SLOTS = [
@@ -3318,8 +3319,15 @@
           if (data) {
             if (data.profile) {
               // 이전 아바타 ID가 현재 AVATAR_DATA에 없으면 기본값으로 폴백
+              const LEGACY_FORCE_RESET_IDS = [...HIDDEN_BRAWL_IDS_LEGACY, ...HIDDEN_POKEMON_IDS_LEGACY];
               if (data.profile.avatar && !AVATAR_DATA.find(a => a.id === data.profile.avatar)) {
-                data.profile.avatar = "crow";
+                data.profile.avatar = "dash";
+              }
+              // 레거시 브롤스타즈/포켓몬 아바타 사용자 → 강제 "dash" 리셋 + 안내
+              if (data.profile.avatar && LEGACY_FORCE_RESET_IDS.includes(data.profile.avatar)) {
+                console.log("[BookQuest] 레거시 아바타 감지:", data.profile.avatar, "→ dash 리셋");
+                data.profile.avatar = "dash";
+                setAvatarResetNotice(true);
               }
               setProfile(data.profile);
             }
@@ -4447,8 +4455,8 @@
           if (!opp) throw new Error("상대를 찾지 못했어요. 잠시 후 다시 시도해줘!");
           setBattleOpponent(opp);
 
-          const myAvatarId = profile?.avatar || "shelly";
-          const oppAvatarId = opp.avatar || "shelly";
+          const myAvatarId = profile?.avatar || "dash";
+          const oppAvatarId = opp.avatar || "dash";
           const myPack = getAvatarKnowledgePack(myAvatarId, bookProgress, { battleWins, battleLosses, level });
           const oppPack = getAvatarKnowledgePack(oppAvatarId, {}, { battleWins: opp.battleWins || 0, battleLosses: opp.battleLosses || 0, level: opp.level || 1 });
           const myName = profile?.name || "나";
@@ -4569,8 +4577,8 @@
           setMyHP(mHP); setMyMaxHP(mHP);
           setOppHP(oHP); setOppMaxHP(oHP);
 
-          const myAvatarId = profile?.avatar || "shelly";
-          const oppAvatarId = opp.avatar || "shelly";
+          const myAvatarId = profile?.avatar || "dash";
+          const oppAvatarId = opp.avatar || "dash";
           const myPack = getAvatarKnowledgePack(myAvatarId, bookProgress, { battleWins, battleLosses, level });
           const oppPack = getAvatarKnowledgePack(oppAvatarId, {}, { battleWins: opp.battleWins || 0, battleLosses: opp.battleLosses || 0, level: opp.level || 1 });
           const myName = profile?.name || "나";
@@ -5016,8 +5024,8 @@
               const oppHPPct = oppMaxHP > 0 ? Math.max(0, (oppHP / oppMaxHP) * 100) : 0;
               const hpColor = (pct) => pct > 50 ? "#22c55e" : pct > 25 ? "#f59e0b" : "#ef4444";
               const timerDanger = battleTimer <= 3 && battleTimerActive;
-              const myAvatarData = AVATAR_DATA.find(a => a.id === (profile?.avatar || "shelly")) || AVATAR_DATA[0];
-              const oppAvatarData = AVATAR_DATA.find(a => a.id === (opp?.avatar || "shelly")) || AVATAR_DATA[0];
+              const myAvatarData = AVATAR_DATA.find(a => a.id === (profile?.avatar || "dash")) || AVATAR_DATA[0];
+              const oppAvatarData = AVATAR_DATA.find(a => a.id === (opp?.avatar || "dash")) || AVATAR_DATA[0];
               const myAvatarSrc = myAvatarData.cardImg || myAvatarData.iconImg || myAvatarData.img;
               const oppAvatarSrc = oppAvatarData.cardImg || oppAvatarData.iconImg || oppAvatarData.img;
               const myRarity = myAvatarData.rarity || "free";
@@ -5298,8 +5306,8 @@
             {battlePhase === "playing" && (() => {
               const myName_p = profile?.name || "나";
               const oppName_p = battleOpponent?.name || "상대";
-              const myAvD_p = AVATAR_DATA.find(a => a.id === (profile?.avatar || "shelly")) || AVATAR_DATA[0];
-              const oppAvD_p = AVATAR_DATA.find(a => a.id === (battleOpponent?.avatar || "shelly")) || AVATAR_DATA[0];
+              const myAvD_p = AVATAR_DATA.find(a => a.id === (profile?.avatar || "dash")) || AVATAR_DATA[0];
+              const oppAvD_p = AVATAR_DATA.find(a => a.id === (battleOpponent?.avatar || "dash")) || AVATAR_DATA[0];
               const myAvSrc_p = myAvD_p.cardImg || myAvD_p.iconImg || myAvD_p.img;
               const oppAvSrc_p = oppAvD_p.cardImg || oppAvD_p.iconImg || oppAvD_p.img;
               const myGrad_p = myAvD_p.gradient || ["#7c3aed","#a855f7"];
@@ -5377,8 +5385,8 @@
               const hpColor = (pct) => pct > 50 ? "#22c55e" : pct > 25 ? "#f59e0b" : "#ef4444";
               const myName = profile?.name || "나";
               const oppName = battleOpponent?.name || "상대";
-              const myAvD = AVATAR_DATA.find(a => a.id === (profile?.avatar || "shelly")) || AVATAR_DATA[0];
-              const oppAvD = AVATAR_DATA.find(a => a.id === (opp?.avatar || "shelly")) || AVATAR_DATA[0];
+              const myAvD = AVATAR_DATA.find(a => a.id === (profile?.avatar || "dash")) || AVATAR_DATA[0];
+              const oppAvD = AVATAR_DATA.find(a => a.id === (opp?.avatar || "dash")) || AVATAR_DATA[0];
               const myAvSrc = myAvD.cardImg || myAvD.iconImg || myAvD.img;
               const oppAvSrc = oppAvD.cardImg || oppAvD.iconImg || oppAvD.img;
               const myGrad = myAvD.gradient || ["#7c3aed","#a855f7"];
@@ -7580,7 +7588,7 @@
         ];
         const pool = booksCompletedCount >= 3 ? greetPool3 : booksCompletedCount > 0 ? greetPool1 : greetPool0;
         const greeting = pool[Math.floor(Math.random() * pool.length)];
-        const avatarSrc = AVATAR_DATA.find(a => a.id === profile?.avatar)?.img || "avatars/shelly.png";
+        const avatarSrc = AVATAR_DATA.find(a => a.id === profile?.avatar)?.img || "avatars/dash.png";
 
         return (
           <div style={{ minHeight: "100vh", paddingBottom: 80, position: "relative" }}>
@@ -7609,7 +7617,7 @@
                     style={{ width: "100%", height: "100%", borderRadius: "50%", objectFit: "cover",
                       border: `3px solid ${rarityInfo.color}`,
                       boxShadow: `0 0 20px ${rarityInfo.color}80, 0 4px 16px rgba(0,0,0,0.4)` }}
-                    onError={(e) => { e.target.src = "avatars/shelly.png"; }} />
+                    onError={(e) => { e.target.src = "avatars/dash.png"; }} />
                 </div>
                 <div style={{
                   flex: 1,
@@ -8363,10 +8371,10 @@
                       <div key={item.id} style={{ background: "white", borderRadius: 14, padding: 12, textAlign: "center", border: equipped ? "2px solid #667eea" : "1px solid #eee" }}>
                         <div style={{ marginBottom: 8, padding: 4, position: "relative", width: 64, height: 64, margin: "0 auto" }}>
                           {(() => {
-                            const avId = profile?.avatar || "shelly";
+                            const avId = profile?.avatar || "dash";
                             const av = AVATAR_DATA.find(a => a.id === avId);
                             const comboSrc = getComboImagePath(avId, item.id);
-                            const imgSrc = comboSrc || (av?.img) || "avatars/shelly.png";
+                            const imgSrc = comboSrc || (av?.img) || "avatars/dash.png";
                             const itemIconSrc = getItemIconPath(cat, item.id);
                             // 프레임/오라 프리뷰용 CSS (실제 효과 그대로 미니 스케일)
                             const frameCss = cat === "frame" ? (FRAME_STYLES[item.id] || {}) : {};
@@ -8517,6 +8525,52 @@
             }}>
               <img src={PNG_ICONS.coin} style={{ width: 24, height: 24 }} />
               {showCoinPopup.amount > 0 ? "+" : ""}{showCoinPopup.amount} 코인 {showCoinPopup.label}
+            </div>
+          )}
+
+          {avatarResetNotice && (
+            <div style={{
+              position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
+              background: "rgba(0,0,0,0.6)", zIndex: 3000,
+              display: "flex", alignItems: "center", justifyContent: "center",
+              animation: "pop 0.3s ease"
+            }}>
+              <div style={{
+                background: "linear-gradient(135deg, #1e1b4b, #312e81)", borderRadius: 20,
+                padding: "28px 24px", maxWidth: 320, width: "90%", textAlign: "center",
+                boxShadow: "0 20px 60px rgba(0,0,0,0.5), 0 0 30px rgba(129,140,248,0.2)",
+                border: "1px solid rgba(129,140,248,0.3)"
+              }}>
+                <div style={{ fontSize: 48, marginBottom: 12 }}>🔄</div>
+                <div style={{ color: "#fbbf24", fontWeight: 800, fontSize: 17, marginBottom: 10 }}>
+                  캐릭터가 변경되었어요!
+                </div>
+                <div style={{ color: "#c7d2fe", fontSize: 13, lineHeight: 1.6, marginBottom: 8 }}>
+                  이전에 사용하던 캐릭터가 더 이상 지원되지 않아<br/>
+                  기본 캐릭터 <span style={{ color: "#fbbf24", fontWeight: 700 }}>"대시"</span>로 변경되었습니다.
+                </div>
+                <div style={{ color: "#a5b4fc", fontSize: 13, lineHeight: 1.6, marginBottom: 18 }}>
+                  🏪 <b>상점</b>에서 다른 무료 캐릭터를<br/>선택할 수 있어요!
+                </div>
+                <button onClick={() => { setAvatarResetNotice(false); setActiveTab("store"); }}
+                  style={{
+                    background: "linear-gradient(135deg, #f59e0b, #d97706)", border: "none",
+                    color: "white", fontWeight: 800, fontSize: 15, padding: "12px 32px",
+                    borderRadius: 14, cursor: "pointer", marginBottom: 8,
+                    boxShadow: "0 4px 15px rgba(245,158,11,0.4)"
+                  }}>
+                  🏪 상점에서 고르기
+                </button>
+                <br/>
+                <button onClick={() => setAvatarResetNotice(false)}
+                  style={{
+                    background: "transparent", border: "none",
+                    color: "#818cf8", fontWeight: 600, fontSize: 13, padding: "8px 16px",
+                    cursor: "pointer", textDecoration: "underline"
+                  }}>
+                  나중에 할게요
+                </button>
+              </div>
             </div>
           )}
 
