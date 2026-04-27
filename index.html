@@ -2046,6 +2046,9 @@
     const HIDDEN_POKEMON_IDS_LEGACY = ["pikachu", "charizard", "eevee", "mew", "squirtle"];
     // 히든 브롤 5종 (상점 숨김) — LEGACY (기존 보유자 유지, 히든 티어에선 제거)
     const HIDDEN_BRAWL_IDS_LEGACY = ["shelly", "crow", "leon", "spike", "elprimo"];
+    // 레거시 아바타 → dash 치환 유틸 (자기 + 상대 모두 적용)
+    const LEGACY_AVATAR_IDS = [...HIDDEN_BRAWL_IDS_LEGACY, ...HIDDEN_POKEMON_IDS_LEGACY];
+    const sanitizeAvatarId = (id) => (!id || LEGACY_AVATAR_IDS.includes(id)) ? "dash" : id;
     // V3.6 히든 전설 10종 (오리지널 IP, 레어 카드 홀로 감성)
     const HIDDEN_LEGEND_IDS = ["homer","scheherazade","hypatia","merlin","confucius","socrates","cleopatra","galileo","musashi","sage_archivist"];
     // 하위 호환: HIDDEN_POKEMON_IDS / HIDDEN_BRAWL_IDS 이름을 참조하는 레거시 코드 대응
@@ -4455,8 +4458,8 @@
           if (!opp) throw new Error("상대를 찾지 못했어요. 잠시 후 다시 시도해줘!");
           setBattleOpponent(opp);
 
-          const myAvatarId = profile?.avatar || "dash";
-          const oppAvatarId = opp.avatar || "dash";
+          const myAvatarId = sanitizeAvatarId(profile?.avatar);
+          const oppAvatarId = sanitizeAvatarId(opp.avatar);
           const myPack = getAvatarKnowledgePack(myAvatarId, bookProgress, { battleWins, battleLosses, level });
           const oppPack = getAvatarKnowledgePack(oppAvatarId, {}, { battleWins: opp.battleWins || 0, battleLosses: opp.battleLosses || 0, level: opp.level || 1 });
           const myName = profile?.name || "나";
@@ -4577,8 +4580,8 @@
           setMyHP(mHP); setMyMaxHP(mHP);
           setOppHP(oHP); setOppMaxHP(oHP);
 
-          const myAvatarId = profile?.avatar || "dash";
-          const oppAvatarId = opp.avatar || "dash";
+          const myAvatarId = sanitizeAvatarId(profile?.avatar);
+          const oppAvatarId = sanitizeAvatarId(opp.avatar);
           const myPack = getAvatarKnowledgePack(myAvatarId, bookProgress, { battleWins, battleLosses, level });
           const oppPack = getAvatarKnowledgePack(oppAvatarId, {}, { battleWins: opp.battleWins || 0, battleLosses: opp.battleLosses || 0, level: opp.level || 1 });
           const myName = profile?.name || "나";
@@ -5024,8 +5027,8 @@
               const oppHPPct = oppMaxHP > 0 ? Math.max(0, (oppHP / oppMaxHP) * 100) : 0;
               const hpColor = (pct) => pct > 50 ? "#22c55e" : pct > 25 ? "#f59e0b" : "#ef4444";
               const timerDanger = battleTimer <= 3 && battleTimerActive;
-              const myAvatarData = AVATAR_DATA.find(a => a.id === (profile?.avatar || "dash")) || AVATAR_DATA[0];
-              const oppAvatarData = AVATAR_DATA.find(a => a.id === (opp?.avatar || "dash")) || AVATAR_DATA[0];
+              const myAvatarData = AVATAR_DATA.find(a => a.id === sanitizeAvatarId(profile?.avatar)) || AVATAR_DATA[0];
+              const oppAvatarData = AVATAR_DATA.find(a => a.id === sanitizeAvatarId(opp?.avatar)) || AVATAR_DATA[0];
               const myAvatarSrc = myAvatarData.cardImg || myAvatarData.iconImg || myAvatarData.img;
               const oppAvatarSrc = oppAvatarData.cardImg || oppAvatarData.iconImg || oppAvatarData.img;
               const myRarity = myAvatarData.rarity || "free";
@@ -5306,8 +5309,8 @@
             {battlePhase === "playing" && (() => {
               const myName_p = profile?.name || "나";
               const oppName_p = battleOpponent?.name || "상대";
-              const myAvD_p = AVATAR_DATA.find(a => a.id === (profile?.avatar || "dash")) || AVATAR_DATA[0];
-              const oppAvD_p = AVATAR_DATA.find(a => a.id === (battleOpponent?.avatar || "dash")) || AVATAR_DATA[0];
+              const myAvD_p = AVATAR_DATA.find(a => a.id === sanitizeAvatarId(profile?.avatar)) || AVATAR_DATA[0];
+              const oppAvD_p = AVATAR_DATA.find(a => a.id === sanitizeAvatarId(battleOpponent?.avatar)) || AVATAR_DATA[0];
               const myAvSrc_p = myAvD_p.cardImg || myAvD_p.iconImg || myAvD_p.img;
               const oppAvSrc_p = oppAvD_p.cardImg || oppAvD_p.iconImg || oppAvD_p.img;
               const myGrad_p = myAvD_p.gradient || ["#7c3aed","#a855f7"];
@@ -5385,8 +5388,8 @@
               const hpColor = (pct) => pct > 50 ? "#22c55e" : pct > 25 ? "#f59e0b" : "#ef4444";
               const myName = profile?.name || "나";
               const oppName = battleOpponent?.name || "상대";
-              const myAvD = AVATAR_DATA.find(a => a.id === (profile?.avatar || "dash")) || AVATAR_DATA[0];
-              const oppAvD = AVATAR_DATA.find(a => a.id === (opp?.avatar || "dash")) || AVATAR_DATA[0];
+              const myAvD = AVATAR_DATA.find(a => a.id === sanitizeAvatarId(profile?.avatar)) || AVATAR_DATA[0];
+              const oppAvD = AVATAR_DATA.find(a => a.id === sanitizeAvatarId(opp?.avatar)) || AVATAR_DATA[0];
               const myAvSrc = myAvD.cardImg || myAvD.iconImg || myAvD.img;
               const oppAvSrc = oppAvD.cardImg || oppAvD.iconImg || oppAvD.img;
               const myGrad = myAvD.gradient || ["#7c3aed","#a855f7"];
@@ -8371,7 +8374,7 @@
                       <div key={item.id} style={{ background: "white", borderRadius: 14, padding: 12, textAlign: "center", border: equipped ? "2px solid #667eea" : "1px solid #eee" }}>
                         <div style={{ marginBottom: 8, padding: 4, position: "relative", width: 64, height: 64, margin: "0 auto" }}>
                           {(() => {
-                            const avId = profile?.avatar || "dash";
+                            const avId = sanitizeAvatarId(profile?.avatar);
                             const av = AVATAR_DATA.find(a => a.id === avId);
                             const comboSrc = getComboImagePath(avId, item.id);
                             const imgSrc = comboSrc || (av?.img) || "avatars/dash.png";
