@@ -8232,7 +8232,7 @@
         const nextEvo = EVOLUTION_STAGES.find(s => s.stage === evo.stage + 1);
         const booksToNext = nextEvo ? Math.max(0, nextEvo.min - avStats.booksCompleted.length) : 0;
         return (
-        <div style={{ padding: "0 16px 100px" }}>
+        <div style={{ padding: "0 16px 100px", overflowX: "hidden" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
             <h3 style={{ fontSize: 18, fontWeight: 800, color: "#1a1a2e", margin: 0, display: "flex", alignItems: "center", gap: 6 }}>📋 내 프로필</h3>
             <div style={{ fontSize: 12, color: "#888" }}>📅 {formatDate(today)}</div>
@@ -8278,7 +8278,7 @@
               {/* chibi — 카드 바깥에 배치, 세로 가운데 정렬 */}
               <img src={tp.chibiImg + "?v=3"} alt={`${tp.name} chibi`}
                 style={{
-                  position: "absolute", left: -6, top: "50%", transform: "translateY(-50%)", zIndex: 2,
+                  position: "absolute", left: 0, top: "50%", transform: "translateY(-50%)", zIndex: 2,
                   width: 150, height: 150, objectFit: "contain",
                   filter: `drop-shadow(0 4px 14px ${tp.accentColor}99)`
                 }} />
