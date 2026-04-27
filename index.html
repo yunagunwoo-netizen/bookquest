@@ -1414,7 +1414,7 @@
 • 총 AVATAR IQ: ${stats ? stats.iq : "측정 중"}
 
 [말투 규칙]
-- 어린이 친구(건우)에게 말하듯 반말, 짧고 또렷하게.
+- 어린이 친구에게 말하듯 반말, 짧고 또렷하게. 이름을 부를 때는 "건우야", "지민아"처럼 친근하게 불러.
 - 책에서 읽은 내용을 자연스럽게 인용하고 연결해.
 - 강한 분야에는 "~거든!", "~라고!" 처럼 확신 있게, 약한 분야에는 "흠...", "같이 알아볼까?" 처럼 겸손하게.
 - 모르는 건 지어내지 말고 "그건 내가 아직 안 읽어본 책 같아"라고 말해.
@@ -3803,9 +3803,16 @@
           const sNames = ap.strongDomains
             .map(id => DOMAIN_META.find(d => d.id === id))
             .filter(Boolean).map(d => `${d.emoji}${d.name}`).join(" ");
+          // 친근한 호칭 생성: "김건우" → "건우야", "민석" → "민석아"
+          const _fn = profile?.name || "친구";
+          const _kSurnames = ["김","이","박","최","정","강","조","윤","장","임","한","오","서","신","권","황","안","송","류","유","홍","전","고","문","양","손","배","백","허","노","남","하","곽","성","차","주","우","민","구","나","진","천","원","심","방","공","염","여","추","도","석","선","설","마","길","연","위","표","명","기","반","왕","금","옥","육","인","맹","제","모","탁","국","어","은","편"];
+          const _first = _fn.length >= 3 && _kSurnames.includes(_fn.charAt(0)) ? _fn.slice(1) : _fn;
+          const _lastC = _first.charAt(_first.length - 1);
+          const _hasBat = _lastC && ((_lastC.charCodeAt(0) - 0xAC00) % 28 !== 0);
+          const _nick = _first + (_hasBat ? "아" : "야");
           const greeting = s.booksCompleted.length > 0
-            ? `안녕 ${profile?.name || "친구"}! 나는 ${ap.name}이야. ${sNames} 쪽엔 자신 있으니 뭐든 물어봐! 우리가 같이 읽은 책 ${s.booksCompleted.length}권 중 뭐가 궁금해?`
-            : `안녕 ${profile?.name || "친구"}! 나는 ${ap.name}이야. 아직 같이 읽은 책이 없으니까 책부터 읽고 오면 더 깊이 이야기해줄게!`;
+            ? `안녕 ${_nick}! 나는 ${ap.name}이야. ${sNames} 쪽엔 자신 있으니 뭐든 물어봐! 우리가 같이 읽은 책 ${s.booksCompleted.length}권 중 뭐가 궁금해?`
+            : `안녕 ${_nick}! 나는 ${ap.name}이야. 아직 같이 읽은 책이 없으니까 책부터 읽고 오면 더 깊이 이야기해줄게!`;
           setAvatarChatMessages([{ role: "ai", text: greeting }]);
         }
       }, [screen]);
@@ -4021,13 +4028,16 @@
         const koreanSurnames = ["김","이","박","최","정","강","조","윤","장","임","한","오","서","신","권","황","안","송","류","유","홍","전","고","문","양","손","배","백","허","노","남","하","곽","성","차","주","우","민","구","나","진","천","원","심","방","공","염","여","추","도","석","선","설","마","길","연","위","표","명","기","반","왕","금","옥","육","인","맹","제","모","탁","국","어","은","편"];
         const fullName = profile?.name || "친구";
         const firstName = fullName.length >= 3 && koreanSurnames.includes(fullName.charAt(0)) ? fullName.slice(1) : fullName;
+        const _lc = firstName.charAt(firstName.length - 1);
+        const _hb = _lc && ((_lc.charCodeAt(0) - 0xAC00) % 28 !== 0);
+        const friendlyName = firstName + (_hb ? "아" : "야");
 
         const initialMessages = [
           { role: "ai", text: COACH.greeting, expression: "default" },
           { role: "ai", text: `📚 "${book.title}" ${deep ? "심화" : ""} 토론 ${idx + 1}번째 주제야!`, expression: "speaking" },
           { role: "ai", text: topic.q, expression: "thinking" },
           { role: "ai", text: `💡 힌트: ${topic.hint}`, expression: "thinking" },
-          { role: "ai", text: `${firstName}의 생각을 말해 봐! 🎤`, expression: "default" }
+          { role: "ai", text: `${friendlyName}, 네 생각을 말해 봐! 🎤`, expression: "default" }
         ];
 
         setChatMessages(initialMessages);

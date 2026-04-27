@@ -53,14 +53,19 @@ exports.askBook = functions.https.onRequest(async (req, res) => {
 
     const anthropic = new Anthropic({ apiKey });
 
-    // 학생 이름에서 성 제거
+    // 학생 이름에서 성 제거 + 친근한 호칭 생성
     const fullName = studentName || "친구";
     const koreanSurnames = ["김","이","박","최","정","강","조","윤","장","임","한","오","서","신","권","황","안","송","류","유","홍","전","고","문","양","손","배","백","허","노","남","하","곽","성","차","주","우","민","구","나","진","천","원","심","방","공","염","여","추","도","석","선","설","마","길","연","위","표","명","기","반","왕","금","옥","육","인","맹","제","모","탁","국","어","은","편"];
     const name = fullName.length >= 3 && koreanSurnames.includes(fullName.charAt(0)) ? fullName.slice(1) : fullName;
+    // "건우" → "건우야", "민석" → "민석아" (받침 유무로 야/아 결정)
+    const lastChar = name.charAt(name.length - 1);
+    const hasBatchim = lastChar && ((lastChar.charCodeAt(0) - 0xAC00) % 28 !== 0);
+    const nickname = name + (hasBatchim ? "아" : "야");
 
     // 책 데이터를 시스템 프롬프트에 포함
     const systemPrompt = `너는 '콜레트 선생님'이야. 초등학교 6학년 학생 "${name}"의 독서 도우미 선생님이야.
 ${name}이가 읽은 책들의 내용을 바탕으로 질문에 답변해주는 밝고 활기찬 선생님이야.
+학생을 부를 때는 항상 "${nickname}"처럼 친근하게 불러줘. "김건우", "건우" 같은 딱딱한 호칭 대신 "건우야", "지민아"처럼.
 
 📚 ${name}이가 읽은 책 정보:
 ${bookData || "아직 읽은 책이 없습니다."}
@@ -70,7 +75,7 @@ ${bookData || "아직 읽은 책이 없습니다."}
 2. 책에 없는 내용이라면 일반 지식으로 답변하되, "이건 책에는 없는 내용인데..." 라고 말해줘.
 3. 초등학교 6학년이 이해할 수 있는 쉬운 말로 설명해줘.
 4. 답변은 3~5문장, 최대 200자 이내로 간결하게 하고 반드시 완결된 문장으로 끝내.
-5. 학생 이름 "${name}"을 자연스럽게 불러줘. "너"라고 하지 말고 항상 이름을 사용해.
+5. 학생 이름을 부를 때 "${nickname}"처럼 친근하게 불러줘. "너"라고 하지 말고 항상 이름을 사용해. 예: "${nickname}, 좋은 질문이야!"
 6. 친근하지만 격식 있는 선생님 말투를 사용해. 완전한 반말도 아니고 존댓말도 아닌, 학생을 가르치는 선생님의 말투야.
 7. 한국어 맞춤법을 정확하게 지켜줘.
 8. 이모지나 마크다운을 사용하지 마.`;
@@ -132,6 +137,10 @@ exports.discussionCoach = functions.https.onRequest(async (req, res) => {
     const fullName = studentName || "친구";
     // 성을 제거하고 이름만 사용 (예: "김건우" → "건우", "박지민" → "지민")
     const name = fullName.length >= 3 && ["김","이","박","최","정","강","조","윤","장","임","한","오","서","신","권","황","안","송","류","유","홍","전","고","문","양","손","배","백","허","노","남","하","곽","성","차","주","우","민","구","나","진","천","원","심","방","공","염","여","추","도","석","선","설","마","길","연","위","표","명","기","반","왕","금","옥","육","인","맹","제","모","탁","국","어","은","편"].includes(fullName.charAt(0)) ? fullName.slice(1) : fullName;
+    // 친근한 호칭: "건우야" / "민석아"
+    const lastChar2 = name.charAt(name.length - 1);
+    const hasBatchim2 = lastChar2 && ((lastChar2.charCodeAt(0) - 0xAC00) % 28 !== 0);
+    const nickname = name + (hasBatchim2 ? "아" : "야");
     const anthropic = new Anthropic({ apiKey });
 
     // 라운드 번호 (1=첫 답변, 2=두 번째, 3=마지막)
@@ -162,6 +171,7 @@ exports.discussionCoach = functions.https.onRequest(async (req, res) => {
 
     const systemPrompt = `너는 '칼 선생님'이야. 초등학교 6학년 학생 "${name}"의 독서 토론을 이끄는 선생님이야.
 단순히 평가하는 게 아니라, 소크라테스 방식으로 질문을 통해 학생 스스로 더 깊이 생각하게 이끌어줘.
+학생을 부를 때는 항상 "${nickname}"처럼 친근하게 불러줘.
 
 📖 책: ${bookTitle}
 📝 책 요약: ${bookSummary || ""}
@@ -174,8 +184,8 @@ exports.discussionCoach = functions.https.onRequest(async (req, res) => {
 ${roundDirective}
 
 말투 규칙:
-- "${name}"을 자연스럽게 불러줘. "너"라고 하지 말고 항상 이름을 사용해.
-- 친근한 선생님 말투. 예: "${name}, 좋은 생각이야!", "한번 생각해 볼까?"
+- "${nickname}"처럼 친근하게 불러줘. "너"라고 하지 말고 항상 이름을 사용해.
+- 친근한 선생님 말투. 예: "${nickname}, 좋은 생각이야!", "한번 생각해 볼까?"
 - 감탄사를 자연스럽게 써줘. "오!", "와!", "흠, 재밌는 관점이네!"
 - 틀린 부분은 밝은 분위기로 바로잡되, 답을 직접 알려주지 말고 질문으로 유도해.
 
@@ -990,50 +1000,4 @@ exports.submitInteractiveResult = functions.https.onRequest(async (req, res) => 
 
     const db = admin.firestore();
     const battleRef = db.collection("battles").doc(battleId);
-    const snap = await battleRef.get();
-    if (!snap.exists) {
-      res.status(404).json({ error: "배틀을 찾지 못했어요." });
-      return;
-    }
-    const data = snap.data() || {};
-    if (data.status === "finished") {
-      res.status(409).json({ error: "이미 제출된 배틀입니다." });
-      return;
-    }
-
-    // 배틀 문서 finalize
-    await battleRef.set({
-      winner,
-      roundResults: Array.isArray(roundResults) ? roundResults : [],
-      status: "finished",
-      finishedAt: admin.firestore.FieldValue.serverTimestamp(),
-    }, { merge: true });
-
-    // 통계 업데이트 (참여 모드도 승/패 집계에 반영)
-    const myRef = db.collection("users").doc(myUid);
-    const oppRef = db.collection("users").doc(oppUid);
-    const myWinInc = winner === "my" ? 1 : 0;
-    const myLoseInc = winner === "opp" ? 1 : 0;
-    const myDrawInc = winner === "draw" ? 1 : 0;
-
-    const batch = db.batch();
-    batch.set(myRef, {
-      battleWins: admin.firestore.FieldValue.increment(myWinInc),
-      battleLosses: admin.firestore.FieldValue.increment(myLoseInc),
-      battleDraws: admin.firestore.FieldValue.increment(myDrawInc),
-      weeklyBattleWins: admin.firestore.FieldValue.increment(myWinInc),
-    }, { merge: true });
-    batch.set(oppRef, {
-      battleWins: admin.firestore.FieldValue.increment(myLoseInc),
-      battleLosses: admin.firestore.FieldValue.increment(myWinInc),
-      battleDraws: admin.firestore.FieldValue.increment(myDrawInc),
-      weeklyBattleWins: admin.firestore.FieldValue.increment(myLoseInc),
-    }, { merge: true });
-    await batch.commit();
-
-    res.json({ ok: true, winner });
-  } catch (error) {
-    console.error("submitInteractiveResult error:", error);
-    res.status(500).json({ error: "결과 저장 실패: " + error.message });
-  }
-});
+    const sn
