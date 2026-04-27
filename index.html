@@ -2846,6 +2846,102 @@
       if (!avatarId) return "narrator";
       return AVATAR_VOICE_MAP[avatarId] || "child_boy";  // 미등록 → 기본 소년 (dash 기본값 대응)
     };
+      // ═══════════════════════════════════════
+      // 🎮 아바타 고유 스킬 시스템 (52종)
+      // ═══════════════════════════════════════
+      const AVATAR_SKILLS = {
+        // ── 오리지널 캐릭터 (10) ── free tier
+        dash:   { name: "번개 대시",     icon: "⚡", desc: "타이머 +2초",            skillType: "passive", effect: { type: "time_bonus", value: 2 } },
+        bux:    { name: "행운의 코인",   icon: "🪙", desc: "승리 코인 2배",          skillType: "passive", effect: { type: "double_coin", value: true } },
+        zero:   { name: "그림자 베기",   icon: "🌑", desc: "상대 데미지 +15%",       skillType: "passive", effect: { type: "opp_dmg_boost", value: 0.15 } },
+        nuts:   { name: "너트 방패",     icon: "🛡️", desc: "받는 데미지 -10%",       skillType: "passive", effect: { type: "shield", value: 0.10 } },
+        buddy:  { name: "응원의 함성",   icon: "📣", desc: "HP +10 보너스",          skillType: "passive", effect: { type: "hp_boost", value: 10 } },
+        mujin:  { name: "무한 도전",     icon: "♾️", desc: "무승부 시 추가 공격",     skillType: "passive", effect: { type: "draw_bonus_atk", value: 8 } },
+        monki:  { name: "장난꾸러기",    icon: "🐒", desc: "상대 타이머 -1초",       skillType: "passive", effect: { type: "opp_time_debuff", value: 1 } },
+        arth:   { name: "탐험가의 직감", icon: "🧭", desc: "첫 라운드 힌트 표시",    skillType: "active",  effect: { type: "hint", value: 1 } },
+        shade:  { name: "어둠의 일격",   icon: "🗡️", desc: "발동 시 상대 HP -15",    skillType: "active",  effect: { type: "drain", value: 15 } },
+        rix:    { name: "천재의 계산",   icon: "🧮", desc: "정답 데미지 +20%",       skillType: "passive", effect: { type: "correct_dmg_boost", value: 0.20 } },
+        // ── 명예의 전당 · 영웅 (12) ── heroic tier
+        sejong:       { name: "한글 창제",     icon: "📜", desc: "모든 데미지 +10%",      skillType: "passive", effect: { type: "dmg_boost", value: 0.10 } },
+        yi_sunsin:    { name: "학익진",        icon: "🏹", desc: "연속 정답 시 데미지 2배", skillType: "passive", effect: { type: "streak_double", value: true } },
+        davinci:      { name: "르네상스 지식", icon: "🎨", desc: "HP +15 보너스",         skillType: "passive", effect: { type: "hp_boost", value: 15 } },
+        einstein:     { name: "상대성 이론",   icon: "🔬", desc: "타이머 +3초",           skillType: "passive", effect: { type: "time_bonus", value: 3 } },
+        marie_curie:  { name: "방사능 연구",   icon: "☢️", desc: "발동 시 상대 HP -20",   skillType: "active",  effect: { type: "drain", value: 20 } },
+        helen_keller: { name: "불굴의 의지",   icon: "💪", desc: "HP 30% 이하 시 데미지 2배", skillType: "passive", effect: { type: "last_stand", value: 2.0 } },
+        mozart:       { name: "교향곡의 선율", icon: "🎵", desc: "매 라운드 HP 5 회복",   skillType: "passive", effect: { type: "regen", value: 5 } },
+        shakespeare:  { name: "극작가의 통찰", icon: "🎭", desc: "토론 라운드 데미지 +30%", skillType: "passive", effect: { type: "debate_dmg_boost", value: 0.30 } },
+        malala:       { name: "용기의 목소리", icon: "✊", desc: "받는 데미지 -15%",      skillType: "passive", effect: { type: "shield", value: 0.15 } },
+        louis_braille:{ name: "점자의 빛",     icon: "✨", desc: "오답 시 데미지 감소 50%", skillType: "passive", effect: { type: "wrong_shield", value: 0.50 } },
+        jang_yeongsil:{ name: "발명가의 손",   icon: "🔧", desc: "정답 데미지 +25%",      skillType: "passive", effect: { type: "correct_dmg_boost", value: 0.25 } },
+        yu_gwansun:   { name: "만세 함성",     icon: "🇰🇷", desc: "발동 시 HP 25 회복",   skillType: "active",  effect: { type: "heal", value: 25 } },
+        // ── 명예의 전당 · 전설 (10) ── legendary tier
+        arthur:    { name: "엑스칼리버",     icon: "⚔️", desc: "정답 시 추가 데미지 +12",  skillType: "passive", effect: { type: "correct_flat_bonus", value: 12 } },
+        robinhood: { name: "정확한 화살",    icon: "🏹", desc: "상대 방어 무시",           skillType: "passive", effect: { type: "pierce", value: true } },
+        honggildong: { name: "축지법",       icon: "💨", desc: "타이머 +4초",              skillType: "passive", effect: { type: "time_bonus", value: 4 } },
+        wukong:    { name: "72변화",         icon: "🐵", desc: "랜덤 스킬 1개 복사",       skillType: "active",  effect: { type: "copy_random", value: true } },
+        joan:      { name: "신의 계시",      icon: "🔥", desc: "발동 시 2라운드 데미지 2배", skillType: "active",  effect: { type: "power_up", value: 2 } },
+        aladdin:   { name: "마법 램프",      icon: "🪔", desc: "승리 보상 2배",            skillType: "passive", effect: { type: "reward_mult", value: 2 } },
+        ivan:      { name: "바보의 지혜",    icon: "🃏", desc: "무승부→내 승리 전환",      skillType: "passive", effect: { type: "draw_to_win", value: true } },
+        momotaro:  { name: "복숭아 파워",    icon: "🍑", desc: "HP +20 보너스",            skillType: "passive", effect: { type: "hp_boost", value: 20 } },
+        anansi:    { name: "거미줄 함정",    icon: "🕸️", desc: "상대 정답 데미지 -30%",    skillType: "passive", effect: { type: "opp_correct_nerf", value: 0.30 } },
+        thor:      { name: "묠니르 번개",    icon: "⚡", desc: "발동 시 상대 HP -30",      skillType: "active",  effect: { type: "drain", value: 30 } },
+        // ── 명예의 전당 · 신화 (10) ── mythic tier
+        zeus:       { name: "올림포스 번개",   icon: "⚡", desc: "모든 데미지 +20%",        skillType: "passive", effect: { type: "dmg_boost", value: 0.20 } },
+        athena:     { name: "지혜의 방패",     icon: "🛡️", desc: "받는 데미지 -25%",       skillType: "passive", effect: { type: "shield", value: 0.25 } },
+        anubis:     { name: "죽음의 심판",     icon: "☠️", desc: "상대 HP 10% 흡수",       skillType: "passive", effect: { type: "lifesteal", value: 0.10 } },
+        amaterasu:  { name: "태양의 축복",     icon: "☀️", desc: "매 라운드 HP 8 회복",    skillType: "passive", effect: { type: "regen", value: 8 } },
+        isis:       { name: "부활의 마법",     icon: "🔮", desc: "HP 0 시 50% 부활 1회",   skillType: "active",  effect: { type: "revive", value: 0.50 } },
+        ganesha:    { name: "지혜의 코끼리",   icon: "🐘", desc: "타이머 +5초",            skillType: "passive", effect: { type: "time_bonus", value: 5 } },
+        quetzal:    { name: "깃털 뱀의 바람",  icon: "🌪️", desc: "발동 시 상대 HP -25",   skillType: "active",  effect: { type: "drain", value: 25 } },
+        nezha:      { name: "풍화륜",          icon: "🔥", desc: "정답 데미지 +30%",       skillType: "passive", effect: { type: "correct_dmg_boost", value: 0.30 } },
+        gumiho:     { name: "여우구슬",        icon: "🦊", desc: "상대 스킬 봉인",         skillType: "active",  effect: { type: "seal", value: true } },
+        dragonking: { name: "용왕의 파도",     icon: "🌊", desc: "모든 데미지 +15% & HP +15", skillType: "passive", effect: { type: "dual_boost", value: { dmg: 0.15, hp: 15 } } },
+        // ── 히든 · 책 속 전설 V3.6 (10) ── hidden tier
+        homer:          { name: "서사시의 영감",   icon: "📖", desc: "토론 데미지 +40%",        skillType: "passive", effect: { type: "debate_dmg_boost", value: 0.40 } },
+        scheherazade:   { name: "천일야화",        icon: "🌙", desc: "5라운드 모두 HP 10 회복",  skillType: "passive", effect: { type: "regen", value: 10 } },
+        hypatia:        { name: "알렉산드리아 지식",icon: "📐", desc: "정답 데미지 +35%",        skillType: "passive", effect: { type: "correct_dmg_boost", value: 0.35 } },
+        merlin:         { name: "대마법사의 주문", icon: "🧙", desc: "발동 시 모든 스탯 강화",   skillType: "active",  effect: { type: "mega_buff", value: { dmg: 0.15, shield: 0.15, time: 3 } } },
+        confucius:      { name: "인의예지",        icon: "📚", desc: "HP +25 & 데미지 +10%",    skillType: "passive", effect: { type: "dual_boost", value: { dmg: 0.10, hp: 25 } } },
+        socrates:       { name: "소크라테스 문답", icon: "❓", desc: "토론 승리 시 추가 HP 흡수", skillType: "passive", effect: { type: "debate_lifesteal", value: 15 } },
+        cleopatra:      { name: "나일의 축복",     icon: "👑", desc: "승리 보상 3배",           skillType: "passive", effect: { type: "reward_mult", value: 3 } },
+        galileo:        { name: "별의 관측",       icon: "🔭", desc: "힌트 2회 + 타이머 +3초",  skillType: "active",  effect: { type: "multi_hint", value: { hints: 2, time: 3 } } },
+        musashi:        { name: "이도류",          icon: "⚔️", desc: "정답 시 2회 공격",        skillType: "passive", effect: { type: "double_strike", value: true } },
+        sage_archivist: { name: "태고의 기록",     icon: "🏛️", desc: "받는 데미지 -30% & 데미지 +20%", skillType: "passive", effect: { type: "dual_boost", value: { dmg: 0.20, shield: 0.30 } } },
+      };
+
+      const getAvatarSkill = (avatarId) => {
+        const id = sanitizeAvatarId(avatarId);
+        return AVATAR_SKILLS[id] || AVATAR_SKILLS.dash;
+      };
+
+      // ═══════════════════════════════════════
+      // 🎰 승리 보상 룰렛 시스템
+      // ═══════════════════════════════════════
+      const ROULETTE_REWARDS = [
+        { tier: "normal", label: "+3 코인",    icon: "🪙", reward: { type: "coin", value: 3 } },
+        { tier: "normal", label: "+5 코인",    icon: "🪙", reward: { type: "coin", value: 5 } },
+        { tier: "normal", label: "+10 XP",     icon: "⭐", reward: { type: "xp", value: 10 } },
+        { tier: "normal", label: "+15 XP",     icon: "⭐", reward: { type: "xp", value: 15 } },
+        { tier: "normal", label: "+3 코인",    icon: "🪙", reward: { type: "coin", value: 3 } },
+        { tier: "normal", label: "+8 코인",    icon: "🪙", reward: { type: "coin", value: 8 } },
+        { tier: "normal", label: "+20 XP",     icon: "✨", reward: { type: "xp", value: 20 } },
+        { tier: "good",   label: "+15 코인",   icon: "💰", reward: { type: "coin", value: 15 } },
+        { tier: "good",   label: "+50 XP",     icon: "🌟", reward: { type: "xp", value: 50 } },
+        { tier: "good",   label: "XP 2배 (다음 배틀)", icon: "🔥", reward: { type: "xp_mult", value: 2 } },
+        { tier: "jackpot",label: "+50 코인!",  icon: "💎", reward: { type: "coin", value: 50 } },
+        { tier: "jackpot",label: "랜덤 칭호!", icon: "🏅", reward: { type: "title", value: "배틀 챔피언" } },
+      ];
+
+      const spinRoulette = () => {
+        const roll = Math.random() * 100;
+        let pool;
+        if (roll < 70) pool = ROULETTE_REWARDS.filter(r => r.tier === "normal");
+        else if (roll < 95) pool = ROULETTE_REWARDS.filter(r => r.tier === "good");
+        else pool = ROULETTE_REWARDS.filter(r => r.tier === "jackpot");
+        return pool[Math.floor(Math.random() * pool.length)];
+      };
+
+
 
     // ═══════════════════════════════════════
     // 🎙️ Voice Service with Web Speech API (Enhanced Korean TTS)
@@ -3202,6 +3298,21 @@
       const [lastDamage, setLastDamage] = useState(null); // { target: "my"|"opp", amount, type: "strong"|"weak"|"ultimate" }
       const [battleAnim, setBattleAnim] = useState(null); // "attack-my"|"attack-opp"|"hit-my"|"hit-opp"|"ultimate"|"victory"|"defeat"
       const battleTimerRef = useRef(null);
+      // 🎰 룰렛 + 🔁 복수전/라이벌 state
+      const [showRoulette, setShowRoulette] = useState(false);
+      const [rouletteResult, setRouletteResult] = useState(null);
+      const [rouletteSpinning, setRouletteSpinning] = useState(false);
+      const [rouletteAngle, setRouletteAngle] = useState(0);
+      const [rematchData, setRematchData] = useState(null); // { oppUid, oppName, ts, multiplier }
+      const [rivalData, setRivalData] = useState({}); // { [oppUid]: { name, count, since } }
+      const [battleHistory, setBattleHistory] = useState([]); // [{ oppUid, oppName, winner, ts }]
+      const [activeSkillUsed, setActiveSkillUsed] = useState(false); // 배틀당 1회 액티브 스킬
+      const [skillActivated, setSkillActivated] = useState(false); // 액티브 스킬 발동 표시
+      const [oppSkillSealed, setOppSkillSealed] = useState(false); // 구미호 봉인
+      const [xpMultiplier, setXpMultiplier] = useState(1); // 룰렛 보상 XP 배율
+      const [reviveUsed, setReviveUsed] = useState(false); // isis 부활 사용 여부
+      const [bookArenaActive, setBookArenaActive] = useState(false); // 책 아레나 진입 여부
+      const [bookArenaBook, setBookArenaBook] = useState(null); // 이번 주 아레나 책
       const [bookProgress, setBookProgress] = useState({ 1: 0, 2: 0, 3: 0 });
       const [bookPage, setBookPage] = useState(0);
       const [discussionState, setDiscussionState] = useState({});
@@ -3503,6 +3614,9 @@
             // 코디 슬롯 로드
             if (data.outfitSlots) setOutfitSlots(data.outfitSlots);
             if (data.activeOutfitSlot !== undefined) setActiveOutfitSlot(data.activeOutfitSlot);
+            if (data.rivalData) setRivalData(data.rivalData);
+            if (data.battleHistory) setBattleHistory(data.battleHistory);
+            if (data.xpMultiplier) setXpMultiplier(data.xpMultiplier);
           }
           setDataLoaded(true);
         })();
@@ -3544,11 +3658,14 @@
             ownedAvatars,
             lastLoginDate,
             outfitSlots,
-            activeOutfitSlot
+            activeOutfitSlot,
+            rivalData,
+            battleHistory,
+            xpMultiplier
           });
         }, 1000);
         return () => clearTimeout(saveTimerRef.current);
-      }, [profile, xp, level, currentTitle, earnedBadges, streak, lastCompletionDate, achievedMilestones, weeklyReadCount, weekStartDate, battleWins, battleLosses, battleDraws, weeklyBattleWins, lastBattleDate, battleTodayCount, lastBattlePlayDate, battleTodayPlayCount, bookProgress, discussionState, dataLoaded, dailyMissions, missionDate, discussionStarState, quizState, coins, ownedItems, equippedItems, ownedAvatars, lastLoginDate, outfitSlots, activeOutfitSlot]);
+      }, [profile, xp, level, currentTitle, earnedBadges, streak, lastCompletionDate, achievedMilestones, weeklyReadCount, weekStartDate, battleWins, battleLosses, battleDraws, weeklyBattleWins, lastBattleDate, battleTodayCount, lastBattlePlayDate, battleTodayPlayCount, bookProgress, discussionState, dataLoaded, dailyMissions, missionDate, discussionStarState, quizState, coins, ownedItems, equippedItems, ownedAvatars, lastLoginDate, outfitSlots, activeOutfitSlot, rivalData, battleHistory, xpMultiplier]);
 
       // Feature 1: Initialize Daily Missions
       useEffect(() => {
@@ -4512,6 +4629,26 @@
         ROUNDS: 5,
       };
 
+
+      // ═══════════════════════════════════════
+      // 📖 책 기반 배틀 맵 (아레나) 시스템
+      // ═══════════════════════════════════════
+      const getWeeklyArenaBook = () => {
+        // 주간 추천 책 — 완독률 기준 자동 선정 (매주 월요일 변경)
+        const weekNum = Math.floor((Date.now() - new Date("2026-01-05").getTime()) / (7 * 24 * 60 * 60 * 1000));
+        const completedBooks = BOOKS.filter(b => (bookProgress[b.id] || 0) >= 100);
+        if (completedBooks.length === 0) return null;
+        return completedBooks[weekNum % completedBooks.length];
+      };
+
+      const canEnterArena = () => {
+        const arenaBook = getWeeklyArenaBook();
+        if (!arenaBook) return false;
+        return (bookProgress[arenaBook.id] || 0) >= 100;
+      };
+
+      const ARENA_BADGE = { name: "아레나 챔피언", icon: "🏟️", desc: "책 아레나 승리" };
+
       const calcMaxHP = (booksCompleted, playerLevel) => {
         const bookBonus = Math.min((booksCompleted || 0) * BATTLE_V2.BOOK_HP_BONUS, BATTLE_V2.MAX_BOOK_BONUS);
         const lvlBonus = Math.min((playerLevel || 1) * BATTLE_V2.LEVEL_HP_BONUS, BATTLE_V2.MAX_LEVEL_BONUS);
@@ -4701,12 +4838,21 @@
           if (!opp) throw new Error("상대를 찾지 못했어요. 잠시 후 다시 시도해줘!");
           setBattleOpponent(opp);
 
-          // v2: HP 초기화
+          // v2: HP 초기화 (아바타 스킬 보너스 포함)
           const completedBooks = BOOKS.filter(b => (bookProgress[b.id] || 0) >= 100);
-          const mHP = calcMaxHP(completedBooks.length, level);
-          const oHP = calcMaxHP(0, opp.level || 1); // 상대는 독서 데이터 없으므로 레벨만 반영
+          let mHP = calcMaxHP(completedBooks.length, level);
+          let oHP = calcMaxHP(0, opp.level || 1);
+          // 🎮 스킬 HP 보너스 적용
+          const myBattleSkill = getAvatarSkill(profile?.avatar);
+          const oppBattleSkill = getAvatarSkill(opp.avatar);
+          if (myBattleSkill?.effect?.type === "hp_boost") mHP += myBattleSkill.effect.value;
+          if (myBattleSkill?.effect?.type === "dual_boost" && myBattleSkill.effect.value.hp) mHP += myBattleSkill.effect.value.hp;
+          if (oppBattleSkill?.effect?.type === "hp_boost") oHP += oppBattleSkill.effect.value;
+          if (oppBattleSkill?.effect?.type === "dual_boost" && oppBattleSkill.effect.value.hp) oHP += oppBattleSkill.effect.value.hp;
           setMyHP(mHP); setMyMaxHP(mHP);
           setOppHP(oHP); setOppMaxHP(oHP);
+          // 스킬 상태 리셋
+          setActiveSkillUsed(false); setSkillActivated(false); setOppSkillSealed(false); setReviveUsed(false);
 
           const myAvatarId = sanitizeAvatarId(profile?.avatar);
           const oppAvatarId = sanitizeAvatarId(opp.avatar);
@@ -4733,12 +4879,16 @@
 
           setBattlePhase("play-round");
 
-          // 첫 라운드 타이머 시작
+          // 첫 라운드 타이머 시작 (스킬 시간 보너스 포함)
+          const timeSkill = getAvatarSkill(profile?.avatar);
+          const timeBonus = (timeSkill?.effect?.type === "time_bonus") ? timeSkill.effect.value
+            : (timeSkill?.effect?.type === "multi_hint" && timeSkill.effect.value.time) ? timeSkill.effect.value.time
+            : (timeSkill?.effect?.type === "mega_buff" && timeSkill.effect.value.time) ? timeSkill.effect.value.time : 0;
           const firstRound = result.rounds[0];
           if (firstRound?.type === "qa" || firstRound?.type === "complete") {
-            setTimeout(() => startBattleTimer(BATTLE_V2.TIMER_SECONDS), 300);
+            setTimeout(() => startBattleTimer(BATTLE_V2.TIMER_SECONDS + timeBonus), 300);
           } else if (firstRound?.type === "debate" && debateOwner === "me") {
-            setTimeout(() => startBattleTimer(BATTLE_V2.TIMER_ULTIMATE), 300);
+            setTimeout(() => startBattleTimer(BATTLE_V2.TIMER_ULTIMATE + timeBonus), 300);
           }
         } catch (e) {
           console.error("launchInteractiveBattle 실패:", e);
@@ -4834,21 +4984,21 @@
           }
         }
 
-        // ── HP 데미지 계산 ──
+        // ── HP 데미지 계산 (스킬 적용) ──
         let myDmg = 0;   // 내가 받는 데미지
         let oppDmg = 0;  // 상대가 받는 데미지
+        const mySkill = getAvatarSkill(profile?.avatar);
+        const oppSkillData = oppSkillSealed ? null : getAvatarSkill(battleOpponent?.avatar);
+        const isDebateRound = roundResult.type === "debate";
 
         if (roundResult.type === "qa" || roundResult.type === "complete") {
-          // 내가 맞히면 상대에게 강공격, 틀리면 약공격
           oppDmg = roundResult.myCorrect
             ? rollDamage(BATTLE_V2.DMG_STRONG)
             : rollDamage(BATTLE_V2.DMG_WEAK);
-          // 상대가 맞히면 나에게 강공격, 틀리면 약공격
           myDmg = roundResult.oppCorrect
             ? rollDamage(BATTLE_V2.DMG_STRONG)
             : rollDamage(BATTLE_V2.DMG_WEAK);
         } else {
-          // 토론: 이긴 쪽이 강공격, 진 쪽이 약공격
           if (roundResult.judge === "my") {
             oppDmg = rollDamage(BATTLE_V2.DMG_STRONG);
             myDmg = rollDamage(BATTLE_V2.DMG_WEAK);
@@ -4859,6 +5009,49 @@
             oppDmg = rollDamage(BATTLE_V2.DMG_WEAK);
             myDmg = rollDamage(BATTLE_V2.DMG_WEAK);
           }
+        }
+
+        // 🎮 내 패시브 스킬 적용
+        if (mySkill?.skillType === "passive") {
+          const e = mySkill.effect;
+          if (e.type === "dmg_boost") oppDmg = Math.round(oppDmg * (1 + e.value));
+          if (e.type === "correct_dmg_boost" && roundResult.myCorrect) oppDmg = Math.round(oppDmg * (1 + e.value));
+          if (e.type === "correct_flat_bonus" && roundResult.myCorrect) oppDmg += e.value;
+          if (e.type === "shield") myDmg = Math.round(myDmg * (1 - e.value));
+          if (e.type === "wrong_shield" && !roundResult.myCorrect) myDmg = Math.round(myDmg * (1 - e.value));
+          if (e.type === "opp_dmg_boost") oppDmg = Math.round(oppDmg * (1 + e.value));
+          if (e.type === "debate_dmg_boost" && isDebateRound) oppDmg = Math.round(oppDmg * (1 + e.value));
+          if (e.type === "draw_bonus_atk" && roundResult.judge === "draw") oppDmg += e.value;
+          if (e.type === "draw_to_win" && roundResult.judge === "draw") { roundResult.judge = "my"; oppDmg += 10; }
+          if (e.type === "streak_double" && roundAnswers.length > 0 && roundAnswers[roundAnswers.length-1].judge === "my" && roundResult.judge === "my") oppDmg *= 2;
+          if (e.type === "last_stand") {
+            const curHP = myHP - myDmg; // 예상 남은 HP
+            const threshold = myMaxHP * 0.3;
+            if (curHP <= threshold && curHP > 0) oppDmg = Math.round(oppDmg * e.value);
+          }
+          if (e.type === "regen") setMyHP(prev => Math.min(myMaxHP, prev + e.value));
+          if (e.type === "lifesteal") { const steal = Math.round(oppDmg * e.value); setMyHP(prev => Math.min(myMaxHP, prev + steal)); }
+          if (e.type === "debate_lifesteal" && isDebateRound && roundResult.judge === "my") setMyHP(prev => Math.min(myMaxHP, prev + e.value));
+          if (e.type === "double_strike" && roundResult.myCorrect) oppDmg = Math.round(oppDmg * 2);
+          if (e.type === "dual_boost") {
+            if (e.value.dmg) oppDmg = Math.round(oppDmg * (1 + e.value.dmg));
+            if (e.value.shield) myDmg = Math.round(myDmg * (1 - e.value.shield));
+          }
+          if (e.type === "opp_correct_nerf" && roundResult.oppCorrect) myDmg = Math.round(myDmg * (1 - e.value));
+          if (e.type === "pierce") {} // 상대 방어 무시 (상대 shield 무효화는 위에서 이미 처리)
+        }
+
+        // 🎮 상대 패시브 스킬 적용 (봉인 안 된 경우)
+        if (oppSkillData?.skillType === "passive") {
+          const e = oppSkillData.effect;
+          if (e.type === "shield") oppDmg = Math.round(oppDmg * (1 - e.value));
+          if (e.type === "dmg_boost") myDmg = Math.round(myDmg * (1 + e.value));
+          if (e.type === "regen") setOppHP(prev => Math.min(oppMaxHP, prev + e.value));
+        }
+
+        // 책 아레나 보상 배율
+        if (bookArenaActive) {
+          oppDmg = Math.round(oppDmg * 1.2); // 아레나에서 공격력 20% 증가
         }
 
         // HP 적용 (0 이하로 내려가지 않게)
@@ -4933,12 +5126,16 @@
 
         if (nextIdx < (interactiveRounds?.length || 0)) {
           setInteractiveRoundIdx(nextIdx);
-          // 다음 라운드 타이머 시작
+          // 다음 라운드 타이머 시작 (스킬 보너스)
           const nextRound = interactiveRounds[nextIdx];
+          const tSkill = getAvatarSkill(profile?.avatar);
+          const tBonus = (tSkill?.effect?.type === "time_bonus") ? tSkill.effect.value
+            : (tSkill?.effect?.type === "multi_hint" && tSkill.effect.value.time) ? tSkill.effect.value.time
+            : (tSkill?.effect?.type === "mega_buff" && tSkill.effect.value.time) ? tSkill.effect.value.time : 0;
           if (nextRound.type === "qa" || nextRound.type === "complete") {
-            startBattleTimer(BATTLE_V2.TIMER_SECONDS);
+            startBattleTimer(BATTLE_V2.TIMER_SECONDS + tBonus);
           } else if (nextRound.type === "debate" && miniDebateOwner === "me") {
-            startBattleTimer(BATTLE_V2.TIMER_ULTIMATE);
+            startBattleTimer(BATTLE_V2.TIMER_ULTIMATE + tBonus);
           }
           // AI가 미니토론 담당이면 자동 처리
           if (nextRound.type === "debate" && miniDebateOwner === "ai") {
@@ -4993,11 +5190,46 @@
         if (winner === "my") {
           setBattleWins(w => w + 1);
           setWeeklyBattleWins(w => w + 1);
+          // 🎰 승리 룰렛 활성화
+          setShowRoulette(true);
         } else if (winner === "opp") {
           setBattleLosses(l => l + 1);
+          // 🔁 복수전 등록
+          if (battleOpponent) {
+            setRematchData({
+              oppUid: battleOpponent.uid,
+              oppName: battleOpponent.name,
+              ts: Date.now(),
+              multiplier: 1.5
+            });
+          }
         } else {
           setBattleDraws(d => d + 1);
         }
+
+        // 🔁 라이벌 체크 — 같은 상대 3회 이상 대전
+        if (battleOpponent?.uid) {
+          const oppUid = battleOpponent.uid;
+          setBattleHistory(prev => {
+            const newHist = [...prev, { oppUid, oppName: battleOpponent.name, winner, ts: Date.now() }].slice(-50);
+            const vsCount = newHist.filter(h => h.oppUid === oppUid).length;
+            if (vsCount >= 3) {
+              setRivalData(rd => ({
+                ...rd,
+                [oppUid]: { name: battleOpponent.name, count: vsCount, since: rd[oppUid]?.since || Date.now() }
+              }));
+            }
+            return newHist;
+          });
+        }
+
+        // 스킬 관련 리셋
+        setActiveSkillUsed(false);
+        setSkillActivated(false);
+        setOppSkillSealed(false);
+        setReviveUsed(false);
+        setBookArenaActive(false);
+
         setBattlePhase("result");
       };
 
@@ -5095,6 +5327,32 @@
                 {battleError && !isAdmin && (
                   <div style={{ background: "rgba(239,68,68,0.2)", border: "1px solid rgba(239,68,68,0.5)", borderRadius: 12, padding: 12, fontSize: 12, marginBottom: 12 }}>{battleError}</div>
                 )}
+                {/* 📖 책 아레나 */}
+                {(() => {
+                  const arenaBook = getWeeklyArenaBook();
+                  const eligible = canEnterArena();
+                  if (!arenaBook) return null;
+                  return (
+                    <div style={{ background: eligible ? "linear-gradient(135deg, rgba(34,197,94,0.25), rgba(16,185,129,0.15))" : "rgba(255,255,255,0.05)", borderRadius: 14, padding: 12, marginBottom: 14, border: eligible ? "1px solid rgba(34,197,94,0.4)" : "1px solid rgba(255,255,255,0.1)" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+                        <span style={{ fontSize: 20 }}>🏟️</span>
+                        <div>
+                          <div style={{ fontSize: 12, fontWeight: 900, color: "#22c55e" }}>이번 주 책 아레나</div>
+                          <div style={{ fontSize: 11, opacity: 0.8, fontWeight: 700 }}>{arenaBook.title} — 보상 3배!</div>
+                        </div>
+                      </div>
+                      {eligible ? (
+                        <button onClick={() => { setBookArenaActive(true); setBookArenaBook(arenaBook); setBattlePhase("debate-choice"); }}
+                          style={{ width: "100%", padding: "10px 14px", borderRadius: 10, border: "none", background: "linear-gradient(135deg, #22c55e, #16a34a)", color: "white", fontSize: 13, fontWeight: 800, cursor: "pointer" }}>
+                          🏟️ 아레나 입장 (보상 3배!)
+                        </button>
+                      ) : (
+                        <div style={{ fontSize: 11, opacity: 0.6, textAlign: "center", padding: 6 }}>📖 이 책을 완독하면 입장할 수 있어요!</div>
+                      )}
+                    </div>
+                  );
+                })()}
+
                 <button onClick={() => launchBattle("watch")} disabled={battleLoading}
                   style={{ width: "100%", padding: "14px 16px", borderRadius: 14, border: "none", background: "linear-gradient(135deg, #a855f7, #7c3aed)", color: "white", fontSize: 15, fontWeight: 800, cursor: "pointer", marginBottom: 10, opacity: battleLoading ? 0.6 : 1, display:"flex", alignItems:"center", justifyContent:"flex-start", gap:10 }}>
                   <img src="icons/battle-spectate.png" alt="" style={{width:40,height:40,objectFit:"contain",flexShrink:0}} /> 관전하기 (실시간 중계)
@@ -5572,10 +5830,15 @@
                     <div style={{ textAlign: "center", padding: "2px 0 1px", fontSize: 7, fontWeight: 700, color: badgeColor, opacity: 0.9, letterSpacing: 0.4 }}>
                       {getTitle(lvl)}
                     </div>
-                    {/* 기술 (축약) */}
+                    {/* 고유 스킬 + 기술 */}
                     <div style={{ padding: "0 4px 3px" }}>
+                      {/* 고유 스킬 */}
+                      <div style={{ display: "flex", alignItems: "center", gap: 2, padding: "2px 3px", borderTop: `1px solid ${badgeColor}33`, background: "rgba(251,191,36,0.1)" }}>
+                        <span style={{ fontSize: 8 }}>{(isOpp ? getAvatarSkill(opp?.avatar) : getAvatarSkill(profile?.avatar))?.icon || "⭐"}</span>
+                        <span style={{ fontSize: 7, fontWeight: 800, color: "#fde047" }}>{(isOpp ? getAvatarSkill(opp?.avatar) : getAvatarSkill(profile?.avatar))?.name || "기본"}</span>
+                      </div>
                       {skills.map((sk, i) => (
-                        <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "2px 3px", borderTop: i === 0 ? `1px solid ${badgeColor}33` : "none", borderBottom: `1px solid ${badgeColor}22` }}>
+                        <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "2px 3px", borderBottom: `1px solid ${badgeColor}22` }}>
                           <div style={{ display: "flex", alignItems: "center", gap: 2 }}>
                             <span style={{ fontSize: 7 }}>{sk.icon}</span>
                             <span style={{ fontSize: 7, fontWeight: 700 }}>{sk.name}</span>
@@ -5661,7 +5924,10 @@
                   <div key={i} style={{ background: "rgba(255,255,255,0.08)", borderRadius: 12, padding: 12, marginBottom: 10, fontSize: 12 }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
                       <div style={{ fontWeight: 800, opacity: 0.9 }}>라운드 {i + 1} · {r.type === "qa" ? (r.book || "책 Q&A") : r.type === "complete" ? (r.book || "문장 완성") : "미니 토론"}</div>
-                      <div style={{ fontWeight: 800, color: r.judge === "my" ? "#22c55e" : r.judge === "opp" ? "#ef4444" : "#fde047" }}>{r.judge === "my" ? "승" : r.judge === "opp" ? "패" : "무"}</div>
+                      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                        <span style={{ fontSize: 9, opacity: 0.6 }}>{getAvatarSkill(profile?.avatar)?.icon}</span>
+                        <div style={{ fontWeight: 800, color: r.judge === "my" ? "#22c55e" : r.judge === "opp" ? "#ef4444" : "#fde047" }}>{r.judge === "my" ? "승" : r.judge === "opp" ? "패" : "무"}</div>
+                      </div>
                     </div>
                     {r.myDmg != null && (
                       <div style={{ display: "flex", gap: 12, fontSize: 11, opacity: 0.8 }}>
@@ -5672,6 +5938,127 @@
                     {r.reason && <div style={{ opacity: 0.7, lineHeight: 1.5, marginTop: 4 }}>{r.reason}</div>}
                   </div>
                 ))}
+                {/* 🎮 스킬 정보 표시 */}
+                <div style={{ background: "rgba(255,255,255,0.08)", borderRadius: 12, padding: 12, marginBottom: 10, display: "flex", gap: 12, alignItems: "center" }}>
+                  {(() => {
+                    const mSkill = getAvatarSkill(profile?.avatar);
+                    const oSkill = getAvatarSkill(battleOpponent?.avatar);
+                    return (<>
+                      <div style={{ flex: 1, textAlign: "center" }}>
+                        <div style={{ fontSize: 10, opacity: 0.7, fontWeight: 700, marginBottom: 4 }}>내 스킬</div>
+                        <div style={{ fontSize: 18 }}>{mSkill.icon}</div>
+                        <div style={{ fontSize: 10, fontWeight: 800, marginTop: 2 }}>{mSkill.name}</div>
+                        <div style={{ fontSize: 8, opacity: 0.7 }}>{mSkill.desc}</div>
+                      </div>
+                      <div style={{ fontSize: 12, opacity: 0.3, fontWeight: 900 }}>VS</div>
+                      <div style={{ flex: 1, textAlign: "center" }}>
+                        <div style={{ fontSize: 10, opacity: 0.7, fontWeight: 700, marginBottom: 4 }}>상대 스킬</div>
+                        <div style={{ fontSize: 18 }}>{oSkill.icon}</div>
+                        <div style={{ fontSize: 10, fontWeight: 800, marginTop: 2 }}>{oSkill.name}</div>
+                        <div style={{ fontSize: 8, opacity: 0.7 }}>{oSkill.desc}</div>
+                      </div>
+                    </>);
+                  })()}
+                </div>
+
+                {/* 🎰 승리 보상 룰렛 */}
+                {showRoulette && battleWinner === "my" && (() => {
+                  const handleSpin = () => {
+                    if (rouletteSpinning) return;
+                    setRouletteSpinning(true);
+                    const result = spinRoulette();
+                    // 스킬 보상 배율 적용
+                    const myRSkill = getAvatarSkill(profile?.avatar);
+                    let rewardMult = 1;
+                    if (myRSkill?.effect?.type === "reward_mult") rewardMult = myRSkill.effect.value;
+                    if (myRSkill?.effect?.type === "double_coin") rewardMult = 2;
+                    // 아레나 3배 보상
+                    if (bookArenaActive) rewardMult *= 3;
+                    // 라이벌 2배 보상
+                    if (battleOpponent?.uid && rivalData[battleOpponent.uid]) rewardMult *= 2;
+                    // 복수전 1.5배 보상
+                    if (rematchData?.oppUid === battleOpponent?.uid) rewardMult *= 1.5;
+
+                    const finalResult = { ...result };
+                    if (result.reward.type === "coin") finalResult.reward = { ...result.reward, value: Math.round(result.reward.value * rewardMult) };
+                    if (result.reward.type === "xp") finalResult.reward = { ...result.reward, value: Math.round(result.reward.value * rewardMult * xpMultiplier) };
+
+                    // 애니메이션: 2초 스핀 후 결과
+                    setRouletteAngle(prev => prev + 1440 + Math.random() * 360);
+                    setTimeout(() => {
+                      setRouletteResult(finalResult);
+                      setRouletteSpinning(false);
+                      // 보상 적용
+                      if (finalResult.reward.type === "coin") setCoins(c => (c || 0) + finalResult.reward.value);
+                      if (finalResult.reward.type === "xp") setXp(x => (x || 0) + finalResult.reward.value);
+                      if (finalResult.reward.type === "xp_mult") setXpMultiplier(finalResult.reward.value);
+                      if (finalResult.reward.type === "title") setCurrentTitle(finalResult.reward.value);
+                      setShowRoulette(false);
+                    }, 2200);
+                  };
+                  return (
+                    <div style={{ background: "linear-gradient(135deg, rgba(234,179,8,0.3), rgba(251,191,36,0.2))", borderRadius: 16, padding: 16, marginBottom: 12, textAlign: "center", border: "1px solid rgba(251,191,36,0.4)" }}>
+                      <div style={{ fontSize: 14, fontWeight: 900, color: "#fde047", marginBottom: 10 }}>🎰 승리 보상 룰렛!</div>
+                      {!rouletteResult ? (
+                        <div>
+                          <div style={{
+                            width: 80, height: 80, margin: "0 auto 12px", borderRadius: "50%",
+                            background: "conic-gradient(#fde047, #22c55e, #60a5fa, #f472b6, #a78bfa, #fb923c, #fde047)",
+                            transform: `rotate(${rouletteAngle}deg)`,
+                            transition: rouletteSpinning ? "transform 2s cubic-bezier(0.17, 0.67, 0.12, 0.99)" : "none",
+                            display: "flex", alignItems: "center", justifyContent: "center",
+                            boxShadow: "0 0 20px rgba(251,191,36,0.5)"
+                          }}>
+                            <div style={{ width: 30, height: 30, borderRadius: "50%", background: "#1e1b4b", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16 }}>🎰</div>
+                          </div>
+                          <button onClick={handleSpin} disabled={rouletteSpinning}
+                            style={{ padding: "10px 30px", borderRadius: 12, border: "2px solid #fde047", background: rouletteSpinning ? "rgba(251,191,36,0.2)" : "linear-gradient(135deg, #f59e0b, #eab308)", color: rouletteSpinning ? "#fde047" : "#1e1b4b", fontSize: 14, fontWeight: 900, cursor: rouletteSpinning ? "default" : "pointer" }}>
+                            {rouletteSpinning ? "돌리는 중..." : "룰렛 돌리기!"}
+                          </button>
+                        </div>
+                      ) : (
+                        <div style={{ animation: "bq-fade-up 0.5s ease-out" }}>
+                          <div style={{ fontSize: 40, marginBottom: 8 }}>{rouletteResult.icon}</div>
+                          <div style={{ fontSize: 16, fontWeight: 900, color: rouletteResult.tier === "jackpot" ? "#fde047" : rouletteResult.tier === "good" ? "#22c55e" : "#e2e8f0" }}>
+                            {rouletteResult.tier === "jackpot" ? "🎉 잭��!" : rouletteResult.tier === "good" ? "��� 좋은 보상!" : "보상 획득!"}
+                          </div>
+                          <div style={{ fontSize: 18, fontWeight: 900, marginTop: 4 }}>{rouletteResult.label}</div>
+                          {(bookArenaActive || (battleOpponent?.uid && rivalData[battleOpponent.uid])) && (
+                            <div style={{ fontSize: 10, color: "#fde047", marginTop: 4, fontWeight: 700 }}>
+                              {bookArenaActive ? "📖 책 아레나 보상 3배! " : ""}{battleOpponent?.uid && rivalData[battleOpponent.uid] ? "🔥 라이벌 보상 2배!" : ""}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
+
+                {/* 🔁 복수전 버튼 (패배 시) */}
+                {battleWinner === "opp" && battleOpponent && (
+                  <button onClick={() => {
+                    resetBattleSession();
+                    setBattleOpponent(battleOpponent);
+                    setRematchData({ oppUid: battleOpponent.uid, oppName: battleOpponent.name, ts: Date.now(), multiplier: 1.5 });
+                    setBattlePhase("debate-choice");
+                  }} style={{
+                    width: "100%", padding: 14, borderRadius: 14, border: "2px solid #f59e0b",
+                    background: "linear-gradient(135deg, rgba(245,158,11,0.3), rgba(234,88,12,0.2))",
+                    color: "#fde047", fontSize: 14, fontWeight: 800, cursor: "pointer", marginBottom: 10,
+                    display: "flex", alignItems: "center", justifyContent: "center", gap: 8
+                  }}>
+                    🔥 복수전! (보상 1.5배)
+                  </button>
+                )}
+
+                {/* 🏆 라이벌 표시 */}
+                {battleOpponent?.uid && rivalData[battleOpponent.uid] && (
+                  <div style={{ background: "rgba(239,68,68,0.15)", borderRadius: 12, padding: 10, marginBottom: 10, textAlign: "center", border: "1px solid rgba(239,68,68,0.3)" }}>
+                    <div style={{ fontSize: 11, fontWeight: 900, color: "#fca5a5" }}>🔥 라이벌! — {rivalData[battleOpponent.uid].count}회 대전</div>
+                    <div style={{ fontSize: 10, opacity: 0.7, marginTop: 2 }}>라이벌 배틀은 보상 2배!</div>
+                  </div>
+                )}
+
                 <button onClick={exitBattleV2} style={{ width: "100%", padding: 14, borderRadius: 14, border: "none", background: "white", color: "#4c1d95", fontSize: 14, fontWeight: 800, cursor: "pointer", marginTop: 10 }}>랭킹으로 돌아가기</button>
               </div>
               );

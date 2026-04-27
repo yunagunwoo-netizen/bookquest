@@ -1,6 +1,7 @@
 # BookQuest Changelog
 
 ## 2026-04-27
+- 배틀 4대 기능 통합 구현: ①아바타 고유 스킬 52종(AVATAR_SKILLS) — 패시브/액티브 스킬 개별 매핑, 데미지 계산 시 자동 적용(dmg_boost/shield/regen/lifesteal/streak_double/last_stand/dual_boost 등 20+가지 효과). HP 초기화에 스킬 HP 보너스 반영, 타이머에 시간 보너스 반영. ②승리 보상 룰렛(ROULETTE_REWARDS) — 70% 일반/25% 좋은/5% 잭팟 3티어, 코인/XP/XP배율/칭호 보상, 스킬·아레나·라이벌 보상 배율 중첩, 코닉 그라데이션 스핀 애니메이션. ③복수전+라이벌 시스템 — 패배 시 복수전 버튼(1.5배 보상), 동일 상대 3회 이상 대전 시 라이벌 자동 등록(2배 보상), battleHistory 50건 추적, Firestore 저장. ④책 기반 배틀 맵(아레나) — getWeeklyArenaBook 주간 자동 선정, 완독자 전용 입장, 아레나 3배 보상 + 공격력 20% 증가. ResultCard에 고유 스킬 골드 하이라이트 표시. Firestore에 rivalData/battleHistory/xpMultiplier 필드 추가.
 - 배틀 5라운드 확장: 기존 3라운드(Q&A 2 + 토론 1) → 5라운드(Q&A 2 + 문장완성 2 + 토론 1). Cloud Function 프롬프트 + 검증 로직 업데이트. 클라이언트에 complete 타입 UI(파란 테마, 빈칸 시각화, 3지선다), 채점, 타이머, 결과 표시 전부 구현.
 - 배틀 결과 드라마틱 연출: 승리 시 24개 폭죽 파티클 + 승자 카드 줌인/글로우 + 패자 그레이스케일, 결과 타이틀 골드 펄스(승)/흔들림(패), +5코인 보상 표시, 내러티브 지연 페이드인. CSS 7종 추가(bq-confetti/result-glow/result-zoom/fade-up/victory-pulse/defeat-shake/result-card-win).
 - 관전 모드 카드 헤더: playing phase 상단에 미니 아바타 카드 대면 헤더 추가(아이콘+이름+Lv+레어리티). 채팅 중계 유지.
