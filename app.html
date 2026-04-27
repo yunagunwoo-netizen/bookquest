@@ -8975,18 +8975,52 @@
                   </div>
                 </div>
                 <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 12 }}>
-                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>📊 독서 진행도</h4>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>📊 독서 진행도 (현재 {currentWeek}주차)</h4>
                   {BOOKS.map((book, i) => (
                     <div key={i} style={{ marginBottom: 8 }}>
                       <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, marginBottom: 4 }}>
-                        <span style={{ fontWeight: 600 }}>{book.title}</span>
-                        <span style={{ color: "#667eea" }}>{bookProgress[book.id] || 0}%</span>
+                        <span style={{ fontWeight: 600, opacity: book.week <= currentWeek ? 1 : 0.4 }}>
+                          [{book.week}주차] {book.title}
+                        </span>
+                        <span style={{ color: bookProgress[book.id] === 100 ? "#22c55e" : "#667eea", fontWeight: 700 }}>
+                          {bookProgress[book.id] || 0}%
+                        </span>
                       </div>
                       <div style={{ height: 6, background: "#f0f0f0", borderRadius: 3 }}>
-                        <div style={{ height: "100%", width: (bookProgress[book.id] || 0) + "%", background: "linear-gradient(90deg, #667eea, #764ba2)", borderRadius: 3 }} />
+                        <div style={{ height: "100%", width: (bookProgress[book.id] || 0) + "%", background: bookProgress[book.id] === 100 ? "#22c55e" : "linear-gradient(90deg, #667eea, #764ba2)", borderRadius: 3 }} />
                       </div>
                     </div>
                   ))}
+                  <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 8 }}>
+                    <button onClick={() => {
+                      const booksToComplete = BOOKS.filter(b => b.week <= currentWeek);
+                      const newProgress = { ...bookProgress };
+                      booksToComplete.forEach(b => { newProgress[b.id] = 100; });
+                      setBookProgress(newProgress);
+                      alert(`${currentWeek}주차까지 ${booksToComplete.length}권 완독 처리 완료!`);
+                    }}
+                      style={{ padding: "12px", borderRadius: 10, border: "1.5px solid #22c55e", background: "#22c55e08", color: "#22c55e", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
+                      📚 현재 주차({currentWeek}주차)까지 완독 처리
+                    </button>
+                    <button onClick={() => {
+                      const newProgress = { ...bookProgress };
+                      BOOKS.forEach(b => { newProgress[b.id] = 100; });
+                      setBookProgress(newProgress);
+                      alert(`전체 ${BOOKS.length}권 완독 처리 완료!`);
+                    }}
+                      style={{ padding: "10px", borderRadius: 10, border: "1.5px solid #667eea", background: "#667eea08", color: "#667eea", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
+                      📖 전체 책 완독 처리
+                    </button>
+                    <button onClick={() => {
+                      const newProgress = {};
+                      BOOKS.forEach(b => { newProgress[b.id] = 0; });
+                      setBookProgress(newProgress);
+                      alert("독서 진행도 초기화 완료!");
+                    }}
+                      style={{ padding: "10px", borderRadius: 10, border: "1.5px solid #f59e0b", background: "#f59e0b08", color: "#f59e0b", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
+                      🔄 진행도 초기화
+                    </button>
+                  </div>
                 </div>
                 <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
                   <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12, color: "#ef4444" }}>⚠️ 위험 영역</h4>
