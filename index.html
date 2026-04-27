@@ -3828,6 +3828,8 @@
       const [startDate] = useState(new Date(2026, 2, 23));
       const [isListening, setIsListening] = useState(false);
       const [isSpeaking, setIsSpeaking] = useState(false);
+      const [mobileDebugLog, setMobileDebugLog] = useState([]);
+      const mobileLog = (msg) => { console.log("[MOBILE]", msg); setMobileDebugLog(prev => [...prev.slice(-4), `${new Date().toLocaleTimeString()}: ${msg}`]); };
       const [voiceSupported] = useState(VoiceService.isSupported());
       const [showKeyboard, setShowKeyboard] = useState(false);
       const [dataLoaded, setDataLoaded] = useState(false);
@@ -4670,21 +4672,33 @@
           .map(m => ({ role: m.role, text: m.text }));
         const roundNumber = newMsgs.filter(m => m.role === "user").length; // 1, 2, 3...
 
+        mobileLog("API 호출 시작...");
         const aiResponse = await CloudAPI.discussionCoach(
           userMsg, topic, activeDiscussionBook.title, activeDiscussionBook.summary, isDeep, profile?.name || "친구", history, roundNumber
         );
+        mobileLog("API 응답: " + aiResponse.substring(0, 30) + "...");
         setChatMessages(prev => [...prev, { role: "ai", text: aiResponse, expression: "speaking" }]);
+        mobileLog("AI 응답 표시 완료");
         try { getAppSound().sfx.chat_receive(); } catch(e) {}
 
-        // AI 피드백만 읽기 — speakId로 stale 콜백 방지
+        // 📱 AI 피드백 TTS — 완전히 분리된 setTimeout으로 실행 (모바일 크래시 방지)
         const speakId = Date.now();
         currentSpeakIdRef.current = speakId;
-        VoiceService.speak(aiResponse, () => {
-          // 이 콜백이 아직 현재 speak에 해당하는 경우에만 speaking 해제
-          if (currentSpeakIdRef.current === speakId) {
+        setTimeout(() => {
+          try {
+            mobileLog("TTS 시작");
+            VoiceService.speak(aiResponse, () => {
+              if (currentSpeakIdRef.current === speakId) {
+                setIsSpeaking(false);
+                mobileLog("TTS 완료");
+              }
+            });
+            mobileLog("TTS 호출 성공");
+          } catch(ttsErr) {
+            mobileLog("TTS 오류: " + ttsErr.message);
             setIsSpeaking(false);
           }
-        });
+        }, 200);
 
         // 이 토론에서 유저 답변 횟수 카운트 (방금 보낸 것 포함)
         const userMsgCount = newMsgs.filter(m => m.role === "user").length;
@@ -4720,14 +4734,14 @@
         };
 
         // 📱 모바일 크래시 방지: 보상 처리를 지연 실행
-        // AI 응답 렌더 + TTS 시작이 안정화된 후 보상 cascade 실행
-        // (동시에 15+ setState + 5+ Audio 작업이 모바일 메모리를 초과하는 문제 해결)
-        const REWARD_DELAY = 600; // ms — TTS 시작 후 충분한 여유
+        const REWARD_DELAY = 800; // ms — TTS 시작 후 충분한 여유
+        mobileLog("isFirstAnswer=" + isFirstAnswer + " isLastAnswer=" + isLastAnswer);
 
         // 첫 번째 답변: 기본 보상 (지연 실행)
         if (isFirstAnswer) {
           setTimeout(() => {
             try {
+            mobileLog("보상 처리 시작");
             const stars = giveReward(false);
 
             setDiscussionStarState(prev => {
@@ -4814,6 +4828,7 @@
         }
         } catch (err) {
           console.error("sendChat 에러:", err);
+          mobileLog("sendChat 에러: " + err.message);
           VoiceService.stopSpeaking();
           setIsSpeaking(false);
           setChatMessages(prev => [...prev, { 
@@ -7543,6 +7558,9 @@
             <div ref={chatEndRef} />
           </div>
 
+          {mobileDebugLog.length > 0 && <div style={{ padding: "6px 12px", background: "#1a1a2e", borderTop: "1px solid #333", fontSize: 10, color: "#0f0", fontFamily: "monospace", maxHeight: 60, overflowY: "auto" }}>
+            {mobileDebugLog.map((l,i) => <div key={i}>{l}</div>)}
+          </div>}
           <div style={{ padding: "16px", background: "white", borderTop: "1px solid #eee", flexShrink: 0, display: "flex", flexDirection: "column", gap: 10 }}>
             {!showKeyboard ? (
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
