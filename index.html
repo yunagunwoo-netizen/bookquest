@@ -6003,7 +6003,7 @@
                       if (finalResult.reward.type === "xp") setXp(x => (x || 0) + finalResult.reward.value);
                       if (finalResult.reward.type === "xp_mult") setXpMultiplier(finalResult.reward.value);
                       if (finalResult.reward.type === "title") setCurrentTitle(finalResult.reward.value);
-                      setShowRoulette(false);
+                      // 결과를 보여준 뒤 확인 버튼으로 닫도록 setShowRoulette(false) 제거
                     }, 2200);
                   };
                   return (
@@ -6038,6 +6038,10 @@
                               {bookArenaActive ? "📖 책 아레나 보상 3배! " : ""}{battleOpponent?.uid && rivalData[battleOpponent.uid] ? "🔥 라이벌 보상 2배!" : ""}
                             </div>
                           )}
+                          <button onClick={() => { setShowRoulette(false); }}
+                            style={{ marginTop: 12, padding: "8px 32px", borderRadius: 12, border: "2px solid #fde047", background: "linear-gradient(135deg, #f59e0b, #eab308)", color: "#1e1b4b", fontSize: 14, fontWeight: 900, cursor: "pointer" }}>
+                            확인!
+                          </button>
                         </div>
                       )}
                     </div>
