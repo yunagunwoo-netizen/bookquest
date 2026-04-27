@@ -4672,6 +4672,8 @@
       const chatSendingRef = useRef(false);
       const currentSpeakIdRef = useRef(0);
       const sendChat = async (messageText = null) => {
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        if (isMobile) alert("STEP1: sendChat 진입");
         const text = messageText || chatInput.trim();
         if (!text) return;
 
@@ -4681,6 +4683,7 @@
 
         // 이전 AI 음성이 재생 중이면 즉시 중단
         mobileLog("sendChat 시작");
+        if (isMobile) alert("STEP2: stopSpeaking 전");
         VoiceService.stopSpeaking();
         setIsSpeaking(false);
 
@@ -4704,12 +4707,15 @@
         const roundNumber = newMsgs.filter(m => m.role === "user").length; // 1, 2, 3...
 
         mobileLog("API 호출 시작...");
+        if (isMobile) alert("STEP3: API 호출 직전");
         const aiResponse = await CloudAPI.discussionCoach(
           userMsg, topic, activeDiscussionBook.title, activeDiscussionBook.summary, isDeep, profile?.name || "친구", history, roundNumber
         );
+        if (isMobile) alert("STEP4: API 응답=" + aiResponse.substring(0, 30));
         mobileLog("API 응답: " + aiResponse.substring(0, 30) + "...");
         setChatMessages(prev => [...prev, { role: "ai", text: aiResponse, expression: "speaking" }]);
         mobileLog("AI 응답 표시 완료");
+        if (isMobile) alert("STEP5: 메시지 표시 완료");
         try { getAppSound().sfx.chat_receive(); } catch(e) {}
 
         // 📱 AI 피드백 TTS — 모바일에서는 TTS 완전 비활성화 (크래시 방지)
@@ -4860,6 +4866,7 @@
           setTimeout(() => { try { giveReward(true); } catch(e) { console.error("보너스 보상 오류:", e); } }, REWARD_DELAY);
         }
         } catch (err) {
+          if (isMobile) alert("ERROR: " + err.message);
           console.error("sendChat 에러:", err);
           mobileLog("sendChat 에러: " + err.message);
           VoiceService.stopSpeaking();
