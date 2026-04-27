@@ -7663,7 +7663,7 @@
       // 🏠 Home Screen
       // ═══════════════════════════════════════
       const HomeScreen = () => (
-        <div style={{ padding: "0 16px 100px" }}>
+        <div style={{ padding: "0 16px 100px", overflowX: "hidden" }}>
           {/* 📅 시즌 진행 상황 */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 10, padding: "8px 0 4px" }}>
             <span style={{ fontSize: 13, fontWeight: 800, color: "#4338ca" }}>시즌{SEASON_CONFIG.season}</span>
@@ -8484,7 +8484,7 @@
           </button>
 
           {/* 🔑 복구 PIN 설정/변경 */}
-          <div style={{ marginTop: 12, background: "white", borderRadius: 12, padding: 16, border: "2px solid #eee" }}>
+          <div style={{ marginTop: 12, background: "white", borderRadius: 12, padding: 16, border: "2px solid #eee", overflow: "hidden" }}>
             <div style={{ fontSize: 13, fontWeight: 600, color: "#555", marginBottom: 8, display: "flex", alignItems: "center", gap: 4 }}>
               🔑 복구 PIN {recoveryPin ? <span style={{ fontSize: 11, color: "#22c55e", fontWeight: 700 }}>(설정됨)</span> : <span style={{ fontSize: 11, color: "#ef4444", fontWeight: 700 }}>(미설정)</span>}
             </div>
@@ -8494,7 +8494,7 @@
                 id="pinSettingInput"
                 type="tel" inputMode="numeric" maxLength={4}
                 placeholder={recoveryPin ? "●●●●" : "숫자 4자리"}
-                style={{ flex: 1, padding: "10px 12px", borderRadius: 10, border: "2px solid #eee", fontSize: 16, textAlign: "center", letterSpacing: 8, outline: "none", fontWeight: 700 }}
+                style={{ flex: 1, minWidth: 0, padding: "10px 12px", borderRadius: 10, border: "2px solid #eee", fontSize: 16, textAlign: "center", letterSpacing: 6, outline: "none", fontWeight: 700, boxSizing: "border-box" }}
               />
               <button onClick={() => {
                 const input = document.getElementById("pinSettingInput");
@@ -8507,22 +8507,20 @@
                   alert("4자리 숫자를 입력해주세요.");
                 }
               }}
-                style={{ padding: "10px 16px", borderRadius: 10, border: "none", background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>
+                style={{ padding: "10px 16px", borderRadius: 10, border: "none", background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white", fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0 }}>
                 {recoveryPin ? "변경" : "설정"}
               </button>
             </div>
           </div>
 
           {/* 📥 데이터 가져오기 + 백업 상태 */}
-          <div style={{ marginTop: 12, display: "flex", gap: 8 }}>
-            <button onClick={() => setShowImportModal(true)}
-              style={{
-                flex: 1, padding: "12px", borderRadius: 12, border: "2px solid #667eea",
-                background: "#667eea08", color: "#667eea", fontSize: 13, fontWeight: 700, cursor: "pointer"
-              }}>
-              📥 데이터 가져오기
-            </button>
-          </div>
+          <button onClick={() => setShowImportModal(true)}
+            style={{
+              width: "100%", marginTop: 12, padding: "12px", borderRadius: 12, border: "2px solid #667eea",
+              background: "#667eea08", color: "#667eea", fontSize: 13, fontWeight: 700, cursor: "pointer", boxSizing: "border-box"
+            }}>
+            📥 데이터 가져오기
+          </button>
           <div style={{ fontSize: 11, color: "#aaa", textAlign: "center", marginTop: 6 }}>
             자동 백업: {lastBackupDate ? `${lastBackupDate.slice(5).replace("-","/")} 완료` : "아직 없음"} · 매일 자동 저장
           </div>
