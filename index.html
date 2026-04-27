@@ -122,7 +122,8 @@
     background: white; border-radius: 16px; padding: 24px;
     border: 1px solid #e2e8f0;
   }
-  .problem-card .icon { font-size: 32px; margin-bottom: 12px; }
+  .problem-card .icon { width: 48px; height: 48px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; border-radius: 12px; }
+  .problem-card .icon svg { width: 28px; height: 28px; }
   .problem-card h3 { font-size: 16px; font-weight: 800; margin-bottom: 6px; }
   .problem-card p { font-size: 13px; color: var(--text-muted); }
 
@@ -140,8 +141,9 @@
   .feature-icon {
     width: 48px; height: 48px; border-radius: 14px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 22px; margin-bottom: 16px;
+    margin-bottom: 16px;
   }
+  .feature-icon svg { width: 26px; height: 26px; }
   .feature-card h3 { font-size: 17px; font-weight: 800; margin-bottom: 8px; }
   .feature-card p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
 
@@ -318,17 +320,17 @@
     <p class="subtitle">초등학생 하루 평균 독서 시간 15분 미만. 책은 '재미없는 것'이 되어가고 있습니다.</p>
     <div class="problem-grid">
       <div class="problem-card">
-        <div class="icon">📉</div>
+        <div class="icon" style="background:#fee2e2;"><svg viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg></div>
         <h3>독서량 급감</h3>
         <p>초등학생 독서 시간이 매년 감소. 유튜브·게임과의 경쟁에서 책이 밀리고 있습니다.</p>
       </div>
       <div class="problem-card">
-        <div class="icon">🤷</div>
+        <div class="icon" style="background:#fef3c7;"><svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/><line x1="4" y1="4" x2="4.5" y2="4.5" opacity="0.5"/></svg></div>
         <h3>부모의 부담</h3>
         <p>독서 지도와 토론 상대를 해줄 시간과 전문성이 부족한 현실.</p>
       </div>
       <div class="problem-card">
-        <div class="icon">📝</div>
+        <div class="icon" style="background:#ede9fe;"><svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="9" y1="10" x2="15" y2="16"/><line x1="15" y1="10" x2="9" y2="16"/></svg></div>
         <h3>기존 앱의 한계</h3>
         <p>단순 독서 기록 앱 — 동기부여, 상호작용, 사고력 훈련이 빠져 있습니다.</p>
       </div>
@@ -343,32 +345,32 @@
   <p class="subtitle">"읽는 것에서 그치지 않고, 생각하고 토론하는 독서 경험"</p>
   <div class="features-grid">
     <div class="feature-card">
-      <div class="feature-icon" style="background:linear-gradient(135deg,#dbeafe,#eff6ff);">🤖</div>
+      <div class="feature-icon" style="background:linear-gradient(135deg,#dbeafe,#eff6ff);"><svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/><circle cx="9" cy="10" r="1" fill="#3b82f6" stroke="none"/><circle cx="15" cy="10" r="1" fill="#3b82f6" stroke="none"/><path d="M9.5 13.5Q12 16 14.5 13.5" stroke-width="1.5"/></svg></div>
       <h3>AI 독서 친구</h3>
       <p>읽은 책 내용을 알고 있는 AI가 아이와 깊이 있는 대화를 나눕니다. 소크라테스식 질문으로 스스로 생각하는 힘을 키워요.</p>
     </div>
     <div class="feature-card">
-      <div class="feature-icon" style="background:linear-gradient(135deg,#fef3c7,#fffbeb);">⚔️</div>
+      <div class="feature-icon" style="background:linear-gradient(135deg,#fef3c7,#fffbeb);"><svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="13 6 10 12 14 12 11 18" fill="#f59e0b" stroke="#f59e0b" stroke-width="1.5"/></svg></div>
       <h3>4라운드 토론 배틀</h3>
       <p>Q&A, 문장완성, 토론으로 구성된 4라운드 실시간 배틀. HP 기반 대전에서 승리하고 보상 룰렛을 돌리세요!</p>
     </div>
     <div class="feature-card">
-      <div class="feature-icon" style="background:linear-gradient(135deg,#e0e7ff,#eef2ff);">🃏</div>
+      <div class="feature-icon" style="background:linear-gradient(135deg,#e0e7ff,#eef2ff);"><svg viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="14" height="18" rx="2" fill="#c7d2fe" stroke="#6366f1"/><rect x="5" y="2" width="14" height="18" rx="2" fill="#e0e7ff" stroke="#6366f1"/><rect x="8" y="0" width="14" height="18" rx="2" fill="white" stroke="#6366f1"/><circle cx="15" cy="7" r="2" fill="#6366f1" stroke="none"/></svg></div>
       <h3>52종 캐릭터 수집</h3>
       <p>5단계 레어리티의 오리지널 TCG 카드. 홀로그래픽 효과, 고유 스킬, 캐릭터별 AI 음성까지.</p>
     </div>
     <div class="feature-card">
-      <div class="feature-icon" style="background:linear-gradient(135deg,#fce7f3,#fdf2f8);">📊</div>
+      <div class="feature-icon" style="background:linear-gradient(135deg,#fce7f3,#fdf2f8);"><svg viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 20 7 20 17 12 22 4 17 4 7" fill="none"/><polygon points="12 6 16.5 9 16.5 15 12 18 7.5 15 7.5 9" fill="#fbcfe8" stroke="#ec4899" stroke-width="1.5"/><polygon points="12 9 14 10.5 14 13.5 12 15 10 13.5 10 10.5" fill="#f472b6" stroke="none"/></svg></div>
       <h3>지식 성장 추적</h3>
       <p>경제, 과학, 문학 등 8대 영역 레이더 차트로 아이의 지식 성장을 한눈에 확인하세요.</p>
     </div>
     <div class="feature-card">
-      <div class="feature-icon" style="background:linear-gradient(135deg,#d1fae5,#ecfdf5);">🎯</div>
+      <div class="feature-icon" style="background:linear-gradient(135deg,#d1fae5,#ecfdf5);"><svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2" fill="#10b981"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4" stroke-width="1.5" opacity="0.4"/></svg></div>
       <h3>일일 미션 시스템</h3>
       <p>매일 새로운 3종 미션으로 꾸준한 독서 습관을 만들어요. XP와 코인을 모아 캐릭터를 수집!</p>
     </div>
     <div class="feature-card">
-      <div class="feature-icon" style="background:linear-gradient(135deg,#fef9c3,#fefce8);">🔊</div>
+      <div class="feature-icon" style="background:linear-gradient(135deg,#fef9c3,#fefce8);"><svg viewBox="0 0 24 24" fill="none" stroke="#eab308" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z" fill="#fef08a"/></svg></div>
       <h3>몰입형 사운드</h3>
       <p>배틀 BGM + 전역 효과음 30종, 14종 캐릭터별 AI 음성(ElevenLabs TTS)으로 생동감 넘치는 경험.</p>
     </div>
