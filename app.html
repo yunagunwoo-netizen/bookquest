@@ -22,6 +22,10 @@
       padding: 0;
     }
 
+    html, body {
+      overflow-x: hidden;
+      width: 100%;
+    }
     body {
       font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       background: #f7f7fa;
@@ -10513,7 +10517,7 @@
       }
 
       return (
-        <div style={{ maxWidth: 430, margin: "0 auto", background: "#f7f7fa", minHeight: "100vh", fontFamily: "'Noto Sans KR', -apple-system, sans-serif", paddingTop: profile ? 16 : 0, position: "relative" }}>
+        <div style={{ maxWidth: 430, margin: "0 auto", background: "#f7f7fa", minHeight: "100vh", fontFamily: "'Noto Sans KR', -apple-system, sans-serif", paddingTop: profile ? 16 : 0, position: "relative", overflowX: "hidden" }}>
           {!profile && ProfileSetupScreen()}
           {profile && screen === "home" && HomeScreen()}
           {profile && screen === "book" && BookScreen()}
