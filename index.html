@@ -3268,6 +3268,222 @@
       const [battleOppSkill, setBattleOppSkill] = useState(null);
       const [battleResult, setBattleResult] = useState(null); // win | lose | draw
       const [battleLog, setBattleLog] = useState([]); // 최근 5전 로그
+
+      // ═══ 🔊 배틀 사운드 매니저 ═══
+      const battleSoundRef = useRef(null);
+      const getBattleSound = () => {
+        if (battleSoundRef.current) return battleSoundRef.current;
+        try {
+          const ctx = new (window.AudioContext || window.webkitAudioContext)();
+          const masterGain = ctx.createGain();
+          masterGain.gain.value = 0.3;
+          masterGain.connect(ctx.destination);
+
+          // ── BGM 생성: 에너제틱 치프튠 루프 ──
+          let bgmInterval = null;
+          let bgmPlaying = false;
+          const bgmGain = ctx.createGain();
+          bgmGain.gain.value = 0.15;
+          bgmGain.connect(masterGain);
+
+          const playNote = (freq, startTime, dur, type = "square", gainNode = bgmGain, vol = 0.3) => {
+            const osc = ctx.createOscillator();
+            const g = ctx.createGain();
+            osc.type = type;
+            osc.frequency.value = freq;
+            g.gain.setValueAtTime(vol, startTime);
+            g.gain.exponentialRampToValueAtTime(0.01, startTime + dur * 0.9);
+            osc.connect(g);
+            g.connect(gainNode);
+            osc.start(startTime);
+            osc.stop(startTime + dur);
+          };
+
+          // 배틀 BGM 멜로디 패턴 (16비트 루프, 약 2초)
+          const BPM = 140;
+          const beatDur = 60 / BPM;
+          const sixteenth = beatDur / 4;
+
+          const bgmMelody = [
+            // bar 1 - 상승 에너지
+            [0, 523.25], [2, 587.33], [4, 659.25], [6, 783.99],
+            [8, 659.25], [10, 783.99], [12, 880.00], [14, 783.99],
+            // bar 2 - 하강 텐션
+            [16, 783.99], [18, 698.46], [20, 659.25], [22, 587.33],
+            [24, 523.25], [26, 587.33], [28, 659.25], [30, 523.25],
+          ];
+
+          const bgmBass = [
+            [0, 130.81], [4, 130.81], [8, 164.81], [12, 164.81],
+            [16, 174.61], [20, 174.61], [24, 130.81], [28, 130.81],
+          ];
+
+          const loopDur = 32 * sixteenth;
+          let bgmStartTime = 0;
+
+          const scheduleBgmLoop = () => {
+            if (!bgmPlaying) return;
+            const now = ctx.currentTime;
+            if (bgmStartTime < now) bgmStartTime = now + 0.05;
+
+            bgmMelody.forEach(([pos, freq]) => {
+              playNote(freq, bgmStartTime + pos * sixteenth, sixteenth * 1.8, "square", bgmGain, 0.2);
+            });
+            bgmBass.forEach(([pos, freq]) => {
+              playNote(freq, bgmStartTime + pos * sixteenth, sixteenth * 3.5, "sawtooth", bgmGain, 0.12);
+            });
+            // 드럼 킥 (노이즈 시뮬)
+            [0, 8, 16, 24].forEach(pos => {
+              const t = bgmStartTime + pos * sixteenth;
+              const osc = ctx.createOscillator();
+              const g = ctx.createGain();
+              osc.type = "sine";
+              osc.frequency.setValueAtTime(150, t);
+              osc.frequency.exponentialRampToValueAtTime(30, t + 0.08);
+              g.gain.setValueAtTime(0.4, t);
+              g.gain.exponentialRampToValueAtTime(0.01, t + 0.1);
+              osc.connect(g);
+              g.connect(bgmGain);
+              osc.start(t);
+              osc.stop(t + 0.12);
+            });
+            // 하이햇
+            [4, 12, 20, 28].forEach(pos => {
+              const t = bgmStartTime + pos * sixteenth;
+              const bufSize = ctx.sampleRate * 0.03;
+              const buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+              const data = buf.getChannelData(0);
+              for (let i = 0; i < bufSize; i++) data[i] = (Math.random() * 2 - 1) * 0.3;
+              const src = ctx.createBufferSource();
+              const g = ctx.createGain();
+              src.buffer = buf;
+              g.gain.setValueAtTime(0.15, t);
+              g.gain.exponentialRampToValueAtTime(0.01, t + 0.03);
+              src.connect(g);
+              g.connect(bgmGain);
+              src.start(t);
+            });
+
+            bgmStartTime += loopDur;
+          };
+
+          const startBgm = () => {
+            if (ctx.state === "suspended") ctx.resume();
+            bgmPlaying = true;
+            bgmGain.gain.value = 0.15;
+            scheduleBgmLoop();
+            bgmInterval = setInterval(() => { if (bgmPlaying) scheduleBgmLoop(); }, loopDur * 900);
+          };
+
+          const stopBgm = (fadeOut = true) => {
+            bgmPlaying = false;
+            if (bgmInterval) { clearInterval(bgmInterval); bgmInterval = null; }
+            if (fadeOut) {
+              bgmGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.5);
+            }
+          };
+
+          // ── 효과음 함수들 ──
+          const sfxGain = ctx.createGain();
+          sfxGain.gain.value = 0.5;
+          sfxGain.connect(masterGain);
+
+          const sfx = {
+            battleStart: () => {
+              if (ctx.state === "suspended") ctx.resume();
+              const now = ctx.currentTime;
+              // 팡파레: 도-미-솔-높은도
+              [523.25, 659.25, 783.99, 1046.50].forEach((f, i) => {
+                playNote(f, now + i * 0.12, 0.2, "square", sfxGain, 0.35);
+              });
+            },
+            correct: () => {
+              const now = ctx.currentTime;
+              playNote(880, now, 0.08, "square", sfxGain, 0.3);
+              playNote(1108.73, now + 0.08, 0.15, "square", sfxGain, 0.35);
+            },
+            wrong: () => {
+              const now = ctx.currentTime;
+              playNote(200, now, 0.15, "sawtooth", sfxGain, 0.3);
+              playNote(150, now + 0.15, 0.25, "sawtooth", sfxGain, 0.25);
+            },
+            timerTick: () => {
+              const now = ctx.currentTime;
+              playNote(1200, now, 0.05, "square", sfxGain, 0.2);
+            },
+            timerUrgent: () => {
+              const now = ctx.currentTime;
+              playNote(1500, now, 0.04, "square", sfxGain, 0.25);
+              playNote(1500, now + 0.08, 0.04, "square", sfxGain, 0.25);
+            },
+            roundTransition: () => {
+              const now = ctx.currentTime;
+              [440, 554.37, 659.25].forEach((f, i) => {
+                playNote(f, now + i * 0.06, 0.12, "triangle", sfxGain, 0.3);
+              });
+            },
+            victory: () => {
+              const now = ctx.currentTime;
+              // 승리 팡파레 🎉
+              const melody = [523.25, 659.25, 783.99, 1046.50, 783.99, 1046.50, 1318.51];
+              melody.forEach((f, i) => {
+                playNote(f, now + i * 0.15, 0.25, "square", sfxGain, 0.35);
+              });
+              // 트라이앵글 장식음
+              [0.3, 0.6, 0.9].forEach(t => {
+                playNote(2637, now + t, 0.1, "sine", sfxGain, 0.15);
+              });
+            },
+            defeat: () => {
+              const now = ctx.currentTime;
+              // 하강 멜로디
+              [392, 349.23, 293.66, 261.63].forEach((f, i) => {
+                playNote(f, now + i * 0.2, 0.35, "sawtooth", sfxGain, 0.25);
+              });
+            },
+            rouletteSpin: () => {
+              const now = ctx.currentTime;
+              for (let i = 0; i < 12; i++) {
+                playNote(800 + i * 50, now + i * 0.12, 0.06, "sine", sfxGain, 0.2);
+              }
+            },
+            rouletteResult: () => {
+              const now = ctx.currentTime;
+              [659.25, 783.99, 1046.50, 1318.51].forEach((f, i) => {
+                playNote(f, now + i * 0.1, 0.2, "square", sfxGain, 0.35);
+              });
+              playNote(1318.51, now + 0.5, 0.4, "sine", sfxGain, 0.3);
+            },
+            damage: () => {
+              const now = ctx.currentTime;
+              const bufSize = ctx.sampleRate * 0.08;
+              const buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+              const data = buf.getChannelData(0);
+              for (let i = 0; i < bufSize; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / bufSize);
+              const src = ctx.createBufferSource();
+              const g = ctx.createGain();
+              src.buffer = buf;
+              g.gain.setValueAtTime(0.3, now);
+              g.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+              src.connect(g);
+              g.connect(sfxGain);
+              src.start(now);
+            },
+          };
+
+          const mgr = { startBgm, stopBgm, sfx, ctx, masterGain, setVolume: (v) => { masterGain.gain.value = v; } };
+          battleSoundRef.current = mgr;
+          return mgr;
+        } catch(e) {
+          console.warn("BattleSound init failed:", e);
+          // 사운드 실패 시 무음 폴백
+          const noop = () => {};
+          const mgr = { startBgm: noop, stopBgm: noop, sfx: { battleStart: noop, correct: noop, wrong: noop, timerTick: noop, timerUrgent: noop, roundTransition: noop, victory: noop, defeat: noop, rouletteSpin: noop, rouletteResult: noop, damage: noop }, setVolume: noop };
+          battleSoundRef.current = mgr;
+          return mgr;
+        }
+      };
+
       // Phase 5b v2: AI 토론 배틀 (일1회 / Gemini 2.5 Flash)
       const [battlePhase, setBattlePhase] = useState("gate"); // gate | ready | playing | result
       const [battleMode, setBattleMode] = useState(null); // watch | auto
@@ -3311,6 +3527,7 @@
       const [oppSkillSealed, setOppSkillSealed] = useState(false); // 구미호 봉인
       const [xpMultiplier, setXpMultiplier] = useState(1); // 룰렛 보상 XP 배율
       const [reviveUsed, setReviveUsed] = useState(false); // isis 부활 사용 여부
+      const [battleSoundMuted, setBattleSoundMuted] = useState(false); // 🔊 사운드 음소거
       const [bookArenaActive, setBookArenaActive] = useState(false); // 책 아레나 진입 여부
       const [bookArenaBook, setBookArenaBook] = useState(null); // 이번 주 아레나 책
       const [bookProgress, setBookProgress] = useState({ 1: 0, 2: 0, 3: 0 });
@@ -4708,6 +4925,8 @@
         setLastDamage(null); setBattleAnim(null);
         setBattleTimer(0); setBattleTimerActive(false);
         if (battleTimerRef.current) clearInterval(battleTimerRef.current);
+        // 🔊 BGM 정지
+        try { getBattleSound().stopBgm(); } catch(e) {}
       };
 
       const exitBattleV2 = () => {
@@ -4725,6 +4944,8 @@
         setBattleError("");
         setBattleLoading(true);
         setBattlePhase("playing");
+        // 🔊 배틀 BGM + 시작 효과음
+        try { const bs = getBattleSound(); bs.sfx.battleStart(); setTimeout(() => bs.startBgm(), 500); } catch(e) {}
         setBattleMessages([{ kind: "banner", text: mode === "watch" ? "관전 모드 — 내 아바타와 상대가 토론합니다" : "자동진행 모드 — 아바타가 자동으로 싸웁니다" }]);
 
         try {
@@ -4750,6 +4971,12 @@
           setBattleWinner(result.winner);
           setBattleNarration(result.narration || "");
           await streamBattleMessages(result);
+          // 🔊 관전 모드 배틀 종료: BGM 정지 + 결과 효과음
+          try {
+            const bs = getBattleSound();
+            bs.stopBgm();
+            setTimeout(() => { if (result.winner === "my") bs.sfx.victory(); else if (result.winner === "opp") bs.sfx.defeat(); }, 300);
+          } catch(e) {}
 
           // Firestore 저장 + 로컬 통계 업데이트 (관리자는 일일 카운트 증가 안 함)
           if (!isAdmin) {
@@ -4841,6 +5068,8 @@
         setShowRoundResult(false);
         setLastDamage(null);
         setBattleAnim(null);
+        // 🔊 배틀 BGM + 시작 효과음
+        try { const bs = getBattleSound(); bs.sfx.battleStart(); setTimeout(() => bs.startBgm(), 500); } catch(e) {}
 
         try {
           const myUid = FirestoreService.getUserId();
@@ -5068,6 +5297,17 @@
         setMyHP(prev => Math.max(0, prev - myDmg));
         setOppHP(prev => Math.max(0, prev - oppDmg));
 
+        // 🔊 정답/오답 + 데미지 효과음
+        try {
+          const bs = getBattleSound();
+          if (roundResult.type === "qa" || roundResult.type === "complete") {
+            if (roundResult.myCorrect) bs.sfx.correct(); else bs.sfx.wrong();
+          } else {
+            if (roundResult.judge === "my") bs.sfx.correct(); else if (roundResult.judge === "opp") bs.sfx.wrong();
+          }
+          setTimeout(() => bs.sfx.damage(), 200);
+        } catch(e) {}
+
         // 데미지 표시용 상태
         setLastDamage({ myDmg, oppDmg, judge: roundResult.judge });
 
@@ -5102,6 +5342,8 @@
               setBattleTimerActive(false);
               return 0;
             }
+            // 🔊 타이머 긴급음 (5초 이하)
+            try { if (prev <= 6) { const bs = getBattleSound(); prev <= 3 ? bs.sfx.timerUrgent() : bs.sfx.timerTick(); } } catch(e) {}
             return prev - 1;
           });
         }, 1000);
@@ -5127,6 +5369,8 @@
         setShowRoundResult(false);
         setLastDamage(null);
         const nextIdx = interactiveRoundIdx + 1;
+        // 🔊 라운드 전환 효과음
+        try { getBattleSound().sfx.roundTransition(); } catch(e) {}
 
         // HP가 0인 쪽이 있으면 즉시 종료
         if (myHP <= 0 || oppHP <= 0) {
@@ -5174,6 +5418,16 @@
 
         setBattleWinner(winner);
         setBattleRounds(roundAnswers);
+        // 🔊 BGM 정지 + 승리/패배 효과음
+        try {
+          const bs = getBattleSound();
+          bs.stopBgm();
+          setTimeout(() => {
+            if (winner === "my") bs.sfx.victory();
+            else if (winner === "opp") bs.sfx.defeat();
+            else bs.sfx.roundTransition();
+          }, 300);
+        } catch(e) {}
 
         // 내러티브 생성 (HP 표시 포함)
         const myName = profile?.name || "나";
@@ -5267,7 +5521,11 @@
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
               <div onClick={exitBattleV2} style={{ cursor: "pointer", fontSize: 14, fontWeight: 700, opacity: 0.85 }}>← 나가기</div>
               <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.2, opacity: 0.8 }}>⚔️ 아바타 토론배틀{isAdmin && " · 🔓관리자"}</div>
-              <div style={{ fontSize: 11, opacity: 0.85, fontWeight: 700 }}>{battleWins}승 {battleLosses}패</div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span onClick={() => { setBattleSoundMuted(m => { const next = !m; try { getBattleSound().setVolume(next ? 0 : 0.3); if (next) getBattleSound().stopBgm(false); } catch(e) {} return next; }); }}
+                  style={{ cursor: "pointer", fontSize: 16, opacity: 0.85 }}>{battleSoundMuted ? "🔇" : "🔊"}</span>
+                <span style={{ fontSize: 11, opacity: 0.85, fontWeight: 700 }}>{battleWins}승 {battleLosses}패</span>
+              </div>
             </div>
 
             <div style={{ background: "rgba(255,255,255,0.08)", borderRadius: 16, padding: "12px 14px", marginBottom: 16, border: "1px solid rgba(255,255,255,0.1)" }}>
@@ -5976,6 +6234,8 @@
                   const handleSpin = () => {
                     if (rouletteSpinning) return;
                     setRouletteSpinning(true);
+                    // 🔊 룰렛 스핀 효과음
+                    try { getBattleSound().sfx.rouletteSpin(); } catch(e) {}
                     const result = spinRoulette();
                     // 스킬 보상 배율 적용
                     const myRSkill = getAvatarSkill(profile?.avatar);
@@ -5998,6 +6258,8 @@
                     setTimeout(() => {
                       setRouletteResult(finalResult);
                       setRouletteSpinning(false);
+                      // 🔊 룰렛 결과 효과음
+                      try { getBattleSound().sfx.rouletteResult(); } catch(e) {}
                       // 보상 적용
                       if (finalResult.reward.type === "coin") setCoins(c => (c || 0) + finalResult.reward.value);
                       if (finalResult.reward.type === "xp") setXp(x => (x || 0) + finalResult.reward.value);
