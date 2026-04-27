@@ -2780,67 +2780,71 @@
       robot:         { name: "로봇",           elevenLabs: "VR6AewLTigWG4xSOukaG", chirp: "ko-KR-Neural2-D", settings: { stability: 0.7,  similarity_boost: 0.6,  style: 0.1  } },  // Arnold
     };
 
-    // 156종 아바타 → 음성 타입 개별 매핑
+    // 활성 52종 아바타 → 음성 타입 개별 매핑
+    // (레거시 브롤/포켓몬은 sanitizeAvatarId→"dash" 치환됨, 브롤 94종은 storeHidden=true)
     const AVATAR_VOICE_MAP = {
-      // ── 무료 기본 (9) ──
-      dash: "child_boy", buddy: "child_boy", monki: "child_boy", nuts: "child_boy",
-      spike: "child_boy", shelly: "teen_girl", nita: "child_girl", leon: "teen_boy", crow: "male_villain",
-      // ── 일반 등급 (40) ──
-      bux: "teen_boy", "8bit": "robot", barley: "male_wise", bo: "male_young", bull: "male_deep",
-      chark: "male_young", chuck: "male_young", gray: "male_young", griff: "male_young",
-      hazel: "teen_girl", lari: "male_young", larrylawrie: "teen_boy", maisie: "child_girl",
-      mecha: "robot", moco: "child_girl", moe: "male_young", mrmike: "male_young",
-      mrp: "male_young", ollie: "child_boy", otis: "male_young", pam: "female_warm",
-      pearl: "female_bright", penny: "teen_girl", piper: "female_bright", poco: "male_young",
-      ranch: "male_young", rico: "robot", rosa: "female_warm", ruffs: "male_deep",
-      sam: "male_young", shade: "male_villain", spray: "child_boy", sprout: "robot",
-      squeak: "child_boy", stu: "teen_boy", tara: "female_mystic", ted: "male_young",
-      tick: "robot", willow: "teen_girl", zig: "child_boy",
-      // ── 희귀 등급 (32) ──
-      arth: "male_young", mujin: "male_young", angelo: "child_boy", ash: "teen_boy",
-      berry: "child_girl", bibi: "teen_girl", bonnie: "child_girl", brock: "male_young",
-      carl: "male_young", charlie: "teen_boy", colette: "teen_girl", colt: "male_young",
-      darryl: "robot", doug: "male_wise", draco: "male_deep", dynamike: "male_wise",
-      emz: "teen_girl", eliza: "female_bright", frank: "male_deep", gene: "male_wise",
-      gus: "child_boy", jacky: "female_warm", janet: "female_bright", jessie: "teen_girl",
-      juju: "female_mystic", kit: "child_boy", lily: "female_bright", lou: "robot",
-      mandy: "teen_girl", max: "teen_girl", meg: "teen_girl", nani: "female_bright",
-      // ── 에픽 등급 (20) ──
-      rix: "male_young", zero: "male_villain", fang: "male_young", edgar: "teen_boy",
-      maverick: "male_young", sandy: "teen_boy", byron: "male_wise", mico: "child_boy",
-      hank: "male_deep", bea: "teen_girl", belle: "female_bright", gale: "male_wise",
-      buzz: "male_deep", grom: "male_deep", surge: "robot", lola: "female_bright",
-      chester: "child_boy", eve: "child_girl", melodie: "teen_girl", squawk: "child_boy",
-      // ── 전설 등급 (8) ──
-      shadow: "male_villain", amber: "female_bright", kenji: "male_deep",
-      cordelius: "male_villain", elprimo: "male_deep", rt: "robot",
-      mortis: "male_villain", clancy: "male_deep",
+      // ── 오리지널 캐릭터 (10) — 무료 기본 ──
+      dash:  "child_boy",      // 대시 — 밝은 소년
+      buddy: "child_boy",      // 버디 — 귀여운 소년
+      monki: "child_boy",      // 몽키 — 장난꾸러기 소년
+      nuts:  "child_boy",      // 너츠 — 활발한 소년
+      bux:   "teen_boy",       // 벅스 — 10대 소년
+      zero:  "male_villain",   // 제로 — 어둡고 신비
+      mujin: "male_young",     // 무진 — 청년
+      arth:  "male_young",     // 아스 — 청년
+      shade: "male_villain",   // 셰이드 — 다크 히어로
+      rix:   "male_young",     // 릭스 — 청년
       // ── 명예의 전당 · 영웅 (12) ──
-      sejong: "male_deep", yi_sunsin: "male_deep", davinci: "male_wise",
-      einstein: "male_wise", marie_curie: "female_warm", helen_keller: "female_warm",
-      mozart: "male_wise", shakespeare: "male_wise", malala: "teen_girl",
-      louis_braille: "male_wise", jang_yeongsil: "male_wise", yu_gwansun: "teen_girl",
+      sejong:        "male_deep",      // 세종대왕 — 웅장한 왕
+      yi_sunsin:     "male_deep",      // 이순신 — 영웅 장군
+      davinci:       "male_wise",      // 다빈치 — 지혜로운 천재
+      einstein:      "male_wise",      // 아인슈타인 — 과학자
+      marie_curie:   "female_warm",    // 마리 퀴리 — 따뜻한 과학자
+      helen_keller:  "female_warm",    // 헬렌 켈러 — 따뜻한 여성
+      mozart:        "male_wise",      // 모차르트 — 음악 천재
+      shakespeare:   "male_wise",      // 셰익스피어 — 문학의 대가
+      malala:        "teen_girl",      // 말랄라 — 용감한 소녀
+      louis_braille: "male_wise",      // 루이 브라이 — 발명가
+      jang_yeongsil: "male_wise",      // 장영실 — 조선의 발명가
+      yu_gwansun:    "teen_girl",      // 유관순 — 독립운동 소녀
       // ── 명예의 전당 · 전설 (10) ──
-      arthur: "male_deep", robinhood: "male_young", honggildong: "male_young",
-      wukong: "male_young", joan: "female_bright", aladdin: "teen_boy",
-      ivan: "male_young", momotaro: "teen_boy", anansi: "male_wise", thor: "male_deep",
+      arthur:     "male_deep",     // 아서 왕 — 위엄 있는 왕
+      robinhood:  "male_young",    // 로빈 후드 — 젊은 의적
+      honggildong:"male_young",    // 홍길동 — 젊은 영웅
+      wukong:     "male_young",    // 손오공 — 활기찬 청년
+      joan:       "female_bright", // 잔 다르크 — 강인한 여전사
+      aladdin:    "teen_boy",      // 알라딘 — 소년 모험가
+      ivan:       "male_young",    // 이반 왕자 — 청년
+      momotaro:   "teen_boy",      // 모모타로 — 소년 영웅
+      anansi:     "male_wise",     // 아난시 — 지혜의 거미
+      thor:       "male_deep",     // 토르 — 천둥의 신
       // ── 명예의 전당 · 신화 (10) ──
-      zeus: "male_deep", athena: "female_warm", anubis: "male_villain",
-      amaterasu: "female_mystic", isis: "female_mystic", ganesha: "male_wise",
-      quetzal: "male_deep", nezha: "teen_boy", gumiho: "female_mystic", dragonking: "male_deep",
-      // ── 히든 · 포켓몬 (5) ──
-      pikachu: "child_boy", charizard: "male_deep", eevee: "child_girl",
-      mew: "child_girl", squirtle: "child_boy",
+      zeus:       "male_deep",      // 제우스 — 신들의 왕
+      athena:     "female_warm",    // 아테나 — 지혜의 여신
+      anubis:     "male_villain",   // 아누비스 — 죽음의 신
+      amaterasu:  "female_mystic",  // 아마테라스 — 태양의 여신
+      isis:       "female_mystic",  // 이시스 — 마법의 여신
+      ganesha:    "male_wise",      // 가네샤 — 지혜의 신
+      quetzal:    "male_deep",      // 케찰코아틀 — 깃털 뱀 신
+      nezha:      "teen_boy",       // 나타 — 소년 신
+      gumiho:     "female_mystic",  // 구미호 — 신비로운 여우
+      dragonking: "male_deep",      // 용왕 — 바다의 왕
       // ── 히든 · 책 속 전설 V3.6 (10) ──
-      homer: "male_wise", scheherazade: "female_mystic", hypatia: "female_warm",
-      merlin: "male_wise", confucius: "male_wise", socrates: "male_wise",
-      cleopatra: "female_warm", galileo: "male_wise", musashi: "male_deep",
-      sage_archivist: "male_wise",
+      homer:          "male_wise",      // 호메로스 — 서사시인
+      scheherazade:   "female_mystic",  // 셰헤라자데 — 천일야화 이야기꾼
+      hypatia:        "female_warm",    // 히파티아 — 수학자
+      merlin:         "male_wise",      // 멀린 — 마법사
+      confucius:      "male_wise",      // 공자 — 현자
+      socrates:       "male_wise",      // 소크라테스 — 철학자
+      cleopatra:      "female_warm",    // 클레오파트라 — 여왕
+      galileo:        "male_wise",      // 갈릴레오 — 과학자
+      musashi:        "male_deep",      // 미야모토 무사시 — 검객
+      sage_archivist: "male_wise",      // 성소의 파수꾼 — 지식의 수호자
     };
 
     const getVoiceType = (avatarId) => {
       if (!avatarId) return "narrator";
-      return AVATAR_VOICE_MAP[avatarId] || "male_young";
+      return AVATAR_VOICE_MAP[avatarId] || "child_boy";  // 미등록 → 기본 소년 (dash 기본값 대응)
     };
 
     // ═══════════════════════════════════════
