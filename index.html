@@ -3025,12 +3025,20 @@
           const audio = new Audio(url);
           this._currentAudio = audio;
           console.log(`[TTS] \uC5D4\uC9C4: elevenlabs | \uC74C\uC131: ${vp.name} (${cleanText.length}\uC790)`);
+          // 📱 모바일 안전 폴백: Audio 정리 + 50ms 지연 후 다음 엔진
+          const safeFallback = (reason) => {
+            console.warn("[ElevenLabs]", reason);
+            this._currentAudio = null;
+            URL.revokeObjectURL(url);
+            setTimeout(() => this.speakCloud(text, callback, vp.chirp), 50);
+          };
           audio.onended = () => { this._currentAudio = null; URL.revokeObjectURL(url); if (callback) callback(true); };
-          audio.onerror = () => { console.warn("[ElevenLabs] \uC7AC\uC0DD \uC2E4\uD328, Cloud TTS\uB85C \uD3F4\uBC31"); this._currentAudio = null; URL.revokeObjectURL(url); this.speakCloud(text, callback, vp.chirp); };
-          audio.play().catch(() => { this._currentAudio = null; URL.revokeObjectURL(url); this.speakCloud(text, callback, vp.chirp); });
+          audio.onerror = () => safeFallback("\uC7AC\uC0DD \uC2E4\uD328, Cloud TTS\uB85C \uD3F4\uBC31");
+          audio.play().catch(() => safeFallback("play() \uCC28\uB2E8, Cloud TTS\uB85C \uD3F4\uBC31"));
         } catch (e) {
-          console.warn("[ElevenLabs] API \uC2E4\uD328, Cloud TTS\uB85C \uD3F4\uBC31:", e.message);
-          this.speakCloud(text, callback, vp.chirp);
+          console.warn("[ElevenLabs] API \uC2E4\uD328:", e.message);
+          this._currentAudio = null;
+          setTimeout(() => this.speakCloud(text, callback, vp.chirp), 50);
         }
       },
 
@@ -3062,12 +3070,12 @@
           audio.onerror = () => {
             console.warn("[Cloud TTS] 재생 실패, 폴백으로 전환");
             this._currentAudio = null;
-            this.speakLocal(text, callback);
+            setTimeout(() => this.speakLocal(text, callback), 50);
           };
           audio.play().catch(() => {
-            // 자동 재생 차단 시 폴백
+            // 자동 재생 차단 시 폴백 (모바일 지연)
             this._currentAudio = null;
-            this.speakLocal(text, callback);
+            setTimeout(() => this.speakLocal(text, callback), 50);
           });
         } catch (e) {
           console.warn("[Cloud TTS] API 실패, 폴백으로 전환:", e.message);
@@ -3480,6 +3488,282 @@
           const noop = () => {};
           const mgr = { startBgm: noop, stopBgm: noop, sfx: { battleStart: noop, correct: noop, wrong: noop, timerTick: noop, timerUrgent: noop, roundTransition: noop, victory: noop, defeat: noop, rouletteSpin: noop, rouletteResult: noop, damage: noop }, setVolume: noop };
           battleSoundRef.current = mgr;
+          return mgr;
+        }
+      };
+
+      // ═══ 🔔 앱 전역 효과음 매니저 (배틀 외) ═══
+      const appSoundRef = useRef(null);
+      const [appSoundMuted, setAppSoundMuted] = useState(false);
+      const getAppSound = () => {
+        if (appSoundRef.current) return appSoundRef.current;
+        try {
+          const ctx = new (window.AudioContext || window.webkitAudioContext)();
+          const master = ctx.createGain();
+          master.gain.value = 0.25;
+          master.connect(ctx.destination);
+
+          const play = (fn) => { try { if (master.gain.value > 0) fn(); } catch(e) {} };
+
+          const sfx = {
+            // ── 탭 전환 ──
+            tab_tap: () => play(() => {
+              const o = ctx.createOscillator(); const g = ctx.createGain();
+              o.type = "sine"; o.frequency.value = 1200;
+              g.gain.setValueAtTime(0.2, ctx.currentTime);
+              g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08);
+              o.connect(g); g.connect(master);
+              o.start(ctx.currentTime); o.stop(ctx.currentTime + 0.08);
+            }),
+
+            // ── 레벨업 (상승 아르페지오) ──
+            level_up: () => play(() => {
+              [523, 659, 784, 1047].forEach((f, i) => {
+                const o = ctx.createOscillator(); const g = ctx.createGain();
+                const t = ctx.currentTime + i * 0.1;
+                o.type = "square"; o.frequency.value = f;
+                g.gain.setValueAtTime(0.15, t);
+                g.gain.exponentialRampToValueAtTime(0.01, t + 0.15);
+                o.connect(g); g.connect(master);
+                o.start(t); o.stop(t + 0.15);
+              });
+            }),
+
+            // ── 연속 출석 마일스톤 (팡파르) ──
+            streak_milestone: () => play(() => {
+              [784, 988, 1175, 1319, 1568].forEach((f, i) => {
+                const o = ctx.createOscillator(); const g = ctx.createGain();
+                const t = ctx.currentTime + i * 0.08;
+                o.type = "square"; o.frequency.value = f;
+                g.gain.setValueAtTime(0.12, t);
+                g.gain.exponentialRampToValueAtTime(0.01, t + 0.2);
+                o.connect(g); g.connect(master);
+                o.start(t); o.stop(t + 0.2);
+              });
+            }),
+
+            // ── 코인 획득 (짤랑) ──
+            coin_earn: () => play(() => {
+              [1318, 1568].forEach((f, i) => {
+                const o = ctx.createOscillator(); const g = ctx.createGain();
+                const t = ctx.currentTime + i * 0.06;
+                o.type = "sine"; o.frequency.value = f;
+                g.gain.setValueAtTime(0.18, t);
+                g.gain.exponentialRampToValueAtTime(0.01, t + 0.12);
+                o.connect(g); g.connect(master);
+                o.start(t); o.stop(t + 0.12);
+              });
+            }),
+
+            // ── XP 획득 (부드러운 상승) ──
+            xp_gain: () => play(() => {
+              const o = ctx.createOscillator(); const g = ctx.createGain();
+              o.type = "triangle"; o.frequency.value = 880;
+              o.frequency.linearRampToValueAtTime(1320, ctx.currentTime + 0.15);
+              g.gain.setValueAtTime(0.12, ctx.currentTime);
+              g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+              o.connect(g); g.connect(master);
+              o.start(ctx.currentTime); o.stop(ctx.currentTime + 0.2);
+            }),
+
+            // ── 미션 완료 (달성음) ──
+            mission_complete: () => play(() => {
+              [659, 784, 1047].forEach((f, i) => {
+                const o = ctx.createOscillator(); const g = ctx.createGain();
+                const t = ctx.currentTime + i * 0.12;
+                o.type = "square"; o.frequency.value = f;
+                g.gain.setValueAtTime(0.15, t);
+                g.gain.exponentialRampToValueAtTime(0.01, t + 0.18);
+                o.connect(g); g.connect(master);
+                o.start(t); o.stop(t + 0.18);
+              });
+            }),
+
+            // ── 퀘스트/책 완독 (장엄한 팡파르) ──
+            quest_complete: () => play(() => {
+              [523, 659, 784, 1047, 1319].forEach((f, i) => {
+                const o = ctx.createOscillator(); const g = ctx.createGain();
+                const t = ctx.currentTime + i * 0.1;
+                o.type = "square"; o.frequency.value = f;
+                g.gain.setValueAtTime(0.18, t);
+                g.gain.exponentialRampToValueAtTime(0.01, t + 0.25);
+                o.connect(g); g.connect(master);
+                o.start(t); o.stop(t + 0.25);
+              });
+            }),
+
+            // ── 채팅 전송 (뿅) ──
+            chat_send: () => play(() => {
+              const o = ctx.createOscillator(); const g = ctx.createGain();
+              o.type = "sine"; o.frequency.value = 600;
+              o.frequency.linearRampToValueAtTime(900, ctx.currentTime + 0.06);
+              g.gain.setValueAtTime(0.12, ctx.currentTime);
+              g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+              o.connect(g); g.connect(master);
+              o.start(ctx.currentTime); o.stop(ctx.currentTime + 0.1);
+            }),
+
+            // ── 채팅 수신 (통) ──
+            chat_receive: () => play(() => {
+              const o = ctx.createOscillator(); const g = ctx.createGain();
+              o.type = "sine"; o.frequency.value = 800;
+              o.frequency.linearRampToValueAtTime(600, ctx.currentTime + 0.08);
+              g.gain.setValueAtTime(0.1, ctx.currentTime);
+              g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.12);
+              o.connect(g); g.connect(master);
+              o.start(ctx.currentTime); o.stop(ctx.currentTime + 0.12);
+            }),
+
+            // ── 퀴즈 정답 ──
+            quiz_correct: () => play(() => {
+              [880, 1109].forEach((f, i) => {
+                const o = ctx.createOscillator(); const g = ctx.createGain();
+                const t = ctx.currentTime + i * 0.08;
+                o.type = "square"; o.frequency.value = f;
+                g.gain.setValueAtTime(0.15, t);
+                g.gain.exponentialRampToValueAtTime(0.01, t + 0.15);
+                o.connect(g); g.connect(master);
+                o.start(t); o.stop(t + 0.15);
+              });
+            }),
+
+            // ── 퀴즈 오답 ──
+            quiz_wrong: () => play(() => {
+              [350, 280].forEach((f, i) => {
+                const o = ctx.createOscillator(); const g = ctx.createGain();
+                const t = ctx.currentTime + i * 0.12;
+                o.type = "sawtooth"; o.frequency.value = f;
+                g.gain.setValueAtTime(0.12, t);
+                g.gain.exponentialRampToValueAtTime(0.01, t + 0.2);
+                o.connect(g); g.connect(master);
+                o.start(t); o.stop(t + 0.2);
+              });
+            }),
+
+            // ── 토론 시작 ──
+            discussion_start: () => play(() => {
+              [440, 554, 659].forEach((f, i) => {
+                const o = ctx.createOscillator(); const g = ctx.createGain();
+                const t = ctx.currentTime + i * 0.1;
+                o.type = "triangle"; o.frequency.value = f;
+                g.gain.setValueAtTime(0.12, t);
+                g.gain.exponentialRampToValueAtTime(0.01, t + 0.2);
+                o.connect(g); g.connect(master);
+                o.start(t); o.stop(t + 0.2);
+              });
+            }),
+
+            // ── 별점 평가 (별 하나당 반짝) ──
+            star_rating: () => play(() => {
+              const o = ctx.createOscillator(); const g = ctx.createGain();
+              o.type = "sine"; o.frequency.value = 1400;
+              g.gain.setValueAtTime(0.15, ctx.currentTime);
+              g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+              o.connect(g); g.connect(master);
+              o.start(ctx.currentTime); o.stop(ctx.currentTime + 0.15);
+            }),
+
+            // ── 상점 구매 (카칭) ──
+            purchase: () => play(() => {
+              [1047, 1319, 1568].forEach((f, i) => {
+                const o = ctx.createOscillator(); const g = ctx.createGain();
+                const t = ctx.currentTime + i * 0.07;
+                o.type = "sine"; o.frequency.value = f;
+                g.gain.setValueAtTime(0.18, t);
+                g.gain.exponentialRampToValueAtTime(0.01, t + 0.12);
+                o.connect(g); g.connect(master);
+                o.start(t); o.stop(t + 0.12);
+              });
+            }),
+
+            // ── 아이템 장착 (찰칵) ──
+            equip: () => play(() => {
+              const o = ctx.createOscillator(); const g = ctx.createGain();
+              o.type = "square"; o.frequency.value = 800;
+              o.frequency.setValueAtTime(800, ctx.currentTime);
+              o.frequency.linearRampToValueAtTime(1200, ctx.currentTime + 0.05);
+              g.gain.setValueAtTime(0.12, ctx.currentTime);
+              g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+              o.connect(g); g.connect(master);
+              o.start(ctx.currentTime); o.stop(ctx.currentTime + 0.1);
+            }),
+
+            // ── 히든 아바타 해금 (신비로운 효과) ──
+            hidden_unlock: () => play(() => {
+              [523, 659, 784, 1047, 1319, 1568].forEach((f, i) => {
+                const o = ctx.createOscillator(); const g = ctx.createGain();
+                const t = ctx.currentTime + i * 0.12;
+                o.type = "sine"; o.frequency.value = f;
+                g.gain.setValueAtTime(0.2, t);
+                g.gain.exponentialRampToValueAtTime(0.01, t + 0.3);
+                o.connect(g); g.connect(master);
+                o.start(t); o.stop(t + 0.3);
+              });
+            }),
+
+            // ── 책 완독 (웅장한 완성음) ──
+            book_complete: () => play(() => {
+              [392, 523, 659, 784, 1047].forEach((f, i) => {
+                const o = ctx.createOscillator(); const g = ctx.createGain();
+                const t = ctx.currentTime + i * 0.15;
+                o.type = "square"; o.frequency.value = f;
+                g.gain.setValueAtTime(0.15, t);
+                g.gain.exponentialRampToValueAtTime(0.01, t + 0.3);
+                o.connect(g); g.connect(master);
+                o.start(t); o.stop(t + 0.3);
+              });
+            }),
+
+            // ── 배지 획득 (트로피 효과) ──
+            badge_earn: () => play(() => {
+              [784, 988, 1175, 1319, 1568].forEach((f, i) => {
+                const o = ctx.createOscillator(); const g = ctx.createGain();
+                const t = ctx.currentTime + i * 0.09;
+                o.type = "square"; o.frequency.value = f;
+                g.gain.setValueAtTime(0.15, t);
+                g.gain.exponentialRampToValueAtTime(0.01, t + 0.22);
+                o.connect(g); g.connect(master);
+                o.start(t); o.stop(t + 0.22);
+              });
+            }),
+
+            // ── 출석 보너스 (환영음) ──
+            login_bonus: () => play(() => {
+              [659, 784, 1047].forEach((f, i) => {
+                const o = ctx.createOscillator(); const g = ctx.createGain();
+                const t = ctx.currentTime + i * 0.1;
+                o.type = "triangle"; o.frequency.value = f;
+                g.gain.setValueAtTime(0.15, t);
+                g.gain.exponentialRampToValueAtTime(0.01, t + 0.2);
+                o.connect(g); g.connect(master);
+                o.start(t); o.stop(t + 0.2);
+              });
+            }),
+
+            // ── 50% 달성 (중간 달성음) ──
+            half_progress: () => play(() => {
+              [659, 784, 880].forEach((f, i) => {
+                const o = ctx.createOscillator(); const g = ctx.createGain();
+                const t = ctx.currentTime + i * 0.1;
+                o.type = "triangle"; o.frequency.value = f;
+                g.gain.setValueAtTime(0.12, t);
+                g.gain.exponentialRampToValueAtTime(0.01, t + 0.18);
+                o.connect(g); g.connect(master);
+                o.start(t); o.stop(t + 0.18);
+              });
+            }),
+          };
+
+          const mgr = { sfx, ctx, master, setVolume: (v) => { master.gain.value = v; } };
+          appSoundRef.current = mgr;
+          return mgr;
+        } catch(e) {
+          console.warn("AppSound init failed:", e);
+          const noop = () => {};
+          const sfxNoop = {};
+          ["tab_tap","level_up","streak_milestone","coin_earn","xp_gain","mission_complete","quest_complete","chat_send","chat_receive","quiz_correct","quiz_wrong","discussion_start","star_rating","purchase","equip","hidden_unlock","book_complete","badge_earn","login_bonus","half_progress"].forEach(k => sfxNoop[k] = noop);
+          const mgr = { sfx: sfxNoop, setVolume: noop };
+          appSoundRef.current = mgr;
           return mgr;
         }
       };
@@ -3935,6 +4219,7 @@
         const rewards = missionCompleteQueue.current.splice(0);
         rewards.forEach(r => {
           setCoins(c => c + r.coin);
+          try { getAppSound().sfx.mission_complete(); } catch(e) {}
           setTimeout(() => {
             setShowCoinPopup({ amount: r.coin, label: `미션 완료: ${r.text}` });
             setTimeout(() => setShowCoinPopup(null), 2000);
@@ -3982,6 +4267,7 @@
             if (petBonus > 0) parts.push(`펫 +${petBonus}`);
             if (setBonusCoins > 0) parts.push(`${setBonus.name} +${setBonusCoins}`);
             showCoinGain(totalBonus, `출석 보너스! (${parts.join(" + ")})`);
+            try { getAppSound().sfx.login_bonus(); } catch(e) {}
           }, 500);
 
           // 7일 연속 접속 보상: 랜덤 아이템 지급
@@ -4130,6 +4416,7 @@
             bonusItem: bonusItem ? bonusItem.name : null
           });
           setShowReward(true);
+          try { getAppSound().sfx.level_up(); } catch(e) {}
           setLevel(newLevel);
           setCurrentTitle(getTitle(newLevel));
         }
@@ -4183,6 +4470,7 @@
 
         if (newBadges.length > 0) {
           setEarnedBadges(prev => [...prev, ...newBadges]);
+          try { getAppSound().sfx.badge_earn(); } catch(e) {}
         }
       };
 
@@ -4207,6 +4495,7 @@
           // 해금!
           setOwnedAvatars(prev => prev.includes(rule.id) ? prev : [...prev, rule.id]);
           const avatarInfo = AVATAR_DATA.find(a => a.id === rule.id);
+          try { getAppSound().sfx.hidden_unlock(); } catch(e) {}
           setTimeout(() => {
             showCoinGain(0, `🎉 히든 해금: ${avatarInfo?.name || rule.label}! (${rule.hint})`);
           }, 1200);
@@ -4234,6 +4523,7 @@
       }, [discussionState, bookProgress, streak, dataLoaded]);
 
       const startDiscussion = (book, idx, deep = false) => {
+        try { getAppSound().sfx.discussion_start(); } catch(e) {}
         setActiveDiscussionBook(book);
         setActiveDiscussionIdx(idx);
         setIsDeep(deep);
@@ -4362,6 +4652,7 @@
         setIsSpeaking(false);
 
         setChatInput("");
+        try { getAppSound().sfx.chat_send(); } catch(e) {}
         const userMsg = text;
         const newMsgs = [...chatMessages, { role: "user", text: userMsg }];
         setChatMessages(newMsgs);
@@ -4383,6 +4674,7 @@
           userMsg, topic, activeDiscussionBook.title, activeDiscussionBook.summary, isDeep, profile?.name || "친구", history, roundNumber
         );
         setChatMessages(prev => [...prev, { role: "ai", text: aiResponse, expression: "speaking" }]);
+        try { getAppSound().sfx.chat_receive(); } catch(e) {}
 
         // AI 피드백만 읽기 — speakId로 stale 콜백 방지
         const speakId = Date.now();
@@ -4422,88 +4714,103 @@
           const rewardLabel = isBonus ? "토론 완료 보너스" : "첫 답변 보상";
           const complimentMsg = `🌟 ${rewardLabel}: ${discXpBase}XP와 ${totalCoin}코인을 획득했어요!`;
           setChatMessages(prev => [...prev, { role: "ai", text: complimentMsg, expression: "praise" }]);
+          try { getAppSound().sfx.star_rating(); getAppSound().sfx.coin_earn(); } catch(e) {}
 
           return stars;
         };
 
-        // 첫 번째 답변: 기본 보상
+        // 📱 모바일 크래시 방지: 보상 처리를 지연 실행
+        // AI 응답 렌더 + TTS 시작이 안정화된 후 보상 cascade 실행
+        // (동시에 15+ setState + 5+ Audio 작업이 모바일 메모리를 초과하는 문제 해결)
+        const REWARD_DELAY = 600; // ms — TTS 시작 후 충분한 여유
+
+        // 첫 번째 답변: 기본 보상 (지연 실행)
         if (isFirstAnswer) {
-          const stars = giveReward(false);
+          setTimeout(() => {
+            try {
+            const stars = giveReward(false);
 
-          setDiscussionStarState(prev => {
-            const existing = prev[key] || { completed: false, stars: 0, bestStars: 0 };
-            const newBestStars = Math.max(existing.bestStars || 0, stars);
-            return { ...prev, [key]: { completed: true, stars, bestStars: newBestStars } };
-          });
-          setDiscussionState(prev => ({ ...prev, [key]: true }));
+            setDiscussionStarState(prev => {
+              const existing = prev[key] || { completed: false, stars: 0, bestStars: 0 };
+              const newBestStars = Math.max(existing.bestStars || 0, stars);
+              return { ...prev, [key]: { completed: true, stars, bestStars: newBestStars } };
+            });
+            setDiscussionState(prev => ({ ...prev, [key]: true }));
 
-          completeMissionByTrigger(isDeep ? "deep_discussion" : "discussion");
+            completeMissionByTrigger(isDeep ? "deep_discussion" : "discussion");
 
-          const bookId = activeDiscussionBook.id;
-          const oldProgress = bookProgress[bookId] || 0;
-          const newProgress = Math.min(100, oldProgress + (isDeep ? 15 : 10));
-          setBookProgress(prev => ({ ...prev, [bookId]: newProgress }));
+            // 🕐 북 프로그레스 관련은 추가 지연 (배지/히든 useEffect 연쇄 분산)
+            setTimeout(() => {
+              try {
+              const bookId = activeDiscussionBook.id;
+              const oldProgress = bookProgress[bookId] || 0;
+              const newProgress = Math.min(100, oldProgress + (isDeep ? 15 : 10));
+              setBookProgress(prev => ({ ...prev, [bookId]: newProgress }));
 
-          if (oldProgress < 50 && newProgress >= 50) {
-            setCoins(prev => prev + 10);
-            showCoinGain(10, `📚 ${activeDiscussionBook.title} 50% 달성!`);
-          } else if (oldProgress < 100 && newProgress >= 100) {
-            setCoins(prev => prev + 25);
-            // 완독 시 아바타 고유 프로필 기반 스탯 변화 안내
-            const ap = getAvatarProfile(profile?.avatar);
-            const iqGain = Math.round(10 * ap.bookIQMult);
-            const bookDomains = activeDiscussionBook.domains || [];
-            const domainLabel = bookDomains.length
-              ? bookDomains.map(d => {
-                  const meta = DOMAIN_META.find(x => x.id === d);
-                  if (!meta) return "";
-                  const gain = Math.round(3 * (ap.multipliers[d] || 1));
-                  return `${meta.emoji}${meta.name}+${gain}`;
-                }).filter(Boolean).join(" ")
-              : "";
-            showCoinGain(25, `📚 ${activeDiscussionBook.title} 완독! IQ+${iqGain} ${domainLabel}`);
+              if (oldProgress < 50 && newProgress >= 50) {
+                setCoins(prev => prev + 10);
+                showCoinGain(10, `📚 ${activeDiscussionBook.title} 50% 달성!`);
+                try { getAppSound().sfx.half_progress(); } catch(e) {}
+              } else if (oldProgress < 100 && newProgress >= 100) {
+                setCoins(prev => prev + 25);
+                try { getAppSound().sfx.book_complete(); setTimeout(() => getAppSound().sfx.quest_complete(), 600); } catch(e) {}
+                const ap = getAvatarProfile(profile?.avatar);
+                const iqGain = Math.round(10 * ap.bookIQMult);
+                const bookDomains = activeDiscussionBook.domains || [];
+                const domainLabel = bookDomains.length
+                  ? bookDomains.map(d => {
+                      const meta = DOMAIN_META.find(x => x.id === d);
+                      if (!meta) return "";
+                      const gain = Math.round(3 * (ap.multipliers[d] || 1));
+                      return `${meta.emoji}${meta.name}+${gain}`;
+                    }).filter(Boolean).join(" ")
+                  : "";
+                showCoinGain(25, `📚 ${activeDiscussionBook.title} 완독! IQ+${iqGain} ${domainLabel}`);
 
-            // 🔥 Phase 4: 독서 스트릭 갱신 (완독 기준, 1일 유예)
-            const todayStr = getTodayString();
-            const diff = daysBetweenDateStrings(lastCompletionDate, todayStr);
-            let newStreak;
-            if (diff === null) {
-              newStreak = 1;                    // 첫 완독
-            } else if (diff <= 0) {
-              newStreak = streak;               // 오늘 이미 완독 → 그대로
-            } else if (diff === 1 || diff === 2) {
-              newStreak = (streak || 0) + 1;    // 어제 or 1일 유예 → +1
-            } else {
-              newStreak = 1;                    // 2일 이상 결석 → 리셋
-            }
-            setStreak(newStreak);
-            setLastCompletionDate(todayStr);
+                // 🔥 Phase 4: 독서 스트릭 갱신 (완독 기준, 1일 유예)
+                const todayStr = getTodayString();
+                const diff = daysBetweenDateStrings(lastCompletionDate, todayStr);
+                let newStreak;
+                if (diff === null) {
+                  newStreak = 1;
+                } else if (diff <= 0) {
+                  newStreak = streak;
+                } else if (diff === 1 || diff === 2) {
+                  newStreak = (streak || 0) + 1;
+                } else {
+                  newStreak = 1;
+                }
+                setStreak(newStreak);
+                setLastCompletionDate(todayStr);
 
-            // 마일스톤 달성 체크 (중복 지급 방지)
-            const milestone = STREAK_MILESTONES.find(m => m.days === newStreak);
-            if (milestone && !achievedMilestones.includes(milestone.days)) {
-              setAchievedMilestones(prev => [...prev, milestone.days]);
-              setTimeout(() => {
-                setCoins(prev => prev + milestone.coins);
-                showCoinGain(milestone.coins, `${milestone.emoji} ${newStreak}일 연속 독서! "${milestone.label}" 달성!`);
-              }, 1200);
-            }
+                const milestone = STREAK_MILESTONES.find(m => m.days === newStreak);
+                if (milestone && !achievedMilestones.includes(milestone.days)) {
+                  setAchievedMilestones(prev => [...prev, milestone.days]);
+                  setTimeout(() => {
+                    setCoins(prev => prev + milestone.coins);
+                    showCoinGain(milestone.coins, `${milestone.emoji} ${newStreak}일 연속 독서! "${milestone.label}" 달성!`);
+                    try { getAppSound().sfx.streak_milestone(); } catch(e) {}
+                  }, 1200);
+                }
 
-            // Phase 5a: 주간 완독 수 집계 (랭킹용)
-            const currentWeekStart = getWeekStartDate(todayStr);
-            if (weekStartDate === currentWeekStart) {
-              setWeeklyReadCount(prev => (prev || 0) + 1);
-            } else {
-              // 주가 바뀌었거나 첫 완독 — 이번 주부터 시작
-              setWeeklyReadCount(1);
-              setWeekStartDate(currentWeekStart);
-            }
-          }
+                // Phase 5a: 주간 완독 수 집계 (랭킹용)
+                const currentWeekStart = getWeekStartDate(todayStr);
+                if (weekStartDate === currentWeekStart) {
+                  setWeeklyReadCount(prev => (prev || 0) + 1);
+                } else {
+                  setWeeklyReadCount(1);
+                  setWeekStartDate(currentWeekStart);
+                }
+              }
+              } catch(e) { console.error("bookProgress 보상 오류:", e); }
+            }, 400); // 북 프로그레스는 보상 후 추가 400ms 지연
+            } catch(e) { console.error("giveReward 오류:", e); }
+          }, REWARD_DELAY);
         }
 
-        // 마지막 답변(3번째): 추가 보너스 보상
+        // 마지막 답변(3번째): 추가 보너스 보상 (지연 실행)
         if (isLastAnswer) {
-          giveReward(true);
+          setTimeout(() => { try { giveReward(true); } catch(e) { console.error("보너스 보상 오류:", e); } }, REWARD_DELAY);
         }
         } catch (err) {
           console.error("sendChat 에러:", err);
@@ -6769,6 +7076,10 @@
 
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12, padding: "0 4px" }}>
             <div style={{ fontSize: 13, color: "#888" }}>📅 {formatDate(today)} {getDayName(today)}요일</div>
+            <span onClick={() => { setAppSoundMuted(m => { const next = !m; try { getAppSound().setVolume(next ? 0 : 0.25); } catch(e) {} return next; }); }}
+              style={{ cursor: "pointer", fontSize: 16, opacity: 0.7, padding: "2px 6px" }}>
+              {appSoundMuted ? "🔇" : "🔔"}
+            </span>
           </div>
 
 
@@ -7112,6 +7423,7 @@
                             <button key={j} onClick={() => {
                               const isCorrect = j === quiz.answer;
                               setQuizState(prev => ({ ...prev, [key]: { answered: true, correct: isCorrect } }));
+                              try { isCorrect ? getAppSound().sfx.quiz_correct() : getAppSound().sfx.quiz_wrong(); } catch(e) {}
                               if (isCorrect && !answered) {
                                 const faceBonus = getItemBonus(equippedItems, "quizCoin");
                                 setCoins(prev => prev + 5 + faceBonus);
@@ -7133,6 +7445,7 @@
                             <button key={ans} onClick={() => {
                               const isCorrect = ans === quiz.answer;
                               setQuizState(prev => ({ ...prev, [key]: { answered: true, correct: isCorrect } }));
+                              try { isCorrect ? getAppSound().sfx.quiz_correct() : getAppSound().sfx.quiz_wrong(); } catch(e) {}
                               if (isCorrect && !answered) {
                                 const faceBonus = getItemBonus(equippedItems, "quizCoin");
                                 setCoins(prev => prev + 5 + faceBonus);
@@ -8175,11 +8488,13 @@
           const text = messageText || askInput.trim();
           if (!text || askLoading) return;
           setAskInput("");
+          try { getAppSound().sfx.chat_send(); } catch(e) {}
           setAskMessages(prev => [...prev, { role: "user", text }]);
           setAskLoading(true);
 
           const answer = await CloudAPI.askBook(text, getBookDataString(), askMessages.slice(-6), profile?.name);
           setAskMessages(prev => [...prev, { role: "ai", text: answer, expression: "speaking" }]);
+          try { getAppSound().sfx.chat_receive(); } catch(e) {}
           setAskLoading(false);
           completeMissionByTrigger("question");
 
@@ -8520,12 +8835,14 @@
           const text = messageText || avatarChatInput.trim();
           if (!text || avatarChatLoading) return;
           setAvatarChatInput("");
+          try { getAppSound().sfx.chat_send(); } catch(e) {}
           setAvatarChatMessages(prev => [...prev, { role: "user", text }]);
           setAvatarChatLoading(true);
 
           const knowledgePack = getAvatarKnowledgePack(profile?.avatar, bookProgress, stats);
           const answer = await CloudAPI.askBook(text, knowledgePack, avatarChatMessages.slice(-6), profile?.name);
           setAvatarChatMessages(prev => [...prev, { role: "ai", text: answer }]);
+          try { getAppSound().sfx.chat_receive(); } catch(e) {}
           setAvatarChatLoading(false);
           completeMissionByTrigger("question");
 
@@ -8811,7 +9128,7 @@
               const active = isActive(t.key);
               const iconSrc = `icons/v1/tab_${t.iconKey}_${active ? "active" : "inactive"}.png`;
               return (
-                <button key={t.key} onClick={() => setScreen(t.key)}
+                <button key={t.key} onClick={() => { try { getAppSound().sfx.tab_tap(); } catch(e) {} setScreen(t.key); }}
                   style={{
                     background: "none", border: "none", padding: "6px 14px",
                     display: "flex", flexDirection: "column", alignItems: "center", gap: 3,
@@ -9148,6 +9465,7 @@
                               setCoins(prev => prev - avatar.price);
                               setOwnedAvatars(prev => [...prev, avatar.id]);
                               showCoinGain(-avatar.price, `${avatar.name} 구매!`);
+                              try { getAppSound().sfx.purchase(); } catch(e) {}
                             }
                           }}
                             disabled={!canAfford}
@@ -9211,6 +9529,7 @@
                               setOwnedItems(prev => [...prev, item.id]);
                               setEquippedItems(prev => ({...prev, [cat]: item.id}));
                               showCoinGain(-item.price, `${item.name} 구매!`);
+                              try { getAppSound().sfx.purchase(); } catch(e) {}
                             }
                           }}
                             disabled={coins < item.price}
@@ -9223,7 +9542,7 @@
                             해제
                           </button>
                         ) : (
-                          <button onClick={() => setEquippedItems(prev => ({...prev, [cat]: item.id}))}
+                          <button onClick={() => { setEquippedItems(prev => ({...prev, [cat]: item.id})); try { getAppSound().sfx.equip(); } catch(e) {} }}
                             style={{ width: "100%", padding: "7px 10px", borderRadius: 10, border: "2px solid #667eea", background: "white", color: "#667eea", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
                             장착
                           </button>
