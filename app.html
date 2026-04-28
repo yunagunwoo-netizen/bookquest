@@ -4887,8 +4887,13 @@
       const [showPremiumModal, setShowPremiumModal] = useState(false);
       const [premiumModalReason, setPremiumModalReason] = useState(""); // "book" | "discussion" | "deep"
 
-      // 무료 사용자가 접근 가능한 도서 ID (시즌 3권 + 교과 3권)
-      const FREE_BOOK_IDS = [1, 5, 9, "C001", "C005", "C010"];
+      // ── 무료/프리미엄 도서 정책 ──────────────────────────
+      // 무료: 교과연계 도서 전체 (C001~C024) — 학교 교육과정 연동이므로 무료 개방
+      // 무료: 시즌 도서 중 체험용 3권 (1, 5, 9)
+      // 프리미엄: 시즌 도서 나머지 10권
+      const FREE_SEASON_IDS = [1, 5, 9];
+      const isCurriculumBook = (id) => typeof id === "string" && id.startsWith("C");
+      const FREE_BOOK_IDS = [...FREE_SEASON_IDS, ...CURRICULUM_BOOKS.map(b => b.id)];
       const FREE_DAILY_DISCUSSION_LIMIT = 2;
 
       // 도서 접근 가능 여부 확인
