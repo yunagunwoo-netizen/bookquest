@@ -9226,7 +9226,7 @@
                             fontSize: 18, flexShrink: 0,
                             transition: "all 0.3s ease"
                           }}>
-                            {completed ? "✓" : "○"}
+                            {completed ? "✓" : <img src={mission.icon} alt="" style={{ width: 22, height: 22 }} />}
                           </div>
                           <div style={{ flex: 1 }}>
                             <div style={{ fontSize: 13, fontWeight: 600, color: completed ? "#2e7d32" : "#1a1a2e", textDecoration: completed ? "line-through" : "none" }}>{mission.text}</div>
