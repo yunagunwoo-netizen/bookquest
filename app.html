@@ -6382,6 +6382,7 @@
             minHeight: "100vh",
             color: "white",
             position: "relative",
+            overflowX: "hidden",
             background: `linear-gradient(180deg, rgba(30,27,75,0.72) 0%, rgba(49,46,129,0.58) 30%, rgba(76,29,149,0.80) 100%), url("${battleBg}") center/cover no-repeat fixed`,
             backgroundBlendMode: "multiply"
           }}>
@@ -6953,7 +6954,7 @@
                 const fallbackSrc = avatarSrc?.replace("avatars/card/", "avatars/").replace(".png", "_sm.png") || "avatars/dash.png";
                 const loser = !isWinner && battleWinner !== "draw";
                 return (
-                <div className={isWinner ? "bq-bounce-win" : loser ? "bq-grayscale" : ""} style={{ width: 130, borderRadius: 10, transformOrigin: "bottom center", border: isWinner ? "2px solid #fde047" : "none" }}>
+                <div className={isWinner ? "bq-bounce-win" : loser ? "bq-grayscale" : ""} style={{ width: "min(130px, 40vw)", borderRadius: 10, transformOrigin: "bottom center", border: isWinner ? "2px solid #fde047" : "none" }}>
                   <div style={{ borderRadius: 8, overflow: "hidden", background: `linear-gradient(180deg, ${grad[0]}, ${grad[1]})`, border: `1.5px solid ${badgeColor}66`, position: "relative" }}>
                     {/* 상단: 이름 + HP */}
                     <div style={{ padding: "4px 6px 2px", display: "flex", justifyContent: "space-between", alignItems: "center", background: "rgba(0,0,0,0.25)" }}>
@@ -7064,14 +7065,14 @@
                   </div>
 
                   {/* 내러티브 — 지연 페이드 */}
-                  {battleNarration && <div style={{ fontSize: 12, opacity: 0.9, marginTop: 8, lineHeight: 1.6, animation: "bq-fade-up 0.6s ease-out 1s both", fontStyle: "italic" }}><img src="icons/ui/ui_clapper.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> {battleNarration}</div>}
+                  {battleNarration && <div style={{ fontSize: 12, opacity: 0.9, marginTop: 8, lineHeight: 1.6, animation: "bq-fade-up 0.6s ease-out 1s both", fontStyle: "italic", wordBreak: "break-word" }}><img src="icons/ui/ui_clapper.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> {battleNarration}</div>}
                 </div>
 
                 {/* 라운드별 데미지 로그 */}
                 {battleRounds && battleRounds.map((r, i) => (
-                  <div key={i} style={{ background: "rgba(255,255,255,0.08)", borderRadius: 12, padding: 12, marginBottom: 10, fontSize: 12 }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-                      <div style={{ fontWeight: 800, opacity: 0.9 }}>라운드 {i + 1} · {r.type === "qa" ? (r.book || "책 Q&A") : r.type === "complete" ? (r.book || "문장 완성") : "미니 토론"}</div>
+                  <div key={i} style={{ background: "rgba(255,255,255,0.08)", borderRadius: 12, padding: 12, marginBottom: 10, fontSize: 12, overflow: "hidden", wordBreak: "break-word" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6, gap: 8 }}>
+                      <div style={{ fontWeight: 800, opacity: 0.9, flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>라운드 {i + 1} · {r.type === "qa" ? (r.book || "책 Q&A") : r.type === "complete" ? (r.book || "문장 완성") : "미니 토론"}</div>
                       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                         {(() => { const sk = getAvatarSkill(profile?.avatar); return sk?.skillImg ? <img src={sk.skillImg} alt="" style={{ width: 16, height: 16, borderRadius: "50%", opacity: 0.8 }} /> : <span style={{ fontSize: 9, opacity: 0.6 }}>{sk?.icon}</span>; })()}
                         <div style={{ fontWeight: 800, color: r.judge === "my" ? "#22c55e" : r.judge === "opp" ? "#ef4444" : "#fde047" }}>{r.judge === "my" ? "승" : r.judge === "opp" ? "패" : "무"}</div>
@@ -7083,7 +7084,7 @@
                         <span>상대 받은 데미지: <b style={{color:"#22c55e"}}>-{r.oppDmg}</b></span>
                       </div>
                     )}
-                    {r.reason && <div style={{ opacity: 0.7, lineHeight: 1.5, marginTop: 4 }}>{r.reason}</div>}
+                    {r.reason && <div style={{ opacity: 0.7, lineHeight: 1.5, marginTop: 4, wordBreak: "break-word" }}>{r.reason}</div>}
                   </div>
                 ))}
                 {/* 🎮 스킬 정보 표시 */}
