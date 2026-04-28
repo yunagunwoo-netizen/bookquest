@@ -3518,6 +3518,7 @@
     function BookQuest() {
       const [profile, setProfile] = useState(null);
       const [profileForm, setProfileForm] = useState({ name: "", school: "", grade: "6", avatar: "dash" });
+      const [editingProfile, setEditingProfile] = useState(false);
       const [screen, _setScreenRaw] = useState("home");
       const screenRef = useRef("home");
 
@@ -8491,7 +8492,10 @@
             )}
           </div>
 
-          <button onClick={() => setProfile(null)}
+          <button onClick={() => {
+            setProfileForm({ name: profile.name || "", school: profile.school || "", grade: profile.grade || "6", avatar: profile.avatar || "dash" });
+            setEditingProfile(true);
+          }}
             style={{ width: "100%", marginTop: 16, padding: "12px", borderRadius: 12, border: "2px solid #eee", background: "white", color: "#888", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
             ✏️ 프로필 수정
           </button>
@@ -10572,6 +10576,87 @@
           <ImportDataModal />
           <AvatarDetailModal />
 
+          {/* 프로필 편집 모달 */}
+          {editingProfile && (
+            <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.5)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}
+              onClick={() => setEditingProfile(false)}>
+              <div style={{ background: "white", borderRadius: 20, padding: 24, width: "100%", maxWidth: 360, maxHeight: "85vh", overflowY: "auto" }}
+                onClick={e => e.stopPropagation()}>
+                <h3 style={{ fontSize: 18, fontWeight: 800, textAlign: "center", marginBottom: 20, color: "#1a1a2e" }}>✏️ 프로필 수정</h3>
+
+                <div style={{ marginBottom: 16 }}>
+                  <label style={{ fontSize: 13, fontWeight: 600, color: "#555", display: "block", marginBottom: 6 }}>이름 *</label>
+                  <input value={profileForm.name} onChange={e => setProfileForm(p => ({ ...p, name: e.target.value }))}
+                    placeholder="이름을 입력하세요"
+                    style={{ width: "100%", padding: "12px 14px", borderRadius: 12, border: "2px solid #eee", fontSize: 14, outline: "none", boxSizing: "border-box" }} />
+                </div>
+
+                <div style={{ marginBottom: 16 }}>
+                  <label style={{ fontSize: 13, fontWeight: 600, color: "#555", display: "block", marginBottom: 6 }}>학교</label>
+                  <input value={profileForm.school} onChange={e => setProfileForm(p => ({ ...p, school: e.target.value }))}
+                    placeholder="학교 이름 (선택)"
+                    style={{ width: "100%", padding: "12px 14px", borderRadius: 12, border: "2px solid #eee", fontSize: 14, outline: "none", boxSizing: "border-box" }} />
+                </div>
+
+                <div style={{ marginBottom: 20 }}>
+                  <label style={{ fontSize: 13, fontWeight: 600, color: "#555", display: "block", marginBottom: 6 }}>학년</label>
+                  <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                    {["4", "5", "6", "중1"].map(g => (
+                      <button key={g} onClick={() => setProfileForm(p => ({ ...p, grade: g }))}
+                        style={{
+                          padding: "8px 16px", borderRadius: 20, border: "2px solid",
+                          borderColor: profileForm.grade === g ? "#667eea" : "#eee",
+                          background: profileForm.grade === g ? "#667eea" : "white",
+                          color: profileForm.grade === g ? "white" : "#666",
+                          fontSize: 13, fontWeight: 600, cursor: "pointer"
+                        }}>
+                        {["4","5","6"].includes(g) ? "초" + g : g}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div style={{ marginBottom: 24 }}>
+                  <label style={{ fontSize: 13, fontWeight: 600, color: "#555", display: "block", marginBottom: 8 }}>아바타 선택</label>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, maxHeight: 200, overflowY: "auto" }}>
+                    {AVATAR_DATA.filter(a => isAdmin || ownedAvatars.includes(a.id)).map(a => (
+                      <button key={a.id} onClick={() => setProfileForm(p => ({ ...p, avatar: a.id }))}
+                        style={{
+                          width: "100%", padding: "8px 0", borderRadius: 16, border: "3px solid",
+                          borderColor: profileForm.avatar === a.id ? "#667eea" : "#f0f0f0",
+                          background: profileForm.avatar === a.id ? "#667eea10" : "#fafafa",
+                          cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 4
+                        }}>
+                        <AvatarIcon avatarId={a.id} size={40} />
+                        <span style={{ fontSize: 10, fontWeight: 600, color: profileForm.avatar === a.id ? "#667eea" : "#999" }}>{a.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <button onClick={() => {
+                  if (profileForm.name.trim()) {
+                    setProfile(prev => ({ ...prev, name: profileForm.name.trim(), school: profileForm.school.trim(), grade: profileForm.grade, avatar: profileForm.avatar }));
+                    setEditingProfile(false);
+                  }
+                }}
+                  disabled={!profileForm.name.trim()}
+                  style={{
+                    width: "100%", padding: "14px", borderRadius: 14, border: "none",
+                    background: profileForm.name.trim() ? "linear-gradient(135deg, #667eea, #764ba2)" : "#ddd",
+                    color: "white", fontSize: 15, fontWeight: 700, cursor: profileForm.name.trim() ? "pointer" : "default"
+                  }}>
+                  저장하기
+                </button>
+
+                <button onClick={() => setEditingProfile(false)}
+                  style={{ width: "100%", padding: "10px", background: "none", border: "none", color: "#888", fontSize: 13, cursor: "pointer", marginTop: 8 }}>
+                  취소
+                </button>
+              </div>
+            </div>
+          )}
+
           {showCoinPopup && (
             <div style={{
               position: "fixed", top: 80, left: "50%", transform: "translateX(-50%)", zIndex: 2000,
@@ -10929,48 +11014,6 @@
                       const result = await installPrompt.userChoice;
                       if (result.outcome === "accepted") setShowInstallBanner(false);
                       setInstallPrompt(null);
-                    }
-                  }}
-                    style={{ background: "white", border: "none", borderRadius: 12, padding: "8px 16px", color: "#667eea", fontSize: 12, fontWeight: 800, cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}>
-                    설치
-                  </button>
-                </div>
-              </div>
-            );
-          })()}
-        </div>
-      );
-    }
-
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<BookQuest />);
-  </script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      let reloading = false;
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
-        if (reloading) return;
-        reloading = true;
-        window.location.reload();
-      });
-
-      navigator.serviceWorker.register('./sw.js').then(reg => {
-        setInterval(() => reg.update().catch(() => {}), 60 * 60 * 1000);
-        reg.addEventListener('updatefound', () => {
-          const installing = reg.installing;
-          if (!installing) return;
-          installing.addEventListener('statechange', () => {
-            if (installing.state === 'installed' && navigator.serviceWorker.controller) {
-              installing.postMessage({ type: 'SKIP_WAITING' });
-            }
-          });
-        });
-      }).catch(() => {});
-    }
-  </script>
-</body>
-</html>
-null);
                     }
                   }}
                     style={{ background: "white", border: "none", borderRadius: 12, padding: "8px 16px", color: "#667eea", fontSize: 12, fontWeight: 800, cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}>
