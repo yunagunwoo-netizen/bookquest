@@ -6577,14 +6577,14 @@
               const CARD_TYPE = { free: "노멀", common: "노멀", rare: "레어", epic: "영웅", legendary: "전설", heroic: "영웅", mythic: "신화", hidden: "히든" };
               const CARD_TYPE_ICON = { free: "⭐", common: "⭐", rare: "💎", epic: "🛡️", legendary: "👑", heroic: "🛡️", mythic: "🌙", hidden: "🔮" };
               const CARD_SKILL = {
-                free: [{ name: "기본 공격", dmg: 10, icon: "📖" }, { name: "지식 던지기", dmg: 20, icon: "💡" }],
-                common: [{ name: "퀴즈 어택", dmg: 15, icon: "❓" }, { name: "독서 파워", dmg: 25, icon: "📚" }],
-                rare: [{ name: "논리 공격", dmg: 20, icon: "🧠" }, { name: "지혜의 일격", dmg: 30, icon: "✨" }],
-                epic: [{ name: "토론 스매시", dmg: 25, icon: "💬" }, { name: "영웅의 각성", dmg: 35, icon: "⚡" }],
-                legendary: [{ name: "전설의 서", dmg: 30, icon: "📜" }, { name: "궁극의 지식", dmg: 40, icon: "🔥" }],
-                heroic: [{ name: "토론 스매시", dmg: 25, icon: "💬" }, { name: "영웅의 각성", dmg: 35, icon: "⚡" }],
-                mythic: [{ name: "신의 심판", dmg: 35, icon: "⚡" }, { name: "천상의 지혜", dmg: 45, icon: "🌟" }],
-                hidden: [{ name: "그림자 일격", dmg: 30, icon: "🌀" }, { name: "비밀의 힘", dmg: 40, icon: "🔮" }],
+                free: [{ name: "기본 공격", dmg: 10, icon: "📖", skillImg: "icons/skills/cs_basic_attack.png" }, { name: "지식 던지기", dmg: 20, icon: "💡", skillImg: "icons/skills/cs_knowledge_throw.png" }],
+                common: [{ name: "퀴즈 어택", dmg: 15, icon: "❓", skillImg: "icons/skills/cs_quiz_attack.png" }, { name: "독서 파워", dmg: 25, icon: "📚", skillImg: "icons/skills/cs_reading_power.png" }],
+                rare: [{ name: "논리 공격", dmg: 20, icon: "🧠", skillImg: "icons/skills/cs_logic_attack.png" }, { name: "지혜의 일격", dmg: 30, icon: "✨", skillImg: "icons/skills/cs_wisdom_strike.png" }],
+                epic: [{ name: "토론 스매시", dmg: 25, icon: "💬", skillImg: "icons/skills/cs_debate_smash.png" }, { name: "영웅의 각성", dmg: 35, icon: "⚡", skillImg: "icons/skills/cs_hero_awakening.png" }],
+                legendary: [{ name: "전설의 서", dmg: 30, icon: "📜", skillImg: "icons/skills/cs_legendary_tome.png" }, { name: "궁극의 지식", dmg: 40, icon: "🔥", skillImg: "icons/skills/cs_ultimate_knowledge.png" }],
+                heroic: [{ name: "토론 스매시", dmg: 25, icon: "💬", skillImg: "icons/skills/cs_debate_smash.png" }, { name: "영웅의 각성", dmg: 35, icon: "⚡", skillImg: "icons/skills/cs_hero_awakening.png" }],
+                mythic: [{ name: "신의 심판", dmg: 35, icon: "⚡", skillImg: "icons/skills/cs_divine_judgment.png" }, { name: "천상의 지혜", dmg: 45, icon: "🌟", skillImg: "icons/skills/cs_celestial_wisdom.png" }],
+                hidden: [{ name: "그림자 일격", dmg: 30, icon: "🌀", skillImg: "icons/skills/cs_shadow_strike.png" }, { name: "비밀의 힘", dmg: 40, icon: "🔮", skillImg: "icons/skills/cs_secret_power.png" }],
               };
               const BattleCard = ({ name, lvl, hp, maxHp, hpPct, avatarSrc, grad, rarity, dmg, isOpp, animClass, title }) => {
                 const badge = RARITY_BADGE_STYLE[rarity] || RARITY_BADGE_STYLE.free;
@@ -6633,7 +6633,7 @@
                         {skills.map((sk, i) => (
                           <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "3px 4px", marginBottom: 1, borderTop: i === 0 ? `1px solid ${badgeColor}33` : "none", borderBottom: `1px solid ${badgeColor}22` }}>
                             <div style={{ display: "flex", alignItems: "center", gap: 3 }}>
-                              <span style={{ fontSize: 9 }}>{sk.icon}</span>
+                              {sk.skillImg ? <img src={sk.skillImg} alt="" style={{ width: 14, height: 14, borderRadius: "50%" }} /> : <span style={{ fontSize: 9 }}>{sk.icon}</span>}
                               <span style={{ fontSize: 9, fontWeight: 700 }}>{sk.name}</span>
                             </div>
                             <span style={{ fontSize: 10, fontWeight: 900, color: "#fde047" }}>{sk.dmg}</span>
@@ -6929,14 +6929,14 @@
               const CARD_TYPE_R = { free: "노멀", common: "노멀", rare: "레어", epic: "영웅", legendary: "전설", heroic: "영웅", mythic: "신화", hidden: "히든" };
               const CARD_TYPE_ICON_R = { free: "⭐", common: "⭐", rare: "💎", epic: "🛡️", legendary: "👑", heroic: "🛡️", mythic: "🌙", hidden: "🔮" };
               const CARD_SKILL_R = {
-                free: [{ name: "기본 공격", dmg: 10, icon: "📖" }, { name: "지식 던지기", dmg: 20, icon: "💡" }],
-                common: [{ name: "퀴즈 어택", dmg: 15, icon: "❓" }, { name: "독서 파워", dmg: 25, icon: "📚" }],
-                rare: [{ name: "논리 공격", dmg: 20, icon: "🧠" }, { name: "지혜의 일격", dmg: 30, icon: "✨" }],
-                epic: [{ name: "토론 스매시", dmg: 25, icon: "💬" }, { name: "영웅의 각성", dmg: 35, icon: "⚡" }],
-                legendary: [{ name: "전설의 서", dmg: 30, icon: "📜" }, { name: "궁극의 지식", dmg: 40, icon: "🔥" }],
-                heroic: [{ name: "토론 스매시", dmg: 25, icon: "💬" }, { name: "영웅의 각성", dmg: 35, icon: "⚡" }],
-                mythic: [{ name: "신의 심판", dmg: 35, icon: "⚡" }, { name: "천상의 지혜", dmg: 45, icon: "🌟" }],
-                hidden: [{ name: "그림자 일격", dmg: 30, icon: "🌀" }, { name: "비밀의 힘", dmg: 40, icon: "🔮" }],
+                free: [{ name: "기본 공격", dmg: 10, icon: "📖", skillImg: "icons/skills/cs_basic_attack.png" }, { name: "지식 던지기", dmg: 20, icon: "💡", skillImg: "icons/skills/cs_knowledge_throw.png" }],
+                common: [{ name: "퀴즈 어택", dmg: 15, icon: "❓", skillImg: "icons/skills/cs_quiz_attack.png" }, { name: "독서 파워", dmg: 25, icon: "📚", skillImg: "icons/skills/cs_reading_power.png" }],
+                rare: [{ name: "논리 공격", dmg: 20, icon: "🧠", skillImg: "icons/skills/cs_logic_attack.png" }, { name: "지혜의 일격", dmg: 30, icon: "✨", skillImg: "icons/skills/cs_wisdom_strike.png" }],
+                epic: [{ name: "토론 스매시", dmg: 25, icon: "💬", skillImg: "icons/skills/cs_debate_smash.png" }, { name: "영웅의 각성", dmg: 35, icon: "⚡", skillImg: "icons/skills/cs_hero_awakening.png" }],
+                legendary: [{ name: "전설의 서", dmg: 30, icon: "📜", skillImg: "icons/skills/cs_legendary_tome.png" }, { name: "궁극의 지식", dmg: 40, icon: "🔥", skillImg: "icons/skills/cs_ultimate_knowledge.png" }],
+                heroic: [{ name: "토론 스매시", dmg: 25, icon: "💬", skillImg: "icons/skills/cs_debate_smash.png" }, { name: "영웅의 각성", dmg: 35, icon: "⚡", skillImg: "icons/skills/cs_hero_awakening.png" }],
+                mythic: [{ name: "신의 심판", dmg: 35, icon: "⚡", skillImg: "icons/skills/cs_divine_judgment.png" }, { name: "천상의 지혜", dmg: 45, icon: "🌟", skillImg: "icons/skills/cs_celestial_wisdom.png" }],
+                hidden: [{ name: "그림자 일격", dmg: 30, icon: "🌀", skillImg: "icons/skills/cs_shadow_strike.png" }, { name: "비밀의 힘", dmg: 40, icon: "🔮", skillImg: "icons/skills/cs_secret_power.png" }],
               };
 
               // 포켓몬카드 스타일 결과 카드
@@ -6984,7 +6984,7 @@
                       {skills.map((sk, i) => (
                         <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "2px 3px", borderBottom: `1px solid ${badgeColor}22` }}>
                           <div style={{ display: "flex", alignItems: "center", gap: 2 }}>
-                            <span style={{ fontSize: 7 }}>{sk.icon}</span>
+                            {sk.skillImg ? <img src={sk.skillImg} alt="" style={{ width: 12, height: 12, borderRadius: "50%" }} /> : <span style={{ fontSize: 7 }}>{sk.icon}</span>}
                             <span style={{ fontSize: 7, fontWeight: 700 }}>{sk.name}</span>
                           </div>
                           <span style={{ fontSize: 8, fontWeight: 900, color: "#fde047" }}>{sk.dmg}</span>
