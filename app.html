@@ -2532,7 +2532,7 @@
       battle_sword: "⚔️", correct_check: "✅", wrong_cross: "❌",
       draw_handshake: <img src="icons/ui/ui_handshake.png" alt="" style={{ width: 64, height: 64 }} />, ai_proxy: "🤖", self_play: "👤",
       question_mark: "❓", topic_bubble: "💬", reason_memo: "📝",
-      mic_voice: "🎤", speaker_tts: "<img src="icons/ui/ui_speaker.png" alt="" style={{ width: 16, height: 16 }} />",
+      mic_voice: "🎤", speaker_tts: "🔊",
       // 네비
       nav_home: "🏠", nav_ranking: "🏅", nav_profile: "👤",
       nav_library: "📚", nav_chat: "💬", nav_shop: "🛒", nav_settings: "⚙️",
@@ -2544,7 +2544,7 @@
       badge_general: "🎖️", crown_vip: "👑",
       // 상태/피드백
       party_confetti: "🎉", locked: "🔒", unlocked: "🔓",
-      refresh_sync: "<img src="icons/ui/ui_refresh.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} />", coin_gold: "🪙", gem_diamond: "💎",
+      refresh_sync: "🔄", coin_gold: "🪙", gem_diamond: "💎",
       gift_box: "🎁", hint_bulb: "💡", warning_alert: "⚠️",
       trash_delete: "🗑️", calendar_today: "📅", quest_clipboard: "📋",
       target_goal: "🎯", stats_chart: "📊",
@@ -2984,7 +2984,7 @@
 
     const BADGES = [
       { name: "첫 발걸음", desc: "첫 번째 토론 완료", icon: "👣", svg: PNG_ICONS.badge_firstStep, color: "#F6E05E" },
-      { name: "호기심 대장", desc: "3개 이상 토론 완료", icon: "<img src="icons/ui/ui_search.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} />", svg: PNG_ICONS.badge_curious, color: "#63B3ED" },
+      { name: "호기심 대장", desc: "3개 이상 토론 완료", icon: "🔍", svg: PNG_ICONS.badge_curious, color: "#63B3ED" },
       { name: "깊은 생각", desc: "심화 토론 1개 완료", icon: "💡", svg: PNG_ICONS.badge_deep, color: "#B794F4" },
       { name: "책벌레", desc: "1권 완독", icon: "📖", svg: PNG_ICONS.badge_bookworm, color: "#68D391" },
       { name: "연속 달성", desc: "3일 연속 접속", icon: "🔥", svg: PNG_ICONS.badge_streak, color: "#FC8181" },
@@ -4547,7 +4547,7 @@
           if (r.allDone) {
             setTimeout(() => {
               setCoins(c => c + 10);
-              setShowCoinPopup({ amount: 10, label: "<img src="icons/ui/ui_party.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> 일일 미션 전체 완료 보너스!" });
+              setShowCoinPopup({ amount: 10, label: "일일 미션 전체 완료 보너스!" });
               setTimeout(() => setShowCoinPopup(null), 2000);
             }, 1500);
           }
@@ -4863,7 +4863,7 @@
           { role: "ai", text: COACH.greeting, expression: "default" },
           { role: "ai", text: `"${book.title}" ${deep ? "심화" : ""} 토론 ${idx + 1}번째 주제야!`, expression: "speaking" },
           { role: "ai", text: topic.q, expression: "thinking" },
-          { role: "ai", text: `{<img src="icons/ui/ui_hint.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle", borderRadius: "50%" }} />} 힌트: ${topic.hint}`, expression: "thinking" },
+          { role: "ai", text: `힌트: ${topic.hint}`, expression: "thinking" },
           { role: "ai", text: `${friendlyName}, 네 생각을 말해 봐!`, expression: "default" }
         ];
 
@@ -5422,7 +5422,7 @@
                 </div>
 
                 <div style={{ marginBottom: 24 }}>
-                  <label style={{ fontSize: 13, fontWeight: 600, color: "#555", display: "block", marginBottom: 8 }}>아바타 선택 ({isAdmin ? "<img src="icons/ui/ui_unlock.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 관리자: 전체" : ownedAvatars.length + "개 보유"})</label>
+                  <label style={{ fontSize: 13, fontWeight: 600, color: "#555", display: "block", marginBottom: 8 }}>아바타 선택 ({isAdmin ? "관리자: 전체" : ownedAvatars.length + "개 보유"})</label>
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, maxHeight: 240, overflowY: "auto" }}>
                     {AVATAR_DATA.filter(a => isAdmin || ownedAvatars.includes(a.id)).map(a => (
                       <button key={a.id} onClick={() => setProfileForm(p => ({ ...p, avatar: a.id }))}
@@ -5739,7 +5739,7 @@
         return (bookProgress[arenaBook.id] || 0) >= 100;
       };
 
-      const ARENA_BADGE = { name: "아레나 챔피언", icon: "<img src="icons/ui/ui_arena.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} />", desc: "책 아레나 승리" };
+      const ARENA_BADGE = { name: "아레나 챔피언", icon: "🏟️", desc: "책 아레나 승리" };
 
       const calcMaxHP = (booksCompleted, playerLevel) => {
         const bookBonus = Math.min((booksCompleted || 0) * BATTLE_V2.BOOK_HP_BONUS, BATTLE_V2.MAX_BOOK_BONUS);
@@ -5910,7 +5910,7 @@
           await wait(900);
         }
         if (replay.narration) {
-          setBattleMessages(prev => [...prev, { kind: "narration", text: `<img src="icons/ui/ui_clapper.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> ${replay.narration}` }]);
+          setBattleMessages(prev => [...prev, { kind: "narration", text: `${replay.narration}` }]);
         }
       };
 
@@ -6388,7 +6388,7 @@
               <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.2, opacity: 0.8 }}><img src="icons/ui/ui_swords.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> 아바타 토론배틀{isAdmin && " · 관리자"}</div>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <span onClick={() => { setBattleSoundMuted(m => { const next = !m; try { getBattleSound().setVolume(next ? 0 : 0.3); if (next) getBattleSound().stopBgm(false); } catch(e) {} return next; }); }}
-                  style={{ cursor: "pointer", fontSize: 16, opacity: 0.85 }}>{battleSoundMuted ? "<img src="icons/ui/ui_mute.png" alt="" style={{ width: 16, height: 16 }} />" : "<img src="icons/ui/ui_speaker.png" alt="" style={{ width: 16, height: 16 }} />"}</span>
+                  style={{ cursor: "pointer", fontSize: 16, opacity: 0.85 }}>{battleSoundMuted ? React.createElement("img", { src: "icons/ui/ui_mute.png", style: { width: 16, height: 16 } }) : React.createElement("img", { src: "icons/ui/ui_speaker.png", style: { width: 16, height: 16 } })}</span>
                 <span style={{ fontSize: 11, opacity: 0.85, fontWeight: 700 }}>{battleWins}승 {battleLosses}패</span>
               </div>
             </div>
@@ -7207,12 +7207,12 @@
                         <div style={{ animation: "bq-fade-up 0.5s ease-out" }}>
                           <div style={{ marginBottom: 8 }}>{rouletteResult.rewardImg ? <img src={rouletteResult.rewardImg} alt="" style={{ width: 56, height: 56, borderRadius: "50%" }} /> : <span style={{ fontSize: 40 }}>{rouletteResult.icon}</span>}</div>
                           <div style={{ fontSize: 16, fontWeight: 900, color: rouletteResult.tier === "legendary" ? "#e879f9" : rouletteResult.tier === "jackpot" ? "#fde047" : rouletteResult.tier === "good" ? "#22c55e" : "#e2e8f0" }}>
-                            {rouletteResult.tier === "legendary" ? "<img src="icons/ui/ui_unicorn.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> 전설 등급!!" : rouletteResult.tier === "jackpot" ? "<img src="icons/ui/ui_party.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> 잭팟!" : rouletteResult.tier === "good" ? "<img src="icons/ui/ui_thumbsup.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> 좋은 보상!" : "보상 획득!"}}
+                            {rouletteResult.tier === "legendary" ? "전설 등급!!" : rouletteResult.tier === "jackpot" ? "잭팟!" : rouletteResult.tier === "good" ? "좋은 보상!" : "보상 획득!"}
                           </div>
                           <div style={{ fontSize: 18, fontWeight: 900, marginTop: 4 }}>{rouletteResult.label}</div>
                           {(bookArenaActive || (battleOpponent?.uid && rivalData[battleOpponent.uid])) && (
                             <div style={{ fontSize: 10, color: "#fde047", marginTop: 4, fontWeight: 700 }}>
-                              {bookArenaActive ? "<img src="icons/ui/ui_book_open.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 책 아레나 보상 3배! " : ""}{battleOpponent?.uid && rivalData[battleOpponent.uid] ? "<img src="icons/ui/ui_fire.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 라이벌 보상 2배!" : ""}
+                              {bookArenaActive ? "책 아레나 보상 3배! " : ""}{battleOpponent?.uid && rivalData[battleOpponent.uid] ? "라이벌 보상 2배!" : ""}
                             </div>
                           )}
                           <button onClick={() => { setShowRoulette(false); }}
@@ -7686,7 +7686,7 @@
             <div style={{ fontSize: 13, color: "#888" }}><img src="icons/ui/ui_calendar.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> {formatDate(today)} {getDayName(today)}요일</div>
             <span onClick={() => { setAppSoundMuted(m => { const next = !m; try { getAppSound().setVolume(next ? 0 : 0.25); } catch(e) {} return next; }); }}
               style={{ cursor: "pointer", fontSize: 16, opacity: 0.7, padding: "2px 6px" }}>
-              {appSoundMuted ? "<img src="icons/ui/ui_mute.png" alt="" style={{ width: 16, height: 16 }} />" : "<img src="icons/ui/ui_bell.png" alt="" style={{ width: 16, height: 16 }} />"}
+              {appSoundMuted ? React.createElement("img", { src: "icons/ui/ui_mute.png", style: { width: 16, height: 16 } }) : React.createElement("img", { src: "icons/ui/ui_bell.png", style: { width: 16, height: 16 } })}
             </span>
           </div>
 
@@ -7903,11 +7903,11 @@
         if (!selectedBook) return null;
         const book = selectedBook;
         const tabs = [
-          { key: "summary", label: "<img src="icons/ui/ui_clipboard.png" alt="" style={{ width: 12, height: 12, verticalAlign: "middle" }} /> 요약" },
-          { key: "chapters", label: "<img src="icons/ui/ui_tabs.png" alt="" style={{ width: 12, height: 12, verticalAlign: "middle" }} /> 목차" },
+          { key: "summary", label: "요약" },
+          { key: "chapters", label: "목차" },
           { key: "characters", label: "인물" },
           { key: "discuss", label: "토론" },
-          { key: "quiz", label: "<img src="icons/ui/ui_question.png" alt="" style={{ width: 12, height: 12, verticalAlign: "middle" }} /> 퀴즈" },
+          { key: "quiz", label: "퀴즈" },
           { key: "deep", label: "심화" }
         ];
         return (
@@ -8588,7 +8588,7 @@
               </div>
               <button onClick={() => isAdmin ? setScreen("admin") : setShowAdminLogin(true)}
                 style={{ width: "100%", padding: "12px", borderRadius: 10, border: "1.5px solid #ef4444", background: isAdmin ? "#ef4444" : "#ef444408", color: isAdmin ? "white" : "#ef4444", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
-                {isAdmin ? "<img src="icons/ui/ui_unlock.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 관리자 패널 열기" : "<img src="icons/ui/ui_lock.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 관리자 모드"}
+                {isAdmin ? "관리자 패널 열기" : "관리자 모드"}
               </button>
             </>)}
           </div>
@@ -9129,7 +9129,7 @@
           { day: "목", task: "심화 토론", book: cwBook },
           { day: "금", task: "정리 & 클리어", book: cwBook },
           { day: "토", task: "자유 독서", book: null },
-          { day: "일", task: "<img src="icons/ui/ui_calendar.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 다음 주 준비", book: null }
+          { day: "일", task: "다음 주 준비", book: null }
         ];
         const todayIdx = today.getDay() === 0 ? 6 : today.getDay() - 1;
 
