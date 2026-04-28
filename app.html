@@ -5396,7 +5396,7 @@
                 <div style={{ marginBottom: 20 }}>
                   <label style={{ fontSize: 13, fontWeight: 600, color: "#555", display: "block", marginBottom: 6 }}>학년</label>
                   <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                    {["4", "5", "6", "중1", "중2", "중3"].map(g => (
+                    {["4", "5", "6", "중1"].map(g => (
                       <button key={g} onClick={() => setProfileForm(p => ({ ...p, grade: g }))}
                         style={{
                           padding: "8px 16px", borderRadius: 20, border: "2px solid",
@@ -8496,6 +8496,27 @@
             ✏️ 프로필 수정
           </button>
 
+          {/* 📚 학년 변경 */}
+          <div style={{ marginTop: 12, background: "white", borderRadius: 12, padding: 16, border: "2px solid #eee", overflow: "hidden" }}>
+            <div style={{ fontSize: 13, fontWeight: 600, color: "#555", marginBottom: 8, display: "flex", alignItems: "center", gap: 4 }}>
+              📚 학년 <span style={{ fontSize: 11, color: "#667eea", fontWeight: 700 }}>({profile?.grade ? (["4","5","6"].includes(profile.grade) ? `초등 ${profile.grade}학년` : `${profile.grade}학년`) : "미설정"})</span>
+            </div>
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+              {["4", "5", "6", "중1"].map(g => (
+                <button key={g} onClick={() => { setProfile(prev => ({ ...prev, grade: g })); setProfileForm(prev => ({ ...prev, grade: g })); }}
+                  style={{
+                    padding: "7px 14px", borderRadius: 20, border: "2px solid",
+                    borderColor: profile?.grade === g ? "#667eea" : "#eee",
+                    background: profile?.grade === g ? "#667eea" : "white",
+                    color: profile?.grade === g ? "white" : "#666",
+                    fontSize: 12, fontWeight: 600, cursor: "pointer"
+                  }}>
+                  {["4","5","6"].includes(g) ? `초${g}` : g}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* 🔑 복구 PIN 설정/변경 */}
           <div style={{ marginTop: 12, background: "white", borderRadius: 12, padding: 16, border: "2px solid #eee", overflow: "hidden" }}>
             <div style={{ fontSize: 13, fontWeight: 600, color: "#555", marginBottom: 8, display: "flex", alignItems: "center", gap: 4 }}>
@@ -10908,6 +10929,48 @@
                       const result = await installPrompt.userChoice;
                       if (result.outcome === "accepted") setShowInstallBanner(false);
                       setInstallPrompt(null);
+                    }
+                  }}
+                    style={{ background: "white", border: "none", borderRadius: 12, padding: "8px 16px", color: "#667eea", fontSize: 12, fontWeight: 800, cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}>
+                    설치
+                  </button>
+                </div>
+              </div>
+            );
+          })()}
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<BookQuest />);
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      let reloading = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (reloading) return;
+        reloading = true;
+        window.location.reload();
+      });
+
+      navigator.serviceWorker.register('./sw.js').then(reg => {
+        setInterval(() => reg.update().catch(() => {}), 60 * 60 * 1000);
+        reg.addEventListener('updatefound', () => {
+          const installing = reg.installing;
+          if (!installing) return;
+          installing.addEventListener('statechange', () => {
+            if (installing.state === 'installed' && navigator.serviceWorker.controller) {
+              installing.postMessage({ type: 'SKIP_WAITING' });
+            }
+          });
+        });
+      }).catch(() => {});
+    }
+  </script>
+</body>
+</html>
+null);
                     }
                   }}
                     style={{ background: "white", border: "none", borderRadius: 12, padding: "8px 16px", color: "#667eea", fontSize: 12, fontWeight: 800, cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}>
