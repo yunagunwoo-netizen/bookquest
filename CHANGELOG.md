@@ -1,5 +1,11 @@
 # BookQuest Changelog
 
+## 2026-04-28
+- 프로필 학년 선택 범위 축소: 초4~중3 → 초4~중1 (도서 대상 연령 기준). 프로필 수정 크래시 수정: `setProfile(null)` → `editingProfile` 모달 방식으로 전환(기존 데이터 prefill + Firestore 자동 저장). 아바타 채팅 추천 질문 랜덤화: 3개 고정 → 16개 풀에서 랜덤 3개. 아바타 화면 pill 버튼 `🛍️ 상점` → `👤 프로필`로 변경. 스킬아이콘 시트프롬프트 문서(docx) 생성: 52 스킬 + 10 룰렛 = 62 아이콘, 11장 2×3 그리드 시트용 Nano Banana 프롬프트. AVATAR_DATA 카운트 정정: 총 156종(_av 109 + _av34 37 + _av36 10) / 진열 42 / 숨김 114.
+
+## 2026-04-27 (Session 2)
+- PWA 설치 버튼 수정(manifest+SW 등록+triggerInstall), 데이터 복구 시스템(이름+학교+PIN 매칭→UID 복원), ImportDataModal+자동 일일 백업(Firestore backups 서브컬렉션), 관리자 모드 책 완독 기능, 레이아웃 overflow 수정, 상점 진입 버튼·라벨 추가.
+
 ## 2026-04-27
 - 배틀 4대 기능 통합 구현: ①아바타 고유 스킬 52종(AVATAR_SKILLS) — 패시브/액티브 스킬 개별 매핑, 데미지 계산 시 자동 적용(dmg_boost/shield/regen/lifesteal/streak_double/last_stand/dual_boost 등 20+가지 효과). HP 초기화에 스킬 HP 보너스 반영, 타이머에 시간 보너스 반영. ②승리 보상 룰렛(ROULETTE_REWARDS) — 70% 일반/25% 좋은/5% 잭팟 3티어, 코인/XP/XP배율/칭호 보상, 스킬·아레나·라이벌 보상 배율 중첩, 코닉 그라데이션 스핀 애니메이션. ③복수전+라이벌 시스템 — 패배 시 복수전 버튼(1.5배 보상), 동일 상대 3회 이상 대전 시 라이벌 자동 등록(2배 보상), battleHistory 50건 추적, Firestore 저장. ④책 기반 배틀 맵(아레나) — getWeeklyArenaBook 주간 자동 선정, 완독자 전용 입장, 아레나 3배 보상 + 공격력 20% 증가. ResultCard에 고유 스킬 골드 하이라이트 표시. Firestore에 rivalData/battleHistory/xpMultiplier 필드 추가.
 - 배틀 5라운드 확장: 기존 3라운드(Q&A 2 + 토론 1) → 5라운드(Q&A 2 + 문장완성 2 + 토론 1). Cloud Function 프롬프트 + 검증 로직 업데이트. 클라이언트에 complete 타입 UI(파란 테마, 빈칸 시각화, 3지선다), 채점, 타이머, 결과 표시 전부 구현.

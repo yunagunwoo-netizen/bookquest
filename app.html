@@ -3102,62 +3102,62 @@
       // ═══════════════════════════════════════
       const AVATAR_SKILLS = {
         // ── 오리지널 캐릭터 (10) ── free tier
-        dash:   { name: "번개 대시",     icon: "⚡", desc: "타이머 +2초",            skillType: "passive", effect: { type: "time_bonus", value: 2 } },
-        bux:    { name: "행운의 코인",   icon: "🪙", desc: "승리 코인 2배",          skillType: "passive", effect: { type: "double_coin", value: true } },
-        zero:   { name: "그림자 베기",   icon: "🌑", desc: "상대 데미지 +15%",       skillType: "passive", effect: { type: "opp_dmg_boost", value: 0.15 } },
-        nuts:   { name: "너트 방패",     icon: "🛡️", desc: "받는 데미지 -10%",       skillType: "passive", effect: { type: "shield", value: 0.10 } },
-        buddy:  { name: "응원의 함성",   icon: "📣", desc: "HP +10 보너스",          skillType: "passive", effect: { type: "hp_boost", value: 10 } },
-        mujin:  { name: "무한 도전",     icon: "♾️", desc: "무승부 시 추가 공격",     skillType: "passive", effect: { type: "draw_bonus_atk", value: 8 } },
-        monki:  { name: "장난꾸러기",    icon: "🐒", desc: "상대 타이머 -1초",       skillType: "passive", effect: { type: "opp_time_debuff", value: 1 } },
-        arth:   { name: "탐험가의 직감", icon: "🧭", desc: "첫 라운드 힌트 표시",    skillType: "active",  effect: { type: "hint", value: 1 } },
-        shade:  { name: "어둠의 일격",   icon: "🗡️", desc: "발동 시 상대 HP -15",    skillType: "active",  effect: { type: "drain", value: 15 } },
-        rix:    { name: "천재의 계산",   icon: "🧮", desc: "정답 데미지 +20%",       skillType: "passive", effect: { type: "correct_dmg_boost", value: 0.20 } },
+        dash:   { name: "번개 대시",     icon: "⚡", skillImg: "icons/skills/dash.png", desc: "타이머 +2초",            skillType: "passive", effect: { type: "time_bonus", value: 2 } },
+        bux:    { name: "행운의 코인",   icon: "🪙", skillImg: "icons/skills/bux.png", desc: "승리 코인 2배",          skillType: "passive", effect: { type: "double_coin", value: true } },
+        zero:   { name: "그림자 베기",   icon: "🌑", skillImg: "icons/skills/zero.png", desc: "상대 데미지 +15%",       skillType: "passive", effect: { type: "opp_dmg_boost", value: 0.15 } },
+        nuts:   { name: "너트 방패",     icon: "🛡️", skillImg: "icons/skills/nuts.png", desc: "받는 데미지 -10%",       skillType: "passive", effect: { type: "shield", value: 0.10 } },
+        buddy:  { name: "응원의 함성",   icon: "📣", skillImg: "icons/skills/buddy.png", desc: "HP +10 보너스",          skillType: "passive", effect: { type: "hp_boost", value: 10 } },
+        mujin:  { name: "무한 도전",     icon: "♾️", skillImg: "icons/skills/mujin.png", desc: "무승부 시 추가 공격",     skillType: "passive", effect: { type: "draw_bonus_atk", value: 8 } },
+        monki:  { name: "장난꾸러기",    icon: "🐒", skillImg: "icons/skills/monki.png", desc: "상대 타이머 -1초",       skillType: "passive", effect: { type: "opp_time_debuff", value: 1 } },
+        arth:   { name: "탐험가의 직감", icon: "🧭", skillImg: "icons/skills/arth.png", desc: "첫 라운드 힌트 표시",    skillType: "active",  effect: { type: "hint", value: 1 } },
+        shade:  { name: "어둠의 일격",   icon: "🗡️", skillImg: "icons/skills/shade.png", desc: "발동 시 상대 HP -15",    skillType: "active",  effect: { type: "drain", value: 15 } },
+        rix:    { name: "천재의 계산",   icon: "🧮", skillImg: "icons/skills/rix.png", desc: "정답 데미지 +20%",       skillType: "passive", effect: { type: "correct_dmg_boost", value: 0.20 } },
         // ── 명예의 전당 · 영웅 (12) ── heroic tier
-        sejong:       { name: "한글 창제",     icon: "📜", desc: "모든 데미지 +10%",      skillType: "passive", effect: { type: "dmg_boost", value: 0.10 } },
-        yi_sunsin:    { name: "학익진",        icon: "🏹", desc: "연속 정답 시 데미지 2배", skillType: "passive", effect: { type: "streak_double", value: true } },
-        davinci:      { name: "르네상스 지식", icon: "🎨", desc: "HP +15 보너스",         skillType: "passive", effect: { type: "hp_boost", value: 15 } },
-        einstein:     { name: "상대성 이론",   icon: "🔬", desc: "타이머 +3초",           skillType: "passive", effect: { type: "time_bonus", value: 3 } },
-        marie_curie:  { name: "방사능 연구",   icon: "☢️", desc: "발동 시 상대 HP -20",   skillType: "active",  effect: { type: "drain", value: 20 } },
-        helen_keller: { name: "불굴의 의지",   icon: "💪", desc: "HP 30% 이하 시 데미지 2배", skillType: "passive", effect: { type: "last_stand", value: 2.0 } },
-        mozart:       { name: "교향곡의 선율", icon: "🎵", desc: "매 라운드 HP 5 회복",   skillType: "passive", effect: { type: "regen", value: 5 } },
-        shakespeare:  { name: "극작가의 통찰", icon: "🎭", desc: "토론 라운드 데미지 +30%", skillType: "passive", effect: { type: "debate_dmg_boost", value: 0.30 } },
-        malala:       { name: "용기의 목소리", icon: "✊", desc: "받는 데미지 -15%",      skillType: "passive", effect: { type: "shield", value: 0.15 } },
-        louis_braille:{ name: "점자의 빛",     icon: "✨", desc: "오답 시 데미지 감소 50%", skillType: "passive", effect: { type: "wrong_shield", value: 0.50 } },
-        jang_yeongsil:{ name: "발명가의 손",   icon: "🔧", desc: "정답 데미지 +25%",      skillType: "passive", effect: { type: "correct_dmg_boost", value: 0.25 } },
-        yu_gwansun:   { name: "만세 함성",     icon: "🇰🇷", desc: "발동 시 HP 25 회복",   skillType: "active",  effect: { type: "heal", value: 25 } },
+        sejong:       { name: "한글 창제",     icon: "📜", skillImg: "icons/skills/sejong.png", desc: "모든 데미지 +10%",      skillType: "passive", effect: { type: "dmg_boost", value: 0.10 } },
+        yi_sunsin:    { name: "학익진",        icon: "🏹", skillImg: "icons/skills/yi_sunsin.png", desc: "연속 정답 시 데미지 2배", skillType: "passive", effect: { type: "streak_double", value: true } },
+        davinci:      { name: "르네상스 지식", icon: "🎨", skillImg: "icons/skills/davinci.png", desc: "HP +15 보너스",         skillType: "passive", effect: { type: "hp_boost", value: 15 } },
+        einstein:     { name: "상대성 이론",   icon: "🔬", skillImg: "icons/skills/einstein.png", desc: "타이머 +3초",           skillType: "passive", effect: { type: "time_bonus", value: 3 } },
+        marie_curie:  { name: "방사능 연구",   icon: "☢️", skillImg: "icons/skills/marie_curie.png", desc: "발동 시 상대 HP -20",   skillType: "active",  effect: { type: "drain", value: 20 } },
+        helen_keller: { name: "불굴의 의지",   icon: "💪", skillImg: "icons/skills/helen_keller.png", desc: "HP 30% 이하 시 데미지 2배", skillType: "passive", effect: { type: "last_stand", value: 2.0 } },
+        mozart:       { name: "교향곡의 선율", icon: "🎵", skillImg: "icons/skills/mozart.png", desc: "매 라운드 HP 5 회복",   skillType: "passive", effect: { type: "regen", value: 5 } },
+        shakespeare:  { name: "극작가의 통찰", icon: "🎭", skillImg: "icons/skills/shakespeare.png", desc: "토론 라운드 데미지 +30%", skillType: "passive", effect: { type: "debate_dmg_boost", value: 0.30 } },
+        malala:       { name: "용기의 목소리", icon: "✊", skillImg: "icons/skills/malala.png", desc: "받는 데미지 -15%",      skillType: "passive", effect: { type: "shield", value: 0.15 } },
+        louis_braille:{ name: "점자의 빛",     icon: "✨", skillImg: "icons/skills/louis_braille.png", desc: "오답 시 데미지 감소 50%", skillType: "passive", effect: { type: "wrong_shield", value: 0.50 } },
+        jang_yeongsil:{ name: "발명가의 손",   icon: "🔧", skillImg: "icons/skills/jang_yeongsil.png", desc: "정답 데미지 +25%",      skillType: "passive", effect: { type: "correct_dmg_boost", value: 0.25 } },
+        yu_gwansun:   { name: "만세 함성",     icon: "🇰🇷", skillImg: "icons/skills/yu_gwansun.png", desc: "발동 시 HP 25 회복",   skillType: "active",  effect: { type: "heal", value: 25 } },
         // ── 명예의 전당 · 전설 (10) ── legendary tier
-        arthur:    { name: "엑스칼리버",     icon: "⚔️", desc: "정답 시 추가 데미지 +12",  skillType: "passive", effect: { type: "correct_flat_bonus", value: 12 } },
-        robinhood: { name: "정확한 화살",    icon: "🏹", desc: "상대 방어 무시",           skillType: "passive", effect: { type: "pierce", value: true } },
-        honggildong: { name: "축지법",       icon: "💨", desc: "타이머 +4초",              skillType: "passive", effect: { type: "time_bonus", value: 4 } },
-        wukong:    { name: "72변화",         icon: "🐵", desc: "랜덤 스킬 1개 복사",       skillType: "active",  effect: { type: "copy_random", value: true } },
-        joan:      { name: "신의 계시",      icon: "🔥", desc: "발동 시 2라운드 데미지 2배", skillType: "active",  effect: { type: "power_up", value: 2 } },
-        aladdin:   { name: "마법 램프",      icon: "🪔", desc: "승리 보상 2배",            skillType: "passive", effect: { type: "reward_mult", value: 2 } },
-        ivan:      { name: "바보의 지혜",    icon: "🃏", desc: "무승부→내 승리 전환",      skillType: "passive", effect: { type: "draw_to_win", value: true } },
-        momotaro:  { name: "복숭아 파워",    icon: "🍑", desc: "HP +20 보너스",            skillType: "passive", effect: { type: "hp_boost", value: 20 } },
-        anansi:    { name: "거미줄 함정",    icon: "🕸️", desc: "상대 정답 데미지 -30%",    skillType: "passive", effect: { type: "opp_correct_nerf", value: 0.30 } },
-        thor:      { name: "묠니르 번개",    icon: "⚡", desc: "발동 시 상대 HP -30",      skillType: "active",  effect: { type: "drain", value: 30 } },
+        arthur:    { name: "엑스칼리버",     icon: "⚔️", skillImg: "icons/skills/arthur.png", desc: "정답 시 추가 데미지 +12",  skillType: "passive", effect: { type: "correct_flat_bonus", value: 12 } },
+        robinhood: { name: "정확한 화살",    icon: "🏹", skillImg: "icons/skills/robinhood.png", desc: "상대 방어 무시",           skillType: "passive", effect: { type: "pierce", value: true } },
+        honggildong: { name: "축지법",       icon: "💨", skillImg: "icons/skills/honggildong.png", desc: "타이머 +4초",              skillType: "passive", effect: { type: "time_bonus", value: 4 } },
+        wukong:    { name: "72변화",         icon: "🐵", skillImg: "icons/skills/wukong.png", desc: "랜덤 스킬 1개 복사",       skillType: "active",  effect: { type: "copy_random", value: true } },
+        joan:      { name: "신의 계시",      icon: "🔥", skillImg: "icons/skills/joan.png", desc: "발동 시 2라운드 데미지 2배", skillType: "active",  effect: { type: "power_up", value: 2 } },
+        aladdin:   { name: "마법 램프",      icon: "🪔", skillImg: "icons/skills/aladdin.png", desc: "승리 보상 2배",            skillType: "passive", effect: { type: "reward_mult", value: 2 } },
+        ivan:      { name: "바보의 지혜",    icon: "🃏", skillImg: "icons/skills/ivan.png", desc: "무승부→내 승리 전환",      skillType: "passive", effect: { type: "draw_to_win", value: true } },
+        momotaro:  { name: "복숭아 파워",    icon: "🍑", skillImg: "icons/skills/momotaro.png", desc: "HP +20 보너스",            skillType: "passive", effect: { type: "hp_boost", value: 20 } },
+        anansi:    { name: "거미줄 함정",    icon: "🕸️", skillImg: "icons/skills/anansi.png", desc: "상대 정답 데미지 -30%",    skillType: "passive", effect: { type: "opp_correct_nerf", value: 0.30 } },
+        thor:      { name: "묠니르 번개",    icon: "⚡", skillImg: "icons/skills/thor.png", desc: "발동 시 상대 HP -30",      skillType: "active",  effect: { type: "drain", value: 30 } },
         // ── 명예의 전당 · 신화 (10) ── mythic tier
-        zeus:       { name: "올림포스 번개",   icon: "⚡", desc: "모든 데미지 +20%",        skillType: "passive", effect: { type: "dmg_boost", value: 0.20 } },
-        athena:     { name: "지혜의 방패",     icon: "🛡️", desc: "받는 데미지 -25%",       skillType: "passive", effect: { type: "shield", value: 0.25 } },
-        anubis:     { name: "죽음의 심판",     icon: "☠️", desc: "상대 HP 10% 흡수",       skillType: "passive", effect: { type: "lifesteal", value: 0.10 } },
-        amaterasu:  { name: "태양의 축복",     icon: "☀️", desc: "매 라운드 HP 8 회복",    skillType: "passive", effect: { type: "regen", value: 8 } },
-        isis:       { name: "부활의 마법",     icon: "🔮", desc: "HP 0 시 50% 부활 1회",   skillType: "active",  effect: { type: "revive", value: 0.50 } },
-        ganesha:    { name: "지혜의 코끼리",   icon: "🐘", desc: "타이머 +5초",            skillType: "passive", effect: { type: "time_bonus", value: 5 } },
-        quetzal:    { name: "깃털 뱀의 바람",  icon: "🌪️", desc: "발동 시 상대 HP -25",   skillType: "active",  effect: { type: "drain", value: 25 } },
-        nezha:      { name: "풍화륜",          icon: "🔥", desc: "정답 데미지 +30%",       skillType: "passive", effect: { type: "correct_dmg_boost", value: 0.30 } },
-        gumiho:     { name: "여우구슬",        icon: "🦊", desc: "상대 스킬 봉인",         skillType: "active",  effect: { type: "seal", value: true } },
-        dragonking: { name: "용왕의 파도",     icon: "🌊", desc: "모든 데미지 +15% & HP +15", skillType: "passive", effect: { type: "dual_boost", value: { dmg: 0.15, hp: 15 } } },
+        zeus:       { name: "올림포스 번개",   icon: "⚡", skillImg: "icons/skills/zeus.png", desc: "모든 데미지 +20%",        skillType: "passive", effect: { type: "dmg_boost", value: 0.20 } },
+        athena:     { name: "지혜의 방패",     icon: "🛡️", skillImg: "icons/skills/athena.png", desc: "받는 데미지 -25%",       skillType: "passive", effect: { type: "shield", value: 0.25 } },
+        anubis:     { name: "죽음의 심판",     icon: "☠️", skillImg: "icons/skills/anubis.png", desc: "상대 HP 10% 흡수",       skillType: "passive", effect: { type: "lifesteal", value: 0.10 } },
+        amaterasu:  { name: "태양의 축복",     icon: "☀️", skillImg: "icons/skills/amaterasu.png", desc: "매 라운드 HP 8 회복",    skillType: "passive", effect: { type: "regen", value: 8 } },
+        isis:       { name: "부활의 마법",     icon: "🔮", skillImg: "icons/skills/isis.png", desc: "HP 0 시 50% 부활 1회",   skillType: "active",  effect: { type: "revive", value: 0.50 } },
+        ganesha:    { name: "지혜의 코끼리",   icon: "🐘", skillImg: "icons/skills/ganesha.png", desc: "타이머 +5초",            skillType: "passive", effect: { type: "time_bonus", value: 5 } },
+        quetzal:    { name: "깃털 뱀의 바람",  icon: "🌪️", skillImg: "icons/skills/quetzal.png", desc: "발동 시 상대 HP -25",   skillType: "active",  effect: { type: "drain", value: 25 } },
+        nezha:      { name: "풍화륜",          icon: "🔥", skillImg: "icons/skills/nezha.png", desc: "정답 데미지 +30%",       skillType: "passive", effect: { type: "correct_dmg_boost", value: 0.30 } },
+        gumiho:     { name: "여우구슬",        icon: "🦊", skillImg: "icons/skills/gumiho.png", desc: "상대 스킬 봉인",         skillType: "active",  effect: { type: "seal", value: true } },
+        dragonking: { name: "용왕의 파도",     icon: "🌊", skillImg: "icons/skills/dragonking.png", desc: "모든 데미지 +15% & HP +15", skillType: "passive", effect: { type: "dual_boost", value: { dmg: 0.15, hp: 15 } } },
         // ── 히든 · 책 속 전설 V3.6 (10) ── hidden tier
-        homer:          { name: "서사시의 영감",   icon: "📖", desc: "토론 데미지 +40%",        skillType: "passive", effect: { type: "debate_dmg_boost", value: 0.40 } },
-        scheherazade:   { name: "천일야화",        icon: "🌙", desc: "5라운드 모두 HP 10 회복",  skillType: "passive", effect: { type: "regen", value: 10 } },
-        hypatia:        { name: "알렉산드리아 지식",icon: "📐", desc: "정답 데미지 +35%",        skillType: "passive", effect: { type: "correct_dmg_boost", value: 0.35 } },
-        merlin:         { name: "대마법사의 주문", icon: "🧙", desc: "발동 시 모든 스탯 강화",   skillType: "active",  effect: { type: "mega_buff", value: { dmg: 0.15, shield: 0.15, time: 3 } } },
-        confucius:      { name: "인의예지",        icon: "📚", desc: "HP +25 & 데미지 +10%",    skillType: "passive", effect: { type: "dual_boost", value: { dmg: 0.10, hp: 25 } } },
-        socrates:       { name: "소크라테스 문답", icon: "❓", desc: "토론 승리 시 추가 HP 흡수", skillType: "passive", effect: { type: "debate_lifesteal", value: 15 } },
-        cleopatra:      { name: "나일의 축복",     icon: "👑", desc: "승리 보상 3배",           skillType: "passive", effect: { type: "reward_mult", value: 3 } },
-        galileo:        { name: "별의 관측",       icon: "🔭", desc: "힌트 2회 + 타이머 +3초",  skillType: "active",  effect: { type: "multi_hint", value: { hints: 2, time: 3 } } },
-        musashi:        { name: "이도류",          icon: "⚔️", desc: "정답 시 2회 공격",        skillType: "passive", effect: { type: "double_strike", value: true } },
-        sage_archivist: { name: "태고의 기록",     icon: "🏛️", desc: "받는 데미지 -30% & 데미지 +20%", skillType: "passive", effect: { type: "dual_boost", value: { dmg: 0.20, shield: 0.30 } } },
+        homer:          { name: "서사시의 영감",   icon: "📖", skillImg: "icons/skills/homer.png", desc: "토론 데미지 +40%",        skillType: "passive", effect: { type: "debate_dmg_boost", value: 0.40 } },
+        scheherazade:   { name: "천일야화",        icon: "🌙", skillImg: "icons/skills/scheherazade.png", desc: "5라운드 모두 HP 10 회복",  skillType: "passive", effect: { type: "regen", value: 10 } },
+        hypatia:        { name: "알렉산드리아 지식",icon: "📐", skillImg: "icons/skills/hypatia.png", desc: "정답 데미지 +35%",        skillType: "passive", effect: { type: "correct_dmg_boost", value: 0.35 } },
+        merlin:         { name: "대마법사의 주문", icon: "🧙", skillImg: "icons/skills/merlin.png", desc: "발동 시 모든 스탯 강화",   skillType: "active",  effect: { type: "mega_buff", value: { dmg: 0.15, shield: 0.15, time: 3 } } },
+        confucius:      { name: "인의예지",        icon: "📚", skillImg: "icons/skills/confucius.png", desc: "HP +25 & 데미지 +10%",    skillType: "passive", effect: { type: "dual_boost", value: { dmg: 0.10, hp: 25 } } },
+        socrates:       { name: "소크라테스 문답", icon: "❓", skillImg: "icons/skills/socrates.png", desc: "토론 승리 시 추가 HP 흡수", skillType: "passive", effect: { type: "debate_lifesteal", value: 15 } },
+        cleopatra:      { name: "나일의 축복",     icon: "👑", skillImg: "icons/skills/cleopatra.png", desc: "승리 보상 3배",           skillType: "passive", effect: { type: "reward_mult", value: 3 } },
+        galileo:        { name: "별의 관측",       icon: "🔭", skillImg: "icons/skills/galileo.png", desc: "힌트 2회 + 타이머 +3초",  skillType: "active",  effect: { type: "multi_hint", value: { hints: 2, time: 3 } } },
+        musashi:        { name: "이도류",          icon: "⚔️", skillImg: "icons/skills/musashi.png", desc: "정답 시 2회 공격",        skillType: "passive", effect: { type: "double_strike", value: true } },
+        sage_archivist: { name: "태고의 기록",     icon: "🏛️", skillImg: "icons/skills/sage_archivist.png", desc: "받는 데미지 -30% & 데미지 +20%", skillType: "passive", effect: { type: "dual_boost", value: { dmg: 0.20, shield: 0.30 } } },
       };
 
       const getAvatarSkill = (avatarId) => {
@@ -3170,28 +3170,28 @@
       // ═══════════════════════════════════════
       const ROULETTE_REWARDS = [
         // Normal (55%) — 기본 보상
-        { tier: "normal", label: "+10 코인",   icon: "🪙", reward: { type: "coin", value: 10 } },
-        { tier: "normal", label: "+15 코인",   icon: "🪙", reward: { type: "coin", value: 15 } },
-        { tier: "normal", label: "+20 코인",   icon: "🪙", reward: { type: "coin", value: 20 } },
-        { tier: "normal", label: "+30 XP",     icon: "⭐", reward: { type: "xp", value: 30 } },
-        { tier: "normal", label: "+40 XP",     icon: "⭐", reward: { type: "xp", value: 40 } },
-        { tier: "normal", label: "+50 XP",     icon: "✨", reward: { type: "xp", value: 50 } },
+        { tier: "normal", label: "+10 코인",   icon: "🪙", rewardImg: "icons/skills/reward_coin_normal.png", reward: { type: "coin", value: 10 } },
+        { tier: "normal", label: "+15 코인",   icon: "🪙", rewardImg: "icons/skills/reward_coin_normal.png", reward: { type: "coin", value: 15 } },
+        { tier: "normal", label: "+20 코인",   icon: "🪙", rewardImg: "icons/skills/reward_coin_normal.png", reward: { type: "coin", value: 20 } },
+        { tier: "normal", label: "+30 XP",     icon: "⭐", rewardImg: "icons/skills/reward_xp_normal.png", reward: { type: "xp", value: 30 } },
+        { tier: "normal", label: "+40 XP",     icon: "⭐", rewardImg: "icons/skills/reward_xp_normal.png", reward: { type: "xp", value: 40 } },
+        { tier: "normal", label: "+50 XP",     icon: "✨", rewardImg: "icons/skills/reward_xp_normal.png", reward: { type: "xp", value: 50 } },
         // Good (30%) — 코인/XP + 랜덤 아이템
-        { tier: "good",   label: "+40 코인",   icon: "💰", reward: { type: "coin", value: 40 } },
-        { tier: "good",   label: "+60 코인",   icon: "💰", reward: { type: "coin", value: 60 } },
-        { tier: "good",   label: "+100 XP",    icon: "🌟", reward: { type: "xp", value: 100 } },
-        { tier: "good",   label: "+120 XP",    icon: "🌟", reward: { type: "xp", value: 120 } },
-        { tier: "good",   label: "XP 3배 (다음 배틀)", icon: "🔥", reward: { type: "xp_mult", value: 3 } },
-        { tier: "good",   label: "랜덤 아이템!", icon: "🎁", reward: { type: "random_item" } },
+        { tier: "good",   label: "+40 코인",   icon: "💰", rewardImg: "icons/skills/reward_coin_good.png", reward: { type: "coin", value: 40 } },
+        { tier: "good",   label: "+60 코인",   icon: "💰", rewardImg: "icons/skills/reward_coin_good.png", reward: { type: "coin", value: 60 } },
+        { tier: "good",   label: "+100 XP",    icon: "🌟", rewardImg: "icons/skills/reward_xp_good.png", reward: { type: "xp", value: 100 } },
+        { tier: "good",   label: "+120 XP",    icon: "🌟", rewardImg: "icons/skills/reward_xp_good.png", reward: { type: "xp", value: 120 } },
+        { tier: "good",   label: "XP 3배 (다음 배틀)", icon: "🔥", rewardImg: "icons/skills/reward_xp_mult.png", reward: { type: "xp_mult", value: 3 } },
+        { tier: "good",   label: "랜덤 아이템!", icon: "🎁", rewardImg: "icons/skills/reward_giftbox.png", reward: { type: "random_item" } },
         { tier: "good",   label: "랜덤 아이템!", icon: "🎁", reward: { type: "random_item" } },
         // Jackpot (10%) — 대박 보상 + 레어 아바타
-        { tier: "jackpot",label: "+150 코인!", icon: "💎", reward: { type: "coin", value: 150 } },
-        { tier: "jackpot",label: "+300 XP!",   icon: "💫", reward: { type: "xp", value: 300 } },
-        { tier: "jackpot",label: "+200 코인!", icon: "👑", reward: { type: "coin", value: 200 } },
-        { tier: "jackpot",label: "랜덤 칭호!", icon: "🏅", reward: { type: "title", value: "배틀 챔피언" } },
-        { tier: "jackpot",label: "랜덤 아이템 2개!", icon: "🎁", reward: { type: "random_item_x2" } },
+        { tier: "jackpot",label: "+150 코인!", icon: "💎", rewardImg: "icons/skills/reward_diamond.png", reward: { type: "coin", value: 150 } },
+        { tier: "jackpot",label: "+300 XP!",   icon: "💫", rewardImg: "icons/skills/reward_xp_good.png", reward: { type: "xp", value: 300 } },
+        { tier: "jackpot",label: "+200 코인!", icon: "👑", rewardImg: "icons/skills/reward_crown.png", reward: { type: "coin", value: 200 } },
+        { tier: "jackpot",label: "랜덤 칭호!", icon: "🏅", rewardImg: "icons/skills/reward_medal.png", reward: { type: "title", value: "배틀 챔피언" } },
+        { tier: "jackpot",label: "랜덤 아이템 2개!", icon: "🎁", rewardImg: "icons/skills/reward_giftbox.png", reward: { type: "random_item_x2" } },
         // Legendary (5% — jackpot 내 일부)
-        { tier: "legendary", label: "★ 레어 아바타!", icon: "🦄", reward: { type: "random_avatar" } },
+        { tier: "legendary", label: "★ 레어 아바타!", icon: "🦄", rewardImg: "icons/skills/reward_unicorn.png", reward: { type: "random_avatar" } },
       ];
 
       const spinRoulette = () => {
@@ -6978,7 +6978,7 @@
                     <div style={{ padding: "0 4px 3px" }}>
                       {/* 고유 스킬 */}
                       <div style={{ display: "flex", alignItems: "center", gap: 2, padding: "2px 3px", borderTop: `1px solid ${badgeColor}33`, background: "rgba(251,191,36,0.1)" }}>
-                        <span style={{ fontSize: 8 }}>{(isOpp ? getAvatarSkill(opp?.avatar) : getAvatarSkill(profile?.avatar))?.icon || "⭐"}</span>
+                        {(() => { const sk = isOpp ? getAvatarSkill(opp?.avatar) : getAvatarSkill(profile?.avatar); return sk?.skillImg ? <img src={sk.skillImg} alt="" style={{ width: 14, height: 14, borderRadius: "50%" }} /> : <span style={{ fontSize: 8 }}>{sk?.icon || "⭐"}</span>; })()}
                         <span style={{ fontSize: 7, fontWeight: 800, color: "#fde047" }}>{(isOpp ? getAvatarSkill(opp?.avatar) : getAvatarSkill(profile?.avatar))?.name || "기본"}</span>
                       </div>
                       {skills.map((sk, i) => (
@@ -7069,7 +7069,7 @@
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
                       <div style={{ fontWeight: 800, opacity: 0.9 }}>라운드 {i + 1} · {r.type === "qa" ? (r.book || "책 Q&A") : r.type === "complete" ? (r.book || "문장 완성") : "미니 토론"}</div>
                       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                        <span style={{ fontSize: 9, opacity: 0.6 }}>{getAvatarSkill(profile?.avatar)?.icon}</span>
+                        {(() => { const sk = getAvatarSkill(profile?.avatar); return sk?.skillImg ? <img src={sk.skillImg} alt="" style={{ width: 16, height: 16, borderRadius: "50%", opacity: 0.8 }} /> : <span style={{ fontSize: 9, opacity: 0.6 }}>{sk?.icon}</span>; })()}
                         <div style={{ fontWeight: 800, color: r.judge === "my" ? "#22c55e" : r.judge === "opp" ? "#ef4444" : "#fde047" }}>{r.judge === "my" ? "승" : r.judge === "opp" ? "패" : "무"}</div>
                       </div>
                     </div>
@@ -7203,7 +7203,7 @@
                         </div>
                       ) : (
                         <div style={{ animation: "bq-fade-up 0.5s ease-out" }}>
-                          <div style={{ fontSize: 40, marginBottom: 8 }}>{rouletteResult.icon}</div>
+                          <div style={{ marginBottom: 8 }}>{rouletteResult.rewardImg ? <img src={rouletteResult.rewardImg} alt="" style={{ width: 56, height: 56, borderRadius: "50%" }} /> : <span style={{ fontSize: 40 }}>{rouletteResult.icon}</span>}</div>
                           <div style={{ fontSize: 16, fontWeight: 900, color: rouletteResult.tier === "legendary" ? "#e879f9" : rouletteResult.tier === "jackpot" ? "#fde047" : rouletteResult.tier === "good" ? "#22c55e" : "#e2e8f0" }}>
                             {rouletteResult.tier === "legendary" ? "🦄 전설 등급!!" : rouletteResult.tier === "jackpot" ? "🎉 잭팟!" : rouletteResult.tier === "good" ? "👍 좋은 보상!" : "보상 획득!"}}
                           </div>
