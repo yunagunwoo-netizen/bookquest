@@ -7090,14 +7090,14 @@
                     return (<>
                       <div style={{ flex: 1, textAlign: "center" }}>
                         <div style={{ fontSize: 10, opacity: 0.7, fontWeight: 700, marginBottom: 4 }}>내 스킬</div>
-                        <div style={{ fontSize: 18 }}>{mSkill.icon}</div>
+                        <div>{mSkill.skillImg ? <img src={mSkill.skillImg} alt="" style={{ width: 36, height: 36, borderRadius: "50%" }} /> : <span style={{ fontSize: 18 }}>{mSkill.icon}</span>}</div>
                         <div style={{ fontSize: 10, fontWeight: 800, marginTop: 2 }}>{mSkill.name}</div>
                         <div style={{ fontSize: 8, opacity: 0.7 }}>{mSkill.desc}</div>
                       </div>
                       <div style={{ fontSize: 12, opacity: 0.3, fontWeight: 900 }}>VS</div>
                       <div style={{ flex: 1, textAlign: "center" }}>
                         <div style={{ fontSize: 10, opacity: 0.7, fontWeight: 700, marginBottom: 4 }}>상대 스킬</div>
-                        <div style={{ fontSize: 18 }}>{oSkill.icon}</div>
+                        <div>{oSkill.skillImg ? <img src={oSkill.skillImg} alt="" style={{ width: 36, height: 36, borderRadius: "50%" }} /> : <span style={{ fontSize: 18 }}>{oSkill.icon}</span>}</div>
                         <div style={{ fontSize: 10, fontWeight: 800, marginTop: 2 }}>{oSkill.name}</div>
                         <div style={{ fontSize: 8, opacity: 0.7 }}>{oSkill.desc}</div>
                       </div>
@@ -11078,3 +11078,4 @@
   </script>
 </body>
 </html>
+    
