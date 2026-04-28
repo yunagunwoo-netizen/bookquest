@@ -2964,11 +2964,11 @@
         .filter(Boolean)
         .map(d => d.name).join(", ");
 
-      const completedBooks = BOOKS.filter(b => {
+      const completedBooks = ALL_BOOKS.filter(b => {
         const progress = (bookProgress && bookProgress[b.id]) || 0;
         return progress >= 100;
       });
-      const readingBooks = BOOKS.filter(b => {
+      const readingBooks = ALL_BOOKS.filter(b => {
         const progress = (bookProgress && bookProgress[b.id]) || 0;
         return progress > 0 && progress < 100;
       });
@@ -5503,6 +5503,7 @@
       const [collapsedSections, setCollapsedSections] = useState({
         scheduleOverview: true, // 3주 전체 일정 (기본 접힘)
         scheduleQuest: false,   // 이번 주 퀘스트 내용 (기본 펼침)
+        scheduleCurriculum: false, // 교과 연계 추천 (기본 펼침)
         scheduleMission: false, // 일일 미션 내용 (기본 펼침)
         scheduleBooks: true,    // 전체 퀘스트 목록 내용 (기본 접힘)
         scheduleWeekly: true,   // 이번 주 스케줄 내용 (기본 접힘)
@@ -6017,7 +6018,7 @@
       // RecommendScreen 자동 로드
       useEffect(() => {
         if (screen === "recommend" && !recLoaded) {
-          const readBooks = BOOKS.filter(b => (bookProgress[b.id] || 0) > 0);
+          const readBooks = ALL_BOOKS.filter(b => (bookProgress[b.id] || 0) > 0);
           if (readBooks.length > 0) {
             (async () => {
               setRecLoading(true);
@@ -6133,7 +6134,7 @@
         const newBadges = [];
         const totalDiscussions = Object.values(discussionState).filter(v => v && v.completed).length;
         const deepDiscussions = Object.values(discussionState).filter(v => v && v.completed && v.deep).length;
-        const completedBooks = BOOKS.filter(b => (bookProgress[b.id] || 0) >= 100).length;
+        const completedBooks = ALL_BOOKS.filter(b => (bookProgress[b.id] || 0) >= 100).length;
 
         const checks = [
           { name: "첫 발걸음", condition: totalDiscussions >= 1 },
@@ -6173,7 +6174,7 @@
       // ═══════════════════════════════════════
       const checkHiddenUnlocks = () => {
         if (!dataLoaded || !profile) return;
-        const completedBookList = BOOKS.filter(b => (bookProgress[b.id] || 0) >= 100);
+        const completedBookList = ALL_BOOKS.filter(b => (bookProgress[b.id] || 0) >= 100);
         const totalBattles = (battleWins || 0) + (battleLosses || 0) + (battleDraws || 0);
         const ctx = {
           completedBookList,
@@ -10578,6 +10579,70 @@
               )}
             </div>
 
+            {/* 📚 교과 연계 추천 (홈 화면 통합) */}
+            {(() => {
+              const grade = profile?.grade || "4";
+              const month = new Date().getMonth() + 1;
+              const sem = (month >= 3 && month <= 8) ? "1" : "2";
+              const gradeMap = CURRICULUM_MAP[grade];
+              const semData = gradeMap?.[sem];
+              const korUnits = semData?.["국어"] || [];
+              const currBooks = [];
+              const seen = new Set();
+              korUnits.forEach(u => (u.recommendedBooks || []).forEach(id => {
+                if (!seen.has(id)) { seen.add(id); const b = findBookById(id); if (b) currBooks.push(b); }
+              }));
+              if (currBooks.length === 0) return null;
+              return (
+                <div style={{ marginBottom: 20 }}>
+                  <button onClick={() => toggleSection("scheduleCurriculum")}
+                    style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: collapsedSections.scheduleCurriculum ? 0 : 12, background: "none", border: "none", padding: 0, cursor: "pointer" }}>
+                    <h3 style={{ fontSize: 16, fontWeight: 700, color: "#1a1a2e", display: "flex", alignItems: "center", gap: 6, margin: 0 }}>📚 {grade}학년 {sem}학기 교과 연계</h3>
+                    <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                      <span style={{ fontSize: 11, color: "#6366f1", fontWeight: 600 }}>{currBooks.length}권</span>
+                      <span style={{ fontSize: 14, color: "#888", transition: "transform 0.2s", transform: collapsedSections.scheduleCurriculum ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
+                    </span>
+                  </button>
+                  {!collapsedSections.scheduleCurriculum && (
+                    <div>
+                      <div style={{ display: "flex", overflowX: "auto", gap: 10, paddingBottom: 4, WebkitOverflowScrolling: "touch" }}>
+                        {currBooks.map(book => (
+                          <div key={book.id} onClick={() => {
+                              if (!canAccessBook(book.id)) { showPremiumUpsell("book"); return; }
+                              setSelectedBook(book); setBookTab("summary"); setScreen("book");
+                            }}
+                            style={{ minWidth: 140, maxWidth: 140, background: "white", borderRadius: 14, padding: 12, cursor: "pointer",
+                              boxShadow: "0 2px 8px rgba(0,0,0,0.06)", border: `1.5px solid ${book.color}30`, flexShrink: 0, position: "relative" }}>
+                            {!canAccessBook(book.id) && (
+                              <div style={{ position: "absolute", top: 6, right: 6, background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white", fontSize: 8, fontWeight: 700, padding: "2px 6px", borderRadius: 8 }}>Premium</div>
+                            )}
+                            <div style={{ width: 36, height: 36, borderRadius: 10, background: book.color, color: "white",
+                              display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, marginBottom: 8,
+                              filter: canAccessBook(book.id) ? "none" : "grayscale(0.5)" }}>{book.emoji}</div>
+                            <div style={{ fontSize: 13, fontWeight: 700, color: "#1e293b", marginBottom: 2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{book.title}</div>
+                            <div style={{ fontSize: 10, color: "#94a3b8" }}>{book.author}</div>
+                            {(bookProgress[book.id] || 0) > 0 && (
+                              <div style={{ marginTop: 6 }}>
+                                <div style={{ background: "#eee", borderRadius: 4, height: 4, overflow: "hidden" }}>
+                                  <div style={{ background: book.color, height: "100%", width: `${bookProgress[book.id]}%`, borderRadius: 4 }} />
+                                </div>
+                                <div style={{ fontSize: 10, color: "#666", textAlign: "right", marginTop: 2 }}>{bookProgress[book.id]}%</div>
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                      <button onClick={() => setScreen("curriculum")}
+                        style={{ width: "100%", marginTop: 10, padding: "10px 0", borderRadius: 12, border: "1.5px solid #e0e7ff",
+                          background: "#f8faff", color: "#6366f1", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
+                        단원별 추천 보기 →
+                      </button>
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
+
             {/* 📋 일일 미션 (접기/펼치기) */}
             <div style={{ marginBottom: 20 }}>
               <button onClick={() => toggleSection("scheduleMission")}
@@ -11455,7 +11520,7 @@
 
       const RecommendScreen = () => {
         const getReadBooks = () => {
-          return BOOKS.filter(b => (bookProgress[b.id] || 0) > 0).map(b => ({
+          return ALL_BOOKS.filter(b => (bookProgress[b.id] || 0) > 0).map(b => ({
             title: b.title,
             summary: b.summary,
             keywords: b.keyPoints.slice(0, 3)
@@ -11787,7 +11852,7 @@
         const hiddenAvatars = HIDDEN_UNLOCK_RULES.map(rule => {
           const av = AVATAR_DATA.find(a => a.id === rule.id);
           if (!av) return null;
-          const completedBookList = BOOKS.filter(b => (bookProgress[b.id] || 0) >= 100);
+          const completedBookList = ALL_BOOKS.filter(b => (bookProgress[b.id] || 0) >= 100);
           const totalBattles = (battleWins || 0) + (battleLosses || 0) + (battleDraws || 0);
           const ctx = {
             completedBookList,
