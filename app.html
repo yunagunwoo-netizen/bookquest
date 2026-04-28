@@ -103,7 +103,7 @@
     }
   </style>
   <style>
-    /* 💎 히든 전설 홀로그래픽 셔머 — V3.6 아바타 전용 */
+    /* <img src="icons/ui/ui_diamond_rare.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 히든 전설 홀로그래픽 셔머 — V3.6 아바타 전용 */
     @keyframes bq-holo-shine {
       0%   { background-position: -200% 50%; }
       100% { background-position:  200% 50%; }
@@ -238,7 +238,7 @@
           return data.answer;
         } catch (e) {
           console.error("askBook 실패:", e);
-          return "죄송해요, 지금 답변을 할 수 없어요. 잠시 후 다시 시도해주세요! 🙏";
+          return "죄송해요, 지금 답변을 할 수 없어요. 잠시 후 다시 시도해주세요!";
         }
       },
 
@@ -254,7 +254,7 @@
           return data.feedback;
         } catch (e) {
           console.error("discussionCoach 실패:", e);
-          return "좋은 생각이에요! 조금 더 깊이 생각해보면 좋겠어요. 🌟";
+          return "좋은 생각이에요! 조금 더 깊이 생각해보면 좋겠어요.";
         }
       },
 
@@ -657,7 +657,7 @@
       "1.0.0": { file: "backup/index_v1.0.0.html", label: "4~5주차 도서 추가" },
     };
 
-    // 📅 시즌 설정
+    // <img src="icons/ui/ui_calendar.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 시즌 설정
     const SEASON_CONFIG = {
       season: 1,
       totalWeeks: 12,
@@ -1299,7 +1299,7 @@
 
 
     // ═══════════════════════════════════════
-    // 📅 시즌 2 설정 (비공개 — 아직 오픈하지 않음)
+    // <img src="icons/ui/ui_calendar.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 시즌 2 설정 (비공개 — 아직 오픈하지 않음)
     // ═══════════════════════════════════════
     const SEASON2_CONFIG = {
       season: 2,
@@ -1677,13 +1677,13 @@
           .filter(Boolean)
           .map(d => d.name).join("/");
         const keyPoints = (b.keyPoints || []).slice(0, 4).join(" / ");
-        return `📖 "${b.title}" (${b.author}) [${domains}]
+        return `"${b.title}" (${b.author}) [${domains}]
 요약: ${b.summary}
 핵심: ${keyPoints}`;
       }).join("\n\n");
 
       const readingList = readingBooks.slice(0, 3).map(b =>
-        `📖 "${b.title}" (${b.author}) - 아직 읽는 중`
+        `"${b.title}" (${b.author}) - 아직 읽는 중`
       ).join("\n");
 
       return [
@@ -1809,7 +1809,7 @@
     };
 
     // ═══════════════════════════════════════
-    // 📖 책 추천 캐릭터: 노아 선생님
+    // <img src="icons/ui/ui_book_open.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 책 추천 캐릭터: 노아 선생님
     // ═══════════════════════════════════════
     const RECOMMEND_IMGS = {
       default: "img/recommender_default.png"
@@ -1864,10 +1864,10 @@
     const ITEM_EFFECTS = {
       frame:  { type: "visual", label: "비주얼", desc: "아바타 테두리 장식", color: "#667eea" },
       aura:   { type: "visual", label: "비주얼", desc: "아바타 배경 이펙트", color: "#764ba2" },
-      hat:    { type: "bonus", label: "토론 XP +15%", desc: "토론 완료 시 XP 보너스", color: "#FF6B35", icon: "🎩", stat: "discussionXp", value: 0.15 },
-      face:   { type: "bonus", label: "퀴즈 코인 +2", desc: "퀴즈 정답 시 추가 코인", color: "#2196F3", icon: "🕶️", stat: "quizCoin", value: 2 },
-      pet:    { type: "bonus", label: "출석 코인 +3", desc: "매일 출석 보너스 추가", color: "#4CAF50", icon: "🐾", stat: "loginCoin", value: 3 },
-      weapon: { type: "bonus", label: "별점 코인 +2", desc: "토론 별점 코인 보너스", color: "#F44336", icon: "⚔️", stat: "starCoin", value: 2 }
+      hat:    { type: "bonus", label: "토론 XP +15%", desc: "토론 완료 시 XP 보너스", color: "#FF6B35", icon: "icons/ui/ui_crown.png", stat: "discussionXp", value: 0.15 },
+      face:   { type: "bonus", label: "퀴즈 코인 +2", desc: "퀴즈 정답 시 추가 코인", color: "#2196F3", icon: "icons/ui/ui_search.png", stat: "quizCoin", value: 2 },
+      pet:    { type: "bonus", label: "출석 코인 +3", desc: "매일 출석 보너스 추가", color: "#4CAF50", icon: "icons/ui/ui_sparkle.png", stat: "loginCoin", value: 3 },
+      weapon: { type: "bonus", label: "별점 코인 +2", desc: "토론 별점 코인 보너스", color: "#F44336", icon: "icons/ui/ui_swords.png", stat: "starCoin", value: 2 }
     };
 
     // 현재 활성 보너스 조회 헬퍼 (equippedItems 기반)
@@ -2162,7 +2162,7 @@
     });
 
     // ═══════════════════════════════════════
-    // 💎 V3.6 Hidden Legends (2026-04-23) — 책 속 전설 10인 (오리지널 IP)
+    // <img src="icons/ui/ui_diamond_rare.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> V3.6 Hidden Legends (2026-04-23) — 책 속 전설 10인 (오리지널 IP)
     // 레어 카드 감성: 룬 프레임 + 홀로 셔머 + 황금 림 라이트 (PNG에 베이킹됨)
     // CSS `.holo-avatar` 클래스로 추가 동적 셔머 오버레이
     // ═══════════════════════════════════════
@@ -2190,7 +2190,7 @@
     AVATAR_DATA.push(...V36_HIDDEN_LEGENDS);
 
     // ═══════════════════════════════════════
-    // 💎 THEME_PACKS — 히든 전설 테마팩 데이터 (일반화)
+    // <img src="icons/ui/ui_diamond_rare.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> THEME_PACKS — 히든 전설 테마팩 데이터 (일반화)
     // 각 팩: avatarId, name, gradient, accentColor, chibiImg,
     //        wallpapers[], emojis[]
     // ═══════════════════════════════════════
@@ -2340,7 +2340,7 @@
     // check(ctx) 함수는 { completedBookList, streak, battleWins, weeklyBattleWins, totalBattles }를 받음
     // ═══════════════════════════════════════
     const HIDDEN_UNLOCK_RULES = [
-      // 💎 V3.6 히든 전설 10인 (오리지널 IP, 책 속 영웅)
+      // <img src="icons/ui/ui_diamond_rare.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> V3.6 히든 전설 10인 (오리지널 IP, 책 속 영웅)
       { id: "homer",          label: "호메로스",         hint: "첫 완독 3권 (입문 보상)",
         progress: (ctx) => Math.min(ctx.completedBookList.length, 3), target: 3,
         check: (ctx) => ctx.completedBookList.length >= 3 },
@@ -2497,7 +2497,7 @@
     // V3.5 치비 아이콘(iconImg)을 우선, 없으면 V3.4/기본 포트레이트(img)로 폴백
     const AvatarIcon = ({ avatarId, size = 40, style = {}, portrait = false }) => {
       const data = AVATAR_DATA.find(a => a.id === avatarId);
-      if (!data) return React.createElement("span", { style: { fontSize: size * 0.6, ...style } }, "👤");
+      if (!data) return React.createElement("span", { style: { ...style } }, React.createElement("img", { src: "icons/ui/ui_person.png", alt: "", style: { width: size * 0.5, height: size * 0.5 } }));
       const src = portrait ? data.img : (data.iconImg || data.img);
       const img = React.createElement("img", {
         src,
@@ -2505,7 +2505,7 @@
         style: { width: size, height: size, borderRadius: "50%", objectFit: "cover", flexShrink: 0, display: "block" }
       });
       if (data.holo) {
-        // 💎 히든 전설 홀로 셔머 래퍼
+        // <img src="icons/ui/ui_diamond_rare.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 히든 전설 홀로 셔머 래퍼
         return React.createElement("span", {
           className: "bq-holo-wrap",
           style: { width: size, height: size, ...style }
@@ -2530,9 +2530,9 @@
       streak_30_glow: "✨", streak_60_trophy: "🏆", streak_100_gem: "💎",
       // 배틀/Q&A
       battle_sword: "⚔️", correct_check: "✅", wrong_cross: "❌",
-      draw_handshake: "🤝", ai_proxy: "🤖", self_play: "👤",
+      draw_handshake: <img src="icons/ui/ui_handshake.png" alt="" style={{ width: 64, height: 64 }} />, ai_proxy: "🤖", self_play: "👤",
       question_mark: "❓", topic_bubble: "💬", reason_memo: "📝",
-      mic_voice: "🎤", speaker_tts: "🔊",
+      mic_voice: "🎤", speaker_tts: "<img src="icons/ui/ui_speaker.png" alt="" style={{ width: 16, height: 16 }} />",
       // 네비
       nav_home: "🏠", nav_ranking: "🏅", nav_profile: "👤",
       nav_library: "📚", nav_chat: "💬", nav_shop: "🛒", nav_settings: "⚙️",
@@ -2544,7 +2544,7 @@
       badge_general: "🎖️", crown_vip: "👑",
       // 상태/피드백
       party_confetti: "🎉", locked: "🔒", unlocked: "🔓",
-      refresh_sync: "🔄", coin_gold: "🪙", gem_diamond: "💎",
+      refresh_sync: "<img src="icons/ui/ui_refresh.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} />", coin_gold: "🪙", gem_diamond: "💎",
       gift_box: "🎁", hint_bulb: "💡", warning_alert: "⚠️",
       trash_delete: "🗑️", calendar_today: "📅", quest_clipboard: "📋",
       target_goal: "🎯", stats_chart: "📊",
@@ -2977,14 +2977,14 @@
       }
       return React.createElement("div", {
         style: { width: size, height: size, background: "#E2E8F0", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, ...style },
-      }, "🔒");
+      }, React.createElement("img", { src: "icons/ui/ui_lock.png", alt: "", style: { width: 14, height: 14 } }));
     };
 
     const BOOK_COVERS = { 1: "covers/book1.jpg", 2: "covers/book2.jpg", 3: "covers/book3.jpg", 4: "img/book_cover_1.png", 5: "img/book_cover_2.png", 6: "covers/book6.jpg", 7: "covers/book7.jpg", 8: "covers/book8.jpg", 9: "covers/book9.jpg", 10: "covers/book10.jpg", 11: "covers/book11.jpg", 12: "covers/book12.jpg", 13: "covers/book13.jpg" };
 
     const BADGES = [
       { name: "첫 발걸음", desc: "첫 번째 토론 완료", icon: "👣", svg: PNG_ICONS.badge_firstStep, color: "#F6E05E" },
-      { name: "호기심 대장", desc: "3개 이상 토론 완료", icon: "🔍", svg: PNG_ICONS.badge_curious, color: "#63B3ED" },
+      { name: "호기심 대장", desc: "3개 이상 토론 완료", icon: "<img src="icons/ui/ui_search.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} />", svg: PNG_ICONS.badge_curious, color: "#63B3ED" },
       { name: "깊은 생각", desc: "심화 토론 1개 완료", icon: "💡", svg: PNG_ICONS.badge_deep, color: "#B794F4" },
       { name: "책벌레", desc: "1권 완독", icon: "📖", svg: PNG_ICONS.badge_bookworm, color: "#68D391" },
       { name: "연속 달성", desc: "3일 연속 접속", icon: "🔥", svg: PNG_ICONS.badge_streak, color: "#FC8181" },
@@ -3126,7 +3126,7 @@
         jang_yeongsil:{ name: "발명가의 손",   icon: "🔧", skillImg: "icons/skills/jang_yeongsil.png", desc: "정답 데미지 +25%",      skillType: "passive", effect: { type: "correct_dmg_boost", value: 0.25 } },
         yu_gwansun:   { name: "만세 함성",     icon: "🇰🇷", skillImg: "icons/skills/yu_gwansun.png", desc: "발동 시 HP 25 회복",   skillType: "active",  effect: { type: "heal", value: 25 } },
         // ── 명예의 전당 · 전설 (10) ── legendary tier
-        arthur:    { name: "엑스칼리버",     icon: "⚔️", skillImg: "icons/skills/arthur.png", desc: "정답 시 추가 데미지 +12",  skillType: "passive", effect: { type: "correct_flat_bonus", value: 12 } },
+        arthur:    { name: "엑스칼리버",     icon: "icons/ui/ui_swords.png", skillImg: "icons/skills/arthur.png", desc: "정답 시 추가 데미지 +12",  skillType: "passive", effect: { type: "correct_flat_bonus", value: 12 } },
         robinhood: { name: "정확한 화살",    icon: "🏹", skillImg: "icons/skills/robinhood.png", desc: "상대 방어 무시",           skillType: "passive", effect: { type: "pierce", value: true } },
         honggildong: { name: "축지법",       icon: "💨", skillImg: "icons/skills/honggildong.png", desc: "타이머 +4초",              skillType: "passive", effect: { type: "time_bonus", value: 4 } },
         wukong:    { name: "72변화",         icon: "🐵", skillImg: "icons/skills/wukong.png", desc: "랜덤 스킬 1개 복사",       skillType: "active",  effect: { type: "copy_random", value: true } },
@@ -3156,7 +3156,7 @@
         socrates:       { name: "소크라테스 문답", icon: "❓", skillImg: "icons/skills/socrates.png", desc: "토론 승리 시 추가 HP 흡수", skillType: "passive", effect: { type: "debate_lifesteal", value: 15 } },
         cleopatra:      { name: "나일의 축복",     icon: "👑", skillImg: "icons/skills/cleopatra.png", desc: "승리 보상 3배",           skillType: "passive", effect: { type: "reward_mult", value: 3 } },
         galileo:        { name: "별의 관측",       icon: "🔭", skillImg: "icons/skills/galileo.png", desc: "힌트 2회 + 타이머 +3초",  skillType: "active",  effect: { type: "multi_hint", value: { hints: 2, time: 3 } } },
-        musashi:        { name: "이도류",          icon: "⚔️", skillImg: "icons/skills/musashi.png", desc: "정답 시 2회 공격",        skillType: "passive", effect: { type: "double_strike", value: true } },
+        musashi:        { name: "이도류",          icon: "icons/ui/ui_swords.png", skillImg: "icons/skills/musashi.png", desc: "정답 시 2회 공격",        skillType: "passive", effect: { type: "double_strike", value: true } },
         sage_archivist: { name: "태고의 기록",     icon: "🏛️", skillImg: "icons/skills/sage_archivist.png", desc: "받는 데미지 -30% & 데미지 +20%", skillType: "passive", effect: { type: "dual_boost", value: { dmg: 0.20, shield: 0.30 } } },
       };
 
@@ -3166,7 +3166,7 @@
       };
 
       // ═══════════════════════════════════════
-      // 🎰 승리 보상 룰렛 시스템
+      // <img src="icons/ui/ui_roulette.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> 승리 보상 룰렛 시스템
       // ═══════════════════════════════════════
       const ROULETTE_REWARDS = [
         // Normal (55%) — 기본 보상
@@ -3346,7 +3346,7 @@
         }
       },
 
-      // 🔊 브라우저 내장 TTS (폴백)
+      // <img src="icons/ui/ui_speaker.png" alt="" style={{ width: 16, height: 16 }} /> 브라우저 내장 TTS (폴백)
       speakLocal(text, callback) {
         if (!this.SpeechSynthesis) {
           if (callback) callback(false);
@@ -3559,7 +3559,7 @@
       const [battleResult, setBattleResult] = useState(null); // win | lose | draw
       const [battleLog, setBattleLog] = useState([]); // 최근 5전 로그
 
-      // ═══ 🔊 배틀 사운드 매니저 ═══
+      // ═══ <img src="icons/ui/ui_speaker.png" alt="" style={{ width: 16, height: 16 }} /> 배틀 사운드 매니저 ═══
       const battleSoundRef = useRef(null);
       const getBattleSound = () => {
         if (battleSoundRef.current) return battleSoundRef.current;
@@ -3774,7 +3774,7 @@
         }
       };
 
-      // ═══ 🔔 앱 전역 효과음 매니저 (배틀 외) ═══
+      // ═══ <img src="icons/ui/ui_bell.png" alt="" style={{ width: 16, height: 16 }} /> 앱 전역 효과음 매니저 (배틀 외) ═══
       const appSoundRef = useRef(null);
       const [appSoundMuted, setAppSoundMuted] = useState(false);
       const getAppSound = () => {
@@ -4094,7 +4094,7 @@
       const [xpMultiplier, setXpMultiplier] = useState(1); // 룰렛 보상 XP 배율
       const [recoveryPin, setRecoveryPin] = useState(""); // 4자리 복구 PIN
       const [reviveUsed, setReviveUsed] = useState(false); // isis 부활 사용 여부
-      const [battleSoundMuted, setBattleSoundMuted] = useState(false); // 🔊 사운드 음소거
+      const [battleSoundMuted, setBattleSoundMuted] = useState(false); // <img src="icons/ui/ui_speaker.png" alt="" style={{ width: 16, height: 16 }} /> 사운드 음소거
       const [bookArenaActive, setBookArenaActive] = useState(false); // 책 아레나 진입 여부
       const [bookArenaBook, setBookArenaBook] = useState(null); // 이번 주 아레나 책
       const [bookProgress, setBookProgress] = useState({ 1: 0, 2: 0, 3: 0 });
@@ -4485,7 +4485,7 @@
         }
       }, [dataLoaded]);
 
-      // 🔄 일일 자동 백업 — 하루에 1회 Firestore에 전체 데이터 저장
+      // <img src="icons/ui/ui_refresh.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 일일 자동 백업 — 하루에 1회 Firestore에 전체 데이터 저장
       useEffect(() => {
         if (!dataLoaded || !profile) return;
         const today = getTodayString();
@@ -4514,7 +4514,7 @@
         })();
       }, [dataLoaded, profile]);
 
-      // 🎯 미션 자동 완료 함수
+      // <img src="icons/ui/ui_target.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> 미션 자동 완료 함수
       // 미션 완료 대기열 (setState 콜백 안에서 다른 setState 호출 방지)
       const missionCompleteQueue = useRef([]);
 
@@ -4547,7 +4547,7 @@
           if (r.allDone) {
             setTimeout(() => {
               setCoins(c => c + 10);
-              setShowCoinPopup({ amount: 10, label: "🎉 일일 미션 전체 완료 보너스!" });
+              setShowCoinPopup({ amount: 10, label: "<img src="icons/ui/ui_party.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> 일일 미션 전체 완료 보너스!" });
               setTimeout(() => setShowCoinPopup(null), 2000);
             }, 1500);
           }
@@ -4560,7 +4560,7 @@
         setTimeout(() => setShowCoinPopup(null), 2000);
       };
 
-      // 🎯 독서 시간 추적 (5분 = 300초 → reading 미션 자동 완료)
+      // <img src="icons/ui/ui_target.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> 독서 시간 추적 (5분 = 300초 → reading 미션 자동 완료)
       useEffect(() => {
         if (screen !== "discussion" && screen !== "book") return;
         const timer = setTimeout(() => {
@@ -4817,7 +4817,7 @@
           const avatarInfo = AVATAR_DATA.find(a => a.id === rule.id);
           try { getAppSound().sfx.hidden_unlock(); } catch(e) {}
           setTimeout(() => {
-            showCoinGain(0, `🎉 히든 해금: ${avatarInfo?.name || rule.label}! (${rule.hint})`);
+            showCoinGain(0, `<img src="icons/ui/ui_party.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> 히든 해금: ${avatarInfo?.name || rule.label}! (${rule.hint})`);
           }, 1200);
         });
       };
@@ -4861,10 +4861,10 @@
 
         const initialMessages = [
           { role: "ai", text: COACH.greeting, expression: "default" },
-          { role: "ai", text: `📚 "${book.title}" ${deep ? "심화" : ""} 토론 ${idx + 1}번째 주제야!`, expression: "speaking" },
+          { role: "ai", text: `"${book.title}" ${deep ? "심화" : ""} 토론 ${idx + 1}번째 주제야!`, expression: "speaking" },
           { role: "ai", text: topic.q, expression: "thinking" },
-          { role: "ai", text: `💡 힌트: ${topic.hint}`, expression: "thinking" },
-          { role: "ai", text: `${friendlyName}, 네 생각을 말해 봐! 🎤`, expression: "default" }
+          { role: "ai", text: `{<img src="icons/ui/ui_hint.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle", borderRadius: "50%" }} />} 힌트: ${topic.hint}`, expression: "thinking" },
+          { role: "ai", text: `${friendlyName}, 네 생각을 말해 봐!`, expression: "default" }
         ];
 
         setChatMessages(initialMessages);
@@ -5041,7 +5041,7 @@
           setCoins(prev => prev + totalCoin);
 
           const rewardLabel = isBonus ? "토론 완료 보너스" : "첫 답변 보상";
-          const complimentMsg = `🌟 ${rewardLabel}: ${discXpBase}XP와 ${totalCoin}코인을 획득했어요!`;
+          const complimentMsg = `${rewardLabel}: ${discXpBase}XP와 ${totalCoin}코인을 획득했어요!`;
           setChatMessages(prev => [...prev, { role: "ai", text: complimentMsg, expression: "praise" }]);
           try { getAppSound().sfx.star_rating(); getAppSound().sfx.coin_earn(); } catch(e) {}
 
@@ -5078,7 +5078,7 @@
 
               if (oldProgress < 50 && newProgress >= 50) {
                 setCoins(prev => prev + 10);
-                showCoinGain(10, `📚 ${activeDiscussionBook.title} 50% 달성!`);
+                showCoinGain(10, `${activeDiscussionBook.title} 50% 달성!`);
                 try { getAppSound().sfx.half_progress(); } catch(e) {}
               } else if (oldProgress < 100 && newProgress >= 100) {
                 setCoins(prev => prev + 25);
@@ -5094,7 +5094,7 @@
                       return `${meta.emoji}${meta.name}+${gain}`;
                     }).filter(Boolean).join(" ")
                   : "";
-                showCoinGain(25, `📚 ${activeDiscussionBook.title} 완독! IQ+${iqGain} ${domainLabel}`);
+                showCoinGain(25, `${activeDiscussionBook.title} 완독! IQ+${iqGain} ${domainLabel}`);
 
                 // 🔥 Phase 4: 독서 스트릭 갱신 (완독 기준, 1일 유예)
                 const todayStr = getTodayString();
@@ -5148,7 +5148,7 @@
           setIsSpeaking(false);
           setChatMessages(prev => [...prev, { 
             role: "ai", 
-            text: "⚠️ 답변을 처리하는 중 문제가 발생했어요. 다시 한번 보내 주세요!", 
+            text: "답변을 처리하는 중 문제가 발생했어요. 다시 한번 보내 주세요!", 
             expression: "default" 
           }]);
         } finally {
@@ -5253,7 +5253,7 @@
           <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 24 }}>
             <div style={{ width: "100%", maxWidth: 380 }}>
               <div style={{ textAlign: "center", marginBottom: 24 }}>
-                <div style={{ fontSize: 40, marginBottom: 8 }}>🔑</div>
+                <div style={{ marginBottom: 8 }}><img src="icons/ui/ui_key.png" alt="" style={{ width: 40, height: 40, verticalAlign: "middle" }} /></div>
                 <div style={{ fontSize: 22, fontWeight: 900, color: "#1a1a2e" }}>데이터 복구</div>
                 <div style={{ fontSize: 13, color: "#888", marginTop: 4 }}>가입할 때 입력한 정보와 복구 PIN을 입력하세요</div>
               </div>
@@ -5328,7 +5328,7 @@
 
                 {recoverStep === "success" && (<>
                   <div style={{ textAlign: "center", padding: "20px 0" }}>
-                    <div style={{ fontSize: 48, marginBottom: 12 }}>🎉</div>
+                    <div style={{ marginBottom: 12 }}><img src="icons/ui/ui_party.png" alt="" style={{ width: 48, height: 48, verticalAlign: "middle" }} /></div>
                     <div style={{ fontSize: 18, fontWeight: 800, color: "#1a1a2e", marginBottom: 8 }}>복구 완료!</div>
                     <div style={{ fontSize: 14, color: "#888" }}>이전 데이터가 성공적으로 복구되었어요.</div>
                   </div>
@@ -5344,7 +5344,7 @@
 
                 {recoverStep === "notfound" && (<>
                   <div style={{ textAlign: "center", padding: "20px 0" }}>
-                    <div style={{ fontSize: 40, marginBottom: 8 }}>😢</div>
+                    <div style={{ marginBottom: 8 }}><img src="icons/ui/ui_droplet.png" alt="" style={{ width: 40, height: 40 }} /></div>
                     <div style={{ fontSize: 16, fontWeight: 700, color: "#1a1a2e", marginBottom: 8 }}>계정을 찾을 수 없어요</div>
                     <div style={{ fontSize: 13, color: "#888" }}>{recoverError || "입력하신 정보와 일치하는 계정이 없습니다."}</div>
                   </div>
@@ -5374,7 +5374,7 @@
                 <img src="icons/app-icon-192.png" style={{ width: 80, height: 80, marginBottom: 8, borderRadius: 16 }} />
                 <div style={{ fontSize: 28, fontWeight: 900, background: "linear-gradient(135deg, #667eea, #764ba2)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>BookQuest</div>
                 <div style={{ fontSize: 14, color: "#888", marginTop: 4 }}>나만의 독서 모험을 시작하세요!</div>
-                <div style={{ fontSize: 12, color: "#aaa", marginTop: 8 }}>📅 {formatDate(today)} {getDayName(today)}요일</div>
+                <div style={{ fontSize: 12, color: "#aaa", marginTop: 8 }}><img src="icons/ui/ui_calendar.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> {formatDate(today)} {getDayName(today)}요일</div>
               </div>
 
               <div style={{ background: "white", borderRadius: 20, padding: 24, boxShadow: "0 4px 20px rgba(0,0,0,0.08)" }}>
@@ -5422,7 +5422,7 @@
                 </div>
 
                 <div style={{ marginBottom: 24 }}>
-                  <label style={{ fontSize: 13, fontWeight: 600, color: "#555", display: "block", marginBottom: 8 }}>아바타 선택 ({isAdmin ? "🔓 관리자: 전체" : ownedAvatars.length + "개 보유"})</label>
+                  <label style={{ fontSize: 13, fontWeight: 600, color: "#555", display: "block", marginBottom: 8 }}>아바타 선택 ({isAdmin ? "<img src="icons/ui/ui_unlock.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 관리자: 전체" : ownedAvatars.length + "개 보유"})</label>
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, maxHeight: 240, overflowY: "auto" }}>
                     {AVATAR_DATA.filter(a => isAdmin || ownedAvatars.includes(a.id)).map(a => (
                       <button key={a.id} onClick={() => setProfileForm(p => ({ ...p, avatar: a.id }))}
@@ -5459,7 +5459,7 @@
                     color: "white", fontSize: 16, fontWeight: 700, cursor: (profileForm.name.trim() && newPin.length === 4) ? "pointer" : "default",
                     transition: "all 0.2s"
                   }}>
-                  모험 시작하기! 🚀
+                  모험 시작하기!
                 </button>
               </div>
 
@@ -5723,7 +5723,7 @@
 
 
       // ═══════════════════════════════════════
-      // 📖 책 기반 배틀 맵 (아레나) 시스템
+      // <img src="icons/ui/ui_book_open.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 책 기반 배틀 맵 (아레나) 시스템
       // ═══════════════════════════════════════
       const getWeeklyArenaBook = () => {
         // 주간 추천 책 — 완독률 기준 자동 선정 (매주 월요일 변경)
@@ -5739,7 +5739,7 @@
         return (bookProgress[arenaBook.id] || 0) >= 100;
       };
 
-      const ARENA_BADGE = { name: "아레나 챔피언", icon: "🏟️", desc: "책 아레나 승리" };
+      const ARENA_BADGE = { name: "아레나 챔피언", icon: "<img src="icons/ui/ui_arena.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} />", desc: "책 아레나 승리" };
 
       const calcMaxHP = (booksCompleted, playerLevel) => {
         const bookBonus = Math.min((booksCompleted || 0) * BATTLE_V2.BOOK_HP_BONUS, BATTLE_V2.MAX_BOOK_BONUS);
@@ -5790,7 +5790,7 @@
         setLastDamage(null); setBattleAnim(null);
         setBattleTimer(0); setBattleTimerActive(false);
         if (battleTimerRef.current) clearInterval(battleTimerRef.current);
-        // 🔊 BGM 정지
+        // <img src="icons/ui/ui_speaker.png" alt="" style={{ width: 16, height: 16 }} /> BGM 정지
         try { getBattleSound().stopBgm(); } catch(e) {}
       };
 
@@ -5809,7 +5809,7 @@
         setBattleError("");
         setBattleLoading(true);
         setBattlePhase("playing");
-        // 🔊 배틀 BGM + 시작 효과음
+        // <img src="icons/ui/ui_speaker.png" alt="" style={{ width: 16, height: 16 }} /> 배틀 BGM + 시작 효과음
         try { const bs = getBattleSound(); bs.sfx.battleStart(); setTimeout(() => bs.startBgm(), 500); } catch(e) {}
         setBattleMessages([{ kind: "banner", text: mode === "watch" ? "관전 모드 — 내 아바타와 상대가 토론합니다" : "자동진행 모드 — 아바타가 자동으로 싸웁니다" }]);
 
@@ -5826,7 +5826,7 @@
           const myName = profile?.name || "나";
           const oppName = opp.name || "상대";
 
-          setBattleMessages(prev => [...prev, { kind: "narration", text: "🎙️ 양쪽 아바타가 입장했어요!" }]);
+          setBattleMessages(prev => [...prev, { kind: "narration", text: "양쪽 아바타가 입장했어요!" }]);
 
           const result = await CloudAPI.runAvatarBattle({
             myUid, oppUid: opp.uid, myPack, oppPack, myName, oppName, mode
@@ -5836,7 +5836,7 @@
           setBattleWinner(result.winner);
           setBattleNarration(result.narration || "");
           await streamBattleMessages(result);
-          // 🔊 관전 모드 배틀 종료: BGM 정지 + 결과 효과음
+          // <img src="icons/ui/ui_speaker.png" alt="" style={{ width: 16, height: 16 }} /> 관전 모드 배틀 종료: BGM 정지 + 결과 효과음
           try {
             const bs = getBattleSound();
             bs.stopBgm();
@@ -5882,13 +5882,13 @@
           setBattleMessages(prev => [...prev, { kind: "banner", text: header }]);
           await wait(700);
           if (r.type === "qa") {
-            setBattleMessages(prev => [...prev, { kind: "system", text: `❓ ${r.question}` }]);
+            setBattleMessages(prev => [...prev, { kind: "system", text: `${r.question}` }]);
             await wait(900);
             setBattleMessages(prev => [...prev, { kind: "me", name: myName, text: r.myAnswer }]);
             await wait(800);
             setBattleMessages(prev => [...prev, { kind: "opp", name: oppName, text: r.oppAnswer }]);
           } else if (r.type === "complete") {
-            setBattleMessages(prev => [...prev, { kind: "system", text: `✏️ ${r.sentence}` }]);
+            setBattleMessages(prev => [...prev, { kind: "system", text: `${r.sentence}` }]);
             await wait(900);
             const myAns = r.completions?.[r.myChoiceIdx] || "?";
             const oppAns = r.completions?.[r.oppChoiceIdx] || "?";
@@ -5896,21 +5896,21 @@
             await wait(800);
             setBattleMessages(prev => [...prev, { kind: "opp", name: oppName, text: oppAns }]);
           } else {
-            setBattleMessages(prev => [...prev, { kind: "system", text: `💭 주제: ${r.topic}` }]);
+            setBattleMessages(prev => [...prev, { kind: "system", text: `주제: ${r.topic}` }]);
             await wait(900);
             setBattleMessages(prev => [...prev, { kind: "me", name: myName, text: `[${r.myStance}] ${r.myArgument}` }]);
             await wait(800);
             setBattleMessages(prev => [...prev, { kind: "opp", name: oppName, text: `[${r.oppStance}] ${r.oppArgument}` }]);
           }
           await wait(700);
-          const judgeText = r.judge === "my" ? `✅ 판정: ${myName} 승 — ${r.reason}`
-            : r.judge === "opp" ? `❌ 판정: ${oppName} 승 — ${r.reason}`
-            : `🤝 판정: 무승부 — ${r.reason}`;
+          const judgeText = r.judge === "my" ? `판정: ${myName} 승 — ${r.reason}`
+            : r.judge === "opp" ? `판정: ${oppName} 승 — ${r.reason}`
+            : `판정: 무승부 — ${r.reason}`;
           setBattleMessages(prev => [...prev, { kind: "judge", text: judgeText }]);
           await wait(900);
         }
         if (replay.narration) {
-          setBattleMessages(prev => [...prev, { kind: "narration", text: `🎬 ${replay.narration}` }]);
+          setBattleMessages(prev => [...prev, { kind: "narration", text: `<img src="icons/ui/ui_clapper.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> ${replay.narration}` }]);
         }
       };
 
@@ -5933,7 +5933,7 @@
         setShowRoundResult(false);
         setLastDamage(null);
         setBattleAnim(null);
-        // 🔊 배틀 BGM + 시작 효과음
+        // <img src="icons/ui/ui_speaker.png" alt="" style={{ width: 16, height: 16 }} /> 배틀 BGM + 시작 효과음
         try { const bs = getBattleSound(); bs.sfx.battleStart(); setTimeout(() => bs.startBgm(), 500); } catch(e) {}
 
         try {
@@ -6162,7 +6162,7 @@
         setMyHP(prev => Math.max(0, prev - myDmg));
         setOppHP(prev => Math.max(0, prev - oppDmg));
 
-        // 🔊 정답/오답 + 데미지 효과음
+        // <img src="icons/ui/ui_speaker.png" alt="" style={{ width: 16, height: 16 }} /> 정답/오답 + 데미지 효과음
         try {
           const bs = getBattleSound();
           if (roundResult.type === "qa" || roundResult.type === "complete") {
@@ -6207,7 +6207,7 @@
               setBattleTimerActive(false);
               return 0;
             }
-            // 🔊 타이머 긴급음 (5초 이하)
+            // <img src="icons/ui/ui_speaker.png" alt="" style={{ width: 16, height: 16 }} /> 타이머 긴급음 (5초 이하)
             try { if (prev <= 6) { const bs = getBattleSound(); prev <= 3 ? bs.sfx.timerUrgent() : bs.sfx.timerTick(); } } catch(e) {}
             return prev - 1;
           });
@@ -6234,7 +6234,7 @@
         setShowRoundResult(false);
         setLastDamage(null);
         const nextIdx = interactiveRoundIdx + 1;
-        // 🔊 라운드 전환 효과음
+        // <img src="icons/ui/ui_speaker.png" alt="" style={{ width: 16, height: 16 }} /> 라운드 전환 효과음
         try { getBattleSound().sfx.roundTransition(); } catch(e) {}
 
         // HP가 0인 쪽이 있으면 즉시 종료
@@ -6283,7 +6283,7 @@
 
         setBattleWinner(winner);
         setBattleRounds(roundAnswers);
-        // 🔊 BGM 정지 + 승리/패배 효과음
+        // <img src="icons/ui/ui_speaker.png" alt="" style={{ width: 16, height: 16 }} /> BGM 정지 + 승리/패배 효과음
         try {
           const bs = getBattleSound();
           bs.stopBgm();
@@ -6298,7 +6298,7 @@
         const myName = profile?.name || "나";
         const oppName = battleOpponent?.name || "상대";
         const narration = winner === "my"
-          ? `${myName}의 집중력이 ${oppName}를 이겼어요! HP ${myHP} vs ${oppHP} 🏆`
+          ? `${myName}의 집중력이 ${oppName}를 이겼어요! HP ${myHP} vs ${oppHP} `
           : winner === "opp"
           ? `${oppName}가 HP ${oppHP} vs ${myHP}로 앞섰어요. 다음엔 꼭 복수하자!`
           : `HP ${myHP} vs ${oppHP}, 팽팽한 무승부!`;
@@ -6319,7 +6319,7 @@
         if (winner === "my") {
           setBattleWins(w => w + 1);
           setWeeklyBattleWins(w => w + 1);
-          // 🎰 승리 룰렛 활성화
+          // <img src="icons/ui/ui_roulette.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> 승리 룰렛 활성화
           setShowRoulette(true);
         } else if (winner === "opp") {
           setBattleLosses(l => l + 1);
@@ -6367,7 +6367,7 @@
           ? Math.round(battleWins * 100 / (battleWins + battleLosses)) : 0;
         const opp = battleOpponent;
 
-        // 🎬 다이나믹 배경 — phase별 마법 장면
+        // <img src="icons/ui/ui_clapper.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 다이나믹 배경 — phase별 마법 장면
         const battleBg = (battlePhase === "playing" || battlePhase === "play-round")
           ? "icons/v1/backgrounds/bg_battle_active.jpg"
           : battlePhase === "result"
@@ -6385,10 +6385,10 @@
           }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
               <div onClick={exitBattleV2} style={{ cursor: "pointer", fontSize: 14, fontWeight: 700, opacity: 0.85 }}>← 나가기</div>
-              <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.2, opacity: 0.8 }}>⚔️ 아바타 토론배틀{isAdmin && " · 🔓관리자"}</div>
+              <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.2, opacity: 0.8 }}><img src="icons/ui/ui_swords.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> 아바타 토론배틀{isAdmin && " · 관리자"}</div>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <span onClick={() => { setBattleSoundMuted(m => { const next = !m; try { getBattleSound().setVolume(next ? 0 : 0.3); if (next) getBattleSound().stopBgm(false); } catch(e) {} return next; }); }}
-                  style={{ cursor: "pointer", fontSize: 16, opacity: 0.85 }}>{battleSoundMuted ? "🔇" : "🔊"}</span>
+                  style={{ cursor: "pointer", fontSize: 16, opacity: 0.85 }}>{battleSoundMuted ? "<img src="icons/ui/ui_mute.png" alt="" style={{ width: 16, height: 16 }} />" : "<img src="icons/ui/ui_speaker.png" alt="" style={{ width: 16, height: 16 }} />"}</span>
                 <span style={{ fontSize: 11, opacity: 0.85, fontWeight: 700 }}>{battleWins}승 {battleLosses}패</span>
               </div>
             </div>
@@ -6413,10 +6413,10 @@
             {/* 🎰 룰렛 보상 업그레이드 공지 */}
             {battlePhase === "gate" && (
               <div style={{ background: "linear-gradient(135deg, rgba(251,191,36,0.25), rgba(168,85,247,0.25))", borderRadius: 14, padding: "10px 14px", marginBottom: 14, border: "1px solid rgba(251,191,36,0.4)", position: "relative" }}>
-                <div style={{ fontSize: 12, fontWeight: 900, color: "#fde047", marginBottom: 4 }}>🎰 승리 룰렛 보상 대폭 UP!</div>
+                <div style={{ fontSize: 12, fontWeight: 900, color: "#fde047", marginBottom: 4 }}><img src="icons/ui/ui_roulette.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> 승리 룰렛 보상 대폭 UP!</div>
                 <div style={{ fontSize: 10, color: "#e2e8f0", lineHeight: 1.5 }}>
-                  💰 코인·XP 3~4배 상향 | 🎁 랜덤 아이템 드랍<br/>
-                  🦄 <span style={{ color: "#e879f9", fontWeight: 700 }}>전설 등급: 레어 아바타 획득 찬스!</span> (확률 3%)
+                  <img src="icons/ui/ui_coins.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 코인·XP 3~4배 상향 | <img src="icons/ui/ui_sparkle.png" alt="" style={{ width: 12, height: 12, verticalAlign: "middle" }} /> 랜덤 아이템 드랍<br/>
+                  <img src="icons/ui/ui_unicorn.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> <span style={{ color: "#e879f9", fontWeight: 700 }}>전설 등급: 레어 아바타 획득 찬스!</span> (확률 3%)
                 </div>
               </div>
             )}
@@ -6424,9 +6424,9 @@
             {/* GATE — 일1회 소진 (but 직접 참여는 가능) */}
             {battlePhase === "gate" && !canBattleToday() && !canPlayToday() && (
               <div style={{ textAlign: "center", padding: "50px 20px" }}>
-                <div style={{ fontSize: 56, marginBottom: 14 }}>⏳</div>
+                <div style={{ fontSize: 56, marginBottom: 14 }}><img src="icons/ui/ui_hourglass.png" alt="" style={{ width: 40, height: 40 }} /></div>
                 <div style={{ fontSize: 18, fontWeight: 800, marginBottom: 8 }}>오늘 배틀은 끝!</div>
-                <div style={{ fontSize: 13, opacity: 0.8, lineHeight: 1.6 }}>관전/자동진행 1회 + 배틀시작 {BATTLE_PLAY_DAILY_LIMIT}회 모두 썼어요.<br />내일 다시 만나요 🌙</div>
+                <div style={{ fontSize: 13, opacity: 0.8, lineHeight: 1.6 }}>관전/자동진행 1회 + 배틀시작 {BATTLE_PLAY_DAILY_LIMIT}회 모두 썼어요.<br />내일 다시 만나요</div>
                 <button onClick={exitBattleV2} style={{ marginTop: 22, padding: "10px 22px", borderRadius: 12, border: "none", background: "white", color: "#4c1d95", fontSize: 13, fontWeight: 800, cursor: "pointer" }}>랭킹으로 돌아가기</button>
               </div>
             )}
@@ -6435,7 +6435,7 @@
             {battlePhase === "gate" && !canBattleToday() && canPlayToday() && (
               <div>
                 <div style={{ textAlign: "center", padding: "20px 20px 10px" }}>
-                  <div style={{ fontSize: 44, marginBottom: 10 }}>⚔️</div>
+                  <div style={{ fontSize: 44, marginBottom: 10 }}><img src="icons/ui/ui_swords.png" alt="" style={{ width: 16, height: 16 }} /></div>
                   <div style={{ fontSize: 16, fontWeight: 800, marginBottom: 6 }}>관람/대리 배틀은 끝!</div>
                   <div style={{ fontSize: 12, opacity: 0.85, lineHeight: 1.6 }}>배틀시작 아직 {remainingPlayCount()}회 남았어요.<br/>코인 {BATTLE_PLAY_COIN_COST}개로 도전 가능!</div>
                 </div>
@@ -6471,7 +6471,7 @@
                 {battleError && !isAdmin && (
                   <div style={{ background: "rgba(239,68,68,0.2)", border: "1px solid rgba(239,68,68,0.5)", borderRadius: 12, padding: 12, fontSize: 12, marginBottom: 12 }}>{battleError}</div>
                 )}
-                {/* 📖 책 아레나 */}
+                {/* <img src="icons/ui/ui_book_open.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 책 아레나 */}
                 {(() => {
                   const arenaBook = getWeeklyArenaBook();
                   const eligible = canEnterArena();
@@ -6479,7 +6479,7 @@
                   return (
                     <div style={{ background: eligible ? "linear-gradient(135deg, rgba(34,197,94,0.25), rgba(16,185,129,0.15))" : "rgba(255,255,255,0.05)", borderRadius: 14, padding: 12, marginBottom: 14, border: eligible ? "1px solid rgba(34,197,94,0.4)" : "1px solid rgba(255,255,255,0.1)" }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
-                        <span style={{ fontSize: 20 }}>🏟️</span>
+                        <span style={{ fontSize: 20 }}><img src="icons/ui/ui_arena.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /></span>
                         <div>
                           <div style={{ fontSize: 12, fontWeight: 900, color: "#22c55e" }}>이번 주 책 아레나</div>
                           <div style={{ fontSize: 11, opacity: 0.8, fontWeight: 700 }}>{arenaBook.title} — 보상 3배!</div>
@@ -6488,10 +6488,10 @@
                       {eligible ? (
                         <button onClick={() => { setBookArenaActive(true); setBookArenaBook(arenaBook); setBattlePhase("debate-choice"); }}
                           style={{ width: "100%", padding: "10px 14px", borderRadius: 10, border: "none", background: "linear-gradient(135deg, #22c55e, #16a34a)", color: "white", fontSize: 13, fontWeight: 800, cursor: "pointer" }}>
-                          🏟️ 아레나 입장 (보상 3배!)
+                          {<img src="icons/ui/ui_arena.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} />} 아레나 입장 (보상 3배!)
                         </button>
                       ) : (
-                        <div style={{ fontSize: 11, opacity: 0.6, textAlign: "center", padding: 6 }}>📖 이 책을 완독하면 입장할 수 있어요!</div>
+                        <div style={{ fontSize: 11, opacity: 0.6, textAlign: "center", padding: 6 }}><img src="icons/ui/ui_book_open.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 이 책을 완독하면 입장할 수 있어요!</div>
                       )}
                     </div>
                   );
@@ -6516,7 +6516,7 @@
                   <img src="icons/battle-direct.png" alt="" style={{width:40,height:40,objectFit:"contain",flexShrink:0}} /> 배틀시작 ({BATTLE_PLAY_COIN_COST}코인 · {remainingPlayCount()}/{BATTLE_PLAY_DAILY_LIMIT})
                 </button>
                 <div style={{ fontSize: 10, opacity: 0.7, textAlign: "center", marginTop: 8, lineHeight: 1.5 }}>
-                  💡 배틀시작: 4지선다 문제를 네가 직접 풀어요
+                  {<img src="icons/ui/ui_hint.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle", borderRadius: "50%" }} />} 배틀시작: 4지선다 문제를 네가 직접 풀어요
                 </div>
               </div>
             ) : null}
@@ -6525,7 +6525,7 @@
             {battlePhase === "debate-choice" && (
               <div>
                 <div style={{ background: "rgba(255,255,255,0.08)", borderRadius: 16, padding: 18, marginBottom: 14, textAlign: "center" }}>
-                  <div style={{ fontSize: 40, marginBottom: 10 }}>💭</div>
+                  <div style={{ marginBottom: 10 }}><img src="icons/ui/ui_thought.png" alt="" style={{ width: 40, height: 40, verticalAlign: "middle" }} /></div>
                   <div style={{ fontSize: 16, fontWeight: 800, marginBottom: 6 }}>미니토론은 누가?</div>
                   <div style={{ fontSize: 12, opacity: 0.85, lineHeight: 1.6 }}>
                     Q&A 2라운드는 네가 풀고,<br/>미니토론 1라운드는 담당을 고를 수 있어.
@@ -6533,11 +6533,11 @@
                 </div>
                 <button onClick={() => launchInteractiveBattle("me")} disabled={battleLoading}
                   style={{ width: "100%", padding: 14, borderRadius: 14, border: "none", background: "linear-gradient(135deg, #22c55e, #059669)", color: "white", fontSize: 15, fontWeight: 800, cursor: "pointer", marginBottom: 10, opacity: battleLoading ? 0.6 : 1 }}>
-                  🧒 내가 토론할래 (직접 선택)
+                  <img src="icons/ui/ui_player.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> 내가 토론할래 (직접 선택)
                 </button>
                 <button onClick={() => launchInteractiveBattle("ai")} disabled={battleLoading}
                   style={{ width: "100%", padding: 14, borderRadius: 14, border: "1px solid rgba(255,255,255,0.3)", background: "rgba(255,255,255,0.08)", color: "white", fontSize: 15, fontWeight: 800, cursor: "pointer", marginBottom: 10, opacity: battleLoading ? 0.6 : 1 }}>
-                  🤖 아바타가 토론할래 (AI 자동)
+                  <img src="icons/ui/ui_robot.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> 아바타가 토론할래 (AI 자동)
                 </button>
                 <button onClick={() => setBattlePhase("gate")} disabled={battleLoading}
                   style={{ width: "100%", padding: 10, borderRadius: 12, border: "none", background: "transparent", color: "white", fontSize: 12, fontWeight: 700, cursor: "pointer", opacity: 0.7 }}>
@@ -6576,6 +6576,7 @@
               // 포켓몬카드 스타일 배틀 카드 컴포넌트
               const CARD_TYPE = { free: "노멀", common: "노멀", rare: "레어", epic: "영웅", legendary: "전설", heroic: "영웅", mythic: "신화", hidden: "히든" };
               const CARD_TYPE_ICON = { free: "⭐", common: "⭐", rare: "💎", epic: "🛡️", legendary: "👑", heroic: "🛡️", mythic: "🌙", hidden: "🔮" };
+      const CARD_TYPE_IMG = { free: "icons/ui/ui_star_normal.png", common: "icons/ui/ui_star_normal.png", rare: "icons/ui/ui_diamond_rare.png", epic: "icons/ui/ui_shield_heroic.png", legendary: "icons/ui/ui_crown.png", heroic: "icons/ui/ui_shield_heroic.png", mythic: "icons/ui/ui_moon_mythic.png", hidden: "icons/ui/ui_orb_hidden.png" };
               const CARD_SKILL = {
                 free: [{ name: "기본 공격", dmg: 10, icon: "📖", skillImg: "icons/skills/cs_basic_attack.png" }, { name: "지식 던지기", dmg: 20, icon: "💡", skillImg: "icons/skills/cs_knowledge_throw.png" }],
                 common: [{ name: "퀴즈 어택", dmg: 15, icon: "❓", skillImg: "icons/skills/cs_quiz_attack.png" }, { name: "독서 파워", dmg: 25, icon: "📚", skillImg: "icons/skills/cs_reading_power.png" }],
@@ -6603,7 +6604,7 @@
                       {/* ─ 카드 상단: 이름 + HP ─ */}
                       <div style={{ padding: "5px 7px 3px", display: "flex", justifyContent: "space-between", alignItems: "center", background: "rgba(0,0,0,0.25)" }}>
                         <div style={{ display: "flex", alignItems: "center", gap: 3 }}>
-                          <span style={{ fontSize: 10 }}>{typeIcon}</span>
+                          {CARD_TYPE_IMG[rarity] ? <img src={CARD_TYPE_IMG[rarity]} alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> : <span style={{ fontSize: 10 }}>{typeIcon}</span>}
                           <span style={{ fontSize: 11, fontWeight: 900 }}>{name}</span>
                         </div>
                         <div style={{ display: "flex", alignItems: "center", gap: 3 }}>
@@ -6674,7 +6675,7 @@
                       {battleAnim === "hit" && (
                         <div style={{ position: "absolute", left: "50%", top: "50%", width: 50, height: 50, borderRadius: "50%", background: "radial-gradient(circle, rgba(253,224,71,0.7) 0%, rgba(255,165,0,0.3) 40%, transparent 70%)", animation: "bq-clash-spark 0.5s forwards", pointerEvents: "none" }} />
                       )}
-                      <div className={timerDanger ? "bq-timer-danger" : ""} style={{ fontSize: 22, fontWeight: 900, color: timerDanger ? "#ef4444" : "#fde047", lineHeight: 1, textShadow: "0 2px 8px rgba(0,0,0,0.4)" }}>{battleTimerActive ? battleTimer : "⚔️"}</div>
+                      <div className={timerDanger ? "bq-timer-danger" : ""} style={{ fontSize: 22, fontWeight: 900, color: timerDanger ? "#ef4444" : "#fde047", lineHeight: 1, textShadow: "0 2px 8px rgba(0,0,0,0.4)" }}>{battleTimerActive ? battleTimer : React.createElement("img", { src: "icons/ui/ui_swords.png", style: { width: 22, height: 22 } })}</div>
                       {battleTimerActive && <div style={{ fontSize: 9, opacity: 0.7, fontWeight: 700 }}>초</div>}
                     </div>
                     <BattleCard
@@ -6688,14 +6689,14 @@
                   {/* 진행 표시 */}
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14, padding: "10px 14px", background: "rgba(255,255,255,0.08)", borderRadius: 12 }}>
                     <div style={{ fontSize: 12, fontWeight: 700 }}>라운드 {interactiveRoundIdx + 1}/{total}</div>
-                    <div style={{ fontSize: 11, opacity: 0.8 }}>{round.type === "qa" ? `📚 ${round.book || "책 Q&A"}` : round.type === "complete" ? `✏️ ${round.book || "문장 완성"}` : "💭 미니 토론"}</div>
+                    <div style={{ fontSize: 11, opacity: 0.8 }}>{round.type === "qa" ? `${round.book || "책 Q&A"}` : round.type === "complete" ? `${round.book || "문장 완성"}` : "미니 토론"}</div>
                   </div>
 
                   {/* 문제 표시 — Q&A 4지선다 */}
                   {!showRoundResult && round.type === "qa" && (
                     <div>
                       <div style={{ background: "rgba(253,224,71,0.15)", border: "1px solid rgba(253,224,71,0.3)", borderRadius: 14, padding: 16, marginBottom: 14 }}>
-                        <div style={{ fontSize: 11, fontWeight: 800, color: "#fde047", marginBottom: 6 }}>❓ 문제</div>
+                        <div style={{ fontSize: 11, fontWeight: 800, color: "#fde047", marginBottom: 6 }}><img src="icons/ui/ui_question.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 문제</div>
                         <div style={{ fontSize: 14, fontWeight: 700, lineHeight: 1.6 }}>{round.question}</div>
                       </div>
                       {(round.choices || []).map((c, i) => (
@@ -6711,7 +6712,7 @@
                   {!showRoundResult && round.type === "complete" && (
                     <div>
                       <div style={{ background: "rgba(96,165,250,0.15)", border: "1px solid rgba(96,165,250,0.3)", borderRadius: 14, padding: 16, marginBottom: 14 }}>
-                        <div style={{ fontSize: 11, fontWeight: 800, color: "#60a5fa", marginBottom: 6 }}>✏️ 문장을 완성해봐!</div>
+                        <div style={{ fontSize: 11, fontWeight: 800, color: "#60a5fa", marginBottom: 6 }}><img src="icons/ui/ui_pencil.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 문장을 완성해봐!</div>
                         <div style={{ fontSize: 15, fontWeight: 700, lineHeight: 1.7 }}>
                           {(round.sentence || "").split("___").map((part, idx, arr) =>
                             idx < arr.length - 1
@@ -6734,7 +6735,7 @@
                   {!showRoundResult && round.type === "debate" && miniDebateOwner === "me" && (
                     <div>
                       <div style={{ background: "rgba(168,85,247,0.18)", border: "1px solid rgba(168,85,247,0.4)", borderRadius: 14, padding: 16, marginBottom: 14 }}>
-                        <div style={{ fontSize: 11, fontWeight: 800, color: "#c4b5fd", marginBottom: 6 }}>💭 주제</div>
+                        <div style={{ fontSize: 11, fontWeight: 800, color: "#c4b5fd", marginBottom: 6 }}><img src="icons/ui/ui_thought.png" alt="" style={{ width: 11, height: 11, verticalAlign: "middle" }} /> 주제</div>
                         <div style={{ fontSize: 14, fontWeight: 700, lineHeight: 1.6 }}>{round.topic}</div>
                       </div>
                       <div style={{ fontSize: 12, opacity: 0.8, marginBottom: 10, textAlign: "center" }}>가장 설득력 있는 의견을 골라봐!</div>
@@ -6750,7 +6751,7 @@
                   {/* 미니토론 (AI 담당) — 자동 실행 중 */}
                   {!showRoundResult && round.type === "debate" && miniDebateOwner === "ai" && (
                     <div style={{ textAlign: "center", padding: 40 }}>
-                      <div style={{ fontSize: 48, marginBottom: 12, animation: "pulse 1s infinite" }}>🤖</div>
+                      <div style={{ marginBottom: 12, animation: "pulse 1s infinite" }}><img src="icons/ui/ui_robot.png" alt="" style={{ width: 48, height: 48 }} /></div>
                       <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 6 }}>아바타가 토론 중...</div>
                       <button onClick={() => submitRoundAnswer(0)} disabled={battleLoading}
                         style={{ marginTop: 20, padding: "12px 24px", borderRadius: 12, border: "none", background: "white", color: "#4c1d95", fontSize: 13, fontWeight: 800, cursor: "pointer" }}>
@@ -6783,14 +6784,14 @@
                         <div style={{ background: "rgba(255,255,255,0.06)", borderRadius: 12, padding: 14, marginBottom: 12, fontSize: 12, lineHeight: 1.6 }}>
                           <div style={{ marginBottom: 8 }}><b>정답:</b> {String.fromCharCode(65 + roundAns.answerIdx)}. {round.choices[roundAns.answerIdx]}</div>
                           <div style={{ marginBottom: 6, display: "flex", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
-                            <span>🧒 <b>{myName}</b>: {String.fromCharCode(65 + roundAns.myChoiceIdx)}</span>
+                            <span><img src="icons/ui/ui_player.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle", borderRadius: "50%" }} /> <b>{myName}</b>: {String.fromCharCode(65 + roundAns.myChoiceIdx)}</span>
                             <Icon name={roundAns.myCorrect ? "correct_check" : "wrong_cross"} size={16} />
                           </div>
                           <div style={{ marginBottom: 10, display: "flex", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
-                            <span>🤖 <b>{oppName}</b>: {String.fromCharCode(65 + roundAns.oppChoiceIdx)}</span>
+                            <span><img src="icons/ui/ui_robot.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle", borderRadius: "50%" }} /> <b>{oppName}</b>: {String.fromCharCode(65 + roundAns.oppChoiceIdx)}</span>
                             <Icon name={roundAns.oppCorrect ? "correct_check" : "wrong_cross"} size={16} />
                           </div>
-                          {roundAns.explanation && <div style={{ padding: 10, background: "rgba(253,224,71,0.12)", borderRadius: 8, fontSize: 11, opacity: 0.95 }}>💡 {roundAns.explanation}</div>}
+                          {roundAns.explanation && <div style={{ padding: 10, background: "rgba(253,224,71,0.12)", borderRadius: 8, fontSize: 11, opacity: 0.95 }}>{<img src="icons/ui/ui_hint.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle", borderRadius: "50%" }} />} {roundAns.explanation}</div>}
                         </div>
                       )}
 
@@ -6798,36 +6799,36 @@
                         <div style={{ background: "rgba(255,255,255,0.06)", borderRadius: 12, padding: 14, marginBottom: 12, fontSize: 12, lineHeight: 1.6 }}>
                           <div style={{ marginBottom: 8 }}><b>완성 문장:</b> {(roundAns.sentence || "").replace("___", roundAns.completions[roundAns.answerIdx])}</div>
                           <div style={{ marginBottom: 6, display: "flex", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
-                            <span>🧒 <b>{myName}</b>: {String.fromCharCode(65 + roundAns.myChoiceIdx)}. {roundAns.completions[roundAns.myChoiceIdx] || "시간 초과"}</span>
+                            <span><img src="icons/ui/ui_player.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle", borderRadius: "50%" }} /> <b>{myName}</b>: {String.fromCharCode(65 + roundAns.myChoiceIdx)}. {roundAns.completions[roundAns.myChoiceIdx] || "시간 초과"}</span>
                             <Icon name={roundAns.myCorrect ? "correct_check" : "wrong_cross"} size={16} />
                           </div>
                           <div style={{ marginBottom: 10, display: "flex", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
-                            <span>🤖 <b>{oppName}</b>: {String.fromCharCode(65 + roundAns.oppChoiceIdx)}. {roundAns.completions[roundAns.oppChoiceIdx] || "?"}</span>
+                            <span><img src="icons/ui/ui_robot.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle", borderRadius: "50%" }} /> <b>{oppName}</b>: {String.fromCharCode(65 + roundAns.oppChoiceIdx)}. {roundAns.completions[roundAns.oppChoiceIdx] || "?"}</span>
                             <Icon name={roundAns.oppCorrect ? "correct_check" : "wrong_cross"} size={16} />
                           </div>
-                          {roundAns.explanation && <div style={{ padding: 10, background: "rgba(96,165,250,0.12)", borderRadius: 8, fontSize: 11, opacity: 0.95 }}>💡 {roundAns.explanation}</div>}
+                          {roundAns.explanation && <div style={{ padding: 10, background: "rgba(96,165,250,0.12)", borderRadius: 8, fontSize: 11, opacity: 0.95 }}>{<img src="icons/ui/ui_hint.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle", borderRadius: "50%" }} />} {roundAns.explanation}</div>}
                         </div>
                       )}
 
                       {roundAns.type === "debate" && miniDebateOwner === "me" && (
                         <div style={{ background: "rgba(255,255,255,0.06)", borderRadius: 12, padding: 14, marginBottom: 12, fontSize: 12, lineHeight: 1.6 }}>
-                          <div style={{ marginBottom: 8 }}>🧒 <b>{myName}</b> ({roundAns.myScore}점): {roundAns.myStance}</div>
-                          <div style={{ marginBottom: 10 }}>🤖 <b>{oppName}</b> ({roundAns.oppScore}점): {roundAns.oppStance}</div>
-                          {roundAns.reason && <div style={{ padding: 10, background: "rgba(168,85,247,0.15)", borderRadius: 8, fontSize: 11 }}>📝 {roundAns.reason}</div>}
+                          <div style={{ marginBottom: 8 }}><img src="icons/ui/ui_player.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle", borderRadius: "50%" }} /> <b>{myName}</b> ({roundAns.myScore}점): {roundAns.myStance}</div>
+                          <div style={{ marginBottom: 10 }}><img src="icons/ui/ui_robot.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle", borderRadius: "50%" }} /> <b>{oppName}</b> ({roundAns.oppScore}점): {roundAns.oppStance}</div>
+                          {roundAns.reason && <div style={{ padding: 10, background: "rgba(168,85,247,0.15)", borderRadius: 8, fontSize: 11 }}><img src="icons/ui/ui_writing.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> {roundAns.reason}</div>}
                         </div>
                       )}
 
                       {roundAns.type === "debate" && miniDebateOwner === "ai" && (
                         <div style={{ background: "rgba(255,255,255,0.06)", borderRadius: 12, padding: 14, marginBottom: 12, fontSize: 12, lineHeight: 1.6 }}>
-                          <div style={{ marginBottom: 8 }}>🧒 <b>{myName}</b> [{roundAns.myStance}]: {roundAns.myArgument}</div>
-                          <div style={{ marginBottom: 10 }}>🤖 <b>{oppName}</b> [{roundAns.oppStance}]: {roundAns.oppArgument}</div>
-                          {roundAns.reason && <div style={{ padding: 10, background: "rgba(168,85,247,0.15)", borderRadius: 8, fontSize: 11 }}>📝 {roundAns.reason}</div>}
+                          <div style={{ marginBottom: 8 }}><img src="icons/ui/ui_player.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle", borderRadius: "50%" }} /> <b>{myName}</b> [{roundAns.myStance}]: {roundAns.myArgument}</div>
+                          <div style={{ marginBottom: 10 }}><img src="icons/ui/ui_robot.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle", borderRadius: "50%" }} /> <b>{oppName}</b> [{roundAns.oppStance}]: {roundAns.oppArgument}</div>
+                          {roundAns.reason && <div style={{ padding: 10, background: "rgba(168,85,247,0.15)", borderRadius: 8, fontSize: 11 }}><img src="icons/ui/ui_writing.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> {roundAns.reason}</div>}
                         </div>
                       )}
 
                       <button onClick={goToNextRound} disabled={battleLoading}
                         style={{ width: "100%", padding: 14, borderRadius: 14, border: "none", background: "white", color: "#4c1d95", fontSize: 14, fontWeight: 800, cursor: "pointer" }}>
-                        {interactiveRoundIdx + 1 < total ? "다음 라운드 →" : "최종 결과 보기 🏆"}
+                        {interactiveRoundIdx + 1 < total ? "다음 라운드 →" : "최종 결과 보기"}
                       </button>
                     </div>
                   )}
@@ -6860,7 +6861,7 @@
                       <div style={{ fontSize: 8, opacity: 0.7 }}>Lv.{level||1} · {RARITY_LABEL[myAvD_p.rarity||"free"]}</div>
                     </div>
                   </div>
-                  <div style={{ fontSize: 16, fontWeight: 900, opacity: 0.4, animation: "pulse 2s infinite" }}>⚔️</div>
+                  <div style={{ fontSize: 16, fontWeight: 900, opacity: 0.4, animation: "pulse 2s infinite" }}><img src="icons/ui/ui_swords.png" alt="" style={{ width: 16, height: 16 }} /></div>
                   <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                     <div style={{ textAlign: "right" }}>
                       <div style={{ fontSize: 11, fontWeight: 900 }}>{oppName_p}</div>
@@ -6905,7 +6906,7 @@
                   return null;
                 })}
                 {battleLoading && (
-                  <div style={{ textAlign: "center", padding: 20, opacity: 0.7, fontSize: 12 }}>⚡ 아바타가 생각 중...</div>
+                  <div style={{ textAlign: "center", padding: 20, opacity: 0.7, fontSize: 12 }}><img src="icons/ui/ui_lightning.png" alt="" style={{ width: 12, height: 12, verticalAlign: "middle" }} /> 아바타가 생각 중...</div>
                 )}
               </div>
               );
@@ -6928,6 +6929,7 @@
               const oppBadge = RARITY_BADGE_STYLE[oppAvD.rarity||"free"] || RARITY_BADGE_STYLE.free;
               const CARD_TYPE_R = { free: "노멀", common: "노멀", rare: "레어", epic: "영웅", legendary: "전설", heroic: "영웅", mythic: "신화", hidden: "히든" };
               const CARD_TYPE_ICON_R = { free: "⭐", common: "⭐", rare: "💎", epic: "🛡️", legendary: "👑", heroic: "🛡️", mythic: "🌙", hidden: "🔮" };
+              const CARD_TYPE_IMG_R = { free: "icons/ui/ui_star_normal.png", common: "icons/ui/ui_star_normal.png", rare: "icons/ui/ui_diamond_rare.png", epic: "icons/ui/ui_shield_heroic.png", legendary: "icons/ui/ui_crown.png", heroic: "icons/ui/ui_shield_heroic.png", mythic: "icons/ui/ui_moon_mythic.png", hidden: "icons/ui/ui_orb_hidden.png" };
               const CARD_SKILL_R = {
                 free: [{ name: "기본 공격", dmg: 10, icon: "📖", skillImg: "icons/skills/cs_basic_attack.png" }, { name: "지식 던지기", dmg: 20, icon: "💡", skillImg: "icons/skills/cs_knowledge_throw.png" }],
                 common: [{ name: "퀴즈 어택", dmg: 15, icon: "❓", skillImg: "icons/skills/cs_quiz_attack.png" }, { name: "독서 파워", dmg: 25, icon: "📚", skillImg: "icons/skills/cs_reading_power.png" }],
@@ -6954,7 +6956,7 @@
                     {/* 상단: 이름 + HP */}
                     <div style={{ padding: "4px 6px 2px", display: "flex", justifyContent: "space-between", alignItems: "center", background: "rgba(0,0,0,0.25)" }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 2 }}>
-                        <span style={{ fontSize: 8 }}>{typeIcon}</span>
+                        {CARD_TYPE_IMG_R[rarity] ? <img src={CARD_TYPE_IMG_R[rarity]} alt="" style={{ width: 12, height: 12, verticalAlign: "middle" }} /> : <span style={{ fontSize: 8 }}>{typeIcon}</span>}
                         <span style={{ fontSize: 9, fontWeight: 900 }}>{name}</span>
                       </div>
                       <div style={{ display: "flex", alignItems: "center", gap: 2 }}>
@@ -7002,7 +7004,7 @@
                     </div>
                   </div>
                   {/* 승리 크라운 */}
-                  {isWinner && <div style={{ textAlign: "center", marginTop: 4, fontSize: 16 }}>👑</div>}
+                  {isWinner && <div style={{ textAlign: "center", marginTop: 4, fontSize: 16 }}><img src="icons/ui/ui_crown.png" alt="" style={{ width: 20, height: 20 }} /></div>}
                 </div>
                 );
               };
@@ -7039,7 +7041,7 @@
                       animation: battleWinner === "my" ? "bq-victory-pulse 1.5s ease-in-out infinite" : battleWinner === "opp" ? "bq-defeat-shake 0.5s ease-in-out 1" : "none",
                       color: battleWinner === "my" ? "#fde047" : battleWinner === "opp" ? "#fca5a5" : "#e2e8f0",
                     }}>
-                      {battleWinner === "my" ? "🏆 승리!" : battleWinner === "opp" ? "💀 패배..." : "🤝 무승부"}
+                      {battleWinner === "my" ? <><img src="icons/ui/ui_trophy.png" alt="" style={{ width: 28, height: 28, verticalAlign: "middle" }} /> 승리!</> : battleWinner === "opp" ? <><img src="icons/ui/ui_skull.png" alt="" style={{ width: 28, height: 28, verticalAlign: "middle" }} /> 패배...</> : <><img src="icons/ui/ui_handshake.png" alt="" style={{ width: 28, height: 28, verticalAlign: "middle" }} /> 무승부</>}
                     </div>
                     {battleWinner === "my" && (
                       <div style={{ fontSize: 11, color: "#86efac", fontWeight: 700, marginTop: 4, animation: "bq-fade-up 0.8s ease-out 0.3s both" }}>
@@ -7053,14 +7055,14 @@
                     <div className={battleWinner === "my" ? "bq-result-card-win" : "bq-result-card-lose"}>
                       <ResultCard name={myName} lvl={level||1} hp={myHP} maxHp={myMaxHP} avatarSrc={myAvSrc} grad={myGrad} rarity={myAvD.rarity} badge={myBadge} isWinner={battleWinner==="my"} isOpp={false} />
                     </div>
-                    <div style={{ fontSize: 20, fontWeight: 900, opacity: 0.4, animation: "bq-fade-up 0.5s ease-out 0.2s both", marginBottom: 50 }}>⚔️</div>
+                    <div style={{ fontSize: 20, fontWeight: 900, opacity: 0.4, animation: "bq-fade-up 0.5s ease-out 0.2s both", marginBottom: 50 }}><img src="icons/ui/ui_swords.png" alt="" style={{ width: 16, height: 16 }} /></div>
                     <div className={battleWinner === "opp" ? "bq-result-card-win" : "bq-result-card-lose"}>
                       <ResultCard name={oppName} lvl={opp?.level||1} hp={oppHP} maxHp={oppMaxHP} avatarSrc={oppAvSrc} grad={oppGrad} rarity={oppAvD.rarity} badge={oppBadge} isWinner={battleWinner==="opp"} isOpp={true} />
                     </div>
                   </div>
 
                   {/* 내러티브 — 지연 페이드 */}
-                  {battleNarration && <div style={{ fontSize: 12, opacity: 0.9, marginTop: 8, lineHeight: 1.6, animation: "bq-fade-up 0.6s ease-out 1s both", fontStyle: "italic" }}>🎬 {battleNarration}</div>}
+                  {battleNarration && <div style={{ fontSize: 12, opacity: 0.9, marginTop: 8, lineHeight: 1.6, animation: "bq-fade-up 0.6s ease-out 1s both", fontStyle: "italic" }}><img src="icons/ui/ui_clapper.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> {battleNarration}</div>}
                 </div>
 
                 {/* 라운드별 데미지 로그 */}
@@ -7105,12 +7107,12 @@
                   })()}
                 </div>
 
-                {/* 🎰 승리 보상 룰렛 */}
+                {/* <img src="icons/ui/ui_roulette.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> 승리 보상 룰렛 */}
                 {showRoulette && battleWinner === "my" && (() => {
                   const handleSpin = () => {
                     if (rouletteSpinning) return;
                     setRouletteSpinning(true);
-                    // 🔊 룰렛 스핀 효과음
+                    // <img src="icons/ui/ui_speaker.png" alt="" style={{ width: 16, height: 16 }} /> 룰렛 스핀 효과음
                     try { getBattleSound().sfx.rouletteSpin(); } catch(e) {}
                     const result = spinRoulette();
                     // 스킬 보상 배율 적용
@@ -7134,7 +7136,7 @@
                     setTimeout(() => {
                       setRouletteResult(finalResult);
                       setRouletteSpinning(false);
-                      // 🔊 룰렛 결과 효과음
+                      // <img src="icons/ui/ui_speaker.png" alt="" style={{ width: 16, height: 16 }} /> 룰렛 결과 효과음
                       try { getBattleSound().sfx.rouletteResult(); } catch(e) {}
                       // 보상 적용
                       if (finalResult.reward.type === "coin") setCoins(c => (c || 0) + finalResult.reward.value);
@@ -7153,13 +7155,13 @@
                         if (picked.length > 0) {
                           setOwnedItems(prev => [...prev, ...picked.map(p => p.id)]);
                           finalResult.label = picked.map(p => p.name).join(" + ") + " 획득!";
-                          finalResult.icon = "🎁";
+                          finalResult.icon = "icons/ui/ui_sparkle.png";
                         } else {
                           // 모든 아이템 보유 시 코인으로 대체
                           const bonusCoin = 80;
                           setCoins(c => (c || 0) + bonusCoin);
                           finalResult.label = "아이템 올클리어! +" + bonusCoin + " 코인";
-                          finalResult.icon = "💰";
+                          finalResult.icon = "icons/ui/ui_coins.png";
                         }
                       }
                       // 🦄 랜덤 아바타 보상
@@ -7169,13 +7171,13 @@
                           const picked = unownedAvatars[Math.floor(Math.random() * unownedAvatars.length)];
                           setOwnedAvatars(prev => prev.includes(picked.id) ? prev : [...prev, picked.id]);
                           finalResult.label = picked.name + " 아바타 획득!";
-                          finalResult.icon = "🦄";
+                          finalResult.icon = "icons/ui/ui_unicorn.png";
                         } else {
                           // 모든 아바타 보유 시 대박 코인
                           const bonusCoin = 300;
                           setCoins(c => (c || 0) + bonusCoin);
                           finalResult.label = "아바타 올클리어! +" + bonusCoin + " 코인";
-                          finalResult.icon = "👑";
+                          finalResult.icon = "icons/ui/ui_crown.png";
                         }
                       }
                       // 결과를 보여준 뒤 확인 버튼으로 닫도록 setShowRoulette(false) 제거
@@ -7183,7 +7185,7 @@
                   };
                   return (
                     <div style={{ background: "linear-gradient(135deg, rgba(234,179,8,0.3), rgba(251,191,36,0.2))", borderRadius: 16, padding: 16, marginBottom: 12, textAlign: "center", border: "1px solid rgba(251,191,36,0.4)" }}>
-                      <div style={{ fontSize: 14, fontWeight: 900, color: "#fde047", marginBottom: 10 }}>🎰 승리 보상 룰렛!</div>
+                      <div style={{ fontSize: 14, fontWeight: 900, color: "#fde047", marginBottom: 10 }}><img src="icons/ui/ui_roulette.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> 승리 보상 룰렛!</div>
                       {!rouletteResult ? (
                         <div>
                           <div style={{
@@ -7194,7 +7196,7 @@
                             display: "flex", alignItems: "center", justifyContent: "center",
                             boxShadow: "0 0 20px rgba(251,191,36,0.5)"
                           }}>
-                            <div style={{ width: 30, height: 30, borderRadius: "50%", background: "#1e1b4b", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16 }}>🎰</div>
+                            <div style={{ width: 30, height: 30, borderRadius: "50%", background: "#1e1b4b", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16 }}><img src="icons/ui/ui_roulette.png" alt="" style={{ width: 24, height: 24 }} /></div>
                           </div>
                           <button onClick={handleSpin} disabled={rouletteSpinning}
                             style={{ padding: "10px 30px", borderRadius: 12, border: "2px solid #fde047", background: rouletteSpinning ? "rgba(251,191,36,0.2)" : "linear-gradient(135deg, #f59e0b, #eab308)", color: rouletteSpinning ? "#fde047" : "#1e1b4b", fontSize: 14, fontWeight: 900, cursor: rouletteSpinning ? "default" : "pointer" }}>
@@ -7205,12 +7207,12 @@
                         <div style={{ animation: "bq-fade-up 0.5s ease-out" }}>
                           <div style={{ marginBottom: 8 }}>{rouletteResult.rewardImg ? <img src={rouletteResult.rewardImg} alt="" style={{ width: 56, height: 56, borderRadius: "50%" }} /> : <span style={{ fontSize: 40 }}>{rouletteResult.icon}</span>}</div>
                           <div style={{ fontSize: 16, fontWeight: 900, color: rouletteResult.tier === "legendary" ? "#e879f9" : rouletteResult.tier === "jackpot" ? "#fde047" : rouletteResult.tier === "good" ? "#22c55e" : "#e2e8f0" }}>
-                            {rouletteResult.tier === "legendary" ? "🦄 전설 등급!!" : rouletteResult.tier === "jackpot" ? "🎉 잭팟!" : rouletteResult.tier === "good" ? "👍 좋은 보상!" : "보상 획득!"}}
+                            {rouletteResult.tier === "legendary" ? "<img src="icons/ui/ui_unicorn.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> 전설 등급!!" : rouletteResult.tier === "jackpot" ? "<img src="icons/ui/ui_party.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> 잭팟!" : rouletteResult.tier === "good" ? "<img src="icons/ui/ui_thumbsup.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> 좋은 보상!" : "보상 획득!"}}
                           </div>
                           <div style={{ fontSize: 18, fontWeight: 900, marginTop: 4 }}>{rouletteResult.label}</div>
                           {(bookArenaActive || (battleOpponent?.uid && rivalData[battleOpponent.uid])) && (
                             <div style={{ fontSize: 10, color: "#fde047", marginTop: 4, fontWeight: 700 }}>
-                              {bookArenaActive ? "📖 책 아레나 보상 3배! " : ""}{battleOpponent?.uid && rivalData[battleOpponent.uid] ? "🔥 라이벌 보상 2배!" : ""}
+                              {bookArenaActive ? "<img src="icons/ui/ui_book_open.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 책 아레나 보상 3배! " : ""}{battleOpponent?.uid && rivalData[battleOpponent.uid] ? "<img src="icons/ui/ui_fire.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 라이벌 보상 2배!" : ""}
                             </div>
                           )}
                           <button onClick={() => { setShowRoulette(false); }}
@@ -7236,14 +7238,14 @@
                     color: "#fde047", fontSize: 14, fontWeight: 800, cursor: "pointer", marginBottom: 10,
                     display: "flex", alignItems: "center", justifyContent: "center", gap: 8
                   }}>
-                    🔥 복수전! (보상 1.5배)
+                    <img src="icons/ui/ui_fire.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 복수전! (보상 1.5배)
                   </button>
                 )}
 
                 {/* 🏆 라이벌 표시 */}
                 {battleOpponent?.uid && rivalData[battleOpponent.uid] && (
                   <div style={{ background: "rgba(239,68,68,0.15)", borderRadius: 12, padding: 10, marginBottom: 10, textAlign: "center", border: "1px solid rgba(239,68,68,0.3)" }}>
-                    <div style={{ fontSize: 11, fontWeight: 900, color: "#fca5a5" }}>🔥 라이벌! — {rivalData[battleOpponent.uid].count}회 대전</div>
+                    <div style={{ fontSize: 11, fontWeight: 900, color: "#fca5a5" }}><img src="icons/ui/ui_fire.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 라이벌! — {rivalData[battleOpponent.uid].count}회 대전</div>
                     <div style={{ fontSize: 10, opacity: 0.7, marginTop: 2 }}>라이벌 배틀은 보상 2배!</div>
                   </div>
                 )}
@@ -7269,7 +7271,7 @@
             {/* 헤더 */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
               <div onClick={exitBattle} style={{ cursor: "pointer", fontSize: 14, fontWeight: 700, opacity: 0.85 }}>← 나가기</div>
-              <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.2, opacity: 0.8 }}>⚔️ 아바타 배틀</div>
+              <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.2, opacity: 0.8 }}><img src="icons/ui/ui_swords.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> 아바타 배틀</div>
               <div style={{ fontSize: 11, opacity: 0.85, fontWeight: 700 }}>{battleWins}승 {battleLosses}패</div>
             </div>
 
@@ -7294,7 +7296,7 @@
             {/* 매칭 중 */}
             {battleStep === "matching" && (
               <div style={{ textAlign: "center", padding: "60px 20px" }}>
-                <div style={{ fontSize: 64, marginBottom: 16, animation: "spin 1.2s linear infinite" }}>🔄</div>
+                <div style={{ fontSize: 64, marginBottom: 16, animation: "spin 1.2s linear infinite" }}><img src="icons/ui/ui_refresh.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /></div>
                 <div style={{ fontSize: 16, fontWeight: 800, marginBottom: 6 }}>상대를 찾는 중...</div>
                 <div style={{ fontSize: 12, opacity: 0.7 }}>비슷한 레벨의 독서 친구를 찾고 있어요</div>
               </div>
@@ -7337,7 +7339,7 @@
                         <AvatarIcon avatarId={battleOpponent.avatar} size={72} style={{ border: "3px solid #fb7185", boxShadow: "0 0 20px rgba(251,113,133,0.5)" }} />
                       </div>
                       <div style={{ fontSize: 13, fontWeight: 800 }}>{battleOpponent.name}</div>
-                      <div style={{ fontSize: 10, opacity: 0.7, marginTop: 2 }}>레벨 {battleOpponent.level} · 🔥{battleOpponent.streak}일</div>
+                      <div style={{ fontSize: 10, opacity: 0.7, marginTop: 2 }}>레벨 {battleOpponent.level} · <img src="icons/ui/ui_fire.png" alt="" style={{ width: 10, height: 10, verticalAlign: "middle" }} /> {battleOpponent.streak}일</div>
                     </div>
                   </div>
                 </div>
@@ -7346,7 +7348,7 @@
                 {battleStep === "ready" && (
                   <>
                     <div style={{ fontSize: 14, fontWeight: 800, marginBottom: 12, textAlign: "center" }}>
-                      ⚡ 스킬을 선택하세요
+                      <img src="icons/ui/ui_lightning.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 스킬을 선택하세요
                     </div>
                     <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                       {BATTLE_SKILLS.map(s => (
@@ -7370,7 +7372,7 @@
                       ))}
                     </div>
                     <div style={{ fontSize: 10, opacity: 0.65, textAlign: "center", marginTop: 14, lineHeight: 1.6 }}>
-                      🔥 독서 &gt; 🌬️ 상상 &gt; 💎 집중 &gt; 🔥 독서<br/>
+                      <img src="icons/ui/ui_fire.png" alt="" style={{ width: 12, height: 12, verticalAlign: "middle" }} /> 독서 &gt; <img src="icons/ui/ui_snowflake.png" alt="" style={{ width: 12, height: 12, verticalAlign: "middle" }} /> 상상 &gt; <img src="icons/ui/ui_diamond_rare.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 집중 &gt; <img src="icons/ui/ui_fire.png" alt="" style={{ width: 12, height: 12, verticalAlign: "middle" }} /> 독서<br/>
                       같은 스킬이면 무승부
                     </div>
                   </>
@@ -7383,7 +7385,7 @@
                       <div style={{ fontSize: 44 }}>{mySkill?.emoji}</div>
                       <div style={{ fontSize: 12, fontWeight: 800, marginTop: 6 }}>{mySkill?.name}</div>
                     </div>
-                    <div style={{ fontSize: 22, fontWeight: 900, color: "#fde047" }}>⚔️</div>
+                    <div style={{ fontSize: 22, fontWeight: 900, color: "#fde047" }}><img src="icons/ui/ui_swords.png" alt="" style={{ width: 16, height: 16 }} /></div>
                     <div style={{ flex: 1, textAlign: "center", background: oppSkill?.gradient, borderRadius: 16, padding: "18px 10px", boxShadow: `0 8px 20px ${oppSkill?.color}50` }}>
                       <div style={{ fontSize: 44 }}>{oppSkill?.emoji}</div>
                       <div style={{ fontSize: 12, fontWeight: 800, marginTop: 6 }}>{oppSkill?.name}</div>
@@ -7409,7 +7411,7 @@
                     {battleResult === "win" ? (
                       <Icon name="medal_gold" size={64} />
                     ) : battleResult === "lose" ? (
-                      <span style={{ fontSize: 56 }}>💧</span>
+                      <img src="icons/ui/ui_droplet.png" alt="" style={{ width: 56, height: 56, verticalAlign: "middle" }} />
                     ) : (
                       <Icon name="draw_handshake" size={64} />
                     )}
@@ -7419,7 +7421,7 @@
                   </div>
                   {battleResult === "win" && (
                     <div style={{ fontSize: 12, marginTop: 10, opacity: 0.95, lineHeight: 1.5 }}>
-                      +5 🪙 코인 · 이번 주 승수 <b>{weeklyBattleWins}</b>회<br/>
+                      +5 <img src="icons/ui/ui_coins.png" alt="" style={{ width: 12, height: 12, verticalAlign: "middle" }} /> 코인 · 이번 주 승수 <b>{weeklyBattleWins}</b>회<br/>
                       랭킹 가점 <b>+{(weeklyBattleWins * 0.3).toFixed(1)}</b>점
                     </div>
                   )}
@@ -7453,7 +7455,7 @@
                     background: "linear-gradient(135deg, #f59e0b, #ef4444)", color: "white",
                     fontSize: 14, fontWeight: 800, cursor: "pointer",
                     boxShadow: "0 6px 16px rgba(245,158,11,0.4)"
-                  }}>⚔️ 한 번 더!</button>
+                  }}><img src="icons/ui/ui_swords.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 한 번 더!</button>
                   <button onClick={exitBattle} style={{
                     flex: 1, padding: "14px 10px", borderRadius: 14, border: "1px solid rgba(255,255,255,0.25)",
                     background: "rgba(255,255,255,0.08)", color: "white",
@@ -7511,12 +7513,12 @@
               <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 16 }}>
                 <div>
                   <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 2.5, color: "#fcd34d", marginBottom: 4, textTransform: "uppercase" }}>HALL OF FAME</div>
-                  <h1 style={{ fontSize: 28, fontWeight: 900, margin: 0, color: "white", textShadow: "0 2px 14px rgba(0,0,0,0.6), 0 0 24px rgba(252,211,77,0.35)", letterSpacing: -0.5 }}>🏆 주간 랭킹</h1>
+                  <h1 style={{ fontSize: 28, fontWeight: 900, margin: 0, color: "white", textShadow: "0 2px 14px rgba(0,0,0,0.6), 0 0 24px rgba(252,211,77,0.35)", letterSpacing: -0.5 }}><img src="icons/ui/ui_trophy.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> 주간 랭킹</h1>
                   <div style={{ fontSize: 11, color: "rgba(255,255,255,0.78)", marginTop: 4, textShadow: "0 1px 4px rgba(0,0,0,0.6)" }}>완독 × 1.0 + 배틀승 × 0.3 · 월요일 자동 리셋</div>
                 </div>
                 <button onClick={fetchRanking}
                   style={{ background: "rgba(255,255,255,0.14)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.25)", color: "white", fontSize: 11, fontWeight: 700, padding: "7px 12px", borderRadius: 10, cursor: "pointer", flexShrink: 0 }}>
-                  🔄 새로고침
+                  <img src="icons/ui/ui_refresh.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 새로고침
                 </button>
               </div>
 
@@ -7530,7 +7532,7 @@
                   display: "flex", alignItems: "center", gap: 12, textAlign: "left",
                   backdropFilter: "blur(4px)"
                 }}>
-                <div style={{ fontSize: 30, width: 52, height: 52, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(255,255,255,0.22)", borderRadius: 14, flexShrink: 0, boxShadow: "inset 0 0 14px rgba(252,211,77,0.3)" }}>⚔️</div>
+                <div style={{ fontSize: 30, width: 52, height: 52, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(255,255,255,0.22)", borderRadius: 14, flexShrink: 0, boxShadow: "inset 0 0 14px rgba(252,211,77,0.3)" }}><img src="icons/ui/ui_swords.png" alt="" style={{ width: 16, height: 16 }} /></div>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontSize: 10, fontWeight: 800, color: "#fcd34d", letterSpacing: 1.2, marginBottom: 2 }}>PHASE 5b · NEW</div>
                   <div style={{ fontSize: 16, fontWeight: 900, marginBottom: 3, textShadow: "0 1px 4px rgba(0,0,0,0.4)" }}>아바타 배틀 하기</div>
@@ -7566,7 +7568,7 @@
                     </div>
                     <div style={{ textAlign: "right" }}>
                       <div style={{ fontSize: 24, fontWeight: 900, color: "white", textShadow: "0 1px 3px rgba(0,0,0,0.5)" }}>{(myItem.score || 0).toFixed(1)}</div>
-                      <div style={{ fontSize: 10, opacity: 0.85, fontWeight: 700 }}>점 · 📚{myItem.weekly} ⚔️{myItem.weeklyWins || 0}</div>
+                      <div style={{ fontSize: 10, opacity: 0.85, fontWeight: 700 }}>점 · <img src="icons/ui/ui_books.png" alt="" style={{ width: 10, height: 10, verticalAlign: "middle" }} />{myItem.weekly} <img src="icons/ui/ui_swords.png" alt="" style={{ width: 10, height: 10, verticalAlign: "middle" }} />{myItem.weeklyWins || 0}</div>
                     </div>
                   </div>
                 </div>
@@ -7610,7 +7612,7 @@
                 </div>
                 {top20.length === 0 ? (
                   <div style={{ textAlign: "center", padding: "40px 20px", color: "#999", fontSize: 13 }}>
-                    이번 주엔 아직 완독한 사람이 없어요. 첫 번째가 되어보세요! 📚
+                    이번 주엔 아직 완독한 사람이 없어요. 첫 번째가 되어보세요!
                   </div>
                 ) : (
                   top20.slice(rankingPage * 5, rankingPage * 5 + 5).map((it, sliceIdx) => {
@@ -7634,12 +7636,12 @@
                             {it.name}{isMe && <span style={{ fontSize: 10, color: "#b45309", marginLeft: 6, fontWeight: 700 }}>(나)</span>}
                           </div>
                           <div style={{ fontSize: 11, color: "#888" }}>
-                            레벨 {it.level} · 🔥 {it.streak}일
+                            레벨 {it.level} · <img src="icons/ui/ui_fire.png" alt="" style={{ width: 10, height: 10, verticalAlign: "middle" }} /> {it.streak}일
                           </div>
                         </div>
                         <div style={{ textAlign: "right" }}>
                           <div style={{ fontSize: 18, fontWeight: 900, color: "#667eea" }}>{(it.score || 0).toFixed(1)}</div>
-                          <div style={{ fontSize: 10, color: "#888", fontWeight: 700 }}>📚{it.weekly} ⚔️{it.weeklyWins || 0}</div>
+                          <div style={{ fontSize: 10, color: "#888", fontWeight: 700 }}><img src="icons/ui/ui_books.png" alt="" style={{ width: 10, height: 10, verticalAlign: "middle" }} />{it.weekly} <img src="icons/ui/ui_swords.png" alt="" style={{ width: 10, height: 10, verticalAlign: "middle" }} />{it.weeklyWins || 0}</div>
                         </div>
                       </div>
                     );
@@ -7652,7 +7654,7 @@
             {!rankingLoading && !isInTop20 && myItem && totalCount > 20 && top20.length > 0 && (
               <div style={{ marginTop: 16, padding: 14, background: "#f3f4f6", borderRadius: 12, textAlign: "center" }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: "#555" }}>
-                  💪 TOP 20까지 {Math.max(0.1, ((top20[top20.length - 1].score || 0) - (myItem.score || 0) + 0.1)).toFixed(1)}점 더!
+                  <img src="icons/ui/ui_muscle.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> TOP 20까지 {Math.max(0.1, ((top20[top20.length - 1].score || 0) - (myItem.score || 0) + 0.1)).toFixed(1)}점 더!
                 </div>
                 <div style={{ fontSize: 11, color: "#888", marginTop: 4 }}>
                   완독하거나 배틀에서 이기면 순위가 올라가요
@@ -7669,7 +7671,7 @@
       // ═══════════════════════════════════════
       const HomeScreen = () => (
         <div style={{ padding: "0 16px 100px", overflowX: "hidden" }}>
-          {/* 📅 시즌 진행 상황 */}
+          {/* <img src="icons/ui/ui_calendar.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 시즌 진행 상황 */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 10, padding: "8px 0 4px" }}>
             <span style={{ fontSize: 13, fontWeight: 800, color: "#4338ca" }}>시즌{SEASON_CONFIG.season}</span>
             <span style={{ fontSize: 11, color: "#9ca3af" }}>|</span>
@@ -7681,10 +7683,10 @@
           </div>
 
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12, padding: "0 4px" }}>
-            <div style={{ fontSize: 13, color: "#888" }}>📅 {formatDate(today)} {getDayName(today)}요일</div>
+            <div style={{ fontSize: 13, color: "#888" }}><img src="icons/ui/ui_calendar.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> {formatDate(today)} {getDayName(today)}요일</div>
             <span onClick={() => { setAppSoundMuted(m => { const next = !m; try { getAppSound().setVolume(next ? 0 : 0.25); } catch(e) {} return next; }); }}
               style={{ cursor: "pointer", fontSize: 16, opacity: 0.7, padding: "2px 6px" }}>
-              {appSoundMuted ? "🔇" : "🔔"}
+              {appSoundMuted ? "<img src="icons/ui/ui_mute.png" alt="" style={{ width: 16, height: 16 }} />" : "<img src="icons/ui/ui_bell.png" alt="" style={{ width: 16, height: 16 }} />"}
             </span>
           </div>
 
@@ -7728,7 +7730,7 @@
                       borderStyle={{ border: "3px solid #667eea", boxShadow: "0 4px 12px rgba(102,126,234,0.3)" }}
                       onClick={() => setShowAvatarDetail(true)}
                     />
-                    <div onClick={(e) => { e.stopPropagation(); setShowAvatarDetail(true); }} style={{ position: "absolute", bottom: 0, right: 0, background: "#6366f1", borderRadius: "50%", width: 20, height: 20, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10, border: "2px solid white", fontSize: 10, color: "white", cursor: "pointer" }}>🔍</div>
+                    <div onClick={(e) => { e.stopPropagation(); setShowAvatarDetail(true); }} style={{ position: "absolute", bottom: 0, right: 0, background: "#6366f1", borderRadius: "50%", width: 20, height: 20, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10, border: "2px solid white", fontSize: 10, color: "white", cursor: "pointer" }}><img src="icons/ui/ui_search.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /></div>
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", marginBottom: 2 }}>
@@ -7756,18 +7758,18 @@
                   <div style={{ background: "white", borderRadius: 14, padding: "10px 6px", textAlign: "center", boxShadow: "0 1px 6px rgba(99,102,241,0.08)" }}>
                     <div style={{ fontSize: 10, color: "#f59e0b", fontWeight: 700, letterSpacing: 0.5 }}>COINS</div>
                     <div style={{ fontSize: 22, fontWeight: 900, color: "#1a1a2e", lineHeight: 1.1, margin: "2px 0" }}>{coins}</div>
-                    <div style={{ fontSize: 9, color: "#888" }}>💰 코인</div>
+                    <div style={{ fontSize: 9, color: "#888" }}><img src="icons/ui/ui_coins.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 코인</div>
                   </div>
                   <div style={{ background: "white", borderRadius: 14, padding: "10px 6px", textAlign: "center", boxShadow: "0 1px 6px rgba(99,102,241,0.08)" }}>
                     <div style={{ fontSize: 10, color: "#ef4444", fontWeight: 700, letterSpacing: 0.5 }}>STREAK</div>
                     <div style={{ fontSize: 22, fontWeight: 900, color: "#1a1a2e", lineHeight: 1.1, margin: "2px 0" }}>{streak}<span style={{ fontSize: 12 }}>일</span></div>
-                    <div style={{ fontSize: 9, color: "#888" }}>🔥 연속</div>
+                    <div style={{ fontSize: 9, color: "#888" }}><img src="icons/ui/ui_fire.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 연속</div>
                   </div>
                 </div>
 
                 {/* 레이더 차트 */}
                 <div style={{ background: "white", borderRadius: 16, padding: 10, marginBottom: 10, boxShadow: "0 2px 8px rgba(99,102,241,0.08)" }}>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: "#555", textAlign: "center", marginBottom: 4 }}>📚 8대 지식 영역</div>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: "#555", textAlign: "center", marginBottom: 4 }}><img src="icons/ui/ui_books.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 8대 지식 영역</div>
                   <RadarChart domains={stats.domains} size={260} maxValue={15} />
                   <div style={{ textAlign: "center", fontSize: 11, color: "#888", marginTop: 2 }}>
                     {totalDomain > 0 ? (
@@ -7779,13 +7781,13 @@
                 {/* 강점/약점 */}
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 12 }}>
                   <div style={{ padding: 10, borderRadius: 12, background: "linear-gradient(135deg, #ECFDF5, #D1FAE5)", border: "1px solid #A7F3D0" }}>
-                    <div style={{ fontSize: 10, fontWeight: 700, color: "#047857", marginBottom: 2 }}>🌟 강점 ×{p.multipliers[p.strongDomains[0]].toFixed(1)}</div>
+                    <div style={{ fontSize: 10, fontWeight: 700, color: "#047857", marginBottom: 2 }}><img src="icons/ui/ui_glow_star.png" alt="" style={{ width: 12, height: 12, verticalAlign: "middle" }} /> 강점 ×{p.multipliers[p.strongDomains[0]].toFixed(1)}</div>
                     <div style={{ fontSize: 12, fontWeight: 700, color: "#064e3b", display: "flex", flexWrap: "wrap", gap: 6, alignItems: "center" }}>
                       {strongMeta.map(d => <span key={d.id} style={{ display: "inline-flex", alignItems: "center", gap: 2 }}><Icon name={`theme_${d.id}`} size={14} />{d.name}</span>)}
                     </div>
                   </div>
                   <div style={{ padding: 10, borderRadius: 12, background: "linear-gradient(135deg, #FEF2F2, #FEE2E2)", border: "1px solid #FECACA" }}>
-                    <div style={{ fontSize: 10, fontWeight: 700, color: "#b91c1c", marginBottom: 2 }}>💧 약점 ×{p.multipliers[p.weakDomains[0]].toFixed(2)}</div>
+                    <div style={{ fontSize: 10, fontWeight: 700, color: "#b91c1c", marginBottom: 2 }}><img src="icons/ui/ui_droplet.png" alt="" style={{ width: 12, height: 12, verticalAlign: "middle" }} /> 약점 ×{p.multipliers[p.weakDomains[0]].toFixed(2)}</div>
                     <div style={{ fontSize: 12, fontWeight: 700, color: "#7f1d1d", display: "flex", flexWrap: "wrap", gap: 6, alignItems: "center" }}>
                       {weakMeta.map(d => <span key={d.id} style={{ display: "inline-flex", alignItems: "center", gap: 2 }}><Icon name={`theme_${d.id}`} size={14} />{d.name}</span>)}
                     </div>
@@ -7811,7 +7813,7 @@
                     gap: 8,
                     boxShadow: "0 4px 14px rgba(99, 102, 241, 0.3)"
                   }}>
-                  💬 내 아바타와 대화하기
+                  <img src="icons/ui/ui_chat.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 내 아바타와 대화하기
                 </button>
                 <div style={{ fontSize: 10, color: "#6366f1", marginTop: 6, textAlign: "center" }}>
                   {stats.booksCompleted.length > 0
@@ -7859,7 +7861,7 @@
 
               {/* 8대 지식 레이더 차트 */}
               <div style={{ background: "#f8f9ff", borderRadius: 16, padding: 12, marginBottom: 14 }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#555", textAlign: "center", marginBottom: 4 }}>📚 8대 지식 영역</div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#555", textAlign: "center", marginBottom: 4 }}><img src="icons/ui/ui_books.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 8대 지식 영역</div>
                 <RadarChart domains={stats.domains} size={240} maxValue={15} />
                 <div style={{ textAlign: "center", fontSize: 11, color: "#888", marginTop: 4 }}>
                   {totalDomain > 0 ? (
@@ -7871,13 +7873,13 @@
               {/* 강점/약점 */}
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 14 }}>
                 <div style={{ padding: 10, borderRadius: 12, background: "linear-gradient(135deg, #ECFDF5, #D1FAE5)", border: "1px solid #A7F3D0" }}>
-                  <div style={{ fontSize: 10, fontWeight: 700, color: "#047857", marginBottom: 2 }}>🌟 강점 ×{p.multipliers[p.strongDomains[0]].toFixed(1)}</div>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: "#047857", marginBottom: 2 }}><img src="icons/ui/ui_glow_star.png" alt="" style={{ width: 12, height: 12, verticalAlign: "middle" }} /> 강점 ×{p.multipliers[p.strongDomains[0]].toFixed(1)}</div>
                   <div style={{ fontSize: 12, fontWeight: 700, color: "#064e3b", display: "flex", flexWrap: "wrap", gap: 4, alignItems: "center" }}>
                     {strongMeta.map(d => <span key={d.id} style={{ display: "inline-flex", alignItems: "center", gap: 2 }}><Icon name={`theme_${d.id}`} size={14} />{d.name}</span>)}
                   </div>
                 </div>
                 <div style={{ padding: 10, borderRadius: 12, background: "linear-gradient(135deg, #FEF2F2, #FEE2E2)", border: "1px solid #FECACA" }}>
-                  <div style={{ fontSize: 10, fontWeight: 700, color: "#b91c1c", marginBottom: 2 }}>💧 약점 ×{p.multipliers[p.weakDomains[0]].toFixed(2)}</div>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: "#b91c1c", marginBottom: 2 }}><img src="icons/ui/ui_droplet.png" alt="" style={{ width: 12, height: 12, verticalAlign: "middle" }} /> 약점 ×{p.multipliers[p.weakDomains[0]].toFixed(2)}</div>
                   <div style={{ fontSize: 12, fontWeight: 700, color: "#7f1d1d", display: "flex", flexWrap: "wrap", gap: 4, alignItems: "center" }}>
                     {weakMeta.map(d => <span key={d.id} style={{ display: "inline-flex", alignItems: "center", gap: 2 }}><Icon name={`theme_${d.id}`} size={14} />{d.name}</span>)}
                   </div>
@@ -7887,7 +7889,7 @@
               {/* 아바타와 대화 버튼 */}
               <button onClick={() => { setShowAvatarDetail(false); setScreen("avatarChat"); }}
                 style={{ width: "100%", padding: "12px", borderRadius: 14, border: "none", background: "linear-gradient(135deg, #6366f1, #a855f7)", color: "white", fontSize: 14, fontWeight: 800, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
-                💬 내 아바타와 대화하기
+                <img src="icons/ui/ui_chat.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 내 아바타와 대화하기
               </button>
             </div>
           </div>
@@ -7901,12 +7903,12 @@
         if (!selectedBook) return null;
         const book = selectedBook;
         const tabs = [
-          { key: "summary", label: "📋 요약" },
-          { key: "chapters", label: "📑 목차" },
-          { key: "characters", label: "👤 인물" },
-          { key: "discuss", label: "💬 토론" },
-          { key: "quiz", label: "❓ 퀴즈" },
-          { key: "deep", label: "🔥 심화" }
+          { key: "summary", label: "<img src="icons/ui/ui_clipboard.png" alt="" style={{ width: 12, height: 12, verticalAlign: "middle" }} /> 요약" },
+          { key: "chapters", label: "<img src="icons/ui/ui_tabs.png" alt="" style={{ width: 12, height: 12, verticalAlign: "middle" }} /> 목차" },
+          { key: "characters", label: "인물" },
+          { key: "discuss", label: "토론" },
+          { key: "quiz", label: "<img src="icons/ui/ui_question.png" alt="" style={{ width: 12, height: 12, verticalAlign: "middle" }} /> 퀴즈" },
+          { key: "deep", label: "심화" }
         ];
         return (
           <div style={{ padding: "0 16px 100px" }}>
@@ -7914,7 +7916,7 @@
               <div onClick={() => setScreen("home")} style={{ display: "inline-flex", alignItems: "center", gap: 6, cursor: "pointer", fontSize: 14, color: "#667eea", fontWeight: 600 }}>
                 ← 돌아가기
               </div>
-              <div style={{ fontSize: 12, color: "#888" }}>📅 {formatDate(today)}</div>
+              <div style={{ fontSize: 12, color: "#888" }}><img src="icons/ui/ui_calendar.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> {formatDate(today)}</div>
             </div>
 
             <div style={{ background: `linear-gradient(135deg, ${book.color}cc, ${book.color}88)`, borderRadius: 20, padding: "24px 20px", marginBottom: 16, color: "#1a1a2e" }}>
@@ -7924,7 +7926,7 @@
               </div>
               <div style={{ fontSize: 20, fontWeight: 800, marginBottom: 4 }}>{book.title}</div>
               <div style={{ fontSize: 13, opacity: 0.8, marginBottom: 6 }}>{book.subtitle}</div>
-              <div style={{ fontSize: 12, opacity: 0.7 }}>✍️ {book.author} | 📄 {book.pages}쪽</div>
+              <div style={{ fontSize: 12, opacity: 0.7 }}><img src="icons/ui/ui_pencil.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> {book.author} | 📄 {book.pages}쪽</div>
               <div style={{ marginTop: 12, background: "rgba(255,255,255,0.4)", borderRadius: 8, height: 8, overflow: "hidden" }}>
                 <div style={{ background: "white", height: "100%", width: `${bookProgress[book.id]}%`, borderRadius: 8 }} />
               </div>
@@ -7943,7 +7945,7 @@
             {bookTab === "summary" && (
               <div>
                 <div style={{ background: "white", borderRadius: 16, padding: 20, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 16 }}>
-                  <h4 style={{ fontSize: 15, fontWeight: 700, marginBottom: 10, color: "#1a1a2e" }}>📝 줄거리</h4>
+                  <h4 style={{ fontSize: 15, fontWeight: 700, marginBottom: 10, color: "#1a1a2e" }}><img src="icons/ui/ui_writing.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 줄거리</h4>
                   <p style={{ fontSize: 14, lineHeight: 1.7, color: "#444" }}>{book.summary}</p>
                 </div>
                 <div style={{ background: "white", borderRadius: 16, padding: 20, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
@@ -7974,7 +7976,7 @@
                 {book.characters.map((c, i) => (
                   <div key={i} style={{ background: "white", borderRadius: 14, padding: 16, marginBottom: 10, display: "flex", gap: 12, alignItems: "center", boxShadow: "0 2px 6px rgba(0,0,0,0.04)" }}>
                     <div style={{ width: 44, height: 44, borderRadius: "50%", background: `${book.color}30`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0 }}>
-                      {["👤", "🧑‍🔬", "👩", "📜"][i % 4]}
+                      {["인", "과", "인", "사"][i % 4]}
                     </div>
                     <div>
                       <div style={{ fontSize: 14, fontWeight: 700, color: "#1a1a2e" }}>{c.name}</div>
@@ -7986,7 +7988,7 @@
             )}
             {bookTab === "discuss" && (
               <div>
-                <div style={{ fontSize: 13, color: "#888", marginBottom: 12 }}>🎤 주제를 선택해 음성으로 AI와 토론하세요!</div>
+                <div style={{ fontSize: 13, color: "#888", marginBottom: 12 }}><img src="icons/ui/ui_microphone.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 주제를 선택해 음성으로 AI와 토론하세요!</div>
                 {book.discussionTopics.map((t, i) => {
                   const key = `${book.id}-disc-${i}`;
                   const done = discussionState[key];
@@ -8001,10 +8003,10 @@
                       style={{ background: done ? "#f0fff0" : "white", borderRadius: 14, padding: 16, marginBottom: 10, cursor: "pointer", boxShadow: "0 2px 6px rgba(0,0,0,0.04)", border: done ? "2px solid #4CAF50" : "2px solid transparent" }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                         <div style={{ flex: 1 }}>
-                          <div style={{ fontSize: 12, color: "#667eea", fontWeight: 600, marginBottom: 4 }}>토론 {i + 1} {done ? (stars > 0 ? renderStars(stars) : "✅") : "(+20XP)"}</div>
+                          <div style={{ fontSize: 12, color: "#667eea", fontWeight: 600, marginBottom: 4 }}>토론 {i + 1} {done ? (stars > 0 ? renderStars(stars) : "완료") : "(+20XP)"}</div>
                           <div style={{ fontSize: 13, fontWeight: 600, color: "#1a1a2e", lineHeight: 1.5 }}>{t.q}</div>
                         </div>
-                        {!done && <span style={{ fontSize: 20, marginLeft: 8 }}>🎤</span>}
+                        {!done && <img src="icons/ui/ui_microphone.png" alt="" style={{ width: 20, height: 20, verticalAlign: "middle", marginLeft: 8 }} />}
                       </div>
                     </div>
                   );
@@ -8013,7 +8015,7 @@
             )}
             {bookTab === "quiz" && (
               <div>
-                <div style={{ fontSize: 13, color: "#888", marginBottom: 12 }}>❓ 책 내용을 바탕으로 퀴즈를 풀어보세요! (+10XP)</div>
+                <div style={{ fontSize: 13, color: "#888", marginBottom: 12 }}><img src="icons/ui/ui_question.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 책 내용을 바탕으로 퀴즈를 풀어보세요! (+10XP)</div>
                 {book.quizzes && book.quizzes.map((quiz, i) => {
                   const key = `${book.id}-quiz-${i}`;
                   const answered = quizState[key];
@@ -8021,7 +8023,7 @@
                     <div key={i} style={{ background: "white", borderRadius: 14, padding: 16, marginBottom: 10, boxShadow: "0 2px 6px rgba(0,0,0,0.04)" }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
                         <div style={{ fontSize: 13, fontWeight: 600, color: "#1a1a2e", flex: 1 }}>Q{i + 1}. {quiz.q}</div>
-                        {answered && (answered.correct ? <span style={{ fontSize: 14 }}>✅</span> : <span style={{ fontSize: 14 }}>❌</span>)}
+                        {answered && (answered.correct ? <img src="icons/ui/ui_check.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> : <img src="icons/ui/ui_skull.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} />)}
                       </div>
                       {quiz.type === "choice" ? (
                         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -8075,7 +8077,7 @@
             )}
             {bookTab === "deep" && (
               <div>
-                <div style={{ fontSize: 13, color: "#888", marginBottom: 12 }}>🔥 더 깊이 생각해 보는 심화 토론! (+30XP)</div>
+                <div style={{ fontSize: 13, color: "#888", marginBottom: 12 }}><img src="icons/ui/ui_fire.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 더 깊이 생각해 보는 심화 토론! (+30XP)</div>
                 {book.deepTopics.map((t, i) => {
                   const key = `${book.id}-deep-${i}`;
                   const done = discussionState[key];
@@ -8090,10 +8092,10 @@
                       style={{ background: done ? "#fff8e1" : "white", borderRadius: 14, padding: 16, marginBottom: 10, cursor: "pointer", boxShadow: "0 2px 6px rgba(0,0,0,0.04)", border: done ? "2px solid #FFB300" : "2px solid transparent" }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                         <div style={{ flex: 1 }}>
-                          <div style={{ fontSize: 12, color: "#FF6F00", fontWeight: 600, marginBottom: 4 }}>심화 {i + 1} {done ? (stars > 0 ? renderStars(stars) : "✅") : "(+30XP)"}</div>
+                          <div style={{ fontSize: 12, color: "#FF6F00", fontWeight: 600, marginBottom: 4 }}>심화 {i + 1} {done ? (stars > 0 ? renderStars(stars) : "완료") : "(+30XP)"}</div>
                           <div style={{ fontSize: 13, fontWeight: 600, color: "#1a1a2e", lineHeight: 1.5 }}>{t.q}</div>
                         </div>
-                        {!done && <span style={{ fontSize: 20, marginLeft: 8 }}>🔥</span>}
+                        {!done && <img src="icons/ui/ui_fire.png" alt="" style={{ width: 20, height: 20, verticalAlign: "middle", marginLeft: 8 }} />}
                       </div>
                     </div>
                   );
@@ -8112,10 +8114,10 @@
           <div style={{ background: isDeep ? "linear-gradient(135deg, #FF6F00, #FFB300)" : "linear-gradient(135deg, #667eea, #764ba2)", padding: "16px 20px", color: "white", flexShrink: 0 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div onClick={() => setScreen("book")} style={{ cursor: "pointer", fontSize: 13, opacity: 0.8 }}>← 돌아가기</div>
-              <div style={{ fontSize: 11, opacity: 0.7 }}>📅 {formatDate(today)}</div>
+              <div style={{ fontSize: 11, opacity: 0.7 }}><img src="icons/ui/ui_calendar.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> {formatDate(today)}</div>
             </div>
             <div style={{ fontSize: 16, fontWeight: 700, marginTop: 4 }}>{activeDiscussionBook?.title}</div>
-            <div style={{ fontSize: 12, opacity: 0.8 }}>{isDeep ? "🔥 심화" : "💬"} 토론 {activeDiscussionIdx + 1}</div>
+            <div style={{ fontSize: 12, opacity: 0.8 }}>{isDeep ? "심화" : "토론"} 토론 {activeDiscussionIdx + 1}</div>
           </div>
 
           <div style={{ flex: 1, overflowY: "auto", padding: 16, background: "#f7f7fa", display: "flex", flexDirection: "column" }}>
@@ -8139,7 +8141,7 @@
               </div>
             ))}
             {isSpeaking && <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
-              <span style={{ fontSize: 20 }}>🔊</span>
+              <span style={{ fontSize: 20 }}><img src="icons/ui/ui_speaker.png" alt="" style={{ width: 16, height: 16 }} /></span>
               <span style={{ fontSize: 12, color: "#666", fontStyle: "italic" }}>AI가 말하는 중...</span>
               <button onClick={() => { VoiceService.stopSpeaking(); setIsSpeaking(false); }}
                 style={{ marginLeft: "auto", padding: "4px 12px", borderRadius: 8, border: "1.5px solid #667eea", background: "white", color: "#667eea", fontSize: 11, fontWeight: 700, cursor: "pointer" }}>
@@ -8173,7 +8175,7 @@
                         display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
                         opacity: voiceSupported ? 1 : 0.5
                       }}>
-                      <span style={{ fontSize: 20 }}>🎤</span>
+                      <img src="icons/ui/ui_microphone.png" alt="" style={{ width: 20, height: 20, verticalAlign: "middle" }} />
                       말하기
                     </button>
                   ) : (
@@ -8185,7 +8187,7 @@
                         display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
                         animation: "pulse 1.5s infinite"
                       }}>
-                      <span style={{ fontSize: 20 }}>✅</span>
+                      <img src="icons/ui/ui_check.png" alt="" style={{ width: 20, height: 20, verticalAlign: "middle" }} />
                       말하기 완료
                     </button>
                   )}
@@ -8209,7 +8211,7 @@
                     padding: "10px 16px", borderRadius: 20, border: "none", background: "#f0f0f0",
                     color: "#666", fontSize: 12, fontWeight: 600, cursor: "pointer"
                   }}>
-                  🎤
+
                 </button>
                 <button onClick={() => sendChat()}
                   style={{ padding: "10px 18px", borderRadius: 20, border: "none", background: "#667eea", color: "white", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
@@ -8218,7 +8220,7 @@
               </div>
             )}
             {!voiceSupported && <div style={{ fontSize: 11, color: "#ff6b6b", textAlign: "center" }}>
-              🔊 이 브라우저에서는 음성 기능이 지원되지 않습니다. 텍스트로 이용해주세요.
+              <img src="icons/ui/ui_speaker.png" alt="" style={{ width: 16, height: 16 }} /> 이 브라우저에서는 음성 기능이 지원되지 않습니다. 텍스트로 이용해주세요.
             </div>}
           </div>
         </div>
@@ -8235,8 +8237,8 @@
         return (
         <div style={{ padding: "0 16px 100px", overflowX: "hidden" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-            <h3 style={{ fontSize: 18, fontWeight: 800, color: "#1a1a2e", margin: 0, display: "flex", alignItems: "center", gap: 6 }}>📋 내 프로필</h3>
-            <div style={{ fontSize: 12, color: "#888" }}>📅 {formatDate(today)}</div>
+            <h3 style={{ fontSize: 18, fontWeight: 800, color: "#1a1a2e", margin: 0, display: "flex", alignItems: "center", gap: 6 }}><img src="icons/ui/ui_clipboard.png" alt="" style={{ width: 18, height: 18, verticalAlign: "middle" }} /> 내 프로필</h3>
+            <div style={{ fontSize: 12, color: "#888" }}><img src="icons/ui/ui_calendar.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> {formatDate(today)}</div>
           </div>
 
           {/* ─ 프로필 헤더 카드 (상점 탭 최상단: 프로필 먼저 보이게) ─ */}
@@ -8252,7 +8254,7 @@
                 borderStyle={{ border: `${evo.borderWidth}px ${evo.borderStyle} ${evo.color}`, boxShadow: evo.shadow }}
                 onClick={() => { setShowShop(true); setShopCategory("frame"); }}
               />
-              <div onClick={() => setScreen("avatar")} style={{ position: "absolute", bottom: 6, right: "calc(50% - 100px)", background: "#667eea", borderRadius: "50%", width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10, border: "2px solid white", boxShadow: "0 2px 8px rgba(0,0,0,0.2)", fontSize: 14, color: "white", cursor: "pointer" }}>👤</div>
+              <div onClick={() => setScreen("avatar")} style={{ position: "absolute", bottom: 6, left: "calc(50% - 100px)", background: "#667eea", borderRadius: "50%", width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10, border: "2px solid white", boxShadow: "0 2px 8px rgba(0,0,0,0.2)", fontSize: 14, color: "white", cursor: "pointer" }}><img src="icons/ui/ui_person.png" alt="" style={{ width: 18, height: 18, verticalAlign: "middle" }} /></div>
             </div>
             <div style={{ fontSize: 22, fontWeight: 800, color: "#1a1a2e" }}>{profile?.name}</div>
             <div style={{ fontSize: 14, color: "#667eea", fontWeight: 600, marginTop: 6 }}>{currentTitle}</div>
@@ -8266,11 +8268,11 @@
                 color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer",
                 boxShadow: "0 3px 10px rgba(102,126,234,0.3)"
               }}>
-              🛍️ 상점 들어가기
+              {<img src="icons/ui/ui_shop.png" alt="" style={{ width: 18, height: 18, verticalAlign: "middle" }} />} 상점 들어가기
             </button>
           </div>
 
-          {/* 💎 테마팩 — THEME_PACKS 데이터 드리븐 렌더링 */}
+          {/* <img src="icons/ui/ui_diamond_rare.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 테마팩 — THEME_PACKS 데이터 드리븐 렌더링 */}
           {THEME_PACKS.filter(tp => isAdmin || ownedAvatars.includes(tp.avatarId)).map(tp => (
             <div key={tp.avatarId} style={{
               position: "relative",
@@ -8293,7 +8295,7 @@
                 <div style={{ position: "absolute", top: 0, left: "10%", right: "10%", height: 2, background: `linear-gradient(90deg, transparent, ${tp.accentColor}, transparent)` }} />
                 <div style={{ textAlign: "center" }}>
                   <div style={{ fontSize: 10, fontWeight: 800, color: tp.accentColor, letterSpacing: 2, marginBottom: 3 }}>EXCLUSIVE THEME PACK</div>
-                  <div style={{ fontSize: 16, fontWeight: 900, marginBottom: 3 }}>{`💎 ${tp.name} 테마팩`}</div>
+                  <div style={{ fontSize: 16, fontWeight: 900, marginBottom: 3 }}>{`<img src="icons/ui/ui_diamond_rare.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> ${tp.name} 테마팩`}</div>
                   <div style={{ fontSize: 11, color: "rgba(255,255,255,0.85)", lineHeight: 1.5 }}>
                     {`배경화면 ${tp.wallpapers.length}종 · 카톡 이모티콘 ${tp.emojis.length}종`}
                   </div>
@@ -8303,13 +8305,13 @@
                   style={{ padding: "10px 12px", borderRadius: 12, border: `1px solid ${tp.accentColor}66`,
                     background: `${tp.accentColor}26`, color: tp.accentColor, fontSize: 12, fontWeight: 800, cursor: "pointer",
                     backdropFilter: "blur(4px)" }}>
-                  🖼️ 배경화면 받기
+                  <img src="icons/ui/ui_frame.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 배경화면 받기
                 </button>
                 <button onClick={() => setThemeEmojiModal(tp.avatarId)}
                   style={{ padding: "10px 12px", borderRadius: 12, border: `1px solid ${tp.secondaryColor}66`,
                     background: `${tp.secondaryColor}2E`, color: tp.secondaryColor, fontSize: 12, fontWeight: 800, cursor: "pointer",
                     backdropFilter: "blur(4px)" }}>
-                  💬 이모티콘 팩
+                  <img src="icons/ui/ui_chat.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 이모티콘 팩
                 </button>
               </div>
               </div>
@@ -8321,7 +8323,7 @@
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: collapsedSections.profEffects ? 0 : 10 }}>
               <button onClick={() => toggleSection("profEffects")}
                 style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "space-between", background: "none", border: "none", padding: 0, cursor: "pointer" }}>
-                <h4 style={{ fontSize: 14, fontWeight: 700, margin: 0 }}>⚡ 장착 효과</h4>
+                <h4 style={{ fontSize: 14, fontWeight: 700, margin: 0 }}><img src="icons/ui/ui_lightning.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 장착 효과</h4>
                 <span style={{ fontSize: 14, color: "#888", marginRight: 8, transition: "transform 0.2s", transform: collapsedSections.profEffects ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
               </button>
               <button onClick={() => setShowShop(true)} style={{ fontSize: 11, color: "#667eea", background: "none", border: "none", cursor: "pointer", fontWeight: 600 }}>상점 가기</button>
@@ -8379,7 +8381,7 @@
           <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 16 }}>
             <button onClick={() => toggleSection("profOutfit")}
               style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", background: "none", border: "none", padding: 0, cursor: "pointer", marginBottom: collapsedSections.profOutfit ? 0 : 10 }}>
-              <h4 style={{ fontSize: 14, fontWeight: 700, margin: 0 }}>👗 코디 슬롯</h4>
+              <h4 style={{ fontSize: 14, fontWeight: 700, margin: 0 }}><img src="icons/ui/ui_outfit.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 코디 슬롯</h4>
               <span style={{ fontSize: 14, color: "#888", transition: "transform 0.2s", transform: collapsedSections.profOutfit ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
             </button>
             {!collapsedSections.profOutfit && (<>
@@ -8395,7 +8397,7 @@
                       background: isActive ? "linear-gradient(135deg, #667eea15, #764ba215)" : "#f7f7fa",
                       transition: "all 0.2s"
                     }}>
-                    <div style={{ fontSize: 18, marginBottom: 4 }}>{idx === 0 ? "🔥" : idx === 1 ? "❄️" : "⚡"}</div>
+                    <div style={{ fontSize: 18, marginBottom: 4 }}>{idx === 0 ? React.createElement("img", { src: "icons/ui/ui_fire.png", style: { width: 18, height: 18 } }) : idx === 1 ? React.createElement("img", { src: "icons/ui/ui_snowflake.png", style: { width: 18, height: 18 } }) : React.createElement("img", { src: "icons/ui/ui_lightning.png", style: { width: 18, height: 18 } })}</div>
                     <div style={{ fontSize: 11, fontWeight: isActive ? 700 : 500, color: isActive ? "#667eea" : "#888" }}>{slot.name}</div>
                     <div style={{ fontSize: 9, color: "#aaa", marginTop: 2 }}>{itemCount > 0 ? `${itemCount}개 장착` : "비어있음"}</div>
                   </button>
@@ -8406,7 +8408,7 @@
               const setBonus = getActiveSetBonus();
               return setBonus ? (
                 <div style={{ marginTop: 10, padding: "8px 12px", background: "linear-gradient(135deg, #FFF8E1, #FFF3E0)", borderRadius: 10, border: "1px solid #FFE0B2", display: "flex", alignItems: "center", gap: 8 }}>
-                  <span style={{ fontSize: 16 }}>✨</span>
+                  <img src="icons/ui/ui_sparkle.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} />
                   <div>
                     <div style={{ fontSize: 12, fontWeight: 700, color: "#E65100" }}>{setBonus.name} 활성!</div>
                     <div style={{ fontSize: 10, color: "#795548" }}>매일 출석 보너스 +{setBonus.bonus} 코인 ({setBonus.count}개 매칭)</div>
@@ -8421,7 +8423,7 @@
           <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 20 }}>
             <button onClick={() => toggleSection("profStats")}
               style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", background: "none", border: "none", padding: 0, cursor: "pointer", marginBottom: collapsedSections.profStats ? 0 : 12 }}>
-              <h4 style={{ fontSize: 14, fontWeight: 700, margin: 0 }}>📊 종합 스탯</h4>
+              <h4 style={{ fontSize: 14, fontWeight: 700, margin: 0 }}><img src="icons/ui/ui_chart.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 종합 스탯</h4>
               <span style={{ fontSize: 14, color: "#888", transition: "transform 0.2s", transform: collapsedSections.profStats ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
             </button>
             {!collapsedSections.profStats && (
@@ -8445,16 +8447,16 @@
           <div style={{ background: "linear-gradient(135deg, #FFF8E1, #FFF3E0)", borderRadius: 16, padding: 16, marginBottom: 16, border: "1px solid #FFE0B2" }}>
             <button onClick={() => toggleSection("profCoin")}
               style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", background: "none", border: "none", padding: 0, cursor: "pointer", marginBottom: collapsedSections.profCoin ? 0 : 10 }}>
-              <h4 style={{ fontSize: 14, fontWeight: 700, margin: 0, color: "#E65100" }}>💰 코인 획득 방법</h4>
+              <h4 style={{ fontSize: 14, fontWeight: 700, margin: 0, color: "#E65100" }}><img src="icons/ui/ui_coins.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 코인 획득 방법</h4>
               <span style={{ fontSize: 14, color: "#E65100", transition: "transform 0.2s", transform: collapsedSections.profCoin ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
             </button>
             {!collapsedSections.profCoin && (
               <div style={{ fontSize: 12, color: "#795548", lineHeight: 2 }}>
-                <div>📅 매일 출석: +5 ~ +19 (연속 보너스)</div>
-                <div>💬 토론 완료: +5 ~ +13 (별점/심화 보너스)</div>
-                <div>✅ 일일 미션: +3 (전체 완료 +10 보너스)</div>
-                <div>❓ 퀴즈 정답: +5</div>
-                <div>📚 50% 달성: +10 / 완독: +25</div>
+                <div><img src="icons/ui/ui_calendar.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 매일 출석: +5 ~ +19 (연속 보너스)</div>
+                <div><img src="icons/ui/ui_chat.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 토론 완료: +5 ~ +13 (별점/심화 보너스)</div>
+                <div><img src="icons/ui/ui_check.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 일일 미션: +3 (전체 완료 +10 보너스)</div>
+                <div><img src="icons/ui/ui_question.png" alt="" style={{ width: 12, height: 12, verticalAlign: "middle" }} /> 퀴즈 정답: +5</div>
+                <div><img src="icons/ui/ui_books.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 50% 달성: +10 / 완독: +25</div>
                 <div>⬆️ 레벨업: +25 ~ +70</div>
               </div>
             )}
@@ -8463,7 +8465,7 @@
           <div style={{ background: "white", borderRadius: 16, padding: 20, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 16 }}>
             <button onClick={() => toggleSection("profXP")}
               style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", background: "none", border: "none", padding: 0, cursor: "pointer", marginBottom: collapsedSections.profXP ? 0 : 8 }}>
-              <span style={{ fontSize: 13, fontWeight: 600 }}>✨ 경험치</span>
+              <span style={{ fontSize: 13, fontWeight: 600 }}><img src="icons/ui/ui_sparkle.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 경험치</span>
               <span style={{ fontSize: 12, color: "#888" }}>
                 {xp % 100}/100 XP
                 <span style={{ marginLeft: 8, fontSize: 14, transition: "transform 0.2s", display: "inline-block", transform: collapsedSections.profXP ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
@@ -8497,13 +8499,13 @@
             setEditingProfile(true);
           }}
             style={{ width: "100%", marginTop: 16, padding: "12px", borderRadius: 12, border: "2px solid #eee", background: "white", color: "#888", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
-            ✏️ 프로필 수정
+            <img src="icons/ui/ui_pencil.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 프로필 수정
           </button>
 
-          {/* 📚 학년 변경 */}
+          {/* <img src="icons/ui/ui_books.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 학년 변경 */}
           <div style={{ marginTop: 12, background: "white", borderRadius: 12, padding: 16, border: "2px solid #eee", overflow: "hidden" }}>
             <div style={{ fontSize: 13, fontWeight: 600, color: "#555", marginBottom: 8, display: "flex", alignItems: "center", gap: 4 }}>
-              📚 학년 <span style={{ fontSize: 11, color: "#667eea", fontWeight: 700 }}>({profile?.grade ? (["4","5","6"].includes(profile.grade) ? `초등 ${profile.grade}학년` : `${profile.grade}학년`) : "미설정"})</span>
+              <img src="icons/ui/ui_books.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 학년 <span style={{ fontSize: 11, color: "#667eea", fontWeight: 700 }}>({profile?.grade ? (["4","5","6"].includes(profile.grade) ? `초등 ${profile.grade}학년` : `${profile.grade}학년`) : "미설정"})</span>
             </div>
             <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
               {["4", "5", "6", "중1"].map(g => (
@@ -8521,10 +8523,10 @@
             </div>
           </div>
 
-          {/* 🔑 복구 PIN 설정/변경 */}
+          {/* <img src="icons/ui/ui_key.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 복구 PIN 설정/변경 */}
           <div style={{ marginTop: 12, background: "white", borderRadius: 12, padding: 16, border: "2px solid #eee", overflow: "hidden" }}>
             <div style={{ fontSize: 13, fontWeight: 600, color: "#555", marginBottom: 8, display: "flex", alignItems: "center", gap: 4 }}>
-              🔑 복구 PIN {recoveryPin ? <span style={{ fontSize: 11, color: "#22c55e", fontWeight: 700 }}>(설정됨)</span> : <span style={{ fontSize: 11, color: "#ef4444", fontWeight: 700 }}>(미설정)</span>}
+              <img src="icons/ui/ui_key.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 복구 PIN {recoveryPin ? <span style={{ fontSize: 11, color: "#22c55e", fontWeight: 700 }}>(설정됨)</span> : <span style={{ fontSize: 11, color: "#ef4444", fontWeight: 700 }}>(미설정)</span>}
             </div>
             <div style={{ fontSize: 11, color: "#aaa", marginBottom: 10 }}>앱 재설치 시 데이터 복구에 사용됩니다</div>
             <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
@@ -8551,23 +8553,23 @@
             </div>
           </div>
 
-          {/* 📥 데이터 가져오기 + 백업 상태 */}
+          {/* <img src="icons/ui/ui_import.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 데이터 가져오기 + 백업 상태 */}
           <button onClick={() => setShowImportModal(true)}
             style={{
               width: "100%", marginTop: 12, padding: "12px", borderRadius: 12, border: "2px solid #667eea",
               background: "#667eea08", color: "#667eea", fontSize: 13, fontWeight: 700, cursor: "pointer", boxSizing: "border-box"
             }}>
-            📥 데이터 가져오기
+            <img src="icons/ui/ui_import.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 데이터 가져오기
           </button>
           <div style={{ fontSize: 11, color: "#aaa", textAlign: "center", marginTop: 6 }}>
             자동 백업: {lastBackupDate ? `${lastBackupDate.slice(5).replace("-","/")} 완료` : "아직 없음"} · 매일 자동 저장
           </div>
 
-          {/* ⚙️ 앱 정보 + 관리자 (하나로 묶어서 접기/펼치기) */}
+          {/* <img src="icons/ui/ui_gear.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 앱 정보 + 관리자 (하나로 묶어서 접기/펼치기) */}
           <div style={{ marginTop: 24, padding: 16, background: "white", borderRadius: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
             <button onClick={() => toggleSection("profApp")}
               style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", background: "none", border: "none", padding: 0, cursor: "pointer", marginBottom: collapsedSections.profApp ? 0 : 12 }}>
-              <span style={{ fontSize: 14, fontWeight: 700, color: "#1a1a2e" }}>⚙️ 앱 정보 & 관리</span>
+              <span style={{ fontSize: 14, fontWeight: 700, color: "#1a1a2e" }}><img src="icons/ui/ui_gear.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 앱 정보 & 관리</span>
               <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <span style={{ fontSize: 11, color: "#999", fontWeight: 600 }}>v{APP_VERSION}</span>
                 <span style={{ fontSize: 14, color: "#888", transition: "transform 0.2s", transform: collapsedSections.profApp ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
@@ -8577,16 +8579,16 @@
               <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
                 <button onClick={() => setShowChangelog(true)}
                   style={{ flex: 1, padding: "10px 0", borderRadius: 10, border: "1.5px solid #667eea", background: "#667eea08", color: "#667eea", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
-                  📋 업데이트 노트
+                  <img src="icons/ui/ui_clipboard.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 업데이트 노트
                 </button>
                 <button onClick={() => setShowRollback(true)}
                   style={{ flex: 1, padding: "10px 0", borderRadius: 10, border: "1.5px solid #f59e0b", background: "#f59e0b08", color: "#f59e0b", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
-                  ⏪ 이전 버전 복원
+                  <img src="icons/ui/ui_rewind.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 이전 버전 복원
                 </button>
               </div>
               <button onClick={() => isAdmin ? setScreen("admin") : setShowAdminLogin(true)}
                 style={{ width: "100%", padding: "12px", borderRadius: 10, border: "1.5px solid #ef4444", background: isAdmin ? "#ef4444" : "#ef444408", color: isAdmin ? "white" : "#ef4444", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
-                {isAdmin ? "🔓 관리자 패널 열기" : "🔒 관리자 모드"}
+                {isAdmin ? "<img src="icons/ui/ui_unlock.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 관리자 패널 열기" : "<img src="icons/ui/ui_lock.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 관리자 모드"}
               </button>
             </>)}
           </div>
@@ -8595,7 +8597,7 @@
       };
 
       // ═══════════════════════════════════════
-      // 📥 데이터 가져오기 모달
+      // <img src="icons/ui/ui_import.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 데이터 가져오기 모달
       // ═══════════════════════════════════════
       const ImportDataModal = () => {
         const [step, setStep] = useState("form"); // form | pin | loading | success | notfound | selectBackup
@@ -8702,7 +8704,7 @@
               onClick={e => e.stopPropagation()}>
 
               {step === "form" && (<>
-                <h3 style={{ fontSize: 18, fontWeight: 800, textAlign: "center", marginBottom: 4 }}>📥 데이터 가져오기</h3>
+                <h3 style={{ fontSize: 18, fontWeight: 800, textAlign: "center", marginBottom: 4 }}><img src="icons/ui/ui_import.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 데이터 가져오기</h3>
                 <p style={{ fontSize: 12, color: "#888", textAlign: "center", marginBottom: 20 }}>다른 기기나 이전 데이터를 불러옵니다</p>
                 <div style={{ marginBottom: 14 }}>
                   <label style={{ fontSize: 13, fontWeight: 600, color: "#555", display: "block", marginBottom: 6 }}>이름 *</label>
@@ -8793,7 +8795,7 @@
 
               {step === "success" && (<>
                 <div style={{ textAlign: "center", padding: "16px 0" }}>
-                  <div style={{ fontSize: 48, marginBottom: 12 }}>🎉</div>
+                  <div style={{ marginBottom: 12 }}><img src="icons/ui/ui_party.png" alt="" style={{ width: 48, height: 48, verticalAlign: "middle" }} /></div>
                   <div style={{ fontSize: 18, fontWeight: 800, marginBottom: 8 }}>가져오기 완료!</div>
                   <div style={{ fontSize: 13, color: "#888" }}>앱을 다시 시작하면 데이터가 적용됩니다.</div>
                 </div>
@@ -8809,7 +8811,7 @@
 
               {step === "notfound" && (<>
                 <div style={{ textAlign: "center", padding: "16px 0" }}>
-                  <div style={{ fontSize: 40, marginBottom: 8 }}>😢</div>
+                  <div style={{ marginBottom: 8 }}><img src="icons/ui/ui_droplet.png" alt="" style={{ width: 40, height: 40 }} /></div>
                   <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>계정을 찾을 수 없어요</div>
                   <div style={{ fontSize: 13, color: "#888" }}>{impError || "입력한 정보와 일치하는 계정이 없습니다."}</div>
                 </div>
@@ -8841,7 +8843,7 @@
             onClick={() => { setShowAdminLogin(false); setAdminPin(""); setAdminPinError(false); }}>
             <div style={{ background: "white", borderRadius: 20, padding: 24, width: "85%", maxWidth: 320, textAlign: "center" }}
               onClick={e => e.stopPropagation()}>
-              <div style={{ fontSize: 36, marginBottom: 8 }}>🔒</div>
+              <div style={{ marginBottom: 8 }}><img src="icons/ui/ui_lock.png" alt="" style={{ width: 36, height: 36, verticalAlign: "middle" }} /></div>
               <h3 style={{ fontSize: 16, fontWeight: 800, color: "#1a1a2e", marginBottom: 4 }}>관리자 모드</h3>
               <p style={{ fontSize: 12, color: "#888", marginBottom: 16 }}>관리자 비밀번호를 입력하세요</p>
               <input
@@ -8871,19 +8873,19 @@
 
       const AdminPanel = () => {
         const tabs = [
-          { key: "content", icon: "📚", label: "콘텐츠" },
-          { key: "users", icon: "👥", label: "유저 관리" },
-          { key: "settings", icon: "⚙️", label: "앱 설정" }
+          { key: "content", icon: "콘텐츠", label: "콘텐츠" },
+          { key: "users", icon: "유저", label: "유저 관리" },
+          { key: "settings", icon: "설정", label: "앱 설정" }
         ];
         return (
           <div style={{ padding: "0 16px 100px" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 0" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <button onClick={() => setScreen("home")} style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer" }}>←</button>
-                <h2 style={{ fontSize: 18, fontWeight: 800, color: "#1a1a2e", margin: 0 }}>🔒 관리자 패널</h2>
+                <h2 style={{ fontSize: 18, fontWeight: 800, color: "#1a1a2e", margin: 0 }}><img src="icons/ui/ui_lock.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 관리자 패널</h2>
               </div>
               <div style={{ display: "flex", gap: 6 }}>
-                <button onClick={() => setScreen("home")} style={{ padding: "6px 12px", borderRadius: 8, border: "1px solid #667eea", background: "white", color: "#667eea", fontSize: 11, fontWeight: 700, cursor: "pointer" }}>🏠 홈</button>
+                <button onClick={() => setScreen("home")} style={{ padding: "6px 12px", borderRadius: 8, border: "1px solid #667eea", background: "white", color: "#667eea", fontSize: 11, fontWeight: 700, cursor: "pointer" }}><img src="icons/ui/ui_shop.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 홈</button>
                 <button onClick={handleAdminLogout} style={{ padding: "6px 12px", borderRadius: 8, border: "1px solid #ef4444", background: "white", color: "#ef4444", fontSize: 11, fontWeight: 700, cursor: "pointer" }}>로그아웃</button>
               </div>
             </div>
@@ -8898,7 +8900,7 @@
             {adminTab === "content" && (
               <div>
                 <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 12 }}>
-                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>📖 등록된 책 ({BOOKS.length}권)</h4>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}><img src="icons/ui/ui_book_open.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 등록된 책 ({BOOKS.length}권)</h4>
                   {BOOKS.map((book, i) => (
                     <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: i < BOOKS.length - 1 ? "1px solid #f0f0f0" : "none" }}>
                       <div>
@@ -8910,7 +8912,7 @@
                   ))}
                 </div>
                 <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 12 }}>
-                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>🛍️ 상점 아이템 ({SHOP_ITEMS.length}개)</h4>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}><img src="icons/ui/ui_shop.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 상점 아이템 ({SHOP_ITEMS.length}개)</h4>
                   {["frame", "aura", "hat", "face", "pet", "weapon"].map(cat => {
                     const items = SHOP_ITEMS.filter(i => i.category === cat);
                     const catNames = { frame: "프레임", aura: "오라", hat: "모자", face: "얼굴", pet: "펫", weapon: "무기" };
@@ -8927,7 +8929,7 @@
                   })}
                 </div>
                 <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
-                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>👤 아바타 ({AVATAR_DATA.length}캐릭터)</h4>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}><img src="icons/ui/ui_person.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 아바타 ({AVATAR_DATA.length}캐릭터)</h4>
                   {AVATAR_DATA.map(av => (
                     <div key={av.id} style={{ display: "flex", alignItems: "center", gap: 10, padding: "6px 0" }}>
                       <img src={av.img} loading="lazy" decoding="async" width="36" height="36" style={{ width: 36, height: 36, borderRadius: "50%", objectFit: "cover", background: "#f0f0f0" }} />
@@ -8943,7 +8945,7 @@
             {adminTab === "users" && (
               <div>
                 <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 12 }}>
-                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>👤 현재 유저</h4>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}><img src="icons/ui/ui_person.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 현재 유저</h4>
                   <div style={{ fontSize: 13, color: "#444", lineHeight: 2.2 }}>
                     <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>이름</span><span style={{ fontWeight: 600 }}>{profile?.name}</span></div>
                     <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>레벨</span><span style={{ fontWeight: 600 }}>Lv.{level}</span></div>
@@ -8955,7 +8957,7 @@
                   </div>
                 </div>
                 <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 12 }}>
-                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>💰 재화 조정</h4>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}><img src="icons/ui/ui_coins.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 재화 조정</h4>
                   <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                     {[
                       { label: "XP +100", action: () => setXp(prev => prev + 100) },
@@ -8965,13 +8967,13 @@
                     ].map((btn, i) => (
                       <button key={i} onClick={() => { btn.action(); alert(btn.label + " 완료!"); }}
                         style={{ padding: "10px", borderRadius: 10, border: "1.5px solid #22c55e", background: "#22c55e08", color: "#22c55e", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
-                        ➕ {btn.label}
+                        + {btn.label}
                       </button>
                     ))}
                   </div>
                 </div>
                 <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 12 }}>
-                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>⚔️ 배틀 관리</h4>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}><img src="icons/ui/ui_swords.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 배틀 관리</h4>
                   <div style={{ fontSize: 12, color: "#666", marginBottom: 10, lineHeight: 1.6 }}>
                     오늘 배틀: <b style={{ color: "#667eea" }}>{battleTodayCount || 0}회</b> / 마지막 배틀일: <b>{lastBattleDate || "없음"}</b>
                   </div>
@@ -8988,7 +8990,7 @@
                       } catch(e) { console.error("배틀 리셋 오류:", e); }
                     }}
                       style={{ padding: "10px", borderRadius: 10, border: "1.5px solid #667eea", background: "#667eea08", color: "#667eea", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
-                      🔄 오늘 배틀 카운트 리셋
+                      <img src="icons/ui/ui_refresh.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 오늘 배틀 카운트 리셋
                     </button>
                     <button onClick={() => {
                       try {
@@ -9006,12 +9008,12 @@
                       } catch(e) { console.error("배틀 전적 초기화 오류:", e); }
                     }}
                       style={{ padding: "10px", borderRadius: 10, border: "1.5px solid #f59e0b", background: "#f59e0b08", color: "#f59e0b", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
-                      🗑️ 배틀 전적 초기화
+                      배틀 전적 초기화
                     </button>
                   </div>
                 </div>
                 <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 12 }}>
-                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>📊 독서 진행도 (현재 {currentWeek}주차)</h4>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}><img src="icons/ui/ui_chart.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 독서 진행도 (현재 {currentWeek}주차)</h4>
                   {BOOKS.map((book, i) => (
                     <div key={i} style={{ marginBottom: 8 }}>
                       <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, marginBottom: 4 }}>
@@ -9036,7 +9038,7 @@
                       alert(`${currentWeek}주차까지 ${booksToComplete.length}권 완독 처리 완료!`);
                     }}
                       style={{ padding: "12px", borderRadius: 10, border: "1.5px solid #22c55e", background: "#22c55e08", color: "#22c55e", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
-                      📚 현재 주차({currentWeek}주차)까지 완독 처리
+                      현재 주차({currentWeek}주차)까지 완독 처리
                     </button>
                     <button onClick={() => {
                       const newProgress = { ...bookProgress };
@@ -9045,7 +9047,7 @@
                       alert(`전체 ${BOOKS.length}권 완독 처리 완료!`);
                     }}
                       style={{ padding: "10px", borderRadius: 10, border: "1.5px solid #667eea", background: "#667eea08", color: "#667eea", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
-                      📖 전체 책 완독 처리
+                      전체 책 완독 처리
                     </button>
                     <button onClick={() => {
                       const newProgress = {};
@@ -9054,12 +9056,12 @@
                       alert("독서 진행도 초기화 완료!");
                     }}
                       style={{ padding: "10px", borderRadius: 10, border: "1.5px solid #f59e0b", background: "#f59e0b08", color: "#f59e0b", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
-                      🔄 진행도 초기화
+                      <img src="icons/ui/ui_refresh.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 진행도 초기화
                     </button>
                   </div>
                 </div>
                 <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
-                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12, color: "#ef4444" }}>⚠️ 위험 영역</h4>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12, color: "#ef4444" }}><img src="icons/ui/ui_hint.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 위험 영역</h4>
                   <button onClick={() => {
                     if (confirm("정말 모든 유저 데이터를 초기화하시겠습니까?")) {
                       if (confirm("정말로요? 프로필, 진행상황, 아이템 모두 삭제됩니다.")) {
@@ -9069,7 +9071,7 @@
                     }
                   }}
                     style={{ width: "100%", padding: "12px", borderRadius: 10, border: "1.5px solid #ef4444", background: "#ef444408", color: "#ef4444", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
-                    🗑️ 전체 데이터 초기화
+                    전체 데이터 초기화
                   </button>
                 </div>
               </div>
@@ -9077,14 +9079,14 @@
             {adminTab === "settings" && (
               <div>
                 <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 12 }}>
-                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>🎭 캐릭터 테마</h4>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}><img src="icons/ui/ui_clapper.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 캐릭터 테마</h4>
                   <div style={{ fontSize: 12, color: "#666", marginBottom: 8 }}>현재: 브롤스타즈 + 오리지널 혼합</div>
                   <div style={{ fontSize: 11, color: "#999", padding: 8, background: "#f8f8f8", borderRadius: 8 }}>
                     오리지널 캐릭터 10종이 모두 적용된 후 캐릭터 테마 전환이 가능합니다.
                   </div>
                 </div>
                 <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 12 }}>
-                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>📱 앱 정보</h4>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}><img src="icons/ui/ui_tabs.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 앱 정보</h4>
                   <div style={{ fontSize: 13, color: "#444", lineHeight: 2.2 }}>
                     <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>버전</span><span style={{ fontWeight: 600 }}>v{APP_VERSION}</span></div>
                     <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>빌드</span><span style={{ fontWeight: 600 }}>{APP_BUILD_DATE}</span></div>
@@ -9093,18 +9095,18 @@
                   </div>
                 </div>
                 <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: 12 }}>
-                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>📢 공지사항</h4>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}><img src="icons/ui/ui_speaker.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 공지사항</h4>
                   <div style={{ fontSize: 12, color: "#999", padding: 12, background: "#f8f8f8", borderRadius: 8, textAlign: "center" }}>
                     공지사항 기능은 Firebase 연동 후 사용 가능합니다
                   </div>
                 </div>
                 <div style={{ background: "white", borderRadius: 16, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
-                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>🔧 기능 상태</h4>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}><img src="icons/ui/ui_gear.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 기능 상태</h4>
                   <div style={{ fontSize: 13, color: "#444", lineHeight: 2.2 }}>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}><span>📖 책에게 질문하기</span><span style={{ color: "#22c55e", fontWeight: 600 }}>활성</span></div>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}><span>💬 토론 코치</span><span style={{ color: "#22c55e", fontWeight: 600 }}>활성</span></div>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}><span>📚 책 추천</span><span style={{ color: "#22c55e", fontWeight: 600 }}>활성</span></div>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}><span>🔊 음성 입출력</span><span style={{ color: "#22c55e", fontWeight: 600 }}>활성</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span><img src="icons/ui/ui_book_open.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 책에게 질문하기</span><span style={{ color: "#22c55e", fontWeight: 600 }}>활성</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span><img src="icons/ui/ui_chat.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 토론 코치</span><span style={{ color: "#22c55e", fontWeight: 600 }}>활성</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span><img src="icons/ui/ui_books.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 책 추천</span><span style={{ color: "#22c55e", fontWeight: 600 }}>활성</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span><img src="icons/ui/ui_speaker.png" alt="" style={{ width: 16, height: 16 }} /> 음성 입출력</span><span style={{ color: "#22c55e", fontWeight: 600 }}>활성</span></div>
                     <div style={{ display: "flex", justifyContent: "space-between" }}><span>⏱️ 독서 타이머</span><span style={{ color: "#22c55e", fontWeight: 600 }}>활성</span></div>
                   </div>
                 </div>
@@ -9115,30 +9117,30 @@
       };
 
       // ═══════════════════════════════════════
-      // 🎯 Mission Screen (v3: 미션 + 스케줄 통합 탭)
+      // <img src="icons/ui/ui_target.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> Mission Screen (v3: 미션 + 스케줄 통합 탭)
       // ═══════════════════════════════════════
       const ScheduleScreen = () => {
         const days = ["월", "화", "수", "목", "금", "토", "일"];
         const cwBook = thisWeekBook;
         const schedule = [
-          { day: "월", task: "📖 주요 내용 읽기", book: cwBook },
-          { day: "화", task: "💬 토론 1~2", book: cwBook },
-          { day: "수", task: "💬 토론 3~5", book: cwBook },
-          { day: "목", task: "🔥 심화 토론", book: cwBook },
-          { day: "금", task: "📝 정리 & 클리어", book: cwBook },
-          { day: "토", task: "🎮 자유 독서", book: null },
-          { day: "일", task: "📅 다음 주 준비", book: null }
+          { day: "월", task: "주요 내용 읽기", book: cwBook },
+          { day: "화", task: "토론 1~2", book: cwBook },
+          { day: "수", task: "토론 3~5", book: cwBook },
+          { day: "목", task: "심화 토론", book: cwBook },
+          { day: "금", task: "정리 & 클리어", book: cwBook },
+          { day: "토", task: "자유 독서", book: null },
+          { day: "일", task: "<img src="icons/ui/ui_calendar.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 다음 주 준비", book: null }
         ];
         const todayIdx = today.getDay() === 0 ? 6 : today.getDay() - 1;
 
         return (
           <div style={{ padding: "0 16px 100px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-              <h3 style={{ fontSize: 18, fontWeight: 800, color: "#1a1a2e" }}>🎯 {currentWeek}주차 미션</h3>
+              <h3 style={{ fontSize: 18, fontWeight: 800, color: "#1a1a2e" }}><img src="icons/ui/ui_target.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> {currentWeek}주차 미션</h3>
               <div style={{ fontSize: 12, color: "#888" }}>{formatDate(today)}</div>
             </div>
 
-            {/* 🎯 이번 주 퀘스트 (접기/펼치기) */}
+            {/* <img src="icons/ui/ui_target.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> 이번 주 퀘스트 (접기/펼치기) */}
             <div style={{ marginBottom: 20 }}>
               <button onClick={() => toggleSection("scheduleQuest")}
                 style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: collapsedSections.scheduleQuest ? 0 : 12, background: "none", border: "none", padding: 0, cursor: "pointer" }}>
@@ -9157,7 +9159,7 @@
                 onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}>
                 <div style={{ display: "flex", alignItems: "center", gap: 4, marginBottom: 10 }}>
                   <span style={{ background: thisWeekBook.color, color: "white", padding: "3px 10px", borderRadius: 10, fontSize: 11, fontWeight: 700 }}>{currentWeek}주차 퀘스트</span>
-                  {bookProgress[thisWeekBook.id] === 100 && <span style={{ fontSize: 12 }}>✅ 클리어!</span>}
+                  {bookProgress[thisWeekBook.id] === 100 && <span style={{ fontSize: 12 }}><img src="icons/ui/ui_check.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 클리어!</span>}
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
                   <div style={{ width: 60, height: 78, borderRadius: 10, flexShrink: 0, boxShadow: `0 4px 12px ${thisWeekBook.color}40`, overflow: "hidden" }}>
@@ -9223,7 +9225,7 @@
                             fontSize: 18, flexShrink: 0,
                             transition: "all 0.3s ease"
                           }}>
-                            {completed ? "✅" : "⬜"}
+                            {completed ? "✓" : "○"}
                           </div>
                           <div style={{ flex: 1 }}>
                             <div style={{ fontSize: 13, fontWeight: 600, color: completed ? "#2e7d32" : "#1a1a2e", textDecoration: completed ? "line-through" : "none" }}>{mission.text}</div>
@@ -9241,7 +9243,7 @@
                     })}
                     {dailyMissions.every(m => m.completed) && (
                       <div style={{ textAlign: "center", padding: "12px", background: "linear-gradient(135deg, #FFD700, #FFA500)", borderRadius: 14, color: "white", fontWeight: 700, fontSize: 14, boxShadow: "0 4px 12px rgba(255,165,0,0.3)" }}>
-                        🎉 오늘의 미션 전체 완료! 보너스 +10코인
+                        <img src="icons/ui/ui_party.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> 오늘의 미션 전체 완료! 보너스 +10코인
                       </div>
                     )}
                   </div>
@@ -9338,7 +9340,7 @@
             <div style={{ margin: "20px 0 12px", paddingTop: 16, borderTop: "2px dashed #e5e7eb" }}>
               <button onClick={() => toggleSection("scheduleWeekly")}
                 style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", background: "none", border: "none", padding: 0, cursor: "pointer" }}>
-                <h3 style={{ fontSize: 16, fontWeight: 800, color: "#1a1a2e", display: "flex", alignItems: "center", gap: 6, margin: 0 }}>📅 이번 주 스케줄</h3>
+                <h3 style={{ fontSize: 16, fontWeight: 800, color: "#1a1a2e", display: "flex", alignItems: "center", gap: 6, margin: 0 }}><img src="icons/ui/ui_calendar.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 이번 주 스케줄</h3>
                 <span style={{ fontSize: 14, color: "#888", transition: "transform 0.2s", transform: collapsedSections.scheduleWeekly ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
               </button>
             </div>
@@ -9384,7 +9386,7 @@
             {/* 📋 전체 일정 (접기/펼치기) */}
             <button onClick={() => toggleSection("scheduleOverview")}
               style={{ width: "100%", padding: "12px 16px", background: "white", border: "1px solid #eee", borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "space-between", cursor: "pointer", marginBottom: 10, boxShadow: "0 2px 6px rgba(0,0,0,0.04)" }}>
-              <h3 style={{ fontSize: 16, fontWeight: 700, color: "#1a1a2e", margin: 0 }}>🗓️ 전체 일정 ({BOOKS.length}주)</h3>
+              <h3 style={{ fontSize: 16, fontWeight: 700, color: "#1a1a2e", margin: 0 }}><img src="icons/ui/ui_calendar.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 전체 일정 ({BOOKS.length}주)</h3>
               <span style={{ fontSize: 14, color: "#888", transition: "transform 0.2s", transform: collapsedSections.scheduleOverview ? "rotate(-90deg)" : "rotate(0deg)" }}>▼</span>
             </button>
             {!collapsedSections.scheduleOverview && BOOKS.map(book => {
@@ -9404,7 +9406,7 @@
                       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                         <span style={{ fontSize: 12, fontWeight: 700, color: isCurrent ? book.color : "#888" }}>{book.week}주차</span>
                         {isCurrent && <span style={{ fontSize: 10, background: book.color, color: "white", padding: "1px 6px", borderRadius: 6 }}>진행 중</span>}
-                        {isPast && <span style={{ fontSize: 10, color: "#4CAF50" }}>✅</span>}
+                        {isPast && <img src="icons/ui/ui_check.png" alt="" style={{ width: 10, height: 10, verticalAlign: "middle" }} />}
                       </div>
                       <div style={{ fontSize: 13, fontWeight: 600, color: "#1a1a2e" }}>{book.title}</div>
                       <div style={{ fontSize: 11, color: "#888" }}>
@@ -9422,7 +9424,7 @@
 
       // ═══════════════════════════════════════
       // ═══════════════════════════════════════
-      // 💡 책에게 물어보기 화면
+      // {<img src="icons/ui/ui_hint.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle", borderRadius: "50%" }} />} 책에게 물어보기 화면
       // ═══════════════════════════════════════
       const AskBookScreen = () => {
         // 읽은 책 데이터를 문자열로 변환
@@ -9433,7 +9435,7 @@
           });
           if (completedBooks.length === 0) return "아직 읽은 책이 없습니다.";
           return completedBooks.map(b =>
-            `📖 "${b.title}" (${b.author})\n요약: ${b.summary}\n핵심포인트: ${b.keyPoints.join(", ")}\n챕터: ${b.chapters.map(c => c.title).join(", ")}`
+            `"${b.title}" (${b.author})\n요약: ${b.summary}\n핵심포인트: ${b.keyPoints.join(", ")}\n챕터: ${b.chapters.map(c => c.title).join(", ")}`
           ).join("\n\n");
         };
 
@@ -9489,7 +9491,7 @@
         return (
           <div style={{ display: "flex", flexDirection: "column", height: "100vh", paddingBottom: 70 }}>
             <div style={{ padding: "16px 20px", background: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)", color: "white", flexShrink: 0 }}>
-              <div style={{ fontSize: 20, fontWeight: 800 }}>💡 책에게 물어보기</div>
+              <div style={{ fontSize: 20, fontWeight: 800 }}>{<img src="icons/ui/ui_hint.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle", borderRadius: "50%" }} />} 책에게 물어보기</div>
               <div style={{ fontSize: 12, opacity: 0.9, marginTop: 4 }}>읽은 책 내용을 바탕으로 궁금한 걸 물어봐!</div>
             </div>
 
@@ -9521,7 +9523,7 @@
                 </div>
               )}
               {isSpeaking && <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
-                <span style={{ fontSize: 20 }}>🔊</span>
+                <span style={{ fontSize: 20 }}><img src="icons/ui/ui_speaker.png" alt="" style={{ width: 16, height: 16 }} /></span>
                 <span style={{ fontSize: 12, color: "#666", fontStyle: "italic" }}>AI가 말하는 중...</span>
                 <button onClick={() => { VoiceService.stopSpeaking(); setIsSpeaking(false); }}
                   style={{ marginLeft: "auto", padding: "4px 12px", borderRadius: 8, border: "1.5px solid #667eea", background: "white", color: "#667eea", fontSize: 11, fontWeight: 700, cursor: "pointer" }}>
@@ -9542,12 +9544,12 @@
                 {!askListening ? (
                   <button onClick={startAskListening} disabled={askLoading}
                     style={{ padding: "14px 20px", borderRadius: 20, border: "none", background: "#f5576c", color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 6, opacity: askLoading ? 0.5 : 1, whiteSpace: "nowrap", flexShrink: 0 }}>
-                    <span>🎤</span> 질문하기
+                    <img src="icons/ui/ui_microphone.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 질문하기
                   </button>
                 ) : (
                   <button onClick={finishAskListening}
                     style={{ padding: "14px 20px", borderRadius: 20, border: "none", background: "#ff6b6b", color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 6, animation: "pulse 1.5s infinite", whiteSpace: "nowrap", flexShrink: 0 }}>
-                    <span>✅</span> 질문 완료
+                    <img src="icons/ui/ui_check.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 질문 완료
                   </button>
                 )}
                 <input value={askInput} onChange={e => setAskInput(e.target.value)}
@@ -9663,7 +9665,7 @@
               background: `linear-gradient(180deg, rgba(30,27,75,0.55) 0%, rgba(49,46,129,0.35) 45%, rgba(76,29,149,0.85) 100%), url("icons/v1/backgrounds/bg_ai_hub.jpg") center/cover no-repeat`,
               minHeight: 300
             }}>
-              <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 1.5, opacity: 0.85, marginBottom: 4 }}>✨ AI HUB</div>
+              <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 1.5, opacity: 0.85, marginBottom: 4 }}><img src="icons/ui/ui_sparkle.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> AI HUB</div>
               <div style={{ fontSize: 22, fontWeight: 900, marginBottom: 14, textShadow: "0 2px 12px rgba(0,0,0,0.5)" }}>AI와 함께하는 독서</div>
 
               {/* 아바타 + 말풍선 */}
@@ -9755,7 +9757,7 @@
                 background: "white", borderRadius: 14, padding: 14,
                 border: "1px dashed #c7d2fe", fontSize: 11.5, color: "#555", lineHeight: 1.65
               }}>
-                <div style={{ fontSize: 12, fontWeight: 800, color: "#6366f1", marginBottom: 6 }}>💡 이런 걸 해볼 수 있어요</div>
+                <div style={{ fontSize: 12, fontWeight: 800, color: "#6366f1", marginBottom: 6 }}>{<img src="icons/ui/ui_hint.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle", borderRadius: "50%" }} />} 이런 걸 해볼 수 있어요</div>
                 • 아바타에게 <b>"가장 기억에 남는 책이 뭐야?"</b>라고 물어보기<br/>
                 • 책 내용 중 <b>궁금한 단어나 인물</b> 질문하기<br/>
                 • <b>읽은 책과 비슷한 주제</b>의 다음 책 추천받기
@@ -9811,14 +9813,14 @@
                 <AvatarIcon avatarId={profile?.avatar} size={52} style={{ border: `3px solid ${rarityInfo.color}`, boxShadow: `0 0 0 2px white` }} />
                 <div style={{ flex: 1 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                    <div style={{ fontSize: 18, fontWeight: 800 }}>💬 {avatarProfile.name}와 대화</div>
+                    <div style={{ fontSize: 18, fontWeight: 800 }}><img src="icons/ui/ui_chat.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> {avatarProfile.name}와 대화</div>
                     <span style={{ fontSize: 10, fontWeight: 700, padding: "2px 6px", borderRadius: 8, background: rarityInfo.bg, color: rarityInfo.color }}>{rarityInfo.label}</span>
                   </div>
                   <div style={{ fontSize: 11, opacity: 0.9, marginTop: 2 }}>IQ {stats.iq} · 강점 {strongNames || "-"}</div>
                 </div>
               </div>
               <div style={{ fontSize: 11, opacity: 0.85, marginTop: 8, padding: "6px 10px", background: "rgba(255,255,255,0.15)", borderRadius: 8 }}>
-                💡 내 아바타는 내가 읽은 책({stats.booksCompleted.length}권 완독)을 알고 있어. 강점 분야 질문은 자신 있게, 약점({weakNames}) 분야엔 솔직하게 대답해.
+                {<img src="icons/ui/ui_hint.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle", borderRadius: "50%" }} />} 내 아바타는 내가 읽은 책({stats.booksCompleted.length}권 완독)을 알고 있어. 강점 분야 질문은 자신 있게, 약점({weakNames}) 분야엔 솔직하게 대답해.
               </div>
             </div>
 
@@ -9847,7 +9849,7 @@
                 </div>
               )}
               {isSpeaking && <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
-                <span style={{ fontSize: 20 }}>🔊</span>
+                <span style={{ fontSize: 20 }}><img src="icons/ui/ui_speaker.png" alt="" style={{ width: 16, height: 16 }} /></span>
                 <span style={{ fontSize: 12, color: "#666", fontStyle: "italic" }}>AI가 말하는 중...</span>
                 <button onClick={() => { VoiceService.stopSpeaking(); setIsSpeaking(false); }}
                   style={{ marginLeft: "auto", padding: "4px 12px", borderRadius: 8, border: "1.5px solid #667eea", background: "white", color: "#667eea", fontSize: 11, fontWeight: 700, cursor: "pointer" }}>
@@ -9940,7 +9942,7 @@
         return (
           <div style={{ padding: "0 20px 90px", maxWidth: 430 }}>
             <div style={{ padding: "16px 0 12px", marginBottom: 12 }}>
-              <div style={{ fontSize: 22, fontWeight: 900, color: "#1a1a2e" }}>📖 추천 도서</div>
+              <div style={{ fontSize: 22, fontWeight: 900, color: "#1a1a2e" }}><img src="icons/ui/ui_book_open.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 추천 도서</div>
               <div style={{ fontSize: 13, color: "#888", marginTop: 4 }}>읽은 책을 바탕으로 다음에 읽으면 좋을 책을 추천해줘!</div>
             </div>
 
@@ -9982,14 +9984,14 @@
                         style={{ width: 70, height: 100, borderRadius: 8, objectFit: "cover", flexShrink: 0 }} />
                     ) : (
                       <div style={{ width: 70, height: 100, borderRadius: 8, background: "linear-gradient(135deg, #667eea, #764ba2)", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                        <span style={{ fontSize: 28 }}>📕</span>
+                        <img src="icons/ui/ui_book_open.png" alt="" style={{ width: 28, height: 28, verticalAlign: "middle" }} />
                       </div>
                     )}
                     <div style={{ flex: 1 }}>
                       <div style={{ fontSize: 14, fontWeight: 700, color: "#1a1a2e", marginBottom: 4 }}>{book.title}</div>
                       <div style={{ fontSize: 11, color: "#888", marginBottom: 6 }}>{book.author}</div>
                       <div style={{ fontSize: 12, color: "#667eea", fontWeight: 600, background: "#f0f3ff", padding: "6px 10px", borderRadius: 8, lineHeight: 1.5 }}>
-                        💡 {book.reason}
+                        {<img src="icons/ui/ui_hint.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle", borderRadius: "50%" }} />} {book.reason}
                       </div>
                       {book.link && (
                         <a href={book.link} target="_blank" rel="noopener noreferrer"
@@ -10002,12 +10004,12 @@
                 ))}
                 <button onClick={loadRecommendations}
                   style={{ width: "100%", padding: 14, borderRadius: 16, border: "none", background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer", marginTop: 8 }}>
-                  🔄 다른 책 추천받기
+                  <img src="icons/ui/ui_refresh.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 다른 책 추천받기
                 </button>
               </div>
             ) : recLoaded ? (
               <div style={{ textAlign: "center", padding: 40, background: "white", borderRadius: 16 }}>
-                <div style={{ fontSize: 48, marginBottom: 12 }}>😅</div>
+                <div style={{ marginBottom: 12 }}><img src="icons/ui/ui_question.png" alt="" style={{ width: 48, height: 48 }} /></div>
                 <div style={{ fontSize: 14, fontWeight: 600 }}>추천을 가져오지 못했어요</div>
                 <button onClick={loadRecommendations}
                   style={{ marginTop: 12, padding: "10px 24px", borderRadius: 16, border: "none", background: "#667eea", color: "white", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
@@ -10045,7 +10047,7 @@
       };
 
       // ═══════════════════════════════════════
-      // 🎉 레벨업 보상 모달
+      // <img src="icons/ui/ui_party.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> 레벨업 보상 모달
       // ═══════════════════════════════════════
       const RewardModal = () => {
         if (!showReward || !rewardInfo) return null;
@@ -10054,7 +10056,7 @@
             onClick={() => setShowReward(false)}>
             <div style={{ background: "white", borderRadius: 24, padding: "32px 24px", textAlign: "center", maxWidth: 300, width: "90%", animation: "pop 0.3s ease" }}
               onClick={e => e.stopPropagation()}>
-              <div style={{ fontSize: 60, marginBottom: 12 }}>🎉</div>
+              <div style={{ marginBottom: 12 }}><img src="icons/ui/ui_party.png" alt="" style={{ width: 60, height: 60, verticalAlign: "middle" }} /></div>
               <div style={{ fontSize: 20, fontWeight: 800, color: "#1a1a2e", marginBottom: 8 }}>레벨 업!</div>
               <div style={{ fontSize: 40, fontWeight: 800, color: "#667eea", marginBottom: 8 }}>Lv.{rewardInfo.level}</div>
               <div style={{ fontSize: 16, color: "#444", marginBottom: 8 }}>새로운 칭호: <b style={{ color: "#FFB300" }}>{rewardInfo.title}</b></div>
@@ -10066,7 +10068,7 @@
               )}
               <button onClick={() => setShowReward(false)}
                 style={{ padding: "12px 32px", borderRadius: 20, border: "none", background: "#667eea", color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer", marginTop: 8 }}>
-                좋아요! 🎮
+                좋아요!
               </button>
             </div>
           </div>
@@ -10130,7 +10132,7 @@
 
       // ══════════════════════════
       // ═══════════════════════════════════════
-      // 📋 업데이트 노트 모달
+      // <img src="icons/ui/ui_clipboard.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 업데이트 노트 모달
       // ═══════════════════════════════════════
       const ChangelogModal = () => {
         if (!showChangelog) return null;
@@ -10140,7 +10142,7 @@
             <div style={{ background: "white", borderRadius: 20, padding: 24, maxWidth: 400, width: "100%", maxHeight: "80vh", overflowY: "auto", animation: "pop 0.3s ease" }}
               onClick={e => e.stopPropagation()}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
-                <h3 style={{ fontSize: 18, fontWeight: 800, color: "#1a1a2e" }}>📋 업데이트 노트</h3>
+                <h3 style={{ fontSize: 18, fontWeight: 800, color: "#1a1a2e" }}><img src="icons/ui/ui_clipboard.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 업데이트 노트</h3>
                 <button onClick={() => setShowChangelog(false)}
                   style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer", color: "#999" }}>✕</button>
               </div>
@@ -10187,7 +10189,7 @@
                   style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer", color: "#999" }}>✕</button>
               </div>
               <div style={{ fontSize: 12, color: "#888", marginBottom: 16, lineHeight: 1.6, padding: "10px 12px", background: "#fff8e1", borderRadius: 10, border: "1px solid #ffe082" }}>
-                ⚠️ 버전을 복원하면 현재 앱 화면이 해당 버전으로 전환됩니다. 사용자 데이터(프로필, 코인 등)는 Firestore에 저장되어 있어 유지됩니다.
+                버전을 복원하면 현재 앱 화면이 해당 버전으로 전환됩니다. 사용자 데이터(프로필, 코인 등)는 Firestore에 저장되어 있어 유지됩니다.
               </div>
               {versions.map(([ver, info]) => {
                 const isCurrent = ver === APP_VERSION;
@@ -10307,7 +10309,7 @@
           { id: "hero",      label: "영웅",   color: "#a855f7" },
           { id: "legendary", label: "전설",   color: "#f59e0b" },
           { id: "mythic",    label: "신화",   color: "#dc2626" },
-          { id: "hidden",    label: "🔓히든", color: "#ec4899" },
+          { id: "hidden",    label: "히든", color: "#ec4899" },
         ];
         return (
           <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "flex-end", zIndex: 1000 }}
@@ -10385,7 +10387,7 @@
                       return (
                         <div key={avatar.id} style={{ background: owned ? "#fdf2f8" : "#f9fafb", borderRadius: 14, padding: 10, textAlign: "center", border: equipped ? "2px solid #667eea" : owned ? "1px solid #f9a8d4" : "1px solid #e5e7eb", position: "relative" }}>
                           <div style={{ position: "absolute", top: 6, left: 6, background: owned ? "#fce7f3" : "#f3f4f6", color: owned ? "#9d174d" : "#6b7280", fontSize: 9, fontWeight: 700, padding: "2px 6px", borderRadius: 6 }}>
-                            {owned ? "🔓 해금" : "🔒 히든"}
+                            {owned ? "해금" : "히든"}
                           </div>
                           <img src={avatar.img} style={{ width: 56, height: 56, borderRadius: "50%", objectFit: "cover", marginBottom: 4, marginTop: 8, filter: owned ? "none" : "grayscale(1) brightness(0.7)" }} />
                           <div style={{ fontSize: 11, fontWeight: 700, color: owned ? "#1a1a2e" : "#6b7280", marginBottom: 2 }}>{avatar.name}</div>
@@ -10408,7 +10410,7 @@
                           ) : (
                             <button disabled
                               style={{ width: "100%", padding: "5px 8px", borderRadius: 8, border: "none", background: "#e5e7eb", color: "#9ca3af", fontSize: 11, fontWeight: 600, cursor: "not-allowed" }}>
-                              🔒 잠김
+                              잠김
                             </button>
                           )}
                         </div>
@@ -10494,7 +10496,7 @@
                         )}
                         {ITEM_EFFECTS[cat]?.type === "visual" && (
                           <div style={{ fontSize: 10, fontWeight: 600, color: ITEM_EFFECTS[cat].color, background: ITEM_EFFECTS[cat].color + "18", borderRadius: 6, padding: "2px 6px", marginBottom: 4, display: "inline-block" }}>
-                            ✨ {ITEM_EFFECTS[cat].desc}
+                            {ITEM_EFFECTS[cat].desc}
                           </div>
                         )}
                         <div style={{ fontSize: 11, color: "#888", marginBottom: 8 }}>{item.price} 코인</div>
@@ -10566,7 +10568,7 @@
       if (!dataLoaded) {
         return (
           <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg, #667eea, #764ba2)" }}>
-            <div style={{ fontSize: 48, marginBottom: 16, animation: "pop 0.5s ease" }}>📚</div>
+            <div style={{ marginBottom: 16, animation: "pop 0.5s ease" }}><img src="icons/ui/ui_books.png" alt="" style={{ width: 48, height: 48, verticalAlign: "middle" }} /></div>
             <div style={{ color: "white", fontSize: 18, fontWeight: 800 }}>BookQuest</div>
             <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 14 }}>데이터 불러오는 중...</div>
           </div>
@@ -10605,7 +10607,7 @@
               onClick={() => setEditingProfile(false)}>
               <div style={{ background: "white", borderRadius: 20, padding: 24, width: "100%", maxWidth: 360, maxHeight: "85vh", overflowY: "auto" }}
                 onClick={e => e.stopPropagation()}>
-                <h3 style={{ fontSize: 18, fontWeight: 800, textAlign: "center", marginBottom: 20, color: "#1a1a2e" }}>✏️ 프로필 수정</h3>
+                <h3 style={{ fontSize: 18, fontWeight: 800, textAlign: "center", marginBottom: 20, color: "#1a1a2e" }}><img src="icons/ui/ui_pencil.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 프로필 수정</h3>
 
                 <div style={{ marginBottom: 16 }}>
                   <label style={{ fontSize: 13, fontWeight: 600, color: "#555", display: "block", marginBottom: 6 }}>이름 *</label>
@@ -10712,7 +10714,7 @@
                 boxShadow: "0 20px 60px rgba(0,0,0,0.5), 0 0 30px rgba(129,140,248,0.2)",
                 border: "1px solid rgba(129,140,248,0.3)"
               }}>
-                <div style={{ fontSize: 48, marginBottom: 12 }}>🔄</div>
+                <div style={{ fontSize: 48, marginBottom: 12 }}><img src="icons/ui/ui_refresh.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /></div>
                 <div style={{ color: "#fbbf24", fontWeight: 800, fontSize: 17, marginBottom: 10 }}>
                   캐릭터가 변경되었어요!
                 </div>
@@ -10721,7 +10723,7 @@
                   기본 캐릭터 <span style={{ color: "#fbbf24", fontWeight: 700 }}>"대시"</span>로 변경되었습니다.
                 </div>
                 <div style={{ color: "#a5b4fc", fontSize: 13, lineHeight: 1.6, marginBottom: 18 }}>
-                  🏪 <b>상점</b>에서 다른 무료 캐릭터를<br/>선택할 수 있어요!
+                  <img src="icons/ui/ui_shop.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> <b>상점</b>에서 다른 무료 캐릭터를<br/>선택할 수 있어요!
                 </div>
                 <button onClick={() => { setAvatarResetNotice(false); setScreen("avatar"); }}
                   style={{
@@ -10730,7 +10732,7 @@
                     borderRadius: 14, cursor: "pointer", marginBottom: 8,
                     boxShadow: "0 4px 15px rgba(245,158,11,0.4)"
                   }}>
-                  🏪 상점에서 고르기
+                  <img src="icons/ui/ui_shop.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 상점에서 고르기
                 </button>
                 <br/>
                 <button onClick={() => setAvatarResetNotice(false)}
@@ -10757,7 +10759,7 @@
             </div>
           )}
 
-          {/* 💎 테마팩 배경화면 모달 — 데이터 드리븐 */}
+          {/* <img src="icons/ui/ui_diamond_rare.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 테마팩 배경화면 모달 — 데이터 드리븐 */}
           {themeWallpaperModal && (() => {
             const tp = THEME_PACKS.find(p => p.avatarId === themeWallpaperModal);
             if (!tp) return null;
@@ -10769,7 +10771,7 @@
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
                   <div>
                     <div style={{ fontSize: 10, fontWeight: 800, color: tp.accentColor, letterSpacing: 2 }}>WALLPAPER DOWNLOAD</div>
-                    <div style={{ fontSize: 18, fontWeight: 900 }}>{`🖼️ ${tp.name} 배경화면`}</div>
+                    <div style={{ fontSize: 18, fontWeight: 900 }}>{`${tp.name} 배경화면`}</div>
                   </div>
                   <button onClick={() => setThemeWallpaperModal(null)}
                     style={{ background: "rgba(255,255,255,0.1)", border: "none", color: "white", width: 32, height: 32, borderRadius: 10, fontSize: 16, cursor: "pointer" }}>✕</button>
@@ -10795,7 +10797,7 @@
             );
           })()}
 
-          {/* 💎 테마팩 이모티콘 모달 — 데이터 드리븐 */}
+          {/* <img src="icons/ui/ui_diamond_rare.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 테마팩 이모티콘 모달 — 데이터 드리븐 */}
           {themeEmojiModal && (() => {
             const tp = THEME_PACKS.find(p => p.avatarId === themeEmojiModal);
             if (!tp) return null;
@@ -10807,7 +10809,7 @@
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
                   <div>
                     <div style={{ fontSize: 10, fontWeight: 800, color: tp.secondaryColor, letterSpacing: 2 }}>EMOJI PACK</div>
-                    <div style={{ fontSize: 18, fontWeight: 900 }}>{`💬 ${tp.name} 이모티콘 ${tp.emojis.length}종`}</div>
+                    <div style={{ fontSize: 18, fontWeight: 900 }}>{`${tp.name} 이모티콘 ${tp.emojis.length}종`}</div>
                   </div>
                   <button onClick={() => setThemeEmojiModal(null)}
                     style={{ background: "rgba(255,255,255,0.1)", border: "none", color: "white", width: 32, height: 32, borderRadius: 10, fontSize: 16, cursor: "pointer" }}>✕</button>
@@ -10819,13 +10821,13 @@
                   {!showEmojiGuide && (
                     <button onClick={() => { setShowEmojiGuide(true); }}
                       style={{ background: "rgba(255,255,255,0.1)", border: `1px solid ${tp.secondaryColor}60`, borderRadius: 10, padding: "6px 12px", color: tp.secondaryColor, fontSize: 11, fontWeight: 700, cursor: "pointer", width: "100%" }}>
-                      📖 카카오톡 사용법 보기
+                      카카오톡 사용법 보기
                     </button>
                   )}
                   {showEmojiGuide && (
                     <div style={{ background: "rgba(0,0,0,0.25)", borderRadius: 14, padding: 14, border: `1px solid ${tp.secondaryColor}40` }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-                        <div style={{ fontSize: 13, fontWeight: 800, color: tp.secondaryColor }}>📖 카카오톡에서 사용하는 법</div>
+                        <div style={{ fontSize: 13, fontWeight: 800, color: tp.secondaryColor }}><img src="icons/ui/ui_book_open.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 카카오톡에서 사용하는 법</div>
                         <button onClick={() => { setShowEmojiGuide(false); localStorage.setItem("bq_emoji_tutorial_seen", "1"); }}
                           style={{ background: "none", border: "none", color: "rgba(255,255,255,0.5)", fontSize: 12, cursor: "pointer" }}>접기</button>
                       </div>
@@ -10895,7 +10897,7 @@
                   </div>
                   <div style={{ color: "rgba(255,255,255,0.5)", display: "flex", alignItems: "center", fontSize: 16 }}>{"→"}</div>
                   <div style={{ background: "rgba(255,255,255,0.15)", borderRadius: 10, padding: "6px 12px", display: "flex", alignItems: "center", gap: 6 }}>
-                    <span style={{ fontSize: 18 }}>{"➕"}</span>
+                    <span style={{ fontSize: 18 }}>+</span>
                     <span style={{ color: "rgba(255,255,255,0.7)", fontSize: 11 }}>홈 화면에 추가</span>
                   </div>
                 </div>
@@ -10961,7 +10963,7 @@
                   </div>
                   <div style={{ color: "rgba(255,255,255,0.5)", display: "flex", alignItems: "center", fontSize: 16 }}>{"→"}</div>
                   <div style={{ background: "rgba(255,255,255,0.15)", borderRadius: 10, padding: "6px 12px", display: "flex", alignItems: "center", gap: 6 }}>
-                    <span style={{ fontSize: 18 }}>{"➕"}</span>
+                    <span style={{ fontSize: 18 }}>+</span>
                     <span style={{ color: "rgba(255,255,255,0.7)", fontSize: 11 }}>홈 화면에 추가</span>
                   </div>
                 </div>
@@ -11078,4 +11080,3 @@
   </script>
 </body>
 </html>
-    

@@ -151,8 +151,11 @@
   .screenshots-bg .subtitle { color: rgba(255,255,255,0.8); }
   .screenshots-scroll {
     display: flex; gap: 20px; overflow-x: auto;
-    padding: 20px 0 30px; scroll-snap-type: x mandatory;
+    padding: 20px 24px 30px; scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
+  }
+  .screenshots-scroll::after {
+    content: ''; flex: 0 0 1px;
   }
   .screenshots-scroll::-webkit-scrollbar { display: none; }
   .screenshot-item {
@@ -163,6 +166,7 @@
     width: 100%; border-radius: 20px;
     box-shadow: 0 16px 40px rgba(0,0,0,0.3);
     border: 2px solid rgba(255,255,255,0.15);
+    object-fit: contain;
   }
   .screenshot-item .label {
     margin-top: 12px; font-size: 13px; font-weight: 700;
@@ -479,7 +483,7 @@
   <p style="margin-bottom:8px; font-size:14px; font-weight:600; color:rgba(255,255,255,0.8);">📚 BookQuest</p>
   <p>AI와 함께하는 어린이 독서 모험</p>
   <p style="margin-top:12px;">
-    <a href="mailto:yunagunwoo@gmail.com">yunagunwoo@gmail.com</a>
+    <a href="mailto:bookquest2026@gmail.com">bookquest2026@gmail.com</a>
   </p>
   <p style="margin-top:16px; font-size:11px; opacity:0.5;">&copy; 2026 BookQuest. All rights reserved.</p>
 </footer>
