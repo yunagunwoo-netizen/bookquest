@@ -665,6 +665,121 @@
       startDate: "2026-03-24",  // 시즌1 시작일 (월요일)
     };
 
+    // ═══════════════════════════════════════════════════════
+    // 교과 연계 추천 시스템 — CURRICULUM_MAP
+    // ─────────────────────────────────────────────────────
+    // 학년 → 학기 → 교과 → 단원[] 구조
+    // 각 단원에는 theme(주제 키워드)와 recommendedBooks(ISBN 또는 제목) 포함
+    // 2015 개정 교육과정 기준 (초5-6), 2022 개정 (초4, 중1)
+    // ═══════════════════════════════════════════════════════
+    const CURRICULUM_MAP = {
+      // ── 4학년 ──────────────────────────────────────────
+      "4": {
+        "1": {
+          "국어": [
+            { unit: 1, title: "생각과 느낌을 나누어요", theme: ["감상","시","느낌표현"], recommendedBooks: [] },
+            { unit: 2, title: "내용을 간추려요", theme: ["요약","글의구조","중심내용"], recommendedBooks: [] },
+            { unit: 3, title: "느낌을 살려 말해요", theme: ["발표","표현력","말하기"], recommendedBooks: [] },
+            { unit: 4, title: "일에 대한 의견", theme: ["의견","사실과의견","논리"], recommendedBooks: [] },
+            { unit: 5, title: "내가 만든 이야기", theme: ["창작","상상력","이야기쓰기"], recommendedBooks: [] },
+            { unit: 6, title: "회의를 해요", theme: ["토의","의사소통","민주주의"], recommendedBooks: [] },
+            { unit: 7, title: "사전은 내 친구", theme: ["어휘","국어사전","낱말"], recommendedBooks: [] },
+            { unit: 8, title: "이런 제안 어때요", theme: ["제안","설득","글쓰기"], recommendedBooks: [] },
+            { unit: 9, title: "자랑스러운 한글", theme: ["한글","세종대왕","우리말"], recommendedBooks: [] },
+          ],
+        },
+        "2": {
+          "국어": [
+            { unit: 1, title: "이어질 장면을 생각해요", theme: ["예측","이야기","상상력"], recommendedBooks: [] },
+            { unit: 2, title: "마음을 전하는 글을 써요", theme: ["편지","감정표현","글쓰기"], recommendedBooks: [] },
+            { unit: 3, title: "바르고 공손하게", theme: ["언어예절","존댓말","의사소통"], recommendedBooks: [] },
+            { unit: 4, title: "이야기 속 세상", theme: ["문학감상","인물","배경"], recommendedBooks: [] },
+            { unit: 5, title: "의견이 드러나게 글을 써요", theme: ["주장","논설문","설득"], recommendedBooks: [] },
+            { unit: 6, title: "본받고 싶은 인물을 찾아봐요", theme: ["인물","전기","위인"], recommendedBooks: [] },
+            { unit: 7, title: "독서 감상문을 써요", theme: ["독후감","독서","글쓰기"], recommendedBooks: [] },
+            { unit: 8, title: "생각하며 읽어요", theme: ["비판적읽기","사실과의견","분석"], recommendedBooks: [] },
+            { unit: 9, title: "감동을 나누며 읽어요", theme: ["감동","문학","공감"], recommendedBooks: [] },
+          ],
+        },
+      },
+      // ── 5학년 ──────────────────────────────────────────
+      "5": {
+        "1": {
+          "국어": [
+            { unit: 1, title: "대화와 공감", theme: ["대화","공감","경청"], recommendedBooks: [] },
+            { unit: 2, title: "작품을 감상해요", theme: ["문학감상","시","소설"], recommendedBooks: [] },
+            { unit: 3, title: "글을 요약해요", theme: ["요약","중심내용","글의구조"], recommendedBooks: [] },
+            { unit: 4, title: "글쓰기의 과정", theme: ["글쓰기","작문과정","퇴고"], recommendedBooks: [] },
+            { unit: 5, title: "글쓴이의 주장", theme: ["주장","근거","논설문"], recommendedBooks: [] },
+            { unit: 6, title: "토의하여 해결해요", theme: ["토의","문제해결","협력"], recommendedBooks: [] },
+            { unit: 7, title: "기행문을 써요", theme: ["기행문","여행","관찰"], recommendedBooks: [] },
+            { unit: 8, title: "아는 것과 새롭게 안 것", theme: ["배경지식","독서","정보"], recommendedBooks: [] },
+            { unit: 9, title: "여러 가지 방법으로 읽어요", theme: ["읽기전략","다양한읽기","비교"], recommendedBooks: [] },
+          ],
+        },
+        "2": {
+          "국어": [
+            { unit: 1, title: "마음을 나누며 대화해요", theme: ["대화","공감","감정"], recommendedBooks: [] },
+            { unit: 2, title: "지식이나 경험을 활용해요", theme: ["배경지식","경험","읽기"], recommendedBooks: [] },
+            { unit: 3, title: "의견을 조정하며 토의해요", theme: ["토의","절충","의사결정"], recommendedBooks: [] },
+            { unit: 4, title: "겪은 일을 써요", theme: ["경험글","일기","체험"], recommendedBooks: [] },
+            { unit: 5, title: "여러 가지 매체 자료", theme: ["매체","미디어","정보판별"], recommendedBooks: [] },
+            { unit: 6, title: "타당성을 생각하며 토론해요", theme: ["토론","논리","반론"], recommendedBooks: [] },
+            { unit: 7, title: "중요한 내용을 요약해요", theme: ["요약","핵심","정리"], recommendedBooks: [] },
+            { unit: 8, title: "우리말 지킴이", theme: ["우리말","국어사랑","언어순화"], recommendedBooks: [] },
+          ],
+        },
+      },
+      // ── 6학년 ──────────────────────────────────────────
+      "6": {
+        "1": {
+          "국어": [
+            { unit: 1, title: "비유하는 표현", theme: ["비유","은유","직유","시"], recommendedBooks: [] },
+            { unit: 2, title: "이야기를 간추려요", theme: ["요약","줄거리","이야기구조"], recommendedBooks: [] },
+            { unit: 3, title: "짜임새 있게 구성해요", theme: ["글의구성","개요","짜임"], recommendedBooks: [] },
+            { unit: 4, title: "주장과 근거를 판단해요", theme: ["비판적읽기","주장","근거"], recommendedBooks: [] },
+            { unit: 5, title: "속담을 활용해요", theme: ["속담","관용어","전통"], recommendedBooks: [] },
+            { unit: 6, title: "내용을 추론해요", theme: ["추론","예측","맥락"], recommendedBooks: [] },
+            { unit: 7, title: "우리말을 가꾸어요", theme: ["국어순화","외래어","우리말"], recommendedBooks: [] },
+            { unit: 8, title: "인물의 삶을 찾아서", theme: ["전기문","인물","위인"], recommendedBooks: [] },
+            { unit: 9, title: "마음을 나누는 글을 써요", theme: ["편지","감사","위로"], recommendedBooks: [] },
+          ],
+        },
+        "2": {
+          "국어": [
+            { unit: 1, title: "작품 속 인물과 나", theme: ["문학감상","인물분석","자아성찰"], recommendedBooks: [] },
+            { unit: 2, title: "관용 표현을 활용해요", theme: ["관용표현","속담","어휘"], recommendedBooks: [] },
+            { unit: 3, title: "타당한 근거로 글을 써요", theme: ["논설문","근거","설득"], recommendedBooks: [] },
+            { unit: 4, title: "효과적으로 발표해요", theme: ["발표","프레젠테이션","말하기"], recommendedBooks: [] },
+            { unit: 5, title: "글에 담긴 생각과 비교해요", theme: ["비교","관점","비판적읽기"], recommendedBooks: [] },
+            { unit: 6, title: "정보와 표현 판단하기", theme: ["미디어리터러시","정보판별","표현"], recommendedBooks: [] },
+            { unit: 7, title: "글 고쳐 쓰기", theme: ["퇴고","수정","글쓰기"], recommendedBooks: [] },
+            { unit: 8, title: "작품으로 경험하기", theme: ["문학체험","감상","경험"], recommendedBooks: [] },
+          ],
+        },
+      },
+      // ── 중1 ────────────────────────────────────────────
+      // 2022 개정 교육과정 / 미래엔(신유식) 기준 — 검정교과서이므로 출판사별 차이 있음
+      "중1": {
+        "1": {
+          "국어": [
+            { unit: 1, title: "표현의 즐거움", theme: ["문학","시","창작","쓰기"], sub: ["햇비(윤동주)","고래를 위하여(정호승)","감동과 즐거움을 주는 글 쓰기"], recommendedBooks: [] },
+            { unit: 2, title: "읽고 대화하고", theme: ["읽기","대화","독서토론"], sub: ["마음이의 독서 일기","책 읽고 대화하기"], recommendedBooks: [] },
+            { unit: 3, title: "능동적인 언어생활", theme: ["읽기전략","문법","어휘"], sub: ["예측하며 읽기","어휘의 세계"], recommendedBooks: [] },
+            { unit: 4, title: "성장의 시간", theme: ["문학","성장소설","면담"], sub: ["보리 방구 조수택(유은실)","면담하기"], recommendedBooks: [] },
+          ],
+        },
+        "2": {
+          "국어": [
+            { unit: 1, title: "갈등을 넘어서", theme: ["문학","갈등","소설","토의"], sub: ["동백꽃","토의하기"], recommendedBooks: [] },
+            { unit: 2, title: "우리가 만드는 세상", theme: ["매체","미디어리터러시","존중"], sub: ["슬기로운 매체 생활","존중하며 말하기"], recommendedBooks: [] },
+            { unit: 3, title: "우리말의 요모조모", theme: ["문법","단어","어휘"], sub: ["단어의 짜임과 새말","어휘의 양상과 쓰임"], recommendedBooks: [] },
+            { unit: 4, title: "너의 생각, 나의 의견", theme: ["읽기","추론","주장","논술"], sub: ["추론하며 읽기","주장하는 글 쓰기"], recommendedBooks: [] },
+          ],
+        },
+      },
+    };
+
     const BOOKS = [
       {
         id: 1, week: 3,
