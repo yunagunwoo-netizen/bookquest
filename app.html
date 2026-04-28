@@ -9857,21 +9857,44 @@
               <div ref={avatarChatEndRef} />
             </div>
 
-            {/* 빠른 질문 제안 */}
-            {avatarChatMessages.length <= 1 && !avatarChatLoading && (
-              <div style={{ padding: "8px 16px", background: "white", borderTop: "1px solid #eee", display: "flex", flexWrap: "wrap", gap: 6 }}>
-                {[
-                  "가장 기억에 남는 책이 뭐야?",
-                  strongNames ? `${avatarProfile.strongDomains[0] ? (DOMAIN_META.find(d => d.id === avatarProfile.strongDomains[0])?.name + "에 대해 알려줘") : "가장 잘하는 게 뭐야?"}` : "가장 잘하는 게 뭐야?",
-                  "다음에 어떤 책을 읽으면 좋을까?"
-                ].map((q, i) => (
-                  <button key={i} onClick={() => sendAvatarMessage(q)}
-                    style={{ padding: "6px 10px", borderRadius: 14, border: `1px solid ${rarityInfo.color}`, background: rarityInfo.bg, color: rarityInfo.color, fontSize: 11, fontWeight: 600, cursor: "pointer" }}>
-                    {q}
-                  </button>
-                ))}
-              </div>
-            )}
+            {/* 빠른 질문 제안 — 매번 랜덤 3개 */}
+            {avatarChatMessages.length <= 1 && !avatarChatLoading && (() => {
+              const strongDomain = avatarProfile.strongDomains?.[0];
+              const strongMeta = strongDomain && DOMAIN_META.find(d => d.id === strongDomain);
+              const weakDomain = avatarProfile.weakDomains?.[0];
+              const weakMeta = weakDomain && DOMAIN_META.find(d => d.id === weakDomain);
+              const completedBooks = BOOKS.filter(b => bookProgress[b.id] === 100);
+              const randomBook = completedBooks.length > 0 ? completedBooks[Math.floor(Math.random() * completedBooks.length)] : null;
+              const pool = [
+                "가장 기억에 남는 책이 뭐야?",
+                "다음에 어떤 책을 읽으면 좋을까?",
+                "요즘 학교에서 유행하는 게 뭐야?",
+                "네가 가장 좋아하는 명언이 있어?",
+                "오늘 기분이 어때?",
+                "내가 모르는 재미있는 사실 하나 알려줘!",
+                "공부 잘하는 비법 알려줘!",
+                "넌 어떤 초능력을 갖고 싶어?",
+                strongMeta ? `${strongMeta.emoji}${strongMeta.name}에 대해 알려줘` : "가장 잘하는 게 뭐야?",
+                strongMeta ? `${strongMeta.name} 관련 퀴즈 내줘!` : "퀴즈 하나 내줘!",
+                weakMeta ? `${weakMeta.emoji}${weakMeta.name}은 왜 어려워?` : "어려운 과목은 어떻게 공부해?",
+                randomBook ? `"${randomBook.title}" 어떤 내용이야?` : "책 추천해줘!",
+                randomBook ? `"${randomBook.title}"에서 제일 중요한 건 뭐야?` : "읽은 책 중에 제일 재미있는 건?",
+                "세상에서 가장 신기한 동물이 뭐야?",
+                "미래에는 어떤 직업이 생길까?",
+                "AI가 세상을 지배할 수 있을까?",
+              ];
+              const shuffled = [...pool].sort(() => Math.random() - 0.5).slice(0, 3);
+              return (
+                <div style={{ padding: "8px 16px", background: "white", borderTop: "1px solid #eee", display: "flex", flexWrap: "wrap", gap: 6 }}>
+                  {shuffled.map((q, i) => (
+                    <button key={i} onClick={() => sendAvatarMessage(q)}
+                      style={{ padding: "6px 10px", borderRadius: 14, border: `1px solid ${rarityInfo.color}`, background: rarityInfo.bg, color: rarityInfo.color, fontSize: 11, fontWeight: 600, cursor: "pointer" }}>
+                      {q}
+                    </button>
+                  ))}
+                </div>
+              );
+            })()}
 
             <div style={{ padding: 16, background: "white", borderTop: "1px solid #eee", flexShrink: 0 }}>
               <div style={{ display: "flex", gap: 8 }}>
