@@ -2907,7 +2907,11 @@
         profile
       };
 
-      BOOKS.forEach(book => {
+      // ── 도서 독서 → 아바타 성장 ────────────────────────
+      // ALL_BOOKS (시즌 + 교과연계) 모두 아바타 성장에 반영
+      // 교과연계 도서: literature/philosophy 편중 → 문학·철학만 성장
+      // 시즌 도서:    8대 영역 골고루 → 프리미엄 결제 유인
+      ALL_BOOKS.forEach(book => {
         const progress = (bookProgress && bookProgress[book.id]) || 0;
         if (progress <= 0) return;
         stats.booksStarted += 1;
