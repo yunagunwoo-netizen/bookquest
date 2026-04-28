@@ -2975,9 +2975,11 @@
           style: { width: size, height: size, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, ...style },
         });
       }
-      return React.createElement("div", {
-        style: { width: size, height: size, background: "#E2E8F0", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, ...style },
-      }, <img src="icons/ui/ui_lock.png" alt="" style={{ width: 14, height: 14 }} />);
+      return (
+        <div style={{ width: size, height: size, background: "#E2E8F0", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, ...style }}>
+          <img src="icons/ui/ui_lock.png" alt="" style={{ width: 14, height: 14 }} />
+        </div>
+      );
     };
 
     const BOOK_COVERS = { 1: "covers/book1.jpg", 2: "covers/book2.jpg", 3: "covers/book3.jpg", 4: "img/book_cover_1.png", 5: "img/book_cover_2.png", 6: "covers/book6.jpg", 7: "covers/book7.jpg", 8: "covers/book8.jpg", 9: "covers/book9.jpg", 10: "covers/book10.jpg", 11: "covers/book11.jpg", 12: "covers/book12.jpg", 13: "covers/book13.jpg" };
