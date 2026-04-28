@@ -9609,6 +9609,7 @@
             key: "recommend",
             emoji: "📖",
             iconSrc: "icons/v1/ai_hub_recommend.png",
+            iconSize: 84,
             title: "다음 책 추천받기",
             desc: `${profile?.name || "건우"}의 독서 이력과 아바타 성향에 딱 맞는 책을 추천`,
             tag: "AI 추천",
@@ -9730,7 +9731,7 @@
                   onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; }}
                 >
                   <div style={{
-                    width: 72, height: 72,
+                    width: c.iconSize || 72, height: c.iconSize || 72,
                     display: "flex", alignItems: "center", justifyContent: "center",
                     flexShrink: 0, filter: "drop-shadow(0 4px 10px rgba(0,0,0,0.25))"
                   }}>
