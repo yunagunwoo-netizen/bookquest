@@ -3,7 +3,7 @@
 // CACHE_NAME is bumped on every deploy by deploy_bookquest.ps1
 // (it replaces `bookquest-v<ts>` with a fresh timestamp), so
 // browsers detect sw.js bytes differ and install the new SW.
-// ?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•??const CACHE_NAME = 'bookquest-v20260429015053';
+// ?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•??const CACHE_NAME = 'bookquest-v20260429015318';
 
 // Only precache files that actually exist at repo root.
 const ASSETS_TO_CACHE = [
@@ -107,6 +107,7 @@ self.addEventListener('message', event => {
     self.skipWaiting();
   }
 });
+
 
 
 
