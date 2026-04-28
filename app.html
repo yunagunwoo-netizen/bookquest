@@ -4283,6 +4283,51 @@
       const [battleResult, setBattleResult] = useState(null); // win | lose | draw
       const [battleLog, setBattleLog] = useState([]); // 최근 5전 로그
 
+      // ═══ 유료화: 프리미엄 상태 + 무료 제한 ═══
+      const [isPremium, setIsPremium] = useState(false);
+      const [premiumExpiry, setPremiumExpiry] = useState(null); // ISO date or null
+      const [dailyDiscussionCount, setDailyDiscussionCount] = useState(0);
+      const [lastDiscussionDate, setLastDiscussionDate] = useState(null); // "YYYY-MM-DD"
+      const [showPremiumModal, setShowPremiumModal] = useState(false);
+      const [premiumModalReason, setPremiumModalReason] = useState(""); // "book" | "discussion" | "deep"
+
+      // 무료 사용자가 접근 가능한 도서 ID (시즌 3권 + 교과 3권)
+      const FREE_BOOK_IDS = [1, 5, 9, "C001", "C005", "C010"];
+      const FREE_DAILY_DISCUSSION_LIMIT = 2;
+
+      // 도서 접근 가능 여부 확인
+      const canAccessBook = (bookId) => {
+        if (isPremium) return true;
+        if (isAdmin) return true;
+        return FREE_BOOK_IDS.includes(bookId) || FREE_BOOK_IDS.includes(Number(bookId));
+      };
+
+      // AI 토론 가능 여부 확인
+      const canStartDiscussion = () => {
+        if (isPremium) return true;
+        if (isAdmin) return true;
+        const today = getTodayString();
+        const count = lastDiscussionDate === today ? dailyDiscussionCount : 0;
+        return count < FREE_DAILY_DISCUSSION_LIMIT;
+      };
+
+      // 토론 카운트 증가
+      const incrementDiscussionCount = () => {
+        const today = getTodayString();
+        if (lastDiscussionDate !== today) {
+          setDailyDiscussionCount(1);
+          setLastDiscussionDate(today);
+        } else {
+          setDailyDiscussionCount(prev => prev + 1);
+        }
+      };
+
+      // 프리미엄 유도 모달 표시
+      const showPremiumUpsell = (reason) => {
+        setPremiumModalReason(reason);
+        setShowPremiumModal(true);
+      };
+
       // ═══ <img src="icons/ui/ui_speaker.png" alt="" style={{ width: 16, height: 16 }} /> 배틀 사운드 매니저 ═══
       const battleSoundRef = useRef(null);
       const getBattleSound = () => {
@@ -5131,6 +5176,11 @@
             if (data.xpMultiplier) setXpMultiplier(data.xpMultiplier);
             if (data.recoveryPin) setRecoveryPin(data.recoveryPin);
             if (data.lastBackupDate) setLastBackupDate(data.lastBackupDate);
+            // 유료화 상태 로드
+            if (data.isPremium !== undefined) setIsPremium(data.isPremium);
+            if (data.premiumExpiry) setPremiumExpiry(data.premiumExpiry);
+            if (data.dailyDiscussionCount !== undefined) setDailyDiscussionCount(data.dailyDiscussionCount);
+            if (data.lastDiscussionDate) setLastDiscussionDate(data.lastDiscussionDate);
           }
           setDataLoaded(true);
         })();
@@ -5177,11 +5227,15 @@
             battleHistory,
             xpMultiplier,
             recoveryPin,
-            lastBackupDate
+            lastBackupDate,
+            isPremium,
+            premiumExpiry,
+            dailyDiscussionCount,
+            lastDiscussionDate
           });
         }, 1000);
         return () => clearTimeout(saveTimerRef.current);
-      }, [profile, xp, level, currentTitle, earnedBadges, streak, lastCompletionDate, achievedMilestones, weeklyReadCount, weekStartDate, battleWins, battleLosses, battleDraws, weeklyBattleWins, lastBattleDate, battleTodayCount, lastBattlePlayDate, battleTodayPlayCount, bookProgress, discussionState, dataLoaded, dailyMissions, missionDate, discussionStarState, quizState, coins, ownedItems, equippedItems, ownedAvatars, lastLoginDate, outfitSlots, activeOutfitSlot, rivalData, battleHistory, xpMultiplier, recoveryPin, lastBackupDate]);
+      }, [profile, xp, level, currentTitle, earnedBadges, streak, lastCompletionDate, achievedMilestones, weeklyReadCount, weekStartDate, battleWins, battleLosses, battleDraws, weeklyBattleWins, lastBattleDate, battleTodayCount, lastBattlePlayDate, battleTodayPlayCount, bookProgress, discussionState, dataLoaded, dailyMissions, missionDate, discussionStarState, quizState, coins, ownedItems, equippedItems, ownedAvatars, lastLoginDate, outfitSlots, activeOutfitSlot, rivalData, battleHistory, xpMultiplier, recoveryPin, lastBackupDate, isPremium, premiumExpiry, dailyDiscussionCount, lastDiscussionDate]);
 
       // Feature 1: Initialize Daily Missions
       useEffect(() => {
@@ -5567,6 +5621,18 @@
       }, [discussionState, bookProgress, streak, dataLoaded]);
 
       const startDiscussion = (book, idx, deep = false) => {
+        // 유료화: 심화 토론은 프리미엄 전용
+        if (deep && !isPremium && !isAdmin) {
+          showPremiumUpsell("deep");
+          return;
+        }
+        // 유료화: 무료 사용자 일일 토론 제한
+        if (!canStartDiscussion()) {
+          showPremiumUpsell("discussion");
+          return;
+        }
+        // 토론 시작 시 카운트 증가
+        incrementDiscussionCount();
         try { getAppSound().sfx.discussion_start(); } catch(e) {}
         setActiveDiscussionBook(book);
         setActiveDiscussionIdx(idx);
@@ -8712,7 +8778,14 @@
             )}
             {bookTab === "discuss" && (
               <div>
-                <div style={{ fontSize: 13, color: "#888", marginBottom: 12 }}><img src="icons/ui/ui_microphone.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 주제를 선택해 음성으로 AI와 토론하세요!</div>
+                <div style={{ fontSize: 13, color: "#888", marginBottom: 12, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <span><img src="icons/ui/ui_microphone.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 주제를 선택해 음성으로 AI와 토론하세요!</span>
+                  {!isPremium && !isAdmin && (
+                    <span style={{ fontSize: 10, fontWeight: 600, color: canStartDiscussion() ? "#667eea" : "#ef4444", background: canStartDiscussion() ? "#eef2ff" : "#fef2f2", padding: "3px 8px", borderRadius: 8, flexShrink: 0 }}>
+                      {(() => { const today = getTodayString(); const c = lastDiscussionDate === today ? dailyDiscussionCount : 0; return `${FREE_DAILY_DISCUSSION_LIMIT - c}/${FREE_DAILY_DISCUSSION_LIMIT}회 남음`; })()}
+                    </span>
+                  )}
+                </div>
                 {book.discussionTopics.map((t, i) => {
                   const key = `${book.id}-disc-${i}`;
                   const done = discussionState[key];
@@ -8801,7 +8874,10 @@
             )}
             {bookTab === "deep" && (
               <div>
-                <div style={{ fontSize: 13, color: "#888", marginBottom: 12 }}><img src="icons/ui/ui_fire.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 더 깊이 생각해 보는 심화 토론! (+30XP)</div>
+                <div style={{ fontSize: 13, color: "#888", marginBottom: 12 }}>
+                  <img src="icons/ui/ui_fire.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 더 깊이 생각해 보는 심화 토론! (+30XP)
+                  {!isPremium && !isAdmin && <span style={{ marginLeft: 8, fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 8, background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white" }}>Premium</span>}
+                </div>
                 {book.deepTopics.map((t, i) => {
                   const key = `${book.id}-deep-${i}`;
                   const done = discussionState[key];
@@ -9876,7 +9952,10 @@
                 </span>
               </button>
               {!collapsedSections.scheduleQuest && (
-              <div onClick={() => { setSelectedBook(thisWeekBook); setBookTab("summary"); setScreen("book"); }}
+              <div onClick={() => {
+                  if (!canAccessBook(thisWeekBook.id)) { showPremiumUpsell("book"); return; }
+                  setSelectedBook(thisWeekBook); setBookTab("summary"); setScreen("book");
+                }}
                 style={{ background: `linear-gradient(135deg, ${thisWeekBook.color}30, ${thisWeekBook.color}10)`, borderRadius: 20, padding: 20, marginBottom: 4, cursor: "pointer", border: `2px solid ${thisWeekBook.color}60`, transition: "transform 0.2s" }}
                 onMouseEnter={e => e.currentTarget.style.transform = "scale(1.02)"}
                 onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}>
@@ -9995,8 +10074,14 @@
                 return (
                   <>
                     {pageBooks.map(book => (
-                      <div key={book.id} onClick={() => { setSelectedBook(book); setBookTab("summary"); setScreen("book"); }}
-                        style={{ background: "white", borderRadius: 14, padding: 14, marginBottom: 10, display: "flex", alignItems: "center", gap: 12, cursor: "pointer", boxShadow: "0 2px 6px rgba(0,0,0,0.04)", border: `2px solid ${bookProgress[book.id] === 100 ? "#4CAF50" : "transparent"}`, opacity: book.week > currentWeek ? 0.5 : 1 }}>
+                      <div key={book.id} onClick={() => {
+                          if (!canAccessBook(book.id)) { showPremiumUpsell("book"); return; }
+                          setSelectedBook(book); setBookTab("summary"); setScreen("book");
+                        }}
+                        style={{ background: "white", borderRadius: 14, padding: 14, marginBottom: 10, display: "flex", alignItems: "center", gap: 12, cursor: "pointer", boxShadow: "0 2px 6px rgba(0,0,0,0.04)", border: `2px solid ${bookProgress[book.id] === 100 ? "#4CAF50" : "transparent"}`, opacity: book.week > currentWeek ? 0.5 : 1, position: "relative" }}>
+                        {!canAccessBook(book.id) && (
+                          <div style={{ position: "absolute", top: 8, right: 8, background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white", fontSize: 9, fontWeight: 700, padding: "2px 8px", borderRadius: 10 }}>Premium</div>
+                        )}
                         <div style={{ width: 44, height: 56, borderRadius: 8, flexShrink: 0, overflow: "hidden" }}>
                           <SvgIcon svg={BOOK_COVERS[book.id]} size={44} style={{ height: 56, width: 44 }} />
                         </div>
@@ -10722,25 +10807,33 @@
                       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                         {books.map(book => (
                           <button key={book.id}
-                            onClick={() => { setSelectedBook(book); setBookTab("summary"); setScreen("book"); }}
+                            onClick={() => {
+                              if (!canAccessBook(book.id)) { showPremiumUpsell("book"); return; }
+                              setSelectedBook(book); setBookTab("summary"); setScreen("book");
+                            }}
                             style={{
                               display: "flex", alignItems: "center", gap: 12,
                               background: "#f8faff", borderRadius: 12, padding: "10px 12px",
-                              border: "1px solid #e0e7ff", cursor: "pointer", textAlign: "left", width: "100%"
+                              border: "1px solid #e0e7ff", cursor: "pointer", textAlign: "left", width: "100%",
+                              position: "relative"
                             }}>
                             <div style={{
                               width: 36, height: 36, borderRadius: 10,
                               background: book.color || "#6366f1", color: "white",
                               display: "flex", alignItems: "center", justifyContent: "center",
-                              fontSize: 18, flexShrink: 0
+                              fontSize: 18, flexShrink: 0, filter: canAccessBook(book.id) ? "none" : "grayscale(0.5)"
                             }}>{book.emoji}</div>
                             <div style={{ flex: 1, minWidth: 0 }}>
                               <div style={{ fontSize: 13, fontWeight: 700, color: "#1e293b" }}>{book.title}</div>
                               <div style={{ fontSize: 11, color: "#64748b" }}>{book.author} · {book.pages}p</div>
                             </div>
-                            <div style={{ fontSize: 10, color: "#6366f1", fontWeight: 600, flexShrink: 0 }}>
-                              {(bookProgress[book.id] || 0) > 0 ? `${bookProgress[book.id]}%` : "시작하기"} →
-                            </div>
+                            {canAccessBook(book.id) ? (
+                              <div style={{ fontSize: 10, color: "#6366f1", fontWeight: 600, flexShrink: 0 }}>
+                                {(bookProgress[book.id] || 0) > 0 ? `${bookProgress[book.id]}%` : "시작하기"} →
+                              </div>
+                            ) : (
+                              <div style={{ fontSize: 9, fontWeight: 700, padding: "3px 8px", borderRadius: 8, background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white", flexShrink: 0 }}>Premium</div>
+                            )}
                           </button>
                         ))}
                       </div>
@@ -11452,6 +11545,48 @@
           <ImportDataModal />
           <AvatarDetailModal />
 
+          {/* 프리미엄 유도 모달 */}
+          {showPremiumModal && (
+            <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1200, padding: 16 }}
+              onClick={() => setShowPremiumModal(false)}>
+              <div style={{ background: "white", borderRadius: 24, padding: "28px 24px", maxWidth: 340, width: "100%", textAlign: "center", animation: "pop 0.3s ease" }}
+                onClick={e => e.stopPropagation()}>
+                <div style={{ width: 64, height: 64, borderRadius: "50%", background: "linear-gradient(135deg, #667eea, #764ba2)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
+                  <span style={{ fontSize: 28, color: "white" }}>{premiumModalReason === "book" ? "\u{1F4DA}" : premiumModalReason === "discussion" ? "\u{1F4AC}" : "\u{2728}"}</span>
+                </div>
+                <div style={{ fontSize: 20, fontWeight: 800, color: "#1a1a2e", marginBottom: 8 }}>
+                  {premiumModalReason === "book" ? "프리미엄 도서예요" : premiumModalReason === "discussion" ? "오늘 토론을 다 했어요!" : "심화 토론은 프리미엄 기능이에요"}
+                </div>
+                <div style={{ fontSize: 13, color: "#666", lineHeight: 1.7, marginBottom: 20 }}>
+                  {premiumModalReason === "book"
+                    ? "이 책은 프리미엄에서 읽을 수 있어요. 프리미엄을 시작하면 모든 도서를 무제한으로 즐길 수 있습니다!"
+                    : premiumModalReason === "discussion"
+                    ? `무료 사용자는 하루 ${FREE_DAILY_DISCUSSION_LIMIT}회까지 AI 토론이 가능해요. 프리미엄을 시작하면 무제한 토론을 즐길 수 있습니다!`
+                    : "심화 토론(deepTopics)으로 더 깊이 생각해볼 수 있어요. 프리미엄에서 이용 가능합니다!"}
+                </div>
+                <div style={{ background: "linear-gradient(135deg, #667eea15, #764ba215)", borderRadius: 14, padding: "14px 16px", marginBottom: 20, border: "1px solid #667eea30" }}>
+                  <div style={{ fontSize: 11, color: "#667eea", fontWeight: 700, marginBottom: 6 }}>BookQuest Premium</div>
+                  <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 4 }}>
+                    <span style={{ fontSize: 28, fontWeight: 900, color: "#1a1a2e" }}>4,900</span>
+                    <span style={{ fontSize: 13, color: "#666" }}>원/월</span>
+                  </div>
+                  <div style={{ fontSize: 11, color: "#888", marginTop: 4 }}>연간 결제 시 월 3,250원</div>
+                </div>
+                <div style={{ fontSize: 12, color: "#888", marginBottom: 16, lineHeight: 1.6 }}>
+                  모든 도서 무제한 · AI 토론 무제한 · 심화 토론 · 학습 리포트 · 프리미엄 아바타 · 월 500코인
+                </div>
+                <button onClick={() => setShowPremiumModal(false)}
+                  style={{ width: "100%", padding: 14, borderRadius: 14, border: "none", background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white", fontSize: 15, fontWeight: 700, cursor: "pointer", marginBottom: 8, boxShadow: "0 4px 16px rgba(102,126,234,0.3)" }}>
+                  곧 출시 예정!
+                </button>
+                <button onClick={() => setShowPremiumModal(false)}
+                  style={{ background: "none", border: "none", color: "#888", fontSize: 13, cursor: "pointer", padding: 8 }}>
+                  나중에
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* 프로필 편집 모달 */}
           {editingProfile && (
             <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.5)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}
@@ -11656,55 +11791,23 @@
             <div onClick={() => setThemeEmojiModal(null)}
               style={{ position: "fixed", inset: 0, zIndex: 1000, background: "rgba(15,10,35,0.85)", backdropFilter: "blur(8px)", display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
               <div onClick={(e) => e.stopPropagation()}
-                style={{ background: tp.gradient, borderRadius: 20, padding: 20, maxWidth: 430, width: "100%", maxHeight: "90vh", overflow: "auto", color: "white", boxShadow: `0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px ${tp.secondaryColor}59` }}>
+                style={{ background: tp.gradient, borderRadius: 20, padding: 20, maxWidth: 430, width: "100%", maxHeight: "90vh", overflow: "auto", color: "white", boxShadow: "0 20px 60px rgba(0,0,0,0.6)" }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
                   <div>
                     <div style={{ fontSize: 10, fontWeight: 800, color: tp.secondaryColor, letterSpacing: 2 }}>EMOJI PACK</div>
-                    <div style={{ fontSize: 18, fontWeight: 900 }}>{`${tp.name} 이모티콘 ${tp.emojis.length}종`}</div>
+                    <div style={{ fontSize: 18, fontWeight: 900 }}>{tp.name + " \uC774\uBAA8\uD2F0\uCF58 " + tp.emojis.length + "\uC885"}</div>
                   </div>
                   <button onClick={() => setThemeEmojiModal(null)}
-                    style={{ background: "rgba(255,255,255,0.1)", border: "none", color: "white", width: 32, height: 32, borderRadius: 10, fontSize: 16, cursor: "pointer" }}>✕</button>
-                </div>
-                <div style={{ fontSize: 11, color: "rgba(255,255,255,0.75)", marginBottom: 14, lineHeight: 1.5 }}>
-                  카톡/문자에 사용할 이모티콘. <b style={{ color: tp.secondaryColor }}>길게 누르면</b> 저장 또는 공유할 수 있어요.
-                </div>
-                <div style={{ marginBottom: 14 }}>
-                  {!showEmojiGuide && (
-                    <button onClick={() => { setShowEmojiGuide(true); }}
-                      style={{ background: "rgba(255,255,255,0.1)", border: `1px solid ${tp.secondaryColor}60`, borderRadius: 10, padding: "6px 12px", color: tp.secondaryColor, fontSize: 11, fontWeight: 700, cursor: "pointer", width: "100%" }}>
-                      카카오톡 사용법 보기
-                    </button>
-                  )}
-                  {showEmojiGuide && (
-                    <div style={{ background: "rgba(0,0,0,0.25)", borderRadius: 14, padding: 14, border: `1px solid ${tp.secondaryColor}40` }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-                        <div style={{ fontSize: 13, fontWeight: 800, color: tp.secondaryColor }}><img src="icons/ui/ui_book_open.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 카카오톡에서 사용하는 법</div>
-                        <button onClick={() => { setShowEmojiGuide(false); localStorage.setItem("bq_emoji_tutorial_seen", "1"); }}
-                          style={{ background: "none", border: "none", color: "rgba(255,255,255,0.5)", fontSize: 12, cursor: "pointer" }}>접기</button>
-                      </div>
-                      <div style={{ fontSize: 11, color: "rgba(255,255,255,0.85)", lineHeight: 1.8 }}>
-                        <div style={{ fontWeight: 700, color: tp.secondaryColor, marginBottom: 4 }}>방법 1. 이미지로 전송하기</div>
-                        <div>① 원하는 이모티콘을 <b>길게 누르기</b> → 저장</div>
-                        <div>② 카카오톡 채팅방 열기</div>
-                        <div>③ <b>+ 버튼</b> → 갤러리/사진 → 저장한 이모티콘 선택 → 전송</div>
-                        <div style={{ fontWeight: 700, color: tp.secondaryColor, marginTop: 10, marginBottom: 4 }}>방법 2. 카카오 이모티콘 스튜디오 제출</div>
-                        <div>① <b>emoticonstudio.kakao.com</b> 접속</div>
-                        <div>② 개인 이모티콘 제안하기 → 이미지 업로드</div>
-                        <div>③ 승인되면 카톡 이모티콘샵에서 사용 가능!</div>
-                        <div style={{ fontSize: 10, color: "rgba(255,255,255,0.5)", marginTop: 8 }}>* 스튜디오 제출은 360×360px 이상의 투명 PNG가 필요해요</div>
-                      </div>
-                    </div>
-                  )}
+                    style={{ background: "rgba(255,255,255,0.1)", border: "none", color: "white", width: 32, height: 32, borderRadius: 10, fontSize: 16, cursor: "pointer" }}>\u2715</button>
                 </div>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
                   {tp.emojis.map((em, i) => (
                     <a key={i} href={em.src} download={em.name + ".png"} style={{ textDecoration: "none", textAlign: "center" }}>
-                      <div style={{ background: "rgba(255,255,255,0.08)", borderRadius: 12, padding: 6, border: `1px solid ${tp.secondaryColor}40` }}>
+                      <div style={{ background: "rgba(255,255,255,0.08)", borderRadius: 12, padding: 6 }}>
                         <img src={em.src} alt={em.label}
                           style={{ width: "100%", aspectRatio: "1/1", objectFit: "contain", display: "block" }} />
                       </div>
                       <div style={{ fontSize: 10, fontWeight: 700, color: tp.secondaryColor, marginTop: 4 }}>{em.label}</div>
-                      <div style={{ fontSize: 9, color: "rgba(255,255,255,0.55)" }}>⬇ 저장</div>
                     </a>
                   ))}
                 </div>
@@ -11712,7 +11815,6 @@
             </div>
             );
           })()}
-
 
 
           {showInstallBanner && (() => {
@@ -11727,32 +11829,29 @@
             };
             const iconStyle = { width: 52, height: 52, borderRadius: 14, flexShrink: 0, boxShadow: "0 2px 8px rgba(0,0,0,0.2)" };
             const closeBtnStyle = { background: "rgba(255,255,255,0.2)", border: "none", borderRadius: 12, padding: "8px 12px", color: "white", fontSize: 12, fontWeight: 600, cursor: "pointer", flexShrink: 0 };
-
-            // iOS Safari
             if (installBannerType === "ios") return (
               <div style={bannerBase}>
                 <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
                   <img src="icons/app-icon-192.png" style={iconStyle} />
                   <div style={{ flex: 1 }}>
-                    <div style={{ color: "white", fontSize: 14, fontWeight: 800 }}>BookQuest 설치하기</div>
+                    <div style={{ color: "white", fontSize: 14, fontWeight: 800 }}>BookQuest \uC124\uCE58\uD558\uAE30</div>
                     <div style={{ color: "rgba(255,255,255,0.9)", fontSize: 12, marginTop: 6, lineHeight: 1.5 }}>
-                      하단의 공유 버튼을 누른 뒤 <strong>"홈 화면에 추가"</strong>를 선택하세요!
+                      \uD558\uB2E8\uC758 \uACF5\uC720 \uBC84\uD2BC\uC744 \uB204\uB978 \uB4A4 <strong>"\uD648 \uD654\uBA74\uC5D0 \uCD94\uAC00"</strong>\uB97C \uC120\uD0DD\uD558\uC138\uC694!
                     </div>
                   </div>
-                  <button onClick={dismissBanner} style={closeBtnStyle}>닫기</button>
+                  <button onClick={dismissBanner} style={closeBtnStyle}>\uB2EB\uAE30</button>
                 </div>
               </div>
             );
-            // Chrome/Edge - beforeinstallprompt
             return (
               <div style={{...bannerBase, display: "flex", alignItems: "center", gap: 14}}>
                 <img src="icons/app-icon-192.png" style={iconStyle} />
                 <div style={{ flex: 1 }}>
-                  <div style={{ color: "white", fontSize: 14, fontWeight: 800 }}>BookQuest 설치하기</div>
-                  <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 11, marginTop: 2 }}>홈 화면에 추가하면 더 빠르게!</div>
+                  <div style={{ color: "white", fontSize: 14, fontWeight: 800 }}>BookQuest \uC124\uCE58\uD558\uAE30</div>
+                  <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 11, marginTop: 2 }}>\uD648 \uD654\uBA74\uC5D0 \uCD94\uAC00\uD558\uBA74 \uB354 \uBE60\uB974\uAC8C!</div>
                 </div>
                 <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
-                  <button onClick={dismissBanner} style={closeBtnStyle}>닫기</button>
+                  <button onClick={dismissBanner} style={closeBtnStyle}>\uB2EB\uAE30</button>
                   <button onClick={async () => {
                     if (installPrompt) {
                       installPrompt.prompt();
@@ -11762,7 +11861,7 @@
                     }
                   }}
                     style={{ background: "white", border: "none", borderRadius: 12, padding: "8px 16px", color: "#667eea", fontSize: 12, fontWeight: 800, cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}>
-                    설치
+                    \uC124\uCE58
                   </button>
                 </div>
               </div>
@@ -11783,7 +11882,6 @@
         reloading = true;
         window.location.reload();
       });
-
       navigator.serviceWorker.register('./sw.js').then(reg => {
         setInterval(() => reg.update().catch(() => {}), 60 * 60 * 1000);
         reg.addEventListener('updatefound', () => {
