@@ -1864,10 +1864,10 @@
     const ITEM_EFFECTS = {
       frame:  { type: "visual", label: "비주얼", desc: "아바타 테두리 장식", color: "#667eea" },
       aura:   { type: "visual", label: "비주얼", desc: "아바타 배경 이펙트", color: "#764ba2" },
-      hat:    { type: "bonus", label: "토론 XP +15%", desc: "토론 완료 시 XP 보너스", color: "#FF6B35", icon: "icons/ui/ui_crown.png", stat: "discussionXp", value: 0.15 },
-      face:   { type: "bonus", label: "퀴즈 코인 +2", desc: "퀴즈 정답 시 추가 코인", color: "#2196F3", icon: "icons/ui/ui_search.png", stat: "quizCoin", value: 2 },
-      pet:    { type: "bonus", label: "출석 코인 +3", desc: "매일 출석 보너스 추가", color: "#4CAF50", icon: "icons/ui/ui_sparkle.png", stat: "loginCoin", value: 3 },
-      weapon: { type: "bonus", label: "별점 코인 +2", desc: "토론 별점 코인 보너스", color: "#F44336", icon: "icons/ui/ui_swords.png", stat: "starCoin", value: 2 }
+      hat:    { type: "bonus", label: "토론 XP +15%", desc: "토론 완료 시 XP 보너스", color: "#FF6B35", icon: "🎩", stat: "discussionXp", value: 0.15 },
+      face:   { type: "bonus", label: "퀴즈 코인 +2", desc: "퀴즈 정답 시 추가 코인", color: "#2196F3", icon: "🕶️", stat: "quizCoin", value: 2 },
+      pet:    { type: "bonus", label: "출석 코인 +3", desc: "매일 출석 보너스 추가", color: "#4CAF50", icon: "🐾", stat: "loginCoin", value: 3 },
+      weapon: { type: "bonus", label: "별점 코인 +2", desc: "토론 별점 코인 보너스", color: "#F44336", icon: "⚔️", stat: "starCoin", value: 2 }
     };
 
     // 현재 활성 보너스 조회 헬퍼 (equippedItems 기반)
@@ -2530,7 +2530,7 @@
       streak_30_glow: "✨", streak_60_trophy: "🏆", streak_100_gem: "💎",
       // 배틀/Q&A
       battle_sword: "⚔️", correct_check: "✅", wrong_cross: "❌",
-      draw_handshake: <img src="icons/ui/ui_handshake.png" alt="" style={{ width: 64, height: 64 }} />, ai_proxy: "🤖", self_play: "👤",
+      draw_handshake: "🤝", ai_proxy: "🤖", self_play: "👤",
       question_mark: "❓", topic_bubble: "💬", reason_memo: "📝",
       mic_voice: "🎤", speaker_tts: "🔊",
       // 네비
@@ -3128,7 +3128,7 @@
         jang_yeongsil:{ name: "발명가의 손",   icon: "🔧", skillImg: "icons/skills/jang_yeongsil.png", desc: "정답 데미지 +25%",      skillType: "passive", effect: { type: "correct_dmg_boost", value: 0.25 } },
         yu_gwansun:   { name: "만세 함성",     icon: "🇰🇷", skillImg: "icons/skills/yu_gwansun.png", desc: "발동 시 HP 25 회복",   skillType: "active",  effect: { type: "heal", value: 25 } },
         // ── 명예의 전당 · 전설 (10) ── legendary tier
-        arthur:    { name: "엑스칼리버",     icon: "icons/ui/ui_swords.png", skillImg: "icons/skills/arthur.png", desc: "정답 시 추가 데미지 +12",  skillType: "passive", effect: { type: "correct_flat_bonus", value: 12 } },
+        arthur:    { name: "엑스칼리버",     icon: "⚔️", skillImg: "icons/skills/arthur.png", desc: "정답 시 추가 데미지 +12",  skillType: "passive", effect: { type: "correct_flat_bonus", value: 12 } },
         robinhood: { name: "정확한 화살",    icon: "🏹", skillImg: "icons/skills/robinhood.png", desc: "상대 방어 무시",           skillType: "passive", effect: { type: "pierce", value: true } },
         honggildong: { name: "축지법",       icon: "💨", skillImg: "icons/skills/honggildong.png", desc: "타이머 +4초",              skillType: "passive", effect: { type: "time_bonus", value: 4 } },
         wukong:    { name: "72변화",         icon: "🐵", skillImg: "icons/skills/wukong.png", desc: "랜덤 스킬 1개 복사",       skillType: "active",  effect: { type: "copy_random", value: true } },
@@ -3158,7 +3158,7 @@
         socrates:       { name: "소크라테스 문답", icon: "❓", skillImg: "icons/skills/socrates.png", desc: "토론 승리 시 추가 HP 흡수", skillType: "passive", effect: { type: "debate_lifesteal", value: 15 } },
         cleopatra:      { name: "나일의 축복",     icon: "👑", skillImg: "icons/skills/cleopatra.png", desc: "승리 보상 3배",           skillType: "passive", effect: { type: "reward_mult", value: 3 } },
         galileo:        { name: "별의 관측",       icon: "🔭", skillImg: "icons/skills/galileo.png", desc: "힌트 2회 + 타이머 +3초",  skillType: "active",  effect: { type: "multi_hint", value: { hints: 2, time: 3 } } },
-        musashi:        { name: "이도류",          icon: "icons/ui/ui_swords.png", skillImg: "icons/skills/musashi.png", desc: "정답 시 2회 공격",        skillType: "passive", effect: { type: "double_strike", value: true } },
+        musashi:        { name: "이도류",          icon: "⚔️", skillImg: "icons/skills/musashi.png", desc: "정답 시 2회 공격",        skillType: "passive", effect: { type: "double_strike", value: true } },
         sage_archivist: { name: "태고의 기록",     icon: "🏛️", skillImg: "icons/skills/sage_archivist.png", desc: "받는 데미지 -30% & 데미지 +20%", skillType: "passive", effect: { type: "dual_boost", value: { dmg: 0.20, shield: 0.30 } } },
       };
 
@@ -4819,7 +4819,7 @@
           const avatarInfo = AVATAR_DATA.find(a => a.id === rule.id);
           try { getAppSound().sfx.hidden_unlock(); } catch(e) {}
           setTimeout(() => {
-            showCoinGain(0, `<img src="icons/ui/ui_party.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> 히든 해금: ${avatarInfo?.name || rule.label}! (${rule.hint})`);
+            showCoinGain(0, `🎉 히든 해금: ${avatarInfo?.name || rule.label}! (${rule.hint})`);
           }, 1200);
         });
       };
@@ -7157,13 +7157,13 @@
                         if (picked.length > 0) {
                           setOwnedItems(prev => [...prev, ...picked.map(p => p.id)]);
                           finalResult.label = picked.map(p => p.name).join(" + ") + " 획득!";
-                          finalResult.icon = "icons/ui/ui_sparkle.png";
+                          finalResult.icon = "✨";
                         } else {
                           // 모든 아이템 보유 시 코인으로 대체
                           const bonusCoin = 80;
                           setCoins(c => (c || 0) + bonusCoin);
                           finalResult.label = "아이템 올클리어! +" + bonusCoin + " 코인";
-                          finalResult.icon = "icons/ui/ui_coins.png";
+                          finalResult.icon = "💰";
                         }
                       }
                       // 🦄 랜덤 아바타 보상
@@ -7173,13 +7173,13 @@
                           const picked = unownedAvatars[Math.floor(Math.random() * unownedAvatars.length)];
                           setOwnedAvatars(prev => prev.includes(picked.id) ? prev : [...prev, picked.id]);
                           finalResult.label = picked.name + " 아바타 획득!";
-                          finalResult.icon = "icons/ui/ui_unicorn.png";
+                          finalResult.icon = "🦄";
                         } else {
                           // 모든 아바타 보유 시 대박 코인
                           const bonusCoin = 300;
                           setCoins(c => (c || 0) + bonusCoin);
                           finalResult.label = "아바타 올클리어! +" + bonusCoin + " 코인";
-                          finalResult.icon = "icons/ui/ui_crown.png";
+                          finalResult.icon = "👑";
                         }
                       }
                       // 결과를 보여준 뒤 확인 버튼으로 닫도록 setShowRoulette(false) 제거
@@ -8297,7 +8297,7 @@
                 <div style={{ position: "absolute", top: 0, left: "10%", right: "10%", height: 2, background: `linear-gradient(90deg, transparent, ${tp.accentColor}, transparent)` }} />
                 <div style={{ textAlign: "center" }}>
                   <div style={{ fontSize: 10, fontWeight: 800, color: tp.accentColor, letterSpacing: 2, marginBottom: 3 }}>EXCLUSIVE THEME PACK</div>
-                  <div style={{ fontSize: 16, fontWeight: 900, marginBottom: 3 }}>{`<img src="icons/ui/ui_diamond_rare.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> ${tp.name} 테마팩`}</div>
+                  <div style={{ fontSize: 16, fontWeight: 900, marginBottom: 3 }}><img src="icons/ui/ui_diamond_rare.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> {tp.name} 테마팩</div>
                   <div style={{ fontSize: 11, color: "rgba(255,255,255,0.85)", lineHeight: 1.5 }}>
                     {`배경화면 ${tp.wallpapers.length}종 · 카톡 이모티콘 ${tp.emojis.length}종`}
                   </div>

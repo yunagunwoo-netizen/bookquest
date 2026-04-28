@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@babel/parser": "^7.29.2",
+    "docx": "^9.6.1"
+  }
+}
