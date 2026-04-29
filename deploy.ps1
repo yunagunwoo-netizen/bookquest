@@ -8,7 +8,8 @@
 # Auto handled:
 #   1. clean .git\index.lock and *.bak
 #   2. bump CACHE_NAME in sw.js with new timestamp
-#   3. git add -A -> commit -> push
+#   3. sanity-check app.html (truncation/NULL guard)
+#   4. git add -A -> commit -> push
 #
 # First-time setup (only once if blocked):
 #   Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
@@ -80,6 +81,39 @@ if (Test-Path $swPath) {
     }
 } else {
     Write-Warn "sw.js not found (skipped)"
+}
+
+# ----- 2.5 sanity check on app.html (truncation guard) ------
+Write-Step "Sanity-check app.html"
+
+$appPath = Join-Path $PSScriptRoot "app.html"
+if (Test-Path $appPath) {
+    $size = (Get-Item $appPath).Length
+    if ($size -lt 500000) {
+        Write-Err "app.html size ($size bytes) is suspiciously small - aborting push"
+        exit 1
+    }
+    $bytes = [System.IO.File]::ReadAllBytes($appPath)
+    $tailLen = [Math]::Min(200, $bytes.Length)
+    $tail = [System.Text.Encoding]::UTF8.GetString($bytes, $bytes.Length - $tailLen, $tailLen)
+    if ($tail -notmatch '</html>\s*$') {
+        Write-Err "app.html does not end with </html> - file may be truncated"
+        $previewStart = [Math]::Max(0, $tail.Length - 80)
+        Write-Host "    Last 80 chars: $($tail.Substring($previewStart))" -ForegroundColor DarkRed
+        exit 1
+    }
+    $hasNulls = $false
+    $checkFrom = [Math]::Max(0, $bytes.Length - 50)
+    for ($i = $checkFrom; $i -lt $bytes.Length; $i++) {
+        if ($bytes[$i] -eq 0) { $hasNulls = $true; break }
+    }
+    if ($hasNulls) {
+        Write-Err "app.html contains NULL bytes near the end - aborting push"
+        exit 1
+    }
+    Write-Ok "size=$size bytes, ends with </html>, no NULL padding"
+} else {
+    Write-Warn "app.html not found (skipped)"
 }
 
 # ----- 3. git status ----------------------------------------

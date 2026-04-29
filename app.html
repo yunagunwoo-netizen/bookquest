@@ -15841,4 +15841,148 @@
             <div onClick={() => setThemeWallpaperModal(null)}
               style={{ position: "fixed", inset: 0, zIndex: 1000, background: "rgba(15,10,35,0.85)", backdropFilter: "blur(8px)", display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
               <div onClick={(e) => e.stopPropagation()}
-                style={{ background: tp.gradient, borderRadius: 20, 
+                style={{ background: tp.gradient, borderRadius: 20, padding: 20, maxWidth: 430, width: "100%", maxHeight: "90vh", overflow: "auto", color: "white", boxShadow: `0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px ${tp.borderGlow}` }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
+                  <div>
+                    <div style={{ fontSize: 10, fontWeight: 800, color: tp.accentColor, letterSpacing: 2 }}>WALLPAPER DOWNLOAD</div>
+                    <div style={{ fontSize: 18, fontWeight: 900 }}>{`${tp.name} 배경화면`}</div>
+                  </div>
+                  <button onClick={() => setThemeWallpaperModal(null)}
+                    style={{ background: "rgba(255,255,255,0.1)", border: "none", color: "white", width: 32, height: 32, borderRadius: 10, fontSize: 16, cursor: "pointer" }}>✕</button>
+                </div>
+                <div style={{ fontSize: 11, color: "rgba(255,255,255,0.75)", marginBottom: 14, lineHeight: 1.5 }}>
+                  이미지를 <b style={{ color: tp.accentColor }}>길게 누르면</b> 사진첩에 저장할 수 있어요.
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                  {tp.wallpapers.map((w, i) => (
+                    <div key={i} style={{ background: "rgba(0,0,0,0.35)", borderRadius: 14, padding: 8, border: `1px solid ${tp.accentColor}40` }}>
+                      <img src={w.src} alt={w.label}
+                        style={{ width: "100%", aspectRatio: "9/19.5", objectFit: "cover", borderRadius: 10, display: "block" }} />
+                      <div style={{ fontSize: 11, fontWeight: 700, textAlign: "center", marginTop: 8, color: tp.accentColor }}>{w.label}</div>
+                      <a href={w.src} download={w.name}
+                        style={{ display: "block", marginTop: 6, padding: "7px 8px", borderRadius: 10, background: `${tp.accentColor}38`, color: tp.accentColor, fontSize: 11, fontWeight: 800, textAlign: "center", textDecoration: "none", border: `1px solid ${tp.accentColor}66` }}>
+                        ⬇ 다운로드
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            );
+          })()}
+
+          {/* <img src="icons/ui/ui_diamond_rare.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 테마팩 이모티콘 모달 — 데이터 드리븐 */}
+          {themeEmojiModal && (() => {
+            const tp = THEME_PACKS.find(p => p.avatarId === themeEmojiModal);
+            if (!tp) return null;
+            return (
+            <div onClick={() => setThemeEmojiModal(null)}
+              style={{ position: "fixed", inset: 0, zIndex: 1000, background: "rgba(15,10,35,0.85)", backdropFilter: "blur(8px)", display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
+              <div onClick={(e) => e.stopPropagation()}
+                style={{ background: tp.gradient, borderRadius: 20, padding: 20, maxWidth: 430, width: "100%", maxHeight: "90vh", overflow: "auto", color: "white", boxShadow: "0 20px 60px rgba(0,0,0,0.6)" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
+                  <div>
+                    <div style={{ fontSize: 10, fontWeight: 800, color: tp.secondaryColor, letterSpacing: 2 }}>EMOJI PACK</div>
+                    <div style={{ fontSize: 18, fontWeight: 900 }}>{tp.name + " \uC774\uBAA8\uD2F0\uCF58 " + tp.emojis.length + "\uC885"}</div>
+                  </div>
+                  <button onClick={() => setThemeEmojiModal(null)}
+                    style={{ background: "rgba(255,255,255,0.1)", border: "none", color: "white", width: 32, height: 32, borderRadius: 10, fontSize: 16, cursor: "pointer" }}>\u2715</button>
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
+                  {tp.emojis.map((em, i) => (
+                    <a key={i} href={em.src} download={em.name + ".png"} style={{ textDecoration: "none", textAlign: "center" }}>
+                      <div style={{ background: "rgba(255,255,255,0.08)", borderRadius: 12, padding: 6 }}>
+                        <img src={em.src} alt={em.label}
+                          style={{ width: "100%", aspectRatio: "1/1", objectFit: "contain", display: "block" }} />
+                      </div>
+                      <div style={{ fontSize: 10, fontWeight: 700, color: tp.secondaryColor, marginTop: 4 }}>{em.label}</div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+            );
+          })()}
+
+
+          {showInstallBanner && (() => {
+            const dismissBanner = () => {
+              setShowInstallBanner(false);
+              localStorage.setItem("bq_install_dismissed_at", String(Date.now()));
+            };
+            const bannerBase = {
+              position: "fixed", bottom: 70, left: 12, right: 12, zIndex: 200,
+              background: "linear-gradient(135deg, #667eea, #764ba2)", borderRadius: 20,
+              padding: "16px 18px", boxShadow: "0 8px 32px rgba(102,126,234,0.4)", animation: "pop 0.4s ease"
+            };
+            const iconStyle = { width: 52, height: 52, borderRadius: 14, flexShrink: 0, boxShadow: "0 2px 8px rgba(0,0,0,0.2)" };
+            const closeBtnStyle = { background: "rgba(255,255,255,0.2)", border: "none", borderRadius: 12, padding: "8px 12px", color: "white", fontSize: 12, fontWeight: 600, cursor: "pointer", flexShrink: 0 };
+            if (installBannerType === "ios") return (
+              <div style={bannerBase}>
+                <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                  <img src="icons/app-icon-192.png" style={iconStyle} />
+                  <div style={{ flex: 1 }}>
+                    <div style={{ color: "white", fontSize: 14, fontWeight: 800 }}>BookQuest \uC124\uCE58\uD558\uAE30</div>
+                    <div style={{ color: "rgba(255,255,255,0.9)", fontSize: 12, marginTop: 6, lineHeight: 1.5 }}>
+                      \uD558\uB2E8\uC758 \uACF5\uC720 \uBC84\uD2BC\uC744 \uB204\uB978 \uB4A4 <strong>"\uD648 \uD654\uBA74\uC5D0 \uCD94\uAC00"</strong>\uB97C \uC120\uD0DD\uD558\uC138\uC694!
+                    </div>
+                  </div>
+                  <button onClick={dismissBanner} style={closeBtnStyle}>\uB2EB\uAE30</button>
+                </div>
+              </div>
+            );
+            return (
+              <div style={{...bannerBase, display: "flex", alignItems: "center", gap: 14}}>
+                <img src="icons/app-icon-192.png" style={iconStyle} />
+                <div style={{ flex: 1 }}>
+                  <div style={{ color: "white", fontSize: 14, fontWeight: 800 }}>BookQuest \uC124\uCE58\uD558\uAE30</div>
+                  <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 11, marginTop: 2 }}>\uD648 \uD654\uBA74\uC5D0 \uCD94\uAC00\uD558\uBA74 \uB354 \uBE60\uB974\uAC8C!</div>
+                </div>
+                <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
+                  <button onClick={dismissBanner} style={closeBtnStyle}>\uB2EB\uAE30</button>
+                  <button onClick={async () => {
+                    if (installPrompt) {
+                      installPrompt.prompt();
+                      const result = await installPrompt.userChoice;
+                      if (result.outcome === "accepted") setShowInstallBanner(false);
+                      setInstallPrompt(null);
+                    }
+                  }}
+                    style={{ background: "white", border: "none", borderRadius: 12, padding: "8px 16px", color: "#667eea", fontSize: 12, fontWeight: 800, cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}>
+                    \uC124\uCE58
+                  </button>
+                </div>
+              </div>
+            );
+          })()}
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<BookQuest />);
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      let reloading = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (reloading) return;
+        reloading = true;
+        window.location.reload();
+      });
+      navigator.serviceWorker.register('./sw.js').then(reg => {
+        setInterval(() => reg.update().catch(() => {}), 60 * 60 * 1000);
+        reg.addEventListener('updatefound', () => {
+          const installing = reg.installing;
+          if (!installing) return;
+          installing.addEventListener('statechange', () => {
+            if (installing.state === 'installed' && navigator.serviceWorker.controller) {
+              installing.postMessage({ type: 'SKIP_WAITING' });
+            }
+          });
+        });
+      }).catch(() => {});
+    }
+  </script>
+</body>
+</html>
