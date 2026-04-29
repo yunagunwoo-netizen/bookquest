@@ -1,9 +1,11 @@
-// ?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•??// BookQuest Service Worker
-// ?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€
+// ============================================================
+// BookQuest Service Worker
+// ------------------------------------------------------------
 // CACHE_NAME is bumped on every deploy by deploy_bookquest.ps1
 // (it replaces `bookquest-v<ts>` with a fresh timestamp), so
 // browsers detect sw.js bytes differ and install the new SW.
-// ?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•??const CACHE_NAME = 'bookquest-v20260429014413';
+// ============================================================
+const CACHE_NAME = 'bookquest-v20260429015207';
 
 // Only precache files that actually exist at repo root.
 const ASSETS_TO_CACHE = [
@@ -15,7 +17,7 @@ const ASSETS_TO_CACHE = [
   './icons/app-icon-512.png',
 ];
 
-// install ??precache then skip waiting so the new SW activates fast.
+// install: precache then skip waiting so the new SW activates fast.
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache =>
@@ -27,7 +29,7 @@ self.addEventListener('install', event => {
   self.skipWaiting();
 });
 
-// activate ??delete all stale caches, then take control of all tabs.
+// activate: delete all stale caches, then take control of all tabs.
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(names =>
@@ -40,26 +42,23 @@ self.addEventListener('activate', event => {
   );
 });
 
-// fetch ??HTML/JS/JSON: network-first. Images/fonts/CSS: stale-while-revalidate.
+// fetch: network/cache strategy, scoped strictly to same-origin GETs.
 self.addEventListener('fetch', event => {
+  // Only handle GET; POST/PUT/DELETE pass through untouched.
   if (event.request.method !== 'GET') return;
+
   const url = new URL(event.request.url);
+
+  // Ignore chrome-extension:// and other non-http(s) protocols.
   if (url.protocol !== 'http:' && url.protocol !== 'https:') return;
 
-  // Firebase Cloud Functions / API ??always network (503 when offline).
-  if (url.host.includes('cloudfunctions') || url.pathname.includes('/api/')) {
-    event.respondWith(
-      fetch(event.request).catch(() =>
-        new Response(JSON.stringify({ offline: true }), {
-          status: 503,
-          headers: { 'Content-Type': 'application/json' }
-        })
-      )
-    );
-    return;
-  }
+  // CRITICAL: Do NOT intercept cross-origin requests.
+  // Firestore / Firebase / Google APIs handle their own networking and
+  // streaming connections (Listen channel). Letting the SW touch them
+  // breaks responses with "Failed to convert value to 'Response'".
+  if (url.origin !== self.location.origin) return;
 
-  // Documents / scripts / JSON ??network-first, fall back to cache.
+  // Documents / scripts / JSON: network-first, fall back to cache.
   if (
     event.request.destination === 'document' ||
     url.pathname.endsWith('.html') ||
@@ -84,7 +83,7 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Images / fonts / CSS ??cache-first + background update (SWR).
+  // Images / fonts / CSS: cache-first + background update (SWR).
   event.respondWith(
     caches.match(event.request).then(cached => {
       const fetchPromise = fetch(event.request)
@@ -101,16 +100,9 @@ self.addEventListener('fetch', event => {
   );
 });
 
-// index.html posts SKIP_WAITING when a new SW is installed ??activate now.
+// index.html posts SKIP_WAITING when a new SW is installed: activate now.
 self.addEventListener('message', event => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
 });
-
-
-
-
-
-
-
