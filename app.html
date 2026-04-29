@@ -13324,10 +13324,11 @@
             <img src="icons/ui/ui_pencil.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 프로필 수정
           </button>
 
-          {/* <img src="icons/ui/ui_books.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 학년 변경 */}
+          {/* 빠른 학년 변경 위젯 — 관리자 전용 (테스트용) */}
+          {isAdmin && (
           <div style={{ marginTop: 12, background: "white", borderRadius: 12, padding: 16, border: "2px solid #eee", overflow: "hidden" }}>
             <div style={{ fontSize: 13, fontWeight: 600, color: "#555", marginBottom: 8, display: "flex", alignItems: "center", gap: 4 }}>
-              <img src="icons/ui/ui_books.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 학년 <span style={{ fontSize: 11, color: "#667eea", fontWeight: 700 }}>({profile?.grade ? (["1","2","3","4","5","6"].includes(profile.grade) ? `초등 ${profile.grade}학년` : `${profile.grade}학년`) : "미설정"})</span>
+              <img src="icons/ui/ui_books.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 학년 빠른 변경 <span style={{ fontSize: 10, fontWeight: 700, padding: "2px 6px", borderRadius: 6, background: "#fef3c7", color: "#b45309", marginLeft: 4 }}>관리자</span> <span style={{ fontSize: 11, color: "#667eea", fontWeight: 700 }}>({profile?.grade ? (["1","2","3","4","5","6"].includes(profile.grade) ? `초등 ${profile.grade}학년` : `${profile.grade}학년`) : "미설정"})</span>
             </div>
             <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
               {["1", "2", "3", "4", "5", "6", "중1", "중2", "중3"].map(g => (
@@ -13339,11 +13340,12 @@
                     color: profile?.grade === g ? "white" : "#666",
                     fontSize: 12, fontWeight: 600, cursor: "pointer"
                   }}>
-                  {["4","5","6"].includes(g) ? `초${g}` : g}
+                  {["1","2","3","4","5","6"].includes(g) ? `초${g}` : g}
                 </button>
               ))}
             </div>
           </div>
+          )}
 
           {/* <img src="icons/ui/ui_key.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 복구 PIN 설정/변경 */}
           <div style={{ marginTop: 12, background: "white", borderRadius: 12, padding: 16, border: "2px solid #eee", overflow: "hidden" }}>
