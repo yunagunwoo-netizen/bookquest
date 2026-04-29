@@ -19128,12 +19128,12 @@
                 <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
                   <img src="icons/app-icon-192.png" style={iconStyle} />
                   <div style={{ flex: 1 }}>
-                    <div style={{ color: "white", fontSize: 14, fontWeight: 800 }}>BookQuest \uC124\uCE58\uD558\uAE30</div>
+                    <div style={{ color: "white", fontSize: 14, fontWeight: 800 }}>BookQuest 설치하기</div>
                     <div style={{ color: "rgba(255,255,255,0.9)", fontSize: 12, marginTop: 6, lineHeight: 1.5 }}>
-                      \uD558\uB2E8\uC758 \uACF5\uC720 \uBC84\uD2BC\uC744 \uB204\uB978 \uB4A4 <strong>"\uD648 \uD654\uBA74\uC5D0 \uCD94\uAC00"</strong>\uB97C \uC120\uD0DD\uD558\uC138\uC694!
+                      하단의 공유 버튼을 누른 뒤 <strong>"홈 화면에 추가"</strong>를 선택하세요!
                     </div>
                   </div>
-                  <button onClick={dismissBanner} style={closeBtnStyle}>\uB2EB\uAE30</button>
+                  <button onClick={dismissBanner} style={closeBtnStyle}>닫기</button>
                 </div>
               </div>
             );
@@ -19141,11 +19141,11 @@
               <div style={{...bannerBase, display: "flex", alignItems: "center", gap: 14}}>
                 <img src="icons/app-icon-192.png" style={iconStyle} />
                 <div style={{ flex: 1 }}>
-                  <div style={{ color: "white", fontSize: 14, fontWeight: 800 }}>BookQuest \uC124\uCE58\uD558\uAE30</div>
-                  <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 11, marginTop: 2 }}>\uD648 \uD654\uBA74\uC5D0 \uCD94\uAC00\uD558\uBA74 \uB354 \uBE60\uB974\uAC8C!</div>
+                  <div style={{ color: "white", fontSize: 14, fontWeight: 800 }}>BookQuest 설치하기</div>
+                  <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 11, marginTop: 2 }}>홈 화면에 추가하면 더 빠르게!</div>
                 </div>
                 <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
-                  <button onClick={dismissBanner} style={closeBtnStyle}>\uB2EB\uAE30</button>
+                  <button onClick={dismissBanner} style={closeBtnStyle}>닫기</button>
                   <button onClick={async () => {
                     if (installPrompt) {
                       installPrompt.prompt();
@@ -19155,7 +19155,7 @@
                     }
                   }}
                     style={{ background: "white", border: "none", borderRadius: 12, padding: "8px 16px", color: "#667eea", fontSize: 12, fontWeight: 800, cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}>
-                    \uC124\uCE58
+                    설치
                   </button>
                 </div>
               </div>
