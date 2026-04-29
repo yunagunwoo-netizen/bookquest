@@ -5932,6 +5932,34 @@
       };
     };
 
+    // ─────────────────────────────────────────────────────
+    // Layer 1: 출제 풀 셔플 + used-set 유틸
+    // ─────────────────────────────────────────────────────
+    // 짧은 텍스트 해시 (정답/완료 추적 key 생성용 — 인덱스 의존 제거)
+    const stableHash = (text) => {
+      if (!text) return '0';
+      let h = 0;
+      for (let i = 0; i < text.length; i++) {
+        h = ((h << 5) - h) + text.charCodeAt(i);
+        h |= 0; // int32 truncate
+      }
+      return Math.abs(h).toString(36);
+    };
+
+    // used-set 우선순위 정렬: 안 본 것 → 오래 전 본 것 → 최근 본 것
+    // (같은 lastShown 안에서는 무작위 — seed 받아 셔플 결과를 안정화)
+    const prioritizeByUsedSet = (items, getKey, usedSetMap, seed) => {
+      if (!items || items.length === 0) return [];
+      const tagged = items.map((item, idx) => ({
+        item,
+        lastShown: (usedSetMap && usedSetMap[getKey(item)]) || 0,
+        // seed + idx 조합으로 같은 진입 안에서는 같은 무작위 순서
+        rand: Math.sin((seed || 0) * 9301 + idx * 49297) * 233280 % 1,
+      }));
+      tagged.sort((a, b) => a.lastShown - b.lastShown || a.rand - b.rand);
+      return tagged.map(x => x.item);
+    };
+
     // 독서 진행도 + 퀴즈 정답 + 토론 별점 + 아바타 프로필 → 아바타 스탯 환산
     const computeAvatarStats = (bookProgress, quizState, discussionStarState, avatarId) => {
       const profile = getAvatarProfile(avatarId);
@@ -8587,6 +8615,16 @@
       const [showQuizResult, setShowQuizResult] = useState(false);
       const [quizResultInfo, setQuizResultInfo] = useState(null);
 
+      // Layer 1: 출제 풀 셔플 + used-set (책 상세에서 매번 다른 셋이 나오게)
+      // map 형태: { [`${bookId}-quiz-${hash}`]: timestamp, ... }
+      const [quizSeenMap, setQuizSeenMap] = useState({});
+      const [discussionSeenMap, setDiscussionSeenMap] = useState({});
+      const [deepSeenMap, setDeepSeenMap] = useState({});
+      // 진입 시 셔플 결과를 캐시 (탭 전환 시 새로 셔플되지 않게)
+      const [quizShuffleSeed, setQuizShuffleSeed] = useState(0);
+      const [discussionShuffleSeed, setDiscussionShuffleSeed] = useState(0);
+      const [deepShuffleSeed, setDeepShuffleSeed] = useState(0);
+
       // Feature 5: Avatar Shop (대규모 개선)
       const [coins, setCoins] = useState(0);
       const [ownedItems, setOwnedItems] = useState([]);
@@ -8722,6 +8760,16 @@
       useEffect(() => { showShopRef.current = showShop; }, [showShop]);
       useEffect(() => { showRewardRef.current = showReward; }, [showReward]);
 
+      // Layer 1: 책 상세에 진입할 때마다 셔플 시드 새로고침 (매번 다른 셋이 나오도록)
+      useEffect(() => {
+        if (selectedBook) {
+          const now = Date.now();
+          setQuizShuffleSeed(now % 1000000);
+          setDiscussionShuffleSeed((now + 17) % 1000000);
+          setDeepShuffleSeed((now + 31) % 1000000);
+        }
+      }, [selectedBook?.id]);
+
       useEffect(() => {
         // 초기 history 스택: 2개 push해서 뒤로가기 여유 확보
         window.history.replaceState({ screen: "home", guard: true }, "", "");
@@ -8804,6 +8852,9 @@
             if (data.missionDate) setMissionDate(data.missionDate);
             if (data.discussionStarState) setDiscussionStarState(data.discussionStarState);
             if (data.quizState) setQuizState(data.quizState);
+            if (data.quizSeenMap) setQuizSeenMap(data.quizSeenMap);
+            if (data.discussionSeenMap) setDiscussionSeenMap(data.discussionSeenMap);
+            if (data.deepSeenMap) setDeepSeenMap(data.deepSeenMap);
             if (data.coins !== undefined) setCoins(data.coins);
             if (data.ownedItems) setOwnedItems(data.ownedItems);
             // 마이그레이션: 레거시 equippedItem → equippedItems 변환
@@ -8865,6 +8916,9 @@
             missionDate,
             discussionStarState,
             quizState,
+            quizSeenMap,
+            discussionSeenMap,
+            deepSeenMap,
             coins,
             ownedItems,
             equippedItems,
@@ -8926,7 +8980,8 @@
               lastCompletionDate, achievedMilestones, weeklyReadCount, weekStartDate,
               battleWins, battleLosses, battleDraws, weeklyBattleWins,
               bookProgress, discussionState, dailyMissions, missionDate,
-              discussionStarState, quizState, coins, ownedItems, equippedItems,
+              discussionStarState, quizState, quizSeenMap, discussionSeenMap, deepSeenMap,
+              coins, ownedItems, equippedItems,
               ownedAvatars, outfitSlots, activeOutfitSlot, rivalData, battleHistory,
               xpMultiplier, recoveryPin,
               backupDate: today,
@@ -12425,44 +12480,84 @@
                 ))}
               </div>
             )}
-            {bookTab === "discuss" && (
-              <div>
-                <div style={{ fontSize: 13, color: "#888", marginBottom: 12, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                  <span><img src="icons/ui/ui_microphone.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 주제를 선택해 음성으로 AI와 토론하세요!</span>
-                  {!isPremium && !isAdmin && (
-                    <span style={{ fontSize: 10, fontWeight: 600, color: canStartDiscussion() ? "#667eea" : "#ef4444", background: canStartDiscussion() ? "#eef2ff" : "#fef2f2", padding: "3px 8px", borderRadius: 8, flexShrink: 0 }}>
-                      {(() => { const today = getTodayString(); const c = lastDiscussionDate === today ? dailyDiscussionCount : 0; return `${FREE_DAILY_DISCUSSION_LIMIT - c}/${FREE_DAILY_DISCUSSION_LIMIT}회 남음`; })()}
-                    </span>
+            {bookTab === "discuss" && (() => {
+              const allDisc = book.discussionTopics || [];
+              const sortedDisc = prioritizeByUsedSet(allDisc, t => `${book.id}-disc-${stableHash(t.q)}`, discussionSeenMap, discussionShuffleSeed);
+              const SHOW_DISC = 3;
+              const displayedDisc = sortedDisc.slice(0, SHOW_DISC);
+              const hasMoreDisc = allDisc.length > displayedDisc.length;
+              const renderStars = (num) => {
+                const full = Math.floor(num);
+                return '⭐'.repeat(full) + '☆'.repeat(Math.max(0, 3 - full));
+              };
+              return (
+                <div>
+                  <div style={{ fontSize: 13, color: "#888", marginBottom: 12, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <span><img src="icons/ui/ui_microphone.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 주제를 선택해 음성으로 AI와 토론하세요!</span>
+                    {!isPremium && !isAdmin && (
+                      <span style={{ fontSize: 10, fontWeight: 600, color: canStartDiscussion() ? "#667eea" : "#ef4444", background: canStartDiscussion() ? "#eef2ff" : "#fef2f2", padding: "3px 8px", borderRadius: 8, flexShrink: 0 }}>
+                        {(() => { const today = getTodayString(); const c = lastDiscussionDate === today ? dailyDiscussionCount : 0; return `${FREE_DAILY_DISCUSSION_LIMIT - c}/${FREE_DAILY_DISCUSSION_LIMIT}회 남음`; })()}
+                      </span>
+                    )}
+                  </div>
+                  {allDisc.length > 0 && (
+                    <div style={{ fontSize: 11, color: "#aaa", marginBottom: 8, textAlign: "right" }}>
+                      전체 {allDisc.length}개 중 {displayedDisc.length}개 표시
+                    </div>
+                  )}
+                  {displayedDisc.map((t) => {
+                    const origIdx = allDisc.findIndex(orig => orig.q === t.q);
+                    const key = `${book.id}-disc-${origIdx}`;
+                    const done = discussionState[key];
+                    const starInfo = discussionStarState[key];
+                    const stars = starInfo?.bestStars || 0;
+                    return (
+                      <div key={`${book.id}-disc-${stableHash(t.q)}`} onClick={() => startDiscussion(book, origIdx, false)}
+                        style={{ background: done ? "#f0fff0" : "white", borderRadius: 14, padding: 16, marginBottom: 10, cursor: "pointer", boxShadow: "0 2px 6px rgba(0,0,0,0.04)", border: done ? "2px solid #4CAF50" : "2px solid transparent" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                          <div style={{ flex: 1 }}>
+                            <div style={{ fontSize: 12, color: "#667eea", fontWeight: 600, marginBottom: 4 }}>토론 {origIdx + 1} {done ? (stars > 0 ? renderStars(stars) : "완료") : "(+20XP)"}</div>
+                            <div style={{ fontSize: 13, fontWeight: 600, color: "#1a1a2e", lineHeight: 1.5 }}>{t.q}</div>
+                          </div>
+                          {!done && <img src="icons/ui/ui_microphone.png" alt="" style={{ width: 20, height: 20, verticalAlign: "middle", marginLeft: 8 }} />}
+                        </div>
+                      </div>
+                    );
+                  })}
+                  {hasMoreDisc && (
+                    <button onClick={() => {
+                      const now = Date.now();
+                      const updates = {};
+                      displayedDisc.forEach(t => {
+                        updates[`${book.id}-disc-${stableHash(t.q)}`] = now;
+                      });
+                      setDiscussionSeenMap(prev => ({ ...prev, ...updates }));
+                      setDiscussionShuffleSeed(s => s + 1);
+                    }}
+                      style={{ width: "100%", marginTop: 4, padding: "10px 12px", borderRadius: 12, border: "1.5px dashed #cbd5e1", background: "#f8fafc", color: "#667eea", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+                      🔄 다른 주제 보기 ({Math.min(SHOW_DISC, allDisc.length - displayedDisc.length)}개 더)
+                    </button>
                   )}
                 </div>
-                {book.discussionTopics.map((t, i) => {
-                  const key = `${book.id}-disc-${i}`;
-                  const done = discussionState[key];
-                  const starInfo = discussionStarState[key];
-                  const stars = starInfo?.bestStars || 0;
-                  const renderStars = (num) => {
-                    const full = Math.floor(num);
-                    return '⭐'.repeat(full) + '☆'.repeat(Math.max(0, 3 - full));
-                  };
-                  return (
-                    <div key={i} onClick={() => startDiscussion(book, i, false)}
-                      style={{ background: done ? "#f0fff0" : "white", borderRadius: 14, padding: 16, marginBottom: 10, cursor: "pointer", boxShadow: "0 2px 6px rgba(0,0,0,0.04)", border: done ? "2px solid #4CAF50" : "2px solid transparent" }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                        <div style={{ flex: 1 }}>
-                          <div style={{ fontSize: 12, color: "#667eea", fontWeight: 600, marginBottom: 4 }}>토론 {i + 1} {done ? (stars > 0 ? renderStars(stars) : "완료") : "(+20XP)"}</div>
-                          <div style={{ fontSize: 13, fontWeight: 600, color: "#1a1a2e", lineHeight: 1.5 }}>{t.q}</div>
-                        </div>
-                        {!done && <img src="icons/ui/ui_microphone.png" alt="" style={{ width: 20, height: 20, verticalAlign: "middle", marginLeft: 8 }} />}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-            {bookTab === "quiz" && (
+              );
+            })()}
+            {bookTab === "quiz" && (() => {
+              const allQuiz = book.quizzes || [];
+              const sortedQuiz = prioritizeByUsedSet(allQuiz, q => `${book.id}-quiz-${stableHash(q.q)}`, quizSeenMap, quizShuffleSeed);
+              const SHOW_QUIZ = 4;
+              const displayedQuiz = sortedQuiz.slice(0, SHOW_QUIZ);
+              const hasMoreQuiz = allQuiz.length > displayedQuiz.length;
+              return (
               <div>
                 <div style={{ fontSize: 13, color: "#888", marginBottom: 12 }}><img src="icons/ui/ui_question.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 책 내용을 바탕으로 퀴즈를 풀어보세요! (+10XP)</div>
-                {book.quizzes && book.quizzes.map((quiz, i) => {
+                {allQuiz.length > 0 && (
+                  <div style={{ fontSize: 11, color: "#aaa", marginBottom: 8, textAlign: "right" }}>
+                    전체 {allQuiz.length}개 중 {displayedQuiz.length}개 표시
+                  </div>
+                )}
+                {displayedQuiz.map((quiz) => {
+                  const origIdx = allQuiz.findIndex(o => o.q === quiz.q);
+                  const i = origIdx;
                   const key = `${book.id}-quiz-${i}`;
                   const answered = quizState[key];
                   return (
@@ -12519,38 +12614,80 @@
                     </div>
                   );
                 })}
+                {hasMoreQuiz && (
+                  <button onClick={() => {
+                    const now = Date.now();
+                    const updates = {};
+                    displayedQuiz.forEach(q => {
+                      updates[`${book.id}-quiz-${stableHash(q.q)}`] = now;
+                    });
+                    setQuizSeenMap(prev => ({ ...prev, ...updates }));
+                    setQuizShuffleSeed(s => s + 1);
+                  }}
+                    style={{ width: "100%", marginTop: 4, padding: "10px 12px", borderRadius: 12, border: "1.5px dashed #cbd5e1", background: "#f8fafc", color: "#667eea", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+                    🔄 다른 퀴즈 보기 ({Math.min(SHOW_QUIZ, allQuiz.length - displayedQuiz.length)}개 더)
+                  </button>
+                )}
               </div>
-            )}
-            {bookTab === "deep" && (
-              <div>
-                <div style={{ fontSize: 13, color: "#888", marginBottom: 12 }}>
-                  <img src="icons/ui/ui_fire.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 더 깊이 생각해 보는 심화 토론! (+30XP)
-                  {!isPremium && !isAdmin && <span style={{ marginLeft: 8, fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 8, background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white" }}>Premium</span>}
-                </div>
-                {book.deepTopics.map((t, i) => {
-                  const key = `${book.id}-deep-${i}`;
-                  const done = discussionState[key];
-                  const starInfo = discussionStarState[key];
-                  const stars = starInfo?.bestStars || 0;
-                  const renderStars = (num) => {
-                    const full = Math.floor(num);
-                    return '⭐'.repeat(full) + '☆'.repeat(Math.max(0, 3 - full));
-                  };
-                  return (
-                    <div key={i} onClick={() => startDiscussion(book, i, true)}
-                      style={{ background: done ? "#fff8e1" : "white", borderRadius: 14, padding: 16, marginBottom: 10, cursor: "pointer", boxShadow: "0 2px 6px rgba(0,0,0,0.04)", border: done ? "2px solid #FFB300" : "2px solid transparent" }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                        <div style={{ flex: 1 }}>
-                          <div style={{ fontSize: 12, color: "#FF6F00", fontWeight: 600, marginBottom: 4 }}>심화 {i + 1} {done ? (stars > 0 ? renderStars(stars) : "완료") : "(+30XP)"}</div>
-                          <div style={{ fontSize: 13, fontWeight: 600, color: "#1a1a2e", lineHeight: 1.5 }}>{t.q}</div>
-                        </div>
-                        {!done && <img src="icons/ui/ui_fire.png" alt="" style={{ width: 20, height: 20, verticalAlign: "middle", marginLeft: 8 }} />}
-                      </div>
+              );
+            })()}
+            {bookTab === "deep" && (() => {
+              const allDeep = book.deepTopics || [];
+              const sortedDeep = prioritizeByUsedSet(allDeep, t => `${book.id}-deep-${stableHash(t.q)}`, deepSeenMap, deepShuffleSeed);
+              const SHOW_DEEP = 2;
+              const displayedDeep = sortedDeep.slice(0, SHOW_DEEP);
+              const hasMoreDeep = allDeep.length > displayedDeep.length;
+              const renderStars = (num) => {
+                const full = Math.floor(num);
+                return '⭐'.repeat(full) + '☆'.repeat(Math.max(0, 3 - full));
+              };
+              return (
+                <div>
+                  <div style={{ fontSize: 13, color: "#888", marginBottom: 12 }}>
+                    <img src="icons/ui/ui_fire.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 더 깊이 생각해 보는 심화 토론! (+30XP)
+                    {!isPremium && !isAdmin && <span style={{ marginLeft: 8, fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 8, background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white" }}>Premium</span>}
+                  </div>
+                  {allDeep.length > 0 && (
+                    <div style={{ fontSize: 11, color: "#aaa", marginBottom: 8, textAlign: "right" }}>
+                      전체 {allDeep.length}개 중 {displayedDeep.length}개 표시
                     </div>
-                  );
-                })}
-              </div>
-            )}
+                  )}
+                  {displayedDeep.map((t) => {
+                    const origIdx = allDeep.findIndex(o => o.q === t.q);
+                    const key = `${book.id}-deep-${origIdx}`;
+                    const done = discussionState[key];
+                    const starInfo = discussionStarState[key];
+                    const stars = starInfo?.bestStars || 0;
+                    return (
+                      <div key={`${book.id}-deep-${stableHash(t.q)}`} onClick={() => startDiscussion(book, origIdx, true)}
+                        style={{ background: done ? "#fff8e1" : "white", borderRadius: 14, padding: 16, marginBottom: 10, cursor: "pointer", boxShadow: "0 2px 6px rgba(0,0,0,0.04)", border: done ? "2px solid #FFB300" : "2px solid transparent" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                          <div style={{ flex: 1 }}>
+                            <div style={{ fontSize: 12, color: "#FF6F00", fontWeight: 600, marginBottom: 4 }}>심화 {origIdx + 1} {done ? (stars > 0 ? renderStars(stars) : "완료") : "(+30XP)"}</div>
+                            <div style={{ fontSize: 13, fontWeight: 600, color: "#1a1a2e", lineHeight: 1.5 }}>{t.q}</div>
+                          </div>
+                          {!done && <img src="icons/ui/ui_fire.png" alt="" style={{ width: 20, height: 20, verticalAlign: "middle", marginLeft: 8 }} />}
+                        </div>
+                      </div>
+                    );
+                  })}
+                  {hasMoreDeep && (
+                    <button onClick={() => {
+                      const now = Date.now();
+                      const updates = {};
+                      displayedDeep.forEach(t => {
+                        updates[`${book.id}-deep-${stableHash(t.q)}`] = now;
+                      });
+                      setDeepSeenMap(prev => ({ ...prev, ...updates }));
+                      setDeepShuffleSeed(s => s + 1);
+                    }}
+                      style={{ width: "100%", marginTop: 4, padding: "10px 12px", borderRadius: 12, border: "1.5px dashed #fbbf24", background: "#fffbeb", color: "#b45309", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+                      🔄 다른 심화 주제 보기 ({Math.min(SHOW_DEEP, allDeep.length - displayedDeep.length)}개 더)
+                    </button>
+                  )}
+                </div>
+              );
+            })()}
           </div>
         );
       };
