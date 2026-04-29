@@ -446,11 +446,26 @@
     // 📚 BookQuest — 독서 모험 앱 with Voice
     // ═══════════════════════════════════════
 
-    const APP_VERSION = "1.8.1";
-    const APP_BUILD_DATE = "2026-04-24";
+    const APP_VERSION = "1.9.0";
+    const APP_BUILD_DATE = "2026-04-29";
     const ADMIN_PIN = "0925";
 
     const CHANGELOG = [
+      {
+        version: "1.9.0",
+        date: "2026-04-29",
+        title: "Phase B 전체 완료 + 데이터 모델 전환 + #310 fix",
+        changes: [
+          "Layer 1.5 Phase B 전체 완료: CURRICULUM_BOOKS 54권 모두 토론·퀴즈·심화 풀을 25/25/8 이상으로 확장 (오늘 약 2,400 항목 추가)",
+          "초1 5권(C026~C030) / 초2 6권(C031~C036) / 초3~중3 40권(C002·C003·C013·C014·C015·C037~C048·C050~C054·기타) 풀 확장 일괄 push",
+          "React error #310 잠재 버그 근본 수정 — CurriculumScreen 사전 호출 패턴(`const curriculumContent = CurriculumScreen()`)으로 hook count 일정 유지",
+          "CurriculumScreen 데이터 모델 전환 — 단원→책 → 책→단원 태그 구조로 (학년별 책 6권 카드 + 카드마다 학기·단원 태그)",
+          "홈 교과 연계 카드 좌우 스크롤 → grid 3분할 (한 화면에 균등 표시)",
+          "백로그 #002 등록 — 교과 연계 도서 학년별 6권 → 12권 확장 (장기 과제)",
+          "풀 검수 자동화 — 학년별 부적합 어휘 grep + JS literal node check + answer 인덱스 범위 검증을 표준 체크리스트로 정리",
+          "deploy_bookquest.ps1 파일 경로 fix — index.html → app.html (이전 세션에서 메인 파일 분리될 때 스크립트가 갱신 안 된 잔재 수정)"
+        ]
+      },
       {
         version: "1.8.1",
         date: "2026-04-24",

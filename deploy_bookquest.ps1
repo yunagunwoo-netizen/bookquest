@@ -44,14 +44,14 @@ git config core.autocrlf true | Out-Null
 # Release mode
 if ($Version) {
     $stagingPath = Join-Path $repoRoot "NEXT_RELEASE.md"
-    $indexPath = Join-Path $repoRoot "index.html"
+    $indexPath = Join-Path $repoRoot "app.html"
 
     if (-not (Test-Path $stagingPath)) {
         Write-Error "NEXT_RELEASE.md not found"
         exit 1
     }
     if (-not (Test-Path $indexPath)) {
-        Write-Error "index.html not found"
+        Write-Error "app.html not found"
         exit 1
     }
 
@@ -125,7 +125,7 @@ if ($Version) {
     $anchor = "const CHANGELOG = ["
     $aIdx = $indexContent.IndexOf($anchor)
     if ($aIdx -lt 0) {
-        Write-Error "CHANGELOG anchor not found in index.html"
+        Write-Error "CHANGELOG anchor not found in app.html"
         exit 1
     }
     $afterAnchor = $aIdx + $anchor.Length
@@ -154,13 +154,13 @@ if ($Version) {
     if ($verify.Length -lt ($indexContent.Length - 8)) {
         Write-Warning ("Disk write mismatch: disk={0} memory={1}. Restoring original." -f $verify.Length, $indexContent.Length)
         Write-Utf8 $indexPath $origIndexContent
-        Write-Error "Aborted deploy due to index.html write corruption."
+        Write-Error "Aborted deploy due to app.html write corruption."
         exit 1
     }
     if (-not $verify.Contains("</html>")) {
         Write-Warning "Disk file missing </html>. Restoring original."
         Write-Utf8 $indexPath $origIndexContent
-        Write-Error "Aborted deploy due to index.html write corruption."
+        Write-Error "Aborted deploy due to app.html write corruption."
         exit 1
     }
 
