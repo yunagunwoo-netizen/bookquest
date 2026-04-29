@@ -14583,14 +14583,14 @@
                   </button>
                   {!collapsedSections.scheduleCurriculum && (
                     <div>
-                      <div style={{ display: "flex", overflowX: "auto", gap: 10, paddingBottom: 4, WebkitOverflowScrolling: "touch" }}>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
                         {currBooks.map(book => (
                           <div key={book.id} onClick={() => {
                               if (!canAccessBook(book.id)) { showPremiumUpsell("book"); return; }
                               setSelectedBook(book); setBookTab("summary"); setScreen("book");
                             }}
-                            style={{ minWidth: 140, maxWidth: 140, background: "white", borderRadius: 14, padding: 12, cursor: "pointer",
-                              boxShadow: "0 2px 8px rgba(0,0,0,0.06)", border: `1.5px solid ${book.color}30`, flexShrink: 0, position: "relative" }}>
+                            style={{ background: "white", borderRadius: 14, padding: 10, cursor: "pointer",
+                              boxShadow: "0 2px 8px rgba(0,0,0,0.06)", border: `1.5px solid ${book.color}30`, position: "relative", minWidth: 0 }}>
                             {!canAccessBook(book.id) && (
                               <div style={{ position: "absolute", top: 6, right: 6, background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white", fontSize: 8, fontWeight: 700, padding: "2px 6px", borderRadius: 8 }}>Premium</div>
                             )}
