@@ -15594,9 +15594,10 @@
       // ═══════════════════════════════════════
       // 메인 렌더링
       // ═══════════════════════════════════════
-      // ProfileSetupScreen은 useState hooks를 사용하므로
-      // early return 전에 항상 호출하여 hook 수를 일정하게 유지
+      // ProfileSetupScreen / CurriculumScreen은 useState hooks를 사용하므로
+      // early return 전에 항상 호출하여 hook 수를 일정하게 유지 (React error #310 방지)
       const profileSetupContent = ProfileSetupScreen();
+      const curriculumContent = CurriculumScreen();
 
       if (!dataLoaded) {
         return (
@@ -15618,7 +15619,7 @@
           {profile && screen === "askbook" && AskBookScreen()}
           {profile && screen === "avatarChat" && AvatarChatScreen()}
           {profile && screen === "recommend" && RecommendScreen()}
-          {profile && screen === "curriculum" && CurriculumScreen()}
+          {profile && screen === "curriculum" && curriculumContent}
           {profile && screen === "avatar" && AvatarScreen()}
           {profile && screen === "ranking" && RankingScreen()}
           {profile && screen === "battle" && BattleScreen()}
