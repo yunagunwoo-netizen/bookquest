@@ -9032,9 +9032,14 @@
                   if (!canAccessBook(thisWeekBook.id)) { showPremiumUpsell("book"); return; }
                   setSelectedBook(thisWeekBook); setBookTab("summary"); setScreen("book");
                 }}
-                style={{ background: `linear-gradient(135deg, ${thisWeekBook.color}30, ${thisWeekBook.color}10)`, borderRadius: 20, padding: 20, marginBottom: 4, cursor: "pointer", border: `2px solid ${thisWeekBook.color}60`, transition: "transform 0.2s" }}
+                style={{ background: `linear-gradient(135deg, ${thisWeekBook.color}30, ${thisWeekBook.color}10)`, borderRadius: 20, padding: 20, marginBottom: 4, cursor: "pointer", border: `2px solid ${thisWeekBook.color}60`, transition: "transform 0.2s", position: "relative", opacity: canAccessBook(thisWeekBook.id) ? 1 : 0.7 }}
                 onMouseEnter={e => e.currentTarget.style.transform = "scale(1.02)"}
                 onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}>
+                {!canAccessBook(thisWeekBook.id) && (
+                  <div style={{ position: "absolute", top: 12, right: 12, background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white", fontSize: 10, fontWeight: 700, padding: "3px 10px", borderRadius: 10, boxShadow: "0 2px 6px rgba(102,126,234,0.4)" }}>
+                    🔒 Premium
+                  </div>
+                )}
                 <div style={{ display: "flex", alignItems: "center", gap: 4, marginBottom: 10 }}>
                   <span style={{ background: thisWeekBook.color, color: "white", padding: "3px 10px", borderRadius: 10, fontSize: 11, fontWeight: 700 }}>{currentWeek}주차 퀘스트</span>
                   {bookProgress[thisWeekBook.id] === 100 && <span style={{ fontSize: 12 }}><img src="icons/ui/ui_check.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 클리어!</span>}
@@ -9093,7 +9098,7 @@
                             style={{ background: "white", borderRadius: 14, padding: 10, cursor: "pointer",
                               boxShadow: "0 2px 8px rgba(0,0,0,0.06)", border: `1.5px solid ${book.color}30`, position: "relative", minWidth: 0 }}>
                             {!canAccessBook(book.id) && (
-                              <div style={{ position: "absolute", top: 6, right: 6, background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white", fontSize: 8, fontWeight: 700, padding: "2px 6px", borderRadius: 8 }}>Premium</div>
+                              <div style={{ position: "absolute", top: 6, right: 6, background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white", fontSize: 8, fontWeight: 700, padding: "2px 6px", borderRadius: 8 }}>🔒 Premium</div>
                             )}
                             <div style={{ width: 36, height: 36, borderRadius: 10, background: book.color, color: "white",
                               display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, marginBottom: 8,
@@ -9220,7 +9225,7 @@
                         }}
                         style={{ background: "white", borderRadius: 14, padding: 14, marginBottom: 10, display: "flex", alignItems: "center", gap: 12, cursor: "pointer", boxShadow: "0 2px 6px rgba(0,0,0,0.04)", border: `2px solid ${bookProgress[book.id] === 100 ? "#4CAF50" : "transparent"}`, opacity: book.week > currentWeek ? 0.5 : 1, position: "relative" }}>
                         {!canAccessBook(book.id) && (
-                          <div style={{ position: "absolute", top: 8, right: 8, background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white", fontSize: 9, fontWeight: 700, padding: "2px 8px", borderRadius: 10 }}>Premium</div>
+                          <div style={{ position: "absolute", top: 8, right: 8, background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white", fontSize: 9, fontWeight: 700, padding: "2px 8px", borderRadius: 10 }}>🔒 Premium</div>
                         )}
                         <div style={{ width: 44, height: 56, borderRadius: 8, flexShrink: 0, overflow: "hidden" }}>
                           <SvgIcon svg={BOOK_COVERS[book.id]} size={44} style={{ height: 56, width: 44 }} />
@@ -9931,8 +9936,13 @@
                       background: "white", borderRadius: 16, padding: 14,
                       marginBottom: 12, boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
                       border: "1.5px solid #e0e7ff", cursor: "pointer",
-                      display: "block"
+                      display: "block", position: "relative", opacity: accessible ? 1 : 0.7
                     }}>
+                    {!accessible && (
+                      <div style={{ position: "absolute", top: 8, right: 8, background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white", fontSize: 9, fontWeight: 700, padding: "2px 8px", borderRadius: 10, boxShadow: "0 2px 4px rgba(102,126,234,0.3)" }}>
+                        🔒 Premium
+                      </div>
+                    )}
                     {/* 책 헤더 */}
                     <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: links.length > 0 ? 10 : 0 }}>
                       <div style={{
