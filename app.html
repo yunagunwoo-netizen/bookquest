@@ -6109,13 +6109,26 @@
                 {battleError && !isAdmin && (
                   <div style={{ background: "rgba(239,68,68,0.2)", border: "1px solid rgba(239,68,68,0.5)", borderRadius: 12, padding: 12, fontSize: 12, margin: "12px 0" }}>{battleError}</div>
                 )}
+                {/* 코인 정보 표시 */}
+                {!isAdmin && (
+                  <div style={{ margin: "12px 0 8px", fontSize: 11, fontWeight: 700, color: canAffordPlay() ? "#fde047" : "#fca5a5", background: "rgba(0,0,0,0.25)", padding: "6px 12px", borderRadius: 12, textAlign: "center" }}>
+                    🪙 내 코인 {coins || 0}개 / 필요 {BATTLE_PLAY_COIN_COST}개
+                  </div>
+                )}
+                {/* 코인 부족 안내 */}
+                {!canAffordPlay() && !isAdmin && (
+                  <div style={{ background: "rgba(239, 68, 68, 0.18)", border: "1px solid rgba(239, 68, 68, 0.5)", color: "#fecaca", padding: 12, borderRadius: 12, marginBottom: 10, textAlign: "center", fontSize: 12, lineHeight: 1.6 }}>
+                    💸 <strong>코인이 {BATTLE_PLAY_COIN_COST - (coins || 0)}개 더 필요해요!</strong><br/>
+                    미션을 완료하거나 퀴즈를 풀어 코인을 모아 보세요.
+                  </div>
+                )}
                 <button
                   onClick={() => {
                     if (!canAffordPlay()) { setBattleError(`코인이 부족해요. ${BATTLE_PLAY_COIN_COST}코인 필요`); return; }
                     setBattlePhase("debate-choice");
                   }}
-                  disabled={battleLoading}
-                  style={{ width: "100%", padding: "14px 16px", borderRadius: 14, border: "2px solid #fde047", background: "linear-gradient(135deg, #f59e0b, #dc2626)", color: "white", fontSize: 15, fontWeight: 800, cursor: "pointer", marginTop: 14, opacity: battleLoading ? 0.6 : 1, display:"flex", alignItems:"center", justifyContent:"flex-start", gap:10 }}>
+                  disabled={battleLoading || (!canAffordPlay() && !isAdmin)}
+                  style={{ width: "100%", padding: "14px 16px", borderRadius: 14, border: "2px solid #fde047", background: "linear-gradient(135deg, #f59e0b, #dc2626)", color: "white", fontSize: 15, fontWeight: 800, cursor: (battleLoading || (!canAffordPlay() && !isAdmin)) ? "not-allowed" : "pointer", marginTop: 4, opacity: (battleLoading || (!canAffordPlay() && !isAdmin)) ? 0.4 : 1, display:"flex", alignItems:"center", justifyContent:"flex-start", gap:10 }}>
                   <img src="icons/battle-direct.png" alt="" style={{width:40,height:40,objectFit:"contain",flexShrink:0}} /> 배틀시작 ({BATTLE_PLAY_COIN_COST}코인 · {remainingPlayCount()}/{BATTLE_PLAY_DAILY_LIMIT})
                 </button>
                 <button onClick={exitBattleV2} style={{ width: "100%", marginTop: 10, padding: "10px 22px", borderRadius: 12, border: "none", background: "rgba(255,255,255,0.1)", color: "white", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>랭킹으로 돌아가기</button>
@@ -6172,14 +6185,26 @@
                   style={{ width: "100%", padding: "14px 16px", borderRadius: 14, border: "1px solid rgba(255,255,255,0.3)", background: "rgba(255,255,255,0.08)", color: "white", fontSize: 15, fontWeight: 800, cursor: "pointer", marginBottom: 10, opacity: battleLoading ? 0.6 : 1, display:"flex", alignItems:"center", justifyContent:"flex-start", gap:10 }}>
                   <img src="icons/battle-proxy.png" alt="" style={{width:40,height:40,objectFit:"contain",flexShrink:0}} /> 자동진행 (바로 결과 보기)
                 </button>
+                {/* 코인 정보 + 부족 안내 (배틀시작 가능 시점) */}
+                {!isAdmin && canPlayToday() && (
+                  <div style={{ marginBottom: 8, fontSize: 11, fontWeight: 700, color: canAffordPlay() ? "#fde047" : "#fca5a5", background: "rgba(0,0,0,0.25)", padding: "6px 12px", borderRadius: 12, textAlign: "center" }}>
+                    🪙 내 코인 {coins || 0}개 / 필요 {BATTLE_PLAY_COIN_COST}개
+                  </div>
+                )}
+                {!canAffordPlay() && canPlayToday() && !isAdmin && (
+                  <div style={{ background: "rgba(239, 68, 68, 0.18)", border: "1px solid rgba(239, 68, 68, 0.5)", color: "#fecaca", padding: 12, borderRadius: 12, marginBottom: 10, textAlign: "center", fontSize: 12, lineHeight: 1.6 }}>
+                    💸 <strong>코인이 {BATTLE_PLAY_COIN_COST - (coins || 0)}개 더 필요해요!</strong><br/>
+                    미션을 완료하거나 퀴즈를 풀어 코인을 모아 보세요.
+                  </div>
+                )}
                 <button
                   onClick={() => {
                     if (!canPlayToday()) { setBattleError(`오늘 직접 참여 기회를 모두 썼어요. (${BATTLE_PLAY_DAILY_LIMIT}회/일)`); return; }
                     if (!canAffordPlay()) { setBattleError(`코인이 부족해요. ${BATTLE_PLAY_COIN_COST}코인 필요`); return; }
                     setBattlePhase("debate-choice");
                   }}
-                  disabled={battleLoading}
-                  style={{ width: "100%", padding: "14px 16px", borderRadius: 14, border: "2px solid #fde047", background: "linear-gradient(135deg, #f59e0b, #dc2626)", color: "white", fontSize: 15, fontWeight: 800, cursor: "pointer", opacity: battleLoading ? 0.6 : 1, display:"flex", alignItems:"center", justifyContent:"flex-start", gap:10 }}>
+                  disabled={battleLoading || (!canAffordPlay() && !isAdmin) || (!canPlayToday() && !isAdmin)}
+                  style={{ width: "100%", padding: "14px 16px", borderRadius: 14, border: "2px solid #fde047", background: "linear-gradient(135deg, #f59e0b, #dc2626)", color: "white", fontSize: 15, fontWeight: 800, cursor: (battleLoading || (!canAffordPlay() && !isAdmin) || (!canPlayToday() && !isAdmin)) ? "not-allowed" : "pointer", opacity: (battleLoading || (!canAffordPlay() && !isAdmin) || (!canPlayToday() && !isAdmin)) ? 0.4 : 1, display:"flex", alignItems:"center", justifyContent:"flex-start", gap:10 }}>
                   <img src="icons/battle-direct.png" alt="" style={{width:40,height:40,objectFit:"contain",flexShrink:0}} /> 배틀시작 ({BATTLE_PLAY_COIN_COST}코인 · {remainingPlayCount()}/{BATTLE_PLAY_DAILY_LIMIT})
                 </button>
                 <div style={{ fontSize: 10, opacity: 0.7, textAlign: "center", marginTop: 8, lineHeight: 1.5 }}>
