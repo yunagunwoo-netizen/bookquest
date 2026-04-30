@@ -1,5 +1,5 @@
 {
-  "total": 96,
+  "total": 95,
   "quota": {
     "1": {
       "economy": 0,
@@ -19,7 +19,7 @@
       "history": 1,
       "media": 1,
       "philosophy": 2,
-      "literature": 6
+      "literature": 5
     },
     "3": {
       "economy": 1,
@@ -301,16 +301,6 @@
       "author": "홍지혜",
       "publisher": "고래뱃속",
       "year": "2023",
-      "borrowed_from_grade": null
-    },
-    {
-      "grade": 2,
-      "semester": 1,
-      "domain": "literature",
-      "title": "노란 카약",
-      "author": "니나 레이든",
-      "publisher": "소원나무",
-      "year": "2018",
       "borrowed_from_grade": null
     },
     {
