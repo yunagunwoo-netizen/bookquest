@@ -231,6 +231,26 @@
     const QUIZ_TOO_FAST_MS = 2000;  // 임계값: 2초 미만 응답 = 부드러운 알림
 
     // ═══════════════════════════════════════
+    // Layer 3 — Spaced Repetition (망각곡선)
+    // 정답 stage 0→1→2→3→4(졸업), 다음 노출까지: 1일·3일·1주·3주·없음
+    // 오답 시 stage 0으로 리셋 + 다음날 다시
+    // ═══════════════════════════════════════
+    const SR_INTERVALS_MS = [
+      1 * 24 * 60 * 60 * 1000,   // stage 0 → 1: 1일
+      3 * 24 * 60 * 60 * 1000,   // stage 1 → 2: 3일
+      7 * 24 * 60 * 60 * 1000,   // stage 2 → 3: 1주
+      21 * 24 * 60 * 60 * 1000,  // stage 3 → 4: 3주
+    ];
+    const SR_GRADUATED_STAGE = 4;  // 졸업 = 더 이상 노출 안 함
+    const computeNextDue = (correct, prevStage) => {
+      const now = Date.now();
+      if (!correct) return { reviewStage: 0, nextDueAt: now + SR_INTERVALS_MS[0] };
+      const nextStage = Math.min(SR_GRADUATED_STAGE, (prevStage || 0) + 1);
+      if (nextStage >= SR_GRADUATED_STAGE) return { reviewStage: SR_GRADUATED_STAGE, nextDueAt: null };
+      return { reviewStage: nextStage, nextDueAt: now + SR_INTERVALS_MS[nextStage - 1] };
+    };
+
+    // ═══════════════════════════════════════
     // 배틀 결과 제출 중복 호출 가드 (interactiveBattle finalize 한 번만)
     // ═══════════════════════════════════════
     let _finalizeInteractiveBusy = false;
@@ -7780,33 +7800,71 @@
                 return quizState[`${book.id}-quiz-${i}`]?.answered;
               }).length;
               const unlockedQuizCount = Math.min(allQuiz.length, (Math.floor(answeredQuizCount / CHUNK_SIZE) + 1) * CHUNK_SIZE);
-              const unlockedSorted = sortedQuiz.filter(q => {
+              // Layer 3: SR — 졸업 q 제외, 복습 due q 분류
+              const nowMs = Date.now();
+              const isReviewDue = (q) => {
                 const i = allQuiz.findIndex(o => o.q === q.q);
-                // 풀린 묶음 안의 q만 노출 — sortedQuiz 안에서 unlockedQuizCount개까지만
-                return sortedQuiz.indexOf(q) < unlockedQuizCount;
-              });
+                const st = quizState[`${book.id}-quiz-${i}`];
+                if (!st || !st.answered) return false;
+                if (st.reviewStage >= SR_GRADUATED_STAGE) return false;
+                return (st.nextDueAt || 0) <= nowMs;
+              };
+              const isGraduated = (q) => {
+                const i = allQuiz.findIndex(o => o.q === q.q);
+                const st = quizState[`${book.id}-quiz-${i}`];
+                return st && st.reviewStage >= SR_GRADUATED_STAGE;
+              };
+              const isFresh = (q) => {
+                const i = allQuiz.findIndex(o => o.q === q.q);
+                const st = quizState[`${book.id}-quiz-${i}`];
+                return !st || !st.answered;
+              };
+              // 복습 due 카운트 (책 전체 기준)
+              const reviewDueCount = allQuiz.filter(isReviewDue).length;
+              // 챕터 시퀀스 unlocked 풀에서 (1) 복습 due 우선 → (2) 새 q → (3) 졸업 q 제외
+              const unlockedSorted = sortedQuiz.filter(q => sortedQuiz.indexOf(q) < unlockedQuizCount && !isGraduated(q));
+              const reviewDueQ = unlockedSorted.filter(isReviewDue);
+              const freshQ = unlockedSorted.filter(isFresh);
+              const orderedQuiz = [...reviewDueQ, ...freshQ];
               const SHOW_QUIZ = 4;
-              const displayedQuiz = unlockedSorted.slice(0, SHOW_QUIZ);
-              const hasMoreQuiz = unlockedSorted.length > displayedQuiz.length;
+              const displayedQuiz = orderedQuiz.slice(0, SHOW_QUIZ);
+              const hasMoreQuiz = orderedQuiz.length > displayedQuiz.length;
               const nextUnlockAt = unlockedQuizCount;
               const remainToNextUnlock = Math.max(0, nextUnlockAt - answeredQuizCount);
+              const graduatedCount = allQuiz.filter(isGraduated).length;
               return (
               <div>
                 <div style={{ fontSize: 13, color: "#888", marginBottom: 12 }}><img src="icons/ui/ui_question.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 책 내용을 바탕으로 퀴즈를 풀어보세요! (+10XP)</div>
                 {allQuiz.length > 0 && (
-                  <div style={{ fontSize: 11, marginBottom: 8, display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
-                    <span style={{ color: "#667eea", fontWeight: 700 }}>
-                      📚 풀이 진행: {answeredQuizCount}/{allQuiz.length}
-                      {answeredQuizCount < allQuiz.length && (
-                        <span style={{ color: "#888", fontWeight: 500, marginLeft: 6 }}>
-                          · {remainToNextUnlock > 0 ? `${remainToNextUnlock}문제 더 풀면 다음 묶음 해제` : "다음 묶음 열림!"}
-                        </span>
-                      )}
-                      {answeredQuizCount >= allQuiz.length && (
-                        <span style={{ color: "#22c55e", fontWeight: 700, marginLeft: 6 }}>· 완주! 🎉</span>
-                      )}
-                    </span>
-                    <span style={{ color: "#aaa" }}>{displayedQuiz.length}개 표시</span>
+                  <div style={{ marginBottom: 8 }}>
+                    <div style={{ fontSize: 11, display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                      <span style={{ color: "#667eea", fontWeight: 700 }}>
+                        📚 풀이 진행: {answeredQuizCount}/{allQuiz.length}
+                        {answeredQuizCount < allQuiz.length && (
+                          <span style={{ color: "#888", fontWeight: 500, marginLeft: 6 }}>
+                            · {remainToNextUnlock > 0 ? `${remainToNextUnlock}문제 더 풀면 다음 묶음 해제` : "다음 묶음 열림!"}
+                          </span>
+                        )}
+                        {answeredQuizCount >= allQuiz.length && (
+                          <span style={{ color: "#22c55e", fontWeight: 700, marginLeft: 6 }}>· 완주! 🎉</span>
+                        )}
+                      </span>
+                      <span style={{ color: "#aaa" }}>{displayedQuiz.length}개 표시</span>
+                    </div>
+                    {(reviewDueCount > 0 || graduatedCount > 0) && (
+                      <div style={{ fontSize: 10, color: "#666", display: "flex", gap: 10 }}>
+                        {reviewDueCount > 0 && (
+                          <span style={{ background: "#fef3c7", color: "#92400e", padding: "2px 8px", borderRadius: 8, fontWeight: 700 }}>
+                            🔄 복습 {reviewDueCount}개 대기
+                          </span>
+                        )}
+                        {graduatedCount > 0 && (
+                          <span style={{ background: "#dcfce7", color: "#166534", padding: "2px 8px", borderRadius: 8, fontWeight: 700 }}>
+                            🎓 졸업 {graduatedCount}/{allQuiz.length}
+                          </span>
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
                 {displayedQuiz.map((quiz) => {
@@ -7833,7 +7891,10 @@
                               const askedAt = quizAskedAt[key];
                               const responseTimeMs = askedAt ? Date.now() - askedAt : null;
                               const tooFast = responseTimeMs !== null && responseTimeMs < QUIZ_TOO_FAST_MS;
-                              setQuizState(prev => ({ ...prev, [key]: { answered: true, correct: isCorrect, responseTimeMs } }));
+                              // Layer 3: Spaced Repetition 단계 업데이트
+                              const prevStage = quizState[key]?.reviewStage || 0;
+                              const sr = computeNextDue(isCorrect, prevStage);
+                              setQuizState(prev => ({ ...prev, [key]: { answered: true, correct: isCorrect, responseTimeMs, reviewStage: sr.reviewStage, nextDueAt: sr.nextDueAt } }));
                               try { isCorrect ? getAppSound().sfx.quiz_correct() : getAppSound().sfx.quiz_wrong(); } catch(e) {}
                               if (isCorrect && !answered) {
                                 const faceBonus = getItemBonus(equippedItems, "quizCoin");
@@ -7859,7 +7920,10 @@
                               const askedAt = quizAskedAt[key];
                               const responseTimeMs = askedAt ? Date.now() - askedAt : null;
                               const tooFast = responseTimeMs !== null && responseTimeMs < QUIZ_TOO_FAST_MS;
-                              setQuizState(prev => ({ ...prev, [key]: { answered: true, correct: isCorrect, responseTimeMs } }));
+                              // Layer 3: Spaced Repetition 단계 업데이트
+                              const prevStage = quizState[key]?.reviewStage || 0;
+                              const sr = computeNextDue(isCorrect, prevStage);
+                              setQuizState(prev => ({ ...prev, [key]: { answered: true, correct: isCorrect, responseTimeMs, reviewStage: sr.reviewStage, nextDueAt: sr.nextDueAt } }));
                               try { isCorrect ? getAppSound().sfx.quiz_correct() : getAppSound().sfx.quiz_wrong(); } catch(e) {}
                               if (isCorrect && !answered) {
                                 const faceBonus = getItemBonus(equippedItems, "quizCoin");
