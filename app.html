@@ -224,6 +224,13 @@
     const { useState, useEffect, useRef, useCallback } = React;
 
     // ═══════════════════════════════════════
+    // Layer 2 — Quiz response time tracking (module-level)
+    // 카드 첫 렌더 시 timestamp 기록, 클릭 시 응답시간 계산. 새로고침 시 초기화 OK.
+    // ═══════════════════════════════════════
+    const quizAskedAt = {};  // { [key]: Date.now() at first render }
+    const QUIZ_TOO_FAST_MS = 2000;  // 임계값: 2초 미만 응답 = 부드러운 알림
+
+    // ═══════════════════════════════════════
     // ☁️ Cloud Functions API 서비스
     // ═══════════════════════════════════════
     const FUNCTIONS_BASE = "https://us-central1-bookquest-f9720.cloudfunctions.net";
@@ -7702,6 +7709,10 @@
                   const i = origIdx;
                   const key = `${book.id}-quiz-${i}`;
                   const answered = quizState[key];
+                  // Layer 2: 첫 렌더 시점 timestamp 기록 (이미 답한 경우 skip)
+                  if (!answered && !quizAskedAt[key]) {
+                    quizAskedAt[key] = Date.now();
+                  }
                   return (
                     <div key={i} style={{ background: "white", borderRadius: 14, padding: 16, marginBottom: 10, boxShadow: "0 2px 6px rgba(0,0,0,0.04)" }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
@@ -7713,7 +7724,11 @@
                           {quiz.options.map((opt, j) => (
                             <button key={j} onClick={() => {
                               const isCorrect = j === quiz.answer;
-                              setQuizState(prev => ({ ...prev, [key]: { answered: true, correct: isCorrect } }));
+                              // Layer 2: 응답시간 계산
+                              const askedAt = quizAskedAt[key];
+                              const responseTimeMs = askedAt ? Date.now() - askedAt : null;
+                              const tooFast = responseTimeMs !== null && responseTimeMs < QUIZ_TOO_FAST_MS;
+                              setQuizState(prev => ({ ...prev, [key]: { answered: true, correct: isCorrect, responseTimeMs } }));
                               try { isCorrect ? getAppSound().sfx.quiz_correct() : getAppSound().sfx.quiz_wrong(); } catch(e) {}
                               if (isCorrect && !answered) {
                                 const faceBonus = getItemBonus(equippedItems, "quizCoin");
@@ -7721,7 +7736,7 @@
                                 addXp(10);
                                 completeMissionByTrigger("quiz");
                               }
-                              setQuizResultInfo({ correct: isCorrect, explanation: quiz.explanation, answer: quiz.options[quiz.answer] });
+                              setQuizResultInfo({ correct: isCorrect, explanation: quiz.explanation, answer: quiz.options[quiz.answer], tooFast, responseTimeMs });
                               setShowQuizResult(true);
                             }}
                               disabled={answered}
@@ -7735,7 +7750,11 @@
                           {[true, false].map(ans => (
                             <button key={ans} onClick={() => {
                               const isCorrect = ans === quiz.answer;
-                              setQuizState(prev => ({ ...prev, [key]: { answered: true, correct: isCorrect } }));
+                              // Layer 2: 응답시간 계산
+                              const askedAt = quizAskedAt[key];
+                              const responseTimeMs = askedAt ? Date.now() - askedAt : null;
+                              const tooFast = responseTimeMs !== null && responseTimeMs < QUIZ_TOO_FAST_MS;
+                              setQuizState(prev => ({ ...prev, [key]: { answered: true, correct: isCorrect, responseTimeMs } }));
                               try { isCorrect ? getAppSound().sfx.quiz_correct() : getAppSound().sfx.quiz_wrong(); } catch(e) {}
                               if (isCorrect && !answered) {
                                 const faceBonus = getItemBonus(equippedItems, "quizCoin");
@@ -7743,7 +7762,7 @@
                                 addXp(10);
                                 completeMissionByTrigger("quiz");
                               }
-                              setQuizResultInfo({ correct: isCorrect, explanation: quiz.explanation, answer: quiz.answer ? "맞음" : "틀림" });
+                              setQuizResultInfo({ correct: isCorrect, explanation: quiz.explanation, answer: quiz.answer ? "맞음" : "틀림", tooFast, responseTimeMs });
                               setShowQuizResult(true);
                             }}
                               disabled={answered}
@@ -9957,7 +9976,7 @@
       // ═══════════════════════════════════════
       const QuizResultModal = () => {
         if (!showQuizResult || !quizResultInfo) return null;
-        const { correct, explanation, answer } = quizResultInfo;
+        const { correct, explanation, answer, tooFast, responseTimeMs } = quizResultInfo;
         return (
           <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}
             onClick={() => setShowQuizResult(false)}>
@@ -9968,6 +9987,11 @@
               <div style={{ fontSize: 14, color: "#666", marginBottom: 16, lineHeight: 1.6 }}>{explanation}</div>
               {!correct && <div style={{ fontSize: 13, color: "#888", marginBottom: 12 }}>정답: {answer}</div>}
               {correct && <div style={{ fontSize: 13, color: "#4CAF50", fontWeight: 600, marginBottom: 12 }}>+10XP, +3코인!</div>}
+              {tooFast && (
+                <div style={{ fontSize: 12, color: "#92400e", background: "#fef3c7", padding: "8px 12px", borderRadius: 10, marginBottom: 12, lineHeight: 1.5 }}>
+                  ⏱ {(responseTimeMs/1000).toFixed(1)}초만에 답했어요. 천천히 읽고 답하면 더 잘 풀 수 있어!
+                </div>
+              )}
               <button onClick={() => setShowQuizResult(false)}
                 style={{ padding: "12px 32px", borderRadius: 20, border: "none", background: "#667eea", color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
                 확인
