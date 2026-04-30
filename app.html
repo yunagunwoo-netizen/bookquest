@@ -5120,7 +5120,7 @@
                 <div style={{ marginBottom: 24 }}>
                   <label style={{ fontSize: 13, fontWeight: 600, color: "#555", display: "block", marginBottom: 8 }}>아바타 선택 ({isAdmin ? "관리자: 전체" : ownedAvatars.length + "개 보유"})</label>
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, maxHeight: 240, overflowY: "auto" }}>
-                    {AVATAR_DATA.filter(a => isAdmin || ownedAvatars.includes(a.id)).map(a => (
+                    {AVATAR_DATA.filter(a => !a.storeHidden && (isAdmin || ownedAvatars.includes(a.id))).map(a => (
                       <button key={a.id} onClick={() => setProfileForm(p => ({ ...p, avatar: a.id }))}
                         style={{
                           width: "100%", padding: "8px 0", borderRadius: 16, border: "3px solid",
@@ -5129,7 +5129,7 @@
                           cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
                           transition: "all 0.2s", boxShadow: profileForm.avatar === a.id ? "0 4px 12px rgba(102,126,234,0.25)" : "none"
                         }}>
-                        <AvatarIcon avatarId={a.id} size={44} />
+                        <AvatarIcon avatarId={a.id} size={44} portrait={true} />
                         <span style={{ fontSize: 10, fontWeight: 600, color: profileForm.avatar === a.id ? "#667eea" : "#999" }}>{a.name}</span>
                       </button>
                     ))}
@@ -10940,7 +10940,7 @@
                 <div style={{ marginBottom: 24 }}>
                   <label style={{ fontSize: 13, fontWeight: 600, color: "#555", display: "block", marginBottom: 8 }}>아바타 선택</label>
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, maxHeight: 200, overflowY: "auto" }}>
-                    {AVATAR_DATA.filter(a => isAdmin || ownedAvatars.includes(a.id)).map(a => (
+                    {AVATAR_DATA.filter(a => !a.storeHidden && (isAdmin || ownedAvatars.includes(a.id))).map(a => (
                       <button key={a.id} onClick={() => setProfileForm(p => ({ ...p, avatar: a.id }))}
                         style={{
                           width: "100%", padding: "8px 0", borderRadius: 16, border: "3px solid",
@@ -10948,7 +10948,7 @@
                           background: profileForm.avatar === a.id ? "#667eea10" : "#fafafa",
                           cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 4
                         }}>
-                        <AvatarIcon avatarId={a.id} size={40} />
+                        <AvatarIcon avatarId={a.id} size={40} portrait={true} />
                         <span style={{ fontSize: 10, fontWeight: 600, color: profileForm.avatar === a.id ? "#667eea" : "#999" }}>{a.name}</span>
                       </button>
                     ))}
