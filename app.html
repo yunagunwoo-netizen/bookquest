@@ -1002,9 +1002,13 @@
     // 통합 도서 배열 — 시즌 BOOKS + 교과 + 시즌2
     // ═══════════════════════════════════════
     const ALL_BOOKS = [...BOOKS, ...CURRICULUM_BOOKS];  // 시즌1 + 교과연계 (항상 포함)
+    // 2026-04-30 — findBookById: ARCHIVE도 검색 (배지·전적 등 historical 데이터 호환)
     const findBookById = (id) => {
       return ALL_BOOKS.find(b => b.id === id || b.id === Number(id))
-        || SEASON2_BOOKS.find(b => b.id === id || b.id === Number(id));
+        || SEASON2_BOOKS.find(b => b.id === id || b.id === Number(id))
+        || (typeof _CURRICULUM_BOOKS_ARCHIVE !== "undefined" && _CURRICULUM_BOOKS_ARCHIVE.find(b => b.id === id || b.id === Number(id)))
+        || (typeof _SEASON2_BOOKS_ARCHIVE !== "undefined" && _SEASON2_BOOKS_ARCHIVE.find(b => b.id === id || b.id === Number(id)))
+        || null;
     };
 
     // ═══════════════════════════════════════════════════════
@@ -5093,7 +5097,7 @@
                 <div style={{ marginBottom: 20 }}>
                   <label style={{ fontSize: 13, fontWeight: 600, color: "#555", display: "block", marginBottom: 6 }}>학년</label>
                   <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                    {["1", "2", "3", "4", "5", "6", "중1", "중2", "중3"].map(g => (
+                    {["1", "2", "3", "4", "5", "6"].map(g => (
                       <button key={g} onClick={() => setProfileForm(p => ({ ...p, grade: g }))}
                         style={{
                           padding: "8px 16px", borderRadius: 20, border: "2px solid",
@@ -8532,7 +8536,7 @@
               <img src="icons/ui/ui_books.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 학년 빠른 변경 <span style={{ fontSize: 10, fontWeight: 700, padding: "2px 6px", borderRadius: 6, background: "#fef3c7", color: "#b45309", marginLeft: 4 }}>관리자</span> <span style={{ fontSize: 11, color: "#667eea", fontWeight: 700 }}>({profile?.grade ? (["1","2","3","4","5","6"].includes(profile.grade) ? `초등 ${profile.grade}학년` : `${profile.grade}학년`) : "미설정"})</span>
             </div>
             <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-              {["1", "2", "3", "4", "5", "6", "중1", "중2", "중3"].map(g => (
+              {["1", "2", "3", "4", "5", "6"].map(g => (
                 <button key={g} onClick={() => { setProfile(prev => ({ ...prev, grade: g })); setProfileForm(prev => ({ ...prev, grade: g })); }}
                   style={{
                     padding: "7px 14px", borderRadius: 20, border: "2px solid",
@@ -10922,7 +10926,7 @@
                 <div style={{ marginBottom: 20 }}>
                   <label style={{ fontSize: 13, fontWeight: 600, color: "#555", display: "block", marginBottom: 6 }}>학년</label>
                   <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                    {["1", "2", "3", "4", "5", "6", "중1", "중2", "중3"].map(g => (
+                    {["1", "2", "3", "4", "5", "6"].map(g => (
                       <button key={g} onClick={() => setProfileForm(p => ({ ...p, grade: g }))}
                         style={{
                           padding: "8px 16px", borderRadius: 20, border: "2px solid",

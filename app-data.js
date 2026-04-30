@@ -3,7 +3,10 @@
 // 이 파일은 일반 script로 로드되며 Babel 처리되지 않음.
 // app.html의 Babel script(<script type="text/babel">)에서 그대로 참조.
 
-const CURRICULUM_BOOKS = [
+// 2026-04-30 — CURRICULUM/SEASON2 풀은 AI 환각 위험으로 앱 비노출 처리.
+// 원본 데이터는 _ARCHIVE 변수에 보존 (findBookById 호환·백업·향후 검증용).
+// 현재 사용되는 CURRICULUM_BOOKS / SEASON2_BOOKS는 빈 배열 (파일 하단 참조).
+const _CURRICULUM_BOOKS_ARCHIVE = [
       // ── 4학년 1학기 ────────────────────────────────────
       {
         id: "C001",
@@ -11776,7 +11779,7 @@ const CURRICULUM_BOOKS = [
       }
     ];
 
-const SEASON2_BOOKS = [
+const _SEASON2_BOOKS_ARCHIVE = [
       // ── 초저 (1-2학년) ──────────────────────────────
       {
         id: 2101,
@@ -15968,3 +15971,12 @@ const SEASON2_BOOKS = [
         ]
       },
     ];
+
+// ═══════════════════════════════════════════════════════════════════
+// 2026-04-30 — DISPLAY OVERRIDE
+// CURRICULUM_BOOKS / SEASON2_BOOKS는 AI 환각 위험으로 앱 비노출.
+// 원본 데이터는 위 _CURRICULUM_BOOKS_ARCHIVE / _SEASON2_BOOKS_ARCHIVE 보존.
+// 향후 검증된 책 또는 경기도교육청 추천도서로 교체 예정.
+// ═══════════════════════════════════════════════════════════════════
+const CURRICULUM_BOOKS = [];
+const SEASON2_BOOKS = [];
