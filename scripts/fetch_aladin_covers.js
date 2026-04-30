@@ -65,6 +65,7 @@ function extractBooks(block, category) {
 
 const allBooks = [
   ...extractBooks(sliceGlobal('BOOKS'), 'BOOKS'),
+  ...extractBooks(sliceGlobal('EXTRA_BOOKS'), 'EXTRA'),
   ...extractBooks(sliceGlobal('CURRICULUM_BOOKS'), 'CURRICULUM'),
   ...extractBooks(sliceGlobal('SEASON2_BOOKS'), 'SEASON2'),
 ];

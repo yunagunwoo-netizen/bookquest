@@ -1,0 +1,199 @@
+{
+  "header_grade": 4,
+  "header_subjects": [
+    "국어",
+    "사회",
+    "과학"
+  ],
+  "books": [
+    {
+      "subject": "국어",
+      "title": "3.1운동, 그 가족에게 생긴 일",
+      "author": "고수산나",
+      "publisher": "내일을여는책",
+      "year": 2019
+    },
+    {
+      "subject": "국어",
+      "title": "안이 궁금했을까 밖이 궁금했을까",
+      "author": "이묘신",
+      "publisher": "청년사",
+      "year": 2019
+    },
+    {
+      "subject": "국어",
+      "title": "음악이 세상을 바꿀 수 있을까?",
+      "author": "김기정",
+      "publisher": "한권의책",
+      "year": 2019
+    },
+    {
+      "subject": "국어",
+      "title": "정약용이 귀양지에서 아들에게 보낸 편지",
+      "author": "김숙분",
+      "publisher": "가문비어린이",
+      "year": 2019
+    },
+    {
+      "subject": "국어",
+      "title": "초록 앙",
+      "author": "다이애나 킴톤",
+      "publisher": "샘터",
+      "year": 2019
+    },
+    {
+      "subject": "국어",
+      "title": "1930, 경성 설렁탕",
+      "author": "조은경",
+      "publisher": "머스트비",
+      "year": 2018
+    },
+    {
+      "subject": "국어",
+      "title": "1등 용이가 사라졌다",
+      "author": "윤숙희",
+      "publisher": "나무생각",
+      "year": 2018
+    },
+    {
+      "subject": "국어",
+      "title": "끝나지 않은 진실 게임",
+      "author": "전은지",
+      "publisher": "밝은미래",
+      "year": 2018
+    },
+    {
+      "subject": "국어",
+      "title": "딸가닥딸가닥",
+      "author": "김명희",
+      "publisher": "청개구리",
+      "year": 2018
+    },
+    {
+      "subject": "국어",
+      "title": "소녀 H",
+      "author": "신소영",
+      "publisher": "고릴라박스",
+      "year": 2018
+    },
+    {
+      "subject": "국어",
+      "title": "위대한 모험가들",
+      "author": "앨리스테어 험프리스",
+      "publisher": "애플트리태일즈",
+      "year": 2018
+    },
+    {
+      "subject": "국어",
+      "title": "직업을 파는 상점",
+      "author": "조경희",
+      "publisher": "M&Kids",
+      "year": 2018
+    },
+    {
+      "subject": "국어",
+      "title": "책, 즐겁게 읽는 법",
+      "author": "박동식",
+      "publisher": "봄볕",
+      "year": 2018
+    },
+    {
+      "subject": "국어",
+      "title": "책을 살리고 싶은 소녀",
+      "author": "클라우스 하게루프",
+      "publisher": "알라딘북스",
+      "year": 2018
+    },
+    {
+      "subject": "국어",
+      "title": "내 이름은 플라스틱",
+      "author": "정명숙",
+      "publisher": "아주좋은날",
+      "year": 2017
+    },
+    {
+      "subject": "국어",
+      "title": "내 머릿속엔 뭐가 들었나?",
+      "author": "황서영",
+      "publisher": "청개구리",
+      "year": 2017
+    },
+    {
+      "subject": "사회",
+      "title": "수리가족 탄생기",
+      "author": "황종금",
+      "publisher": "파란자전거",
+      "year": 2019
+    },
+    {
+      "subject": "사회",
+      "title": "1+1이 공짜가 아니라고?",
+      "author": "이정주",
+      "publisher": "개암나무",
+      "year": 2018
+    },
+    {
+      "subject": "사회",
+      "title": "4차 산업혁명",
+      "author": "이현희",
+      "publisher": "서유재",
+      "year": 2018
+    },
+    {
+      "subject": "사회",
+      "title": "남자답게? 여자답게? 그냥 나답게 할래요",
+      "author": "최형미, 이항",
+      "publisher": "팜파스",
+      "year": 2018
+    },
+    {
+      "subject": "사회",
+      "title": "벙구리",
+      "author": "최은순",
+      "publisher": "스문북",
+      "year": 2018
+    },
+    {
+      "subject": "사회",
+      "title": "성 평등이 뭐예요?",
+      "author": "제럴딘 명상",
+      "publisher": "개암나무",
+      "year": 2018
+    },
+    {
+      "subject": "사회",
+      "title": "안녕, 세계의 친구들",
+      "author": "마이아 브라이",
+      "publisher": "샘터",
+      "year": 2018
+    },
+    {
+      "subject": "사회",
+      "title": "어린이 세계시민학교",
+      "author": "박지선",
+      "publisher": "파란자전거",
+      "year": 2018
+    },
+    {
+      "subject": "사회",
+      "title": "어린이 페미니즘 학교",
+      "author": "초등성평등연구회",
+      "publisher": "우리학교",
+      "year": 2018
+    }
+  ],
+  "_source_file": "2019 초등교과연계 추천도서 6.png",
+  "_extracted_at": "2026-04-30T10:18:36.167Z",
+  "_tokens": {
+    "input_tokens": 1903,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "cache_creation": {
+      "ephemeral_5m_input_tokens": 0,
+      "ephemeral_1h_input_tokens": 0
+    },
+    "output_tokens": 1696,
+    "service_tier": "standard",
+    "inference_geo": "global"
+  }
+}

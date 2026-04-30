@@ -1,0 +1,199 @@
+{
+  "header_grade": 5,
+  "header_subjects": [
+    "국어",
+    "사회",
+    "과학"
+  ],
+  "books": [
+    {
+      "subject": "국어",
+      "title": "용의 미래",
+      "author": "최양선",
+      "publisher": "문학과 지성사",
+      "year": 2018
+    },
+    {
+      "subject": "국어",
+      "title": "내일, 날다",
+      "author": "쓰카다 스미에",
+      "publisher": "머스트비",
+      "year": 2018
+    },
+    {
+      "subject": "국어",
+      "title": "리얼 마래",
+      "author": "황지영",
+      "publisher": "문학과 지성사",
+      "year": 2018
+    },
+    {
+      "subject": "국어",
+      "title": "착한 모자는 없다",
+      "author": "이기규",
+      "publisher": "휴먼어린이",
+      "year": 2018
+    },
+    {
+      "subject": "사회",
+      "title": "거꾸로 환경시계 탐구생활",
+      "author": "박숙현",
+      "publisher": "파란자전거",
+      "year": 2018
+    },
+    {
+      "subject": "사회",
+      "title": "고래 어린이 인문 학교",
+      "author": "최성각 외",
+      "publisher": "철수와영���",
+      "year": 2018
+    },
+    {
+      "subject": "사회",
+      "title": "굿 나이트 스토리즈 모 레벨 걸스",
+      "author": "엘레나 파빌리",
+      "publisher": "주니어김영사",
+      "year": 2018
+    },
+    {
+      "subject": "사회",
+      "title": "넬슨 만델라 선생님과 수상한 클럽",
+      "author": "김미애",
+      "publisher": "주니어김영사",
+      "year": 2018
+    },
+    {
+      "subject": "사회",
+      "title": "마땅히 누려야 할 인권 탐구생활",
+      "author": "이기규",
+      "publisher": "파란자전거",
+      "year": 2018
+    },
+    {
+      "subject": "사회",
+      "title": "모래 언덕의 길",
+      "author": "콜레트 위다비",
+      "publisher": "머스트비",
+      "year": 2018
+    },
+    {
+      "subject": "사회",
+      "title": "빼앗긴 사람들",
+      "author": "아민 그레더",
+      "publisher": "지양사",
+      "year": 2018
+    },
+    {
+      "subject": "사회",
+      "title": "선생님, 노동이 뭐예요?",
+      "author": "하종강",
+      "publisher": "철수와영희",
+      "year": 2018
+    },
+    {
+      "subject": "사회",
+      "title": "선생님, 헌법이 뭐예요?",
+      "author": "배성호",
+      "publisher": "철수와영희",
+      "year": 2019
+    },
+    {
+      "subject": "사회",
+      "title": "어린이 페미니즘 학교",
+      "author": "초등성평등연구회",
+      "publisher": "우리학교",
+      "year": 2018
+    },
+    {
+      "subject": "사회",
+      "title": "유대인 수용소의 두자매 이야기",
+      "author": "프니나 빗 츠비",
+      "publisher": "아름다운사람들",
+      "year": 2018
+    },
+    {
+      "subject": "사회",
+      "title": "차별은 세상을 병들게 해요",
+      "author": "오승현",
+      "publisher": "개암나무",
+      "year": 2018
+    },
+    {
+      "subject": "사회",
+      "title": "함께 사는 세상 소중한 인권",
+      "author": "신선용",
+      "publisher": "뭉치",
+      "year": 2018
+    },
+    {
+      "subject": "과학",
+      "title": "꼬리에 꼬리를 잇는 지식 검색",
+      "author": "에이비치",
+      "publisher": "Homebook",
+      "year": 2018
+    },
+    {
+      "subject": "과학",
+      "title": "시큼시큼 미끌미끌 : 산과 염기",
+      "author": "김희정",
+      "publisher": "지학사",
+      "year": 2018
+    },
+    {
+      "subject": "과학",
+      "title": "자연사 박물관 : 생령 관찰 실험실",
+      "author": "DK 자연사 박물관 편집 위원회",
+      "publisher": "비룡소",
+      "year": 2019
+    },
+    {
+      "subject": "과학",
+      "title": "조지와 빅뱅 1",
+      "author": "스티븐 호킹",
+      "publisher": "주니어RHK",
+      "year": 2018
+    },
+    {
+      "subject": "과학",
+      "title": "우주와 별",
+      "author": "신광복",
+      "publisher": "아르볼",
+      "year": 2018
+    },
+    {
+      "subject": "과학",
+      "title": "우주 개발이 뭐예요?",
+      "author": "피에르 프랑수아 무리오",
+      "publisher": "개암나무",
+      "year": 2018
+    },
+    {
+      "subject": "과학",
+      "title": "인간을 받아 줄 행성 어디 없나요?",
+      "author": "조인하",
+      "publisher": "미래인",
+      "year": 2018
+    },
+    {
+      "subject": "과학",
+      "title": "HOW? 미생물학의 아버지 파스퇴르",
+      "author": "한정호",
+      "publisher": "와이즈만BOOKS",
+      "year": 2018
+    }
+  ],
+  "_source_file": "2019 초등교과연계 추천도서 3.png",
+  "_extracted_at": "2026-04-30T10:17:13.726Z",
+  "_tokens": {
+    "input_tokens": 1893,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "cache_creation": {
+      "ephemeral_5m_input_tokens": 0,
+      "ephemeral_1h_input_tokens": 0
+    },
+    "output_tokens": 1765,
+    "service_tier": "standard",
+    "inference_geo": "global"
+  }
+}

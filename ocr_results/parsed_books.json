@@ -1,0 +1,4646 @@
+{
+  "total_unique_books": 578,
+  "by_grade": {
+    "6": 153,
+    "5": 139,
+    "4": 126,
+    "1": 66,
+    "2": 72,
+    "3": 78
+  },
+  "by_subject": {
+    "수학": 106,
+    "사회": 72,
+    "과학": 64,
+    "복합": 177,
+    "국어": 183,
+    "안전": 32
+  },
+  "matched_with_pdf": 2,
+  "books": [
+    {
+      "grade": 6,
+      "subject": "수학",
+      "title": "개념연결 초등수학사전",
+      "author": "최수일 외",
+      "publisher": "비아에듀",
+      "year": "2019"
+    },
+    {
+      "grade": 6,
+      "subject": "수학",
+      "title": "로미오와 줄리엣이 첫눈에 반할 확률은?",
+      "author": "김원섭",
+      "publisher": "뭉치",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "수학",
+      "title": "비례배분으로 보물섬을 발견한 해적 실버",
+      "author": "박신식",
+      "publisher": "동아엠앤비",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "수학",
+      "title": "수학천재의 비법노트",
+      "author": "브레인 퀘스트",
+      "publisher": "우리학교",
+      "year": "2017"
+    },
+    {
+      "grade": 6,
+      "subject": "수학",
+      "title": "어떻게 문제를 풀까요?",
+      "author": "이레네 벤투리",
+      "publisher": "알라딘북스",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "수학",
+      "title": "원주율로 떠나는 오디세우스의 수학 모험",
+      "author": "노영란",
+      "publisher": "뭉치",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "수학",
+      "title": "오일조밀 세상을 만든 수학",
+      "author": "김용준",
+      "publisher": "봄볕",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "사회",
+      "title": "(땡그랑! 엽전이 들려주는)조선 경제 이야기",
+      "author": "서선연",
+      "publisher": "아이세움",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "사회",
+      "title": "고래 어린이 인문 학교",
+      "author": "최성각 외",
+      "publisher": "철수와영희",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "사회",
+      "title": "노동이 뭐예요?",
+      "author": "자크 올리비에 포",
+      "publisher": "개암나무",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "사회",
+      "title": "백년아이",
+      "author": "김지연",
+      "publisher": "다림",
+      "year": "2019"
+    },
+    {
+      "grade": 6,
+      "subject": "사회",
+      "title": "생명을 위협하는 공기 쓰레기, 미세먼지 이야기",
+      "author": "박선희",
+      "publisher": "팜파스",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "사회",
+      "title": "선생님, 노동이 뭐예요?",
+      "author": "하종강",
+      "publisher": "철수와영희",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "사회",
+      "title": "(조선 백성을 사랑한) 바른말쟁이들",
+      "author": "하루",
+      "publisher": "주니어단디",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "사회",
+      "title": "어쨌든 폼나게",
+      "author": "최은영",
+      "publisher": "백두리",
+      "year": "2019"
+    },
+    {
+      "grade": 6,
+      "subject": "사회",
+      "title": "왜관으로 간 아이들",
+      "author": "우리야",
+      "publisher": "가문비",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "사회",
+      "title": "크다! 작다!",
+      "author": "장성익",
+      "publisher": "분홍고래",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "과학",
+      "title": "갈릴레오 아저씨네 비밀 천문대",
+      "author": "김용세",
+      "publisher": "주니어김영사",
+      "year": "2017"
+    },
+    {
+      "grade": 6,
+      "subject": "과학",
+      "title": "거울과 렌즈는 마법이 아니야!",
+      "author": "아나 알론소",
+      "publisher": "알라딘북스",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "과학",
+      "title": "과학천재의 비법노트 : 생물",
+      "author": "브레인 퀘스트",
+      "publisher": "우리학교",
+      "year": "2017"
+    },
+    {
+      "grade": 6,
+      "subject": "과학",
+      "title": "노벨 아저씨네 미스터리 팡팡센터",
+      "author": "김하은",
+      "publisher": "주니어김영사",
+      "year": "2019"
+    },
+    {
+      "grade": 6,
+      "subject": "과학",
+      "title": "두근두근 신비한 우리 몸속 탐험",
+      "author": "이여니",
+      "publisher": "동아엠앤비",
+      "year": "2017"
+    },
+    {
+      "grade": 6,
+      "subject": "과학",
+      "title": "심장 동굴의 보물을 찾아라",
+      "author": "아나 알론소",
+      "publisher": "알라딘북스",
+      "year": "2019"
+    },
+    {
+      "grade": 6,
+      "subject": "과학",
+      "title": "자연사 박물관 : 생명 관찰 실험실",
+      "author": "DK '자연사 박물관'",
+      "publisher": "비룡소",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "과학",
+      "title": "우리 집 구석구석 원소를 찾아라!",
+      "author": "마이클 바필드",
+      "publisher": "원더박스",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "계속일기",
+      "author": "전윤호",
+      "publisher": "주니어김영사",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "나비 공주",
+      "author": "별아래",
+      "publisher": "책고래",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "나는 그때 왜 비겁했을까",
+      "author": "이벤 아케를리",
+      "publisher": "아름다운사람들",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "너무 많이 가르치는 선생님",
+      "author": "세인 페이슬리",
+      "publisher": "책과콩나무",
+      "year": "2019"
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "동해",
+      "author": "정설아",
+      "publisher": "책고래",
+      "year": "2019"
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "두 개의 달",
+      "author": "전성현",
+      "publisher": "문학과지성사",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "루저 클럽",
+      "author": "앤드류 클레먼츠",
+      "publisher": "웅진주니어",
+      "year": "2019"
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "못 찾겠다, 소사만!",
+      "author": "고순덕",
+      "publisher": "밝은미래",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "발터 벤야민의 수수께끼 라디오",
+      "author": "발터 벤야민",
+      "publisher": "봄볕",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "뻔뻔한 가족",
+      "author": "박현숙",
+      "publisher": "서유재",
+      "year": "2019"
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "수영성 소년 장이",
+      "author": "구본석",
+      "publisher": "책고래",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "속담에서 시작해 속담으로 끝나는 속담책",
+      "author": "강승임",
+      "publisher": "책속물고기",
+      "year": "2019"
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "아무것도 가르치지 않는 선생님",
+      "author": "세인 페이슬리",
+      "publisher": "책과콩나무",
+      "year": "2019"
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "어느 날 가족이 되었습니다",
+      "author": "박현숙",
+      "publisher": "서유재",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "연 날리는 소년",
+      "author": "엘렌 판 펠젠",
+      "publisher": "알라딘북스",
+      "year": "2017"
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "육쟁이와 멍텅구리",
+      "author": "제임스 패터슨 외",
+      "publisher": "봄볕",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "읽으면서 바로 써먹는 어린이 고사성어",
+      "author": "한날",
+      "publisher": "파란정원",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "읽으면서 바로 써먹는 어린이 관용구",
+      "author": "한날",
+      "publisher": "파란정원",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "읽으면서 바로 써먹는 어린이 속담",
+      "author": "한날",
+      "publisher": "파란정원",
+      "year": "2017"
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "지유와 비밀의 숲",
+      "author": "이승민",
+      "publisher": "킨더랜드",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "책 깎는 소년",
+      "author": "장은영",
+      "publisher": "파란자전거",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "첫사랑 탐구하기",
+      "author": "이하은",
+      "publisher": "청개구리",
+      "year": "2017"
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "태평양을 건너 간 사진신부",
+      "author": "윤자명",
+      "publisher": "밝은미래",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "푸른 눈의 세상",
+      "author": "나영",
+      "publisher": "청개구리",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "휴대폰에서 나를 구해줘!",
+      "author": "다미안 몬테스",
+      "publisher": "봄볕",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "용의 미래",
+      "author": "최양선",
+      "publisher": "문학과지성사",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "내일, 날다",
+      "author": "쓰카다 스미에",
+      "publisher": "머스트비",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "리얼 마래",
+      "author": "황지영",
+      "publisher": "문학과지성사",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "착한 모자는 없다",
+      "author": "이기규",
+      "publisher": "휴먼어린이",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "꼭 착한 아이가 되어야 해?",
+      "author": "마리안느 머스그로브",
+      "publisher": "책속물고기",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "떠버리 태권과 기린 탈출 사건",
+      "author": "김용진",
+      "publisher": "씨네스트",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "우리의 목표 : 하기 싫으면 하지 말자",
+      "author": "케이트 제이멧",
+      "publisher": "책속물고기",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "집 속의 집",
+      "author": "김후명",
+      "publisher": "청개구리",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "책 찍는 강아지",
+      "author": "이정아",
+      "publisher": "주니어김영사",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "캣보이",
+      "author": "에릭 월터스",
+      "publisher": "거북이북스",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "핑스",
+      "author": "이유리",
+      "publisher": "비룡소",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "1등 없는 1등",
+      "author": "실비아 태케마",
+      "publisher": "아름다운사람들",
+      "year": "2019"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "키라의 감정학교 시리즈: 화가 나!, 무서워",
+      "author": "최형미",
+      "publisher": "을파소",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "아! 병호",
+      "author": "최우근",
+      "publisher": "북극곰",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "은지 누나 있어요?",
+      "author": "이다감",
+      "publisher": "청개구리",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "종우 화분",
+      "author": "김하루",
+      "publisher": "주니어김영사",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "참 잘 뽑은 반장",
+      "author": "이은재",
+      "publisher": "주니어김영사",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "출동! 법과학팀",
+      "author": "모니크 폴락",
+      "publisher": "청년사",
+      "year": "2019"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "카시오페아: 악몽을 쫓는 소녀",
+      "author": "한은경",
+      "publisher": "고릴라박스",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "환상 해결사",
+      "author": "강민정",
+      "publisher": "고릴라박스",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "마지막 책을 가진 아이",
+      "author": "하은경",
+      "publisher": "아이세움",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "생각하는 교과서 어휘 / 활용하는 교과서 어휘",
+      "author": "고정욱",
+      "publisher": "알라딘북스",
+      "year": "2018-2019"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "고구마 선거",
+      "author": "임지형",
+      "publisher": "개암나무",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "최훈 선생님이 들려주는 과학자처럼 생각하기",
+      "author": "최훈",
+      "publisher": "우리학교",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "박종진 선생님과 함께하는 두근두근 개성답사",
+      "author": "박종진",
+      "publisher": "청년사",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "위대한 모험가들",
+      "author": "앨러스테어 험프리스",
+      "publisher": "애플트리태일즈",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "초등 한자력 사전",
+      "author": "기획집단 MOIM",
+      "publisher": "파란자전거",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "사회",
+      "title": "거꾸로 환경시계 탐구생활",
+      "author": "박숙현",
+      "publisher": "파란자전거",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "사회",
+      "title": "굿 나이트 스토리즈 포 레벨 걸스",
+      "author": "엘레나 파빌리",
+      "publisher": "주니어김영사",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "사회",
+      "title": "넬슨 만델라 선생님과 수상한 클럽",
+      "author": "김미애",
+      "publisher": "주니어김영사",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "사회",
+      "title": "마땅히 누려야 할 인권 탐구생활",
+      "author": "이기규",
+      "publisher": "파란자전거",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "사회",
+      "title": "모래 언덕의 길",
+      "author": "콜레트 위다비",
+      "publisher": "머스트비",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "사회",
+      "title": "빼앗긴 사람들",
+      "author": "아민 그레더",
+      "publisher": "지양사",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "사회",
+      "title": "선생님, 헌법이 뭐예요?",
+      "author": "배성호",
+      "publisher": "철수와영희",
+      "year": "2019"
+    },
+    {
+      "grade": 5,
+      "subject": "사회",
+      "title": "어린이 페미니즘 학교",
+      "author": "초등성평등연구회",
+      "publisher": "우리학교",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "사회",
+      "title": "유대인 수용소의 두 자매 이야기",
+      "author": "프니나 밧 츠비",
+      "publisher": "아름다운사람들",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "사회",
+      "title": "차별은 세상을 병들게 해요",
+      "author": "오승현",
+      "publisher": "개암나무",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "사회",
+      "title": "함께 사는 세상 소중한 인권",
+      "author": "신선웅",
+      "publisher": "뭉치",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "과학",
+      "title": "꼬리에 꼬리를 잇는 지식 검색",
+      "author": "에이비치",
+      "publisher": "Homebook",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "과학",
+      "title": "시큼시큼 미끌미끌 : 산과 염기",
+      "author": "김희정",
+      "publisher": "지학사",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "과학",
+      "title": "자연사 박물관 : 생명 관찰 실험실",
+      "author": "DK 자연사 박물관 편집 위원회",
+      "publisher": "비룡소",
+      "year": "2019"
+    },
+    {
+      "grade": 5,
+      "subject": "과학",
+      "title": "조지와 빅뱅 1",
+      "author": "스티븐 호킹",
+      "publisher": "주니어RHK",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "과학",
+      "title": "우주와 별",
+      "author": "신광복",
+      "publisher": "아르볼",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "과학",
+      "title": "우주 개발이 뭐예요?",
+      "author": "피에르 프랑수아 무리오",
+      "publisher": "개암나무",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "과학",
+      "title": "인간을 받아 줄 행성 어디 없나요?",
+      "author": "조인하",
+      "publisher": "미래인",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "과학",
+      "title": "HOW? 미생물학의 아버지 파스퇴르",
+      "author": "한정호",
+      "publisher": "와이즈만BOOKS",
+      "year": "2018"
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "3.1운동, 그 가족에게 생긴 일",
+      "author": "고수산나",
+      "publisher": "내일을여는책",
+      "year": "2019"
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "안이 궁금했을까 밖이 궁금했을까",
+      "author": "이묘신",
+      "publisher": "청년사",
+      "year": "2019"
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "음악이 세상을 바꿀 수 있을까?",
+      "author": "김기정",
+      "publisher": "한권의책",
+      "year": "2019"
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "정약용이 귀양지에서 아들에게 보낸 편지",
+      "author": "김숙분",
+      "publisher": "가문비어린이",
+      "year": "2019"
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "초록 양",
+      "author": "다이애나 킵튼",
+      "publisher": "샘터",
+      "year": "2019"
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "1930, 경성 설렁탕",
+      "author": "조은경",
+      "publisher": "머스트비",
+      "year": "2018"
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "1등 용이가 사라졌다",
+      "author": "윤숙희",
+      "publisher": "나무생각",
+      "year": "2018"
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "끝나지 않은 진실 게임",
+      "author": "전은지",
+      "publisher": "밝은미래",
+      "year": "2018"
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "딸가닥딸가닥",
+      "author": "김명희",
+      "publisher": "청개구리",
+      "year": "2018"
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "소녀 H",
+      "author": "신소영",
+      "publisher": "고릴라박스",
+      "year": "2018"
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "직업을 파는 상점",
+      "author": "조경희",
+      "publisher": "M&Kids",
+      "year": "2018"
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "책, 즐겁게 읽는 법",
+      "author": "박동석",
+      "publisher": "봄볕",
+      "year": "2018"
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "책을 살리고 싶은 소녀",
+      "author": "클라우스 하게루프",
+      "publisher": "알라딘북스",
+      "year": "2018"
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "내 이름은 플라스틱",
+      "author": "정명숙",
+      "publisher": "아주좋은날",
+      "year": "2017"
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "네 머릿속엔 뭐가 들었니?",
+      "author": "황서영",
+      "publisher": "청개구리",
+      "year": "2017"
+    },
+    {
+      "grade": 4,
+      "subject": "사회",
+      "title": "할머니의 마법수레",
+      "author": "조연화",
+      "publisher": "청개구리",
+      "year": "2018"
+    },
+    {
+      "grade": 4,
+      "subject": "사회",
+      "title": "땅에 사는 아이들",
+      "author": "정세연",
+      "publisher": "내일을여는책",
+      "year": "2017"
+    },
+    {
+      "grade": 4,
+      "subject": "사회",
+      "title": "미래를 살리는 착한 소비 이야기",
+      "author": "한화주",
+      "publisher": "팜파스",
+      "year": "2016"
+    },
+    {
+      "grade": 4,
+      "subject": "사회",
+      "title": "복작복작 세상을 바꾸는 법칙",
+      "author": "박동석",
+      "publisher": "봄볕",
+      "year": "2016"
+    },
+    {
+      "grade": 4,
+      "subject": "사회",
+      "title": "어린이 토론학교 : 돈과 경제",
+      "author": "김지은 외",
+      "publisher": "우리학교",
+      "year": "2016"
+    },
+    {
+      "grade": 4,
+      "subject": "사회",
+      "title": "어린이 토론학교 : 학교와 가족",
+      "author": "권이은 외",
+      "publisher": "우리학교",
+      "year": "2016"
+    },
+    {
+      "grade": 4,
+      "subject": "사회",
+      "title": "소녀소년 평등 탐구생활",
+      "author": "양해경",
+      "publisher": "파란자전거",
+      "year": "2013"
+    },
+    {
+      "grade": 4,
+      "subject": "사회",
+      "title": "안드로메다에서 찾아온 사회 개념 1",
+      "author": "김진욱",
+      "publisher": "과학동아북스",
+      "year": "2013"
+    },
+    {
+      "grade": 4,
+      "subject": "사회",
+      "title": "수리가족 탄생기",
+      "author": "황종금",
+      "publisher": "파란자전거",
+      "year": "2019"
+    },
+    {
+      "grade": 4,
+      "subject": "사회",
+      "title": "1+1이 공짜가 아니라고?",
+      "author": "이정주",
+      "publisher": "개암나무",
+      "year": "2018"
+    },
+    {
+      "grade": 4,
+      "subject": "사회",
+      "title": "4차 산업혁명",
+      "author": "이현희",
+      "publisher": "서유재",
+      "year": "2018"
+    },
+    {
+      "grade": 4,
+      "subject": "사회",
+      "title": "남자답게? 여자답게? 그냥 나답게 할래요!",
+      "author": "최형미, 이향",
+      "publisher": "팜파스",
+      "year": "2018"
+    },
+    {
+      "grade": 4,
+      "subject": "사회",
+      "title": "방구리",
+      "author": "최은순",
+      "publisher": "스푼북",
+      "year": "2018"
+    },
+    {
+      "grade": 4,
+      "subject": "사회",
+      "title": "성 평등이 뭐예요?",
+      "author": "제랄딘 메상",
+      "publisher": "개암나무",
+      "year": "2018"
+    },
+    {
+      "grade": 4,
+      "subject": "사회",
+      "title": "안녕, 세계의 친구들",
+      "author": "마이야 브라미",
+      "publisher": "샘터",
+      "year": "2018"
+    },
+    {
+      "grade": 4,
+      "subject": "사회",
+      "title": "어린이 세계시민학교",
+      "author": "박지선",
+      "publisher": "파란자전거",
+      "year": "2018"
+    },
+    {
+      "grade": 4,
+      "subject": "과학",
+      "title": "(3·4학년이 꼭 읽어야 할) 교과서 과학 동화",
+      "author": "이봉",
+      "publisher": "효리원",
+      "year": "2018"
+    },
+    {
+      "grade": 4,
+      "subject": "과학",
+      "title": "과학 잘하는 40가지 비밀",
+      "author": "롭 비티",
+      "publisher": "부즈펌어린이",
+      "year": "2018"
+    },
+    {
+      "grade": 4,
+      "subject": "과학",
+      "title": "나 좀 살려 줘 환경과 쓰레기",
+      "author": "허정림",
+      "publisher": "아르볼",
+      "year": "2018"
+    },
+    {
+      "grade": 4,
+      "subject": "과학",
+      "title": "대비해! 대피해! 지진과 안전",
+      "author": "신방실",
+      "publisher": "아르볼",
+      "year": "2018"
+    },
+    {
+      "grade": 4,
+      "subject": "과학",
+      "title": "반려식물 키우기",
+      "author": "강지혜",
+      "publisher": "상상의집",
+      "year": "2018"
+    },
+    {
+      "grade": 4,
+      "subject": "과학",
+      "title": "선인장은 어떻게 식물원에 왔을까?",
+      "author": "정병길",
+      "publisher": "철수와영희",
+      "year": "2018"
+    },
+    {
+      "grade": 4,
+      "subject": "과학",
+      "title": "어린 왕자와 알록달록 숲속 친구들",
+      "author": "에이치비",
+      "publisher": "한국독서지도회",
+      "year": "2018"
+    },
+    {
+      "grade": 4,
+      "subject": "과학",
+      "title": "왜? 하고 물으면 과학이 답해요 : 화학",
+      "author": "정성욱 외",
+      "publisher": "다락원",
+      "year": "2018"
+    },
+    {
+      "grade": 4,
+      "subject": "과학",
+      "title": "지구가 좌충우돌",
+      "author": "오주영",
+      "publisher": "상상의집",
+      "year": "2018"
+    },
+    {
+      "grade": 4,
+      "subject": "과학",
+      "title": "처음 만나는 야생화 그림책 : 가을 / 봄·여름",
+      "author": "마에다 마유미",
+      "publisher": "길벗스쿨",
+      "year": "2018"
+    },
+    {
+      "grade": 4,
+      "subject": "과학",
+      "title": "들썩들썩 우르르 쾅! 우리를 위협하는 자연재해",
+      "author": "정영훈",
+      "publisher": "뭉치",
+      "year": "2017"
+    },
+    {
+      "grade": 4,
+      "subject": "과학",
+      "title": "자연재해로부터 탈출하라!",
+      "author": "최영준",
+      "publisher": "비룡소",
+      "year": "2017"
+    },
+    {
+      "grade": 4,
+      "subject": "과학",
+      "title": "가장 완벽한 지구책",
+      "author": "조너선 리턴",
+      "publisher": "라이카미",
+      "year": "2016"
+    },
+    {
+      "grade": 1,
+      "subject": "국어",
+      "title": "나는 에벌레일까요?",
+      "author": "김용택",
+      "publisher": "바우솔",
+      "year": "2019"
+    },
+    {
+      "grade": 1,
+      "subject": "국어",
+      "title": "엄마의 품",
+      "author": "박철",
+      "publisher": "바우솔",
+      "year": "2019"
+    },
+    {
+      "grade": 1,
+      "subject": "국어",
+      "title": "달려라, 꼬마",
+      "author": "신경림",
+      "publisher": "바우솔",
+      "year": "2018"
+    },
+    {
+      "grade": 1,
+      "subject": "국어",
+      "title": "등교하기",
+      "author": "이시카와 에리카",
+      "publisher": "봄개울",
+      "year": "2019"
+    },
+    {
+      "grade": 1,
+      "subject": "국어",
+      "title": "바다야 미안해",
+      "author": "조월 하퍼",
+      "publisher": "썬더키즈",
+      "year": "2019"
+    },
+    {
+      "grade": 1,
+      "subject": "국어",
+      "title": "학교에 가면 / 내 어깨 위의 새",
+      "author": "시빌 들라크루아",
+      "publisher": "소원나무",
+      "year": "2019"
+    },
+    {
+      "grade": 1,
+      "subject": "국어",
+      "title": "궁금해! 나는 어떻게 태어났을까?",
+      "author": "양승현",
+      "publisher": "소원나무",
+      "year": "2019"
+    },
+    {
+      "grade": 1,
+      "subject": "국어",
+      "title": "진정한 챔피언",
+      "author": "파랑 에브라히미",
+      "publisher": "모래알",
+      "year": "2019"
+    },
+    {
+      "grade": 1,
+      "subject": "국어",
+      "title": "형이 형인 까닭은",
+      "author": "선안나",
+      "publisher": "봄봄",
+      "year": "2019"
+    },
+    {
+      "grade": 2,
+      "subject": "국어",
+      "title": "선택",
+      "author": "다니엘 살미에리",
+      "publisher": "북극곰",
+      "year": "2019"
+    },
+    {
+      "grade": 2,
+      "subject": "국어",
+      "title": "숲에는 길이 많아요",
+      "author": "박경화",
+      "publisher": "창비",
+      "year": "2018"
+    },
+    {
+      "grade": 2,
+      "subject": "국어",
+      "title": "이시도라 문, 생일 파티를 열다",
+      "author": "해리엇 먼캐스터",
+      "publisher": "을파소",
+      "year": "2019"
+    },
+    {
+      "grade": 2,
+      "subject": "국어",
+      "title": "공부만 잘하는 바보",
+      "author": "서지원",
+      "publisher": "밝은미래",
+      "year": "2019"
+    },
+    {
+      "grade": 2,
+      "subject": "국어",
+      "title": "너에게 보여주고 싶어 이 놀라운 세상을",
+      "author": "성도린 카요",
+      "publisher": "풀과바람",
+      "year": "2019"
+    },
+    {
+      "grade": 2,
+      "subject": "국어",
+      "title": "노란 카약",
+      "author": "니나 레이든",
+      "publisher": "소원나무",
+      "year": "2018"
+    },
+    {
+      "grade": 2,
+      "subject": "국어",
+      "title": "소중한 나 : 너의 몸을 사랑하는 방법",
+      "author": "제시카 산더스",
+      "publisher": "북멘토",
+      "year": "2019"
+    },
+    {
+      "grade": 2,
+      "subject": "국어",
+      "title": "나만의 수영 배우기",
+      "author": "이영란",
+      "publisher": "풀과바람",
+      "year": "2018"
+    },
+    {
+      "grade": 2,
+      "subject": "국어",
+      "title": "소중한 우리 : 아니카와 컵을 먹고 자라는 돼지",
+      "author": "루이제 미르디티아",
+      "publisher": "우리학교",
+      "year": "2020"
+    },
+    {
+      "grade": 2,
+      "subject": "국어",
+      "title": "화재",
+      "author": "박승균",
+      "publisher": "다림",
+      "year": "2018"
+    },
+    {
+      "grade": 3,
+      "subject": "국어",
+      "title": "세계의 국기는 어떻게 만들었을까?",
+      "author": "로버트 프레솜",
+      "publisher": "바이킹",
+      "year": "2019"
+    },
+    {
+      "grade": 3,
+      "subject": "국어",
+      "title": "이선비, 지도를 그리다",
+      "author": "세계로동화 황문숙",
+      "publisher": "아이세움",
+      "year": "2019"
+    },
+    {
+      "grade": 3,
+      "subject": "국어",
+      "title": "지도 : 종이 한 장에 담은 넓은 세상",
+      "author": "대동역사기행",
+      "publisher": "주니어김영사",
+      "year": "2019"
+    },
+    {
+      "grade": 3,
+      "subject": "국어",
+      "title": "(정조와 함께 펼쳐보는) 화성행차",
+      "author": "황은주",
+      "publisher": "그린북",
+      "year": "2020"
+    },
+    {
+      "grade": 3,
+      "subject": "국어",
+      "title": "선생님, 3.1운동이 뭐예요?",
+      "author": "배성호 외",
+      "publisher": "철수와영희",
+      "year": "2019"
+    },
+    {
+      "grade": 3,
+      "subject": "국어",
+      "title": "슬기로운 인터넷 생활",
+      "author": "나탈리 다르장",
+      "publisher": "푸른숲주니어",
+      "year": "2020"
+    },
+    {
+      "grade": 3,
+      "subject": "국어",
+      "title": "패션, 나를 표현하는 방법",
+      "author": "헬렌 행콕스",
+      "publisher": "키다리",
+      "year": "2020"
+    },
+    {
+      "grade": 3,
+      "subject": "국어",
+      "title": "어린이로 사는 건 너무 힘들어! : 고대 그리스 이야기",
+      "author": "스트레이티 채",
+      "publisher": "을파소",
+      "year": "2020"
+    },
+    {
+      "grade": 3,
+      "subject": "국어",
+      "title": "거꾸로 가족",
+      "author": "신은영",
+      "publisher": "단비어린이",
+      "year": "2019"
+    },
+    {
+      "grade": 3,
+      "subject": "국어",
+      "title": "할머니 주름살이 좋아요",
+      "author": "시모나 치라올로",
+      "publisher": "창비",
+      "year": "2019"
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "우리 동네 골목 풍경",
+      "author": "몽상",
+      "publisher": "보리",
+      "year": "2020"
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "쉿! 비밀투표야!",
+      "author": "나탈리 다르장",
+      "publisher": "라임",
+      "year": "2019"
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "지구를 구하는 쓰레기 제로 대작전",
+      "author": "사마 와즈칸",
+      "publisher": "토토북",
+      "year": "2020"
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "어린이를 위한 생산과 이동의 원리",
+      "author": "리비 도이치",
+      "publisher": "풀과바람",
+      "year": "2019"
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "와글와글 어린이 경제 수업",
+      "author": "김세현",
+      "publisher": "다림",
+      "year": "2019"
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "옥수수를 관찰하세요",
+      "author": "크리스티아나 풀치넬리",
+      "publisher": "책속물고기",
+      "year": "2019"
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "우리 학교가 사라진대요!",
+      "author": "예영",
+      "publisher": "마음이음",
+      "year": "2019"
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "미래는 어떨까요?",
+      "author": "부뤼노 골드만",
+      "publisher": "개암나무",
+      "year": "2019"
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "우리 음식 여행",
+      "author": "김인혜",
+      "publisher": "사계절",
+      "year": "2019"
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "회색 도시를 바꾼 예술가들",
+      "author": "F. 이사벨 캄포이 외",
+      "publisher": "보물창고",
+      "year": "2019"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "어쩌다 짝꿍",
+      "author": "이송현",
+      "publisher": "마음이음",
+      "year": "2020"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "나에게 없는 딱 세 가지",
+      "author": "황선미",
+      "publisher": "위즈덤하우스",
+      "year": "2020"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "조선의 수학자 홍정하",
+      "author": "이창숙",
+      "publisher": "궁리",
+      "year": "2020"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "거울폭포와 탐별",
+      "author": "정설아",
+      "publisher": "소원나무",
+      "year": "2020"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "오로르 - 마음을 읽는 아이",
+      "author": "더글라스 케네디",
+      "publisher": "밝은세상",
+      "year": "2020"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "Why? People 유관순",
+      "author": "박현종",
+      "publisher": "예림당",
+      "year": "2019"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "유라시아 라이더",
+      "author": "최지훈, 최정환",
+      "publisher": "소원나무",
+      "year": "2019"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "너를 빌려줘",
+      "author": "박현숙",
+      "publisher": "파랑새",
+      "year": "2019"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "경주역사유적지구",
+      "author": "이은석",
+      "publisher": "주니어김영사",
+      "year": "2019"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "너무 신나는 과학",
+      "author": "리사 리건",
+      "publisher": "매직사이언스",
+      "year": "2019"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "알고리즘",
+      "author": "플로랑스 피노",
+      "publisher": "다림",
+      "year": "2019"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "생각의 힘을 길러주는 우리 신화 읽기",
+      "author": "신동엽 외",
+      "publisher": "초록비책공방",
+      "year": "2019"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "무슨 말이야?",
+      "author": "허정숙",
+      "publisher": "보리",
+      "year": "2019"
+    },
+    {
+      "grade": 6,
+      "subject": "국어",
+      "title": "내 말 한마디",
+      "author": "김경란",
+      "publisher": "내일을여는책",
+      "year": "2020"
+    },
+    {
+      "grade": 6,
+      "subject": "국어",
+      "title": "뻔뻔한 우정",
+      "author": "박현숙",
+      "publisher": "서유재",
+      "year": "2020"
+    },
+    {
+      "grade": 6,
+      "subject": "국어",
+      "title": "복회탕의 비밀",
+      "author": "김태호",
+      "publisher": "마음이음",
+      "year": "2020"
+    },
+    {
+      "grade": 6,
+      "subject": "국어",
+      "title": "그날의 기억",
+      "author": "선자은",
+      "publisher": "마음이음",
+      "year": "2019"
+    },
+    {
+      "grade": 6,
+      "subject": "국어",
+      "title": "가짜 뉴스를 시작하겠습니다",
+      "author": "김경옥",
+      "publisher": "내일을여는책",
+      "year": "2019"
+    },
+    {
+      "grade": 6,
+      "subject": "국어",
+      "title": "교과서 속담사전",
+      "author": "이태영",
+      "publisher": "좋은꿈",
+      "year": "2019"
+    },
+    {
+      "grade": 6,
+      "subject": "국어",
+      "title": "난 논술 쓰기가 정말 신나!",
+      "author": "조영경",
+      "publisher": "스코프",
+      "year": "2019"
+    },
+    {
+      "grade": 6,
+      "subject": "국어",
+      "title": "진짜 나는 어떤 아이일까",
+      "author": "박은경",
+      "publisher": "열린어린이",
+      "year": "2019"
+    },
+    {
+      "grade": 6,
+      "subject": "국어",
+      "title": "써드",
+      "author": "최영희",
+      "publisher": "동아시아사이언스",
+      "year": "2020"
+    },
+    {
+      "grade": 6,
+      "subject": "국어",
+      "title": "Why? 뉴스와 미디어",
+      "author": "조영선",
+      "publisher": "예림당",
+      "year": "2020"
+    },
+    {
+      "grade": 6,
+      "subject": "국어",
+      "title": "윤서는 할머니와 단둘이 산다",
+      "author": "신배화",
+      "publisher": "키위북스",
+      "year": "2020"
+    },
+    {
+      "grade": 6,
+      "subject": "국어",
+      "title": "도돌이표 가족",
+      "author": "최은영",
+      "publisher": "마음이음",
+      "year": "2019"
+    },
+    {
+      "grade": 6,
+      "subject": "국어",
+      "title": "으랏차차 조선 실록 수호대",
+      "author": "장은영",
+      "publisher": "파란자전거",
+      "year": "2019"
+    },
+    {
+      "grade": 6,
+      "subject": "국어",
+      "title": "나는 설탕으로 만들어지지 않았다",
+      "author": "이은재",
+      "publisher": "잇츠북",
+      "year": "2019"
+    },
+    {
+      "grade": 6,
+      "subject": "국어",
+      "title": "씨스틴",
+      "author": "권윤덕",
+      "publisher": "평화를품은책",
+      "year": "2019"
+    },
+    {
+      "grade": 6,
+      "subject": "국어",
+      "title": "나이트북: 밤의 이야기꾼",
+      "author": "J.A.화이트",
+      "publisher": "위너더북",
+      "year": "2019"
+    },
+    {
+      "grade": 6,
+      "subject": "국어",
+      "title": "봄 여름 가을 겨울 그리고 어린이",
+      "author": "염희경",
+      "publisher": "산하",
+      "year": "2019"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "스플래시",
+      "author": "찰리 하워드",
+      "publisher": "그린북",
+      "year": "2020"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "콘텐츠 연구소 집현전입니다",
+      "author": "강승임",
+      "publisher": "책속물고기",
+      "year": "2020"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "동에 번쩍 서에 번쩍 귀신 잡는 감찰궁녀",
+      "author": "손주현",
+      "publisher": "파란자전거",
+      "year": "2021"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "신비한 유령박물관",
+      "author": "박현숙",
+      "publisher": "이지북",
+      "year": "2021"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "나를 표현하는 열두 가지 감정",
+      "author": "임성관",
+      "publisher": "책속물고기",
+      "year": "2018"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "바흐, 바흐, 이란",
+      "author": "알베르트 크비아트코프스키",
+      "publisher": "풀빛",
+      "year": "2022"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "모두의 착한 밥상 연구소",
+      "author": "노민영",
+      "publisher": "파란자전거",
+      "year": "2021"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "우리는 반대합니다!",
+      "author": "클라우디오 푸엔테스",
+      "publisher": "초록개구리",
+      "year": "2019"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "환경을 지키는 지속가능한 패션이야기",
+      "author": "정유리",
+      "publisher": "팜파스",
+      "year": "2021"
+    },
+    {
+      "grade": 5,
+      "subject": "국어",
+      "title": "탄소중립이 뭐예요?",
+      "author": "장성익",
+      "publisher": "풀빛",
+      "year": "2022"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "로로로 초등수학 5학년",
+      "author": "윤병무",
+      "publisher": "국수",
+      "year": "2020"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "약수와 배수로 유령 선장을 이긴 15소년",
+      "author": "정영훈",
+      "publisher": "뭉치",
+      "year": "2020"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "피보나치, 수를 배열해 비밀의 방을 탈출하라",
+      "author": "이혜림",
+      "publisher": "뭉치",
+      "year": "2020"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "곤충과 함께 찾아가는 에너지 대탐험",
+      "author": "서원호 외",
+      "publisher": "자음과모음",
+      "year": "2018"
+    },
+    {
+      "grade": 6,
+      "subject": "국어",
+      "title": "로로로 초등국어 6학년",
+      "author": "윤병무",
+      "publisher": "국수",
+      "year": "2020"
+    },
+    {
+      "grade": 6,
+      "subject": "국어",
+      "title": "어휘력 속담왕",
+      "author": "HR기획",
+      "publisher": "효리원",
+      "year": "2020"
+    },
+    {
+      "grade": 6,
+      "subject": "국어",
+      "title": "AI 디케",
+      "author": "노수미",
+      "publisher": "마루비",
+      "year": "2021"
+    },
+    {
+      "grade": 6,
+      "subject": "국어",
+      "title": "맞바꾼 회중시계",
+      "author": "김남중",
+      "publisher": "토토북",
+      "year": "2020"
+    },
+    {
+      "grade": 6,
+      "subject": "국어",
+      "title": "의병장 윤희순",
+      "author": "정종숙",
+      "publisher": "한솔수북",
+      "year": "2019"
+    },
+    {
+      "grade": 6,
+      "subject": "국어",
+      "title": "길 잃은 생각 의사를 위한 생각 속 응급구조법",
+      "author": "권태윤",
+      "publisher": "고래가숨쉬는도서관",
+      "year": "2021"
+    },
+    {
+      "grade": 6,
+      "subject": "국어",
+      "title": "열두 달 성평등 교실",
+      "author": "아웃박스",
+      "publisher": "파란자전거",
+      "year": "2021"
+    },
+    {
+      "grade": 6,
+      "subject": "국어",
+      "title": "어린이를 위한 가상현실과 메타버스 이야기",
+      "author": "천윤정",
+      "publisher": "팜파스",
+      "year": "2021"
+    },
+    {
+      "grade": 6,
+      "subject": "국어",
+      "title": "어린이를 위한 미래과학, 빅데이터 이야기",
+      "author": "천윤정",
+      "publisher": "팜파스",
+      "year": "2020"
+    },
+    {
+      "grade": 6,
+      "subject": "국어",
+      "title": "우리나라 애국가 이야기",
+      "author": "문성모",
+      "publisher": "가문비어린이",
+      "year": "2021"
+    },
+    {
+      "grade": 6,
+      "subject": "국어",
+      "title": "미디어 리터러시 쫌 아는 10대",
+      "author": "금준경",
+      "publisher": "풀빛",
+      "year": "2020"
+    },
+    {
+      "grade": 6,
+      "subject": "수학",
+      "title": "그래프를 만든 괴짜",
+      "author": "헬레인 베커",
+      "publisher": "담푸스",
+      "year": "2019"
+    },
+    {
+      "grade": 6,
+      "subject": "수학",
+      "title": "오일러, 오즈의 입체도형 마법사를 찾아라",
+      "author": "이안",
+      "publisher": "뭉치",
+      "year": "2020"
+    },
+    {
+      "grade": 6,
+      "subject": "수학",
+      "title": "매쓰 왕자와 지구의 비밀",
+      "author": "김주창",
+      "publisher": "자음과모음",
+      "year": "2019"
+    },
+    {
+      "grade": 6,
+      "subject": "수학",
+      "title": "비례로 바람 왕국의 다섯 열쇠를 찾아라!",
+      "author": "황덕창",
+      "publisher": "자음과모음",
+      "year": "2020"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "10대를 위한 세계 시민 학교",
+      "author": "남지란, 정일웅",
+      "publisher": "이케이북",
+      "year": "2024"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "강에서 지독한 냄새가 나요",
+      "author": "콜린 패프",
+      "publisher": "뜨인돌어린이",
+      "year": "2024"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "꼭 알아야 할 세계사 명장면",
+      "author": "편집 위원회",
+      "publisher": "비룡소",
+      "year": "2024"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "돈도 공부가 필요해!",
+      "author": "안재욱",
+      "publisher": "머핀북",
+      "year": "2024"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "동물의 행복이 너무 멀어",
+      "author": "김지숙",
+      "publisher": "다정한시민",
+      "year": "2024"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "로봇 시대 미래 직업 이야기",
+      "author": "김은식",
+      "publisher": "나무야",
+      "year": "2024"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "멈춰, 그건 괴롭힘이야!",
+      "author": "이자벨 필리오자 외",
+      "publisher": "다림",
+      "year": "2024"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "변호사 어벤저스 1: 명예 훼손죄, 진실을 말해 줘!",
+      "author": "고희정",
+      "publisher": "가나출판사",
+      "year": "2024"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "사람이 사는 미술관",
+      "author": "박민경",
+      "publisher": "그래도봄",
+      "year": "2025"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "선생님, 난민은 왜 생기나요?",
+      "author": "김미조",
+      "publisher": "철수와영희",
+      "year": "2024"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "세계는 왜 끝없이 싸울까?",
+      "author": "오승현",
+      "publisher": "개암나무",
+      "year": "2025"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "세상을 둘로 나눈 벽이 있대!",
+      "author": "윤주은",
+      "publisher": "영수책방",
+      "year": "2024"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "십 대의 똑똑한 미디어 생활을 위한 20가지 수업",
+      "author": "윤선희",
+      "publisher": "청어람미디어",
+      "year": "2024"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "잠실역은 왜 잠실역이야?",
+      "author": "안미연",
+      "publisher": "현암주니어",
+      "year": "2025"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "전 세계의 시장",
+      "author": "마리야 바하레바",
+      "publisher": "주니어RHK",
+      "year": "2024"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "차별 없는 세상이 너무 멀어",
+      "author": "오찬호",
+      "publisher": "다정한시민",
+      "year": "2024"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "탄소가 기후 위기랑 무슨 상관이야",
+      "author": "정지윤",
+      "publisher": "파란의자",
+      "year": "2023"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "편의점을 털어라!: 인체편",
+      "author": "고은지",
+      "publisher": "북멘토",
+      "year": "2023"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "행복한 동물",
+      "author": "공주영",
+      "publisher": "분홍고래",
+      "year": "2023"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "멸망한 세계에서 우리가 나비를 쫓는 이유",
+      "author": "조나단 케이스",
+      "publisher": "원더박스",
+      "year": "2023"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "바닷물로 줄다리기를 한다고요?",
+      "author": "장순근",
+      "publisher": "지성사",
+      "year": "2023"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "46억 살 신비한 지구 탐험",
+      "author": "정완상",
+      "publisher": "성림주니어북",
+      "year": "2024"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "나는 왜 이렇게 생겼지?",
+      "author": "카타리나 폰 데어 가텐",
+      "publisher": "위즈덤하우스",
+      "year": "2024"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "열두 살 궁그미를 위한 지구과학",
+      "author": "애나 클레이본",
+      "publisher": "니케주니어",
+      "year": "2024"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "공기를 느껴 봐, 태양을 느껴 봐",
+      "author": "이자벨 미뇨스 마르팅스",
+      "publisher": "원더박스",
+      "year": "2024"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "우리는 모두 생물이니까",
+      "author": "줄리 라르동",
+      "publisher": "다산어린이",
+      "year": "2024"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "복제인간은 가능할까?",
+      "author": "박승준",
+      "publisher": "봄마중",
+      "year": "2024"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "페니실린에서 항암제까지",
+      "author": "박승준",
+      "publisher": "봄마중",
+      "year": "2024"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "우리, 앞으로 뭐 먹고 살지?",
+      "author": "줄리 라르동",
+      "publisher": "다산어린이",
+      "year": "2024"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "딱 한마디 의학사: 질병에 맞선 의학자의 말",
+      "author": "이현희",
+      "publisher": "천개의바람",
+      "year": "2024"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "어린이 의학도를 위한 놀라운 의학사",
+      "author": "브라이오니 허드슨",
+      "publisher": "너머학교",
+      "year": "2024"
+    },
+    {
+      "grade": 5,
+      "subject": "수학",
+      "title": "어린이를 위한 모든 순간의 물리학",
+      "author": "마이크 바필드",
+      "publisher": "원더박스",
+      "year": "2024"
+    },
+    {
+      "grade": 1,
+      "subject": "국어",
+      "title": "딴 생각 하지 말고 귀 기울여 들어요",
+      "author": "서보현",
+      "publisher": "상상스쿨",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "국어",
+      "title": "어서 오세요! ㄱㄴㄷ 뷔페",
+      "author": "최경식",
+      "publisher": "위즈덤하우스",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "국어",
+      "title": "말놀이 동시집",
+      "author": "최승호",
+      "publisher": "비룡소",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "국어",
+      "title": "괜찮아, 우리 모두 처음이야!",
+      "author": "이주희",
+      "publisher": "개암나무",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "국어",
+      "title": "인사는 우리를 즐겁게 해요",
+      "author": "소피 비어",
+      "publisher": "상수리",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "국어",
+      "title": "또박또박 반갑게 인사해요",
+      "author": "안미연",
+      "publisher": "상상스쿨",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "국어",
+      "title": "꼬마 시인의 하루",
+      "author": "장혜진",
+      "publisher": "북극곰",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "국어",
+      "title": "또박또박 말할래",
+      "author": "백나영",
+      "publisher": "리틀씨앤톡",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "수학",
+      "title": "한 마리 여우",
+      "author": "케이트 리드",
+      "publisher": "북극곰",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "수학",
+      "title": "길어도 너무 긴",
+      "author": "강정연",
+      "publisher": "길벗어린이",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "수학",
+      "title": "백만 개의 점이 만든 기적",
+      "author": "스벤 볼커",
+      "publisher": "시원주니어",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "수학",
+      "title": "개미핥기를 구하는 딱 1가지 방법",
+      "author": "맥스 잭슨",
+      "publisher": "우리교육",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "수학",
+      "title": "셈셈이+나",
+      "author": "요안나 비에야크",
+      "publisher": "북극곰",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "수학",
+      "title": "셜록 본즈와 함께하는 덧셈 뺄셈 수학 추리 모험",
+      "author": "조니 막스",
+      "publisher": "사파리",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "수학",
+      "title": "크기 비교와 측정",
+      "author": "리잔 플랫",
+      "publisher": "걸음동무",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "국어",
+      "title": "고양이 걸 씨",
+      "author": "장영복",
+      "publisher": "국민서관",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "국어",
+      "title": "그래 맞다",
+      "author": "권오봉",
+      "publisher": "까미",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "국어",
+      "title": "고양이 수염 동시집",
+      "author": "김연아",
+      "publisher": "창조와지식",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "국어",
+      "title": "발표력 키우기",
+      "author": "운노 미호",
+      "publisher": "루덴스미디어",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "국어",
+      "title": "미안하다고 말하기는 너무 힘들어!",
+      "author": "박선희",
+      "publisher": "팜파스",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "국어",
+      "title": "학교가 즐거울 수밖에 없는 12가지 이유",
+      "author": "노은주",
+      "publisher": "단비어린이",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "국어",
+      "title": "맑음이와 여우 할머니",
+      "author": "윤여림",
+      "publisher": "천개의바람",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "국어",
+      "title": "마음이 들리는 마법 이어폰",
+      "author": "최명서",
+      "publisher": "크레용하우스",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "국어",
+      "title": "엄마 말고, 이모가 해주는 이야기",
+      "author": "소복이",
+      "publisher": "고래가그랬어",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "국어",
+      "title": "뚜이, 뚜우",
+      "author": "찰리 팔리",
+      "publisher": "바둑이하우스",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "국어",
+      "title": "걱정 삼킨 학교",
+      "author": "김지연",
+      "publisher": "꿈터",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "국어",
+      "title": "나한테 말해봐!",
+      "author": "무라카미 시이코",
+      "publisher": "한림출판사",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "국어",
+      "title": "내 말 좀 들어 주세요, 제발",
+      "author": "하인즈 야니쉬",
+      "publisher": "상상스쿨",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "국어",
+      "title": "초조함 공장",
+      "author": "흉흉",
+      "publisher": "씨드북",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "국어",
+      "title": "작은 우리",
+      "author": "다니엘라 쿨켈",
+      "publisher": "씨드북",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "수학",
+      "title": "그림으로 배우는 초등 수학 개념: 초 1~2학년",
+      "author": "정가영",
+      "publisher": "경향BP",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "수학",
+      "title": "리안의 수학 모험 11: 길이",
+      "author": "위두커뮤니케이션즈편집부",
+      "publisher": "위두커뮤니케이션즈",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "수학",
+      "title": "아기 염소는 경우의 수로 늑대를 이겼어",
+      "author": "고자현",
+      "publisher": "뭉치",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "수학",
+      "title": "브레인 부스터: 곱셈",
+      "author": "페니 원즈",
+      "publisher": "블루무스어린이",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "수학",
+      "title": "떡장수 할머니와 호랑이는 구구단을 몰라",
+      "author": "이안",
+      "publisher": "뭉치",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "안전",
+      "title": "1학년 학교생활 준비",
+      "author": "이유미 외",
+      "publisher": "서사원주니어",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "안전",
+      "title": "새살이 솔솔 자연 반창고 딱지",
+      "author": "이수연",
+      "publisher": "키즈엠",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "안전",
+      "title": "앗, 조심해서 다녀야 해",
+      "author": "임다은",
+      "publisher": "리틀씨앤톡",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "안전",
+      "title": "배고픈 늑대가 사냥하는 방법",
+      "author": "뱀코",
+      "publisher": "미래엔아이세움",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "안전",
+      "title": "한문철의 어린이 교통 안전 1",
+      "author": "유경원",
+      "publisher": "다산어린이",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "안전",
+      "title": "1·2학년이 꼭 읽어야 할 교과서 안전한 생활",
+      "author": "유시나",
+      "publisher": "효리원",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "안전",
+      "title": "큰 배와 작은 배와 오렌지",
+      "author": "안나 맥그리거",
+      "publisher": "키즈엠",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "안전",
+      "title": "불이야! 불이야!",
+      "author": "최옥임",
+      "publisher": "키즈엠",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "안전",
+      "title": "학교에 가면",
+      "author": "루카 토르톨리니",
+      "publisher": "주니어 김영사",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "안전",
+      "title": "비야, 그만",
+      "author": "이지연",
+      "publisher": "소동",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "안전",
+      "title": "아빠 자판기",
+      "author": "조경희",
+      "publisher": "노란돼지",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "안전",
+      "title": "바닷가로 떠나요!",
+      "author": "앨런 델랑어",
+      "publisher": "키즈엠",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "안전",
+      "title": "고양이 히어로즈의 비빔밥 만들기",
+      "author": "보람",
+      "publisher": "딸기책방",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "안전",
+      "title": "달달토끼",
+      "author": "김고은",
+      "publisher": "키즈엠",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "안전",
+      "title": "미어캣의 모자",
+      "author": "임경섭",
+      "publisher": "소동",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "안전",
+      "title": "기린에게 스키를 가르칠 수 있을까?",
+      "author": "비비안 멀비",
+      "publisher": "키즈엠",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "안전",
+      "title": "앗! 조심해! 나를 지키는 안전교과서",
+      "author": "장영훈",
+      "publisher": "뭉치",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "안전",
+      "title": "구석구석 사랑해",
+      "author": "안주",
+      "publisher": "노란돼지",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "안전",
+      "title": "마스크 벗어도 돼? : 바이러스의 비밀",
+      "author": "과학을 위한 여성 과학자 모임",
+      "publisher": "그레이트북스",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "안전",
+      "title": "하늘·땅·바다 어디서나 조심조심! 어린이를 위한 교통안전",
+      "author": "김은중",
+      "publisher": "뭉치",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "안전",
+      "title": "도시 영웅 돼지코 수사대",
+      "author": "런즈위안",
+      "publisher": "리틀브레인",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "안전",
+      "title": "노경실 선생님이 들려주는 가정 폭력 안전",
+      "author": "노경실",
+      "publisher": "알라딘북스",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "안전",
+      "title": "콜록콜록! 오늘의 황사 뉴스",
+      "author": "요리",
+      "publisher": "뭉치",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "안전",
+      "title": "오늘도 나쁨! 작아서 더 무서운 미세 먼지",
+      "author": "이화영",
+      "publisher": "뭉치",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "안전",
+      "title": "마법의 빨간 공",
+      "author": "마쓰오카 코우",
+      "publisher": "우리학교",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "안전",
+      "title": "봄은 바빠요",
+      "author": "손 테일러 외",
+      "publisher": "키즈엠",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "안전",
+      "title": "여우가 오리를 낳았어요",
+      "author": "순정평",
+      "publisher": "리틀브레인",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "안전",
+      "title": "여름 방학은 굉장해",
+      "author": "서보현",
+      "publisher": "밝은미래",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "안전",
+      "title": "엉뚱한 문방구",
+      "author": "간장",
+      "publisher": "제제의 숲",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "안전",
+      "title": "오! 감",
+      "author": "주미경",
+      "publisher": "별천",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "안전",
+      "title": "지구에서 가장 놀라운 건축이야기",
+      "author": "옌스 한세고드",
+      "publisher": "지양사",
+      "year": null
+    },
+    {
+      "grade": 2,
+      "subject": "안전",
+      "title": "눈사람 사탕",
+      "author": "박종진",
+      "publisher": "소원나무",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "국어",
+      "title": "내 친구의 집",
+      "author": "우미옥",
+      "publisher": "사계절",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "국어",
+      "title": "바다 청소 로봇 씨박",
+      "author": "키키유",
+      "publisher": "책과콩나무",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "국어",
+      "title": "강치야 독도야 동해바다야",
+      "author": "주강현",
+      "publisher": "현북스",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "국어",
+      "title": "모든 것이 다 있다",
+      "author": "김진한",
+      "publisher": "고래뱃속",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "국어",
+      "title": "크릴 전쟁",
+      "author": "양지영",
+      "publisher": "지성사",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "국어",
+      "title": "고양이 자꾸",
+      "author": "한수언",
+      "publisher": "마음이음",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "국어",
+      "title": "무적의 더위 사냥꾼",
+      "author": "앙드레 마루아",
+      "publisher": "미래아이",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "국어",
+      "title": "일기 고쳐 주는 아이",
+      "author": "박선화",
+      "publisher": "잇츠북 어린이",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "국어",
+      "title": "꼴통과 불량 아저씨",
+      "author": "최은순",
+      "publisher": "뜨인돌어린이",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "국어",
+      "title": "미술관 추격 사건",
+      "author": "박그루",
+      "publisher": "밝은미래",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "수학",
+      "title": "도형 마법사의 놀이공원",
+      "author": "한태희",
+      "publisher": "한림출판사",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "수학",
+      "title": "오일러와 피노키오는 도형 총 대회 1등을 했어",
+      "author": "이안",
+      "publisher": "뭉치",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "수학",
+      "title": "단위가 사라졌다",
+      "author": "신동경",
+      "publisher": "그레이트북스",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "수학",
+      "title": "키가 120킬로그램?",
+      "author": "권혜정",
+      "publisher": "열다",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "수학",
+      "title": "퀴즈과학상식 : 황당 측정 수학",
+      "author": "권찬호",
+      "publisher": "글송이",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "수학",
+      "title": "가우스는 소수 대결로 마녀들을 물리쳤어",
+      "author": "김정",
+      "publisher": "뭉치",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "수학",
+      "title": "견우와 직녀가 분수 때문에 싸웠대",
+      "author": "이향안",
+      "publisher": "뭉치",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "수학",
+      "title": "열린, 분수와 소수로 악당 히들러를 쫓아내라",
+      "author": "장영훈",
+      "publisher": "뭉치",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "고양이 뜰",
+      "author": "길지연",
+      "publisher": "현북스",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "바람의 소리를 들어라",
+      "author": "원유순",
+      "publisher": "해와나무",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "어린이를 위한 글쓰기 수업",
+      "author": "서예나",
+      "publisher": "푸른날개",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "순한 맛, 매운 맛 매생이 클럽 아이들",
+      "author": "이은경",
+      "publisher": "한국경제신문",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "하트 마스크",
+      "author": "김경구",
+      "publisher": "가문비어린이",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "70년 만에 돌아온 편지",
+      "author": "장성자",
+      "publisher": "마루비",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "나, 우주 그리고 산신령",
+      "author": "이혜령",
+      "publisher": "잇츠북어린이",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "마수오와 수상한 도둑",
+      "author": "황섭균",
+      "publisher": "밝은미래",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "친절한 엘리베이터",
+      "author": "김우정",
+      "publisher": "파란자전거",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "가족이 있습니다",
+      "author": "김유",
+      "publisher": "뜨인돌",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "나를 닮은 친구 A.I.",
+      "author": "오서하",
+      "publisher": "머스트비",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "용어-소원을 들어주는 물고기",
+      "author": "김성범",
+      "publisher": "파랑새",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "국어",
+      "title": "햇빛 세탁소",
+      "author": "양은정",
+      "publisher": "청개구리",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "수학",
+      "title": "가우스, 동화 나라의 사라진 0을 찾아라",
+      "author": "정가영",
+      "publisher": "뭉치",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "수학",
+      "title": "숫자왕 납치 사건",
+      "author": "옌스 라인랜더",
+      "publisher": "담푸스",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "수학",
+      "title": "페르마, 수리수리 규칙을 찾아라",
+      "author": "황근기",
+      "publisher": "뭉치",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "수학",
+      "title": "파스칼은 통계 정리로 나쁜 왕을 혼내줬어",
+      "author": "서지원",
+      "publisher": "뭉치",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "사회",
+      "title": "초등학생을 위한 사회 교과 개념 잡기 1",
+      "author": "김다원",
+      "publisher": "책과함께어린이",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "사회",
+      "title": "우리나라 도시 지도책",
+      "author": "구혜경 외",
+      "publisher": "토토북",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "사회",
+      "title": "괴물들이 사는 궁궐",
+      "author": "무돌",
+      "publisher": "노란돼지",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "사회",
+      "title": "덜컹덜컹 버스 처음 타던 날",
+      "author": "양혜원",
+      "publisher": "밝은미래",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "사회",
+      "title": "열두 달 지하철 여행",
+      "author": "김성은",
+      "publisher": "책읽는곰",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "사회",
+      "title": "우유 한 컵이 우리 집에 오기까지",
+      "author": "율리아 뒤르",
+      "publisher": "우리학교",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "사회",
+      "title": "(맛? 건강?) 또 다른 문화 한류를 이끄는 한식",
+      "author": "이상미",
+      "publisher": "뭉치",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "사회",
+      "title": "우리는 가족",
+      "author": "마리아나 페레스",
+      "publisher": "키다리",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "과학",
+      "title": "118개 원소 신비한 물질 탐험 이야기",
+      "author": "정완상",
+      "publisher": "성림주니어북",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "과학",
+      "title": "나비 관찰 백과",
+      "author": "로렌 데이비슨",
+      "publisher": "바이킹",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "과학",
+      "title": "동물이 진짜 궁금해",
+      "author": "카밀라 드 라 베도예르",
+      "publisher": "서울문화사",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "과학",
+      "title": "자석이 뭐야",
+      "author": "김재혁",
+      "publisher": "크레용하우스",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "과학",
+      "title": "하늘을 바라보면",
+      "author": "안나 클레이본",
+      "publisher": "Lunchbox",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "과학",
+      "title": "엄청나게 신기하고 볼수록 빠져드는 동물의 세계",
+      "author": "제임스 맥클레인",
+      "publisher": "어스본코리아",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "과학",
+      "title": "의외로 또 유쾌한 생물도감",
+      "author": "누마가사 와타리",
+      "publisher": "주니어 김영사",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "과학",
+      "title": "최강 지구 백과",
+      "author": "마일즈켈리 편집부",
+      "publisher": "보랏빛소 어린이",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "사회",
+      "title": "봄 길 남도",
+      "author": "전정임",
+      "publisher": "안녕로빈",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "사회",
+      "title": "세종로 1번지 경복궁 역사 여행",
+      "author": "장지연",
+      "publisher": "너머학교",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "사회",
+      "title": "우리가 교문을 바꿨어요!",
+      "author": "배성호",
+      "publisher": "초록개구리",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "사회",
+      "title": "트랙터도 데려가!",
+      "author": "핀 올레 하인리히 외",
+      "publisher": "북극곰",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "사회",
+      "title": "시끌벅적 세계의 시장",
+      "author": "유경숙",
+      "publisher": "봄볕",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "사회",
+      "title": "오늘은 유행, 내일은 쓰레기?",
+      "author": "레이나 딜라일",
+      "publisher": "초록개구리",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "사회",
+      "title": "똥과 풍은 지구인이 될까요?",
+      "author": "윤여림",
+      "publisher": "천개의바람",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "사회",
+      "title": "술떡",
+      "author": "루피타 뇽오",
+      "publisher": "도토리숲",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "과학",
+      "title": "산으로 올라간 백만 개의 귤",
+      "author": "알렉스 노게스",
+      "publisher": "씨드북",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "과학",
+      "title": "풀꽃의 비밀",
+      "author": "신영준",
+      "publisher": "지성사",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "과학",
+      "title": "용선생의 시끌벅적 과학교실 32 : 혼합물의 분리",
+      "author": "윤용석",
+      "publisher": "사회평론",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "과학",
+      "title": "도시식물 탐험대",
+      "author": "손연주 외",
+      "publisher": "주니어RHK",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "과학",
+      "title": "누가 좀 말려 줘요!",
+      "author": "신순재",
+      "publisher": "봄개울",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "과학",
+      "title": "화산 : 지구를 뒤흔드는 몬스터",
+      "author": "릴리 로베르주",
+      "publisher": "오늘책",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "과학",
+      "title": "자연 다큐 백과 : 화산과 지진",
+      "author": "캐시 퍼갱 외",
+      "publisher": "비룡소",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "과학",
+      "title": "마리 타프",
+      "author": "제스 키팅",
+      "publisher": "도토리숲",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "사회",
+      "title": "영산강 이야기",
+      "author": "방승희",
+      "publisher": "모해출판사",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "사회",
+      "title": "1948년 분이의 약속",
+      "author": "김원선",
+      "publisher": "꿈터",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "사회",
+      "title": "첫 대법원장 김병로 법 이야기 영장면",
+      "author": "이경화",
+      "publisher": "출판놀이",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "사회",
+      "title": "개념연결 초등 한국사 사전",
+      "author": "배성호 외",
+      "publisher": "비아에듀",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "사회",
+      "title": "삼국유사",
+      "author": "이진이",
+      "publisher": "책과함께어린이",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "사회",
+      "title": "세상을 지키는 열일곱 걸음",
+      "author": "페트라 클로제",
+      "publisher": "봄볕",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "사회",
+      "title": "여자는 정치하면 왜 안돼?",
+      "author": "카롤린 스테방",
+      "publisher": "휴먼어린이",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "사회",
+      "title": "함께 사는 다문화 왜 중요할까요?",
+      "author": "홍명진",
+      "publisher": "어린이나무생각",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "과학",
+      "title": "생각하는 기계",
+      "author": "돈 브라운",
+      "publisher": "두레아이들",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "과학",
+      "title": "우주 다녀오겠습니다",
+      "author": "장선환",
+      "publisher": "딸기책방",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "과학",
+      "title": "이것저것들의 하루 4",
+      "author": "마이크 바필드",
+      "publisher": "위즈덤하우스",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "과학",
+      "title": "냥 박사와 바이러스 탐험대",
+      "author": "예영",
+      "publisher": "주니어김영사",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "과학",
+      "title": "미스터리 과학수사단 1",
+      "author": "안치현",
+      "publisher": "미래엔아이세움",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "과학",
+      "title": "똑똑한 기계들 사이에서",
+      "author": "코시코사",
+      "publisher": "너머학교",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "과학",
+      "title": "식탐이 문제야!",
+      "author": "이지유",
+      "publisher": "위즈덤하우스",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "과학",
+      "title": "놀라운 하늘",
+      "author": "헬리레트 아인호른",
+      "publisher": "보림출판사",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "사회",
+      "title": "편의점을 털어라! : 역사 편",
+      "author": "이재은",
+      "publisher": "북멘토",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "사회",
+      "title": "별거벗은 세계사 1",
+      "author": "이현희",
+      "publisher": "아울북",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "사회",
+      "title": "도전! 명랑 초등 창업반",
+      "author": "이은주",
+      "publisher": "이레미디어",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "사회",
+      "title": "우리는 공유경제에 진심",
+      "author": "류지웅",
+      "publisher": "봄나무",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "사회",
+      "title": "펜으로 진실을 밝힌 리영희",
+      "author": "권태선",
+      "publisher": "창비",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "사회",
+      "title": "일본군 '위안부' 하늘 나비 할머니",
+      "author": "함영연",
+      "publisher": "내일을여는책",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "사회",
+      "title": "세계의 섬",
+      "author": "심중수",
+      "publisher": "봄볕",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "사회",
+      "title": "안젤로와 곤돌라의 가난긴 여행",
+      "author": "최은영",
+      "publisher": "시금치",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "과학",
+      "title": "위대한 과학자의 방",
+      "author": "김해등",
+      "publisher": "뜨인돌어린이",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "과학",
+      "title": "과학 탐정스 3",
+      "author": "조인하",
+      "publisher": "미래엔아이세움",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "과학",
+      "title": "브루노와 수소 이야기",
+      "author": "로드리고 콘트레라스 라모스",
+      "publisher": "지양어린이",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "과학",
+      "title": "과학을 훔친 수상한 영화관",
+      "author": "서지원",
+      "publisher": "뭉치",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "과학",
+      "title": "처음 읽는 전자공학",
+      "author": "세다드 카이드-살라 페론",
+      "publisher": "두레아이들",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "과학",
+      "title": "봄? 가을? 경계가 모호해지는 사계절",
+      "author": "조인경",
+      "publisher": "뭉치",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "과학",
+      "title": "인간과 동물의 일곱 가지 감각 이야기",
+      "author": "캐시 에반스",
+      "publisher": "아이위즈",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "과학",
+      "title": "이젠 달라져야 해! 에너지",
+      "author": "김소정",
+      "publisher": "노란돼지",
+      "year": null
+    },
+    {
+      "grade": 1,
+      "subject": "복합",
+      "title": "나팔꽃이 말했어요",
+      "author": "이미레",
+      "publisher": "리틀씨앤톡",
+      "year": "2024"
+    },
+    {
+      "grade": 1,
+      "subject": "복합",
+      "title": "우주에서 찾아온 특별한 나",
+      "author": "류미정",
+      "publisher": "뭉치",
+      "year": "2023"
+    },
+    {
+      "grade": 1,
+      "subject": "복합",
+      "title": "괜찮아, 용기 내서 말해 봐",
+      "author": "우오즈미 나오코",
+      "publisher": "그린북",
+      "year": "2023"
+    },
+    {
+      "grade": 1,
+      "subject": "복합",
+      "title": "나랑 놀 사람",
+      "author": "한라경",
+      "publisher": "보랏빛소어린이",
+      "year": "2023"
+    },
+    {
+      "grade": 1,
+      "subject": "복합",
+      "title": "내 손을 잡아",
+      "author": "여름꽃",
+      "publisher": "그린북",
+      "year": "2023"
+    },
+    {
+      "grade": 1,
+      "subject": "복합",
+      "title": "마트에 사자라니!",
+      "author": "미켈 발베르데",
+      "publisher": "머핀북",
+      "year": "2023"
+    },
+    {
+      "grade": 1,
+      "subject": "복합",
+      "title": "맞춤법이 왜 어렵냐고?",
+      "author": "이은지",
+      "publisher": "리틀씨앤톡",
+      "year": "2023"
+    },
+    {
+      "grade": 1,
+      "subject": "복합",
+      "title": "모든 존재는 특별해요",
+      "author": "니콜라 데이비스",
+      "publisher": "아름다운사람들",
+      "year": "2024"
+    },
+    {
+      "grade": 1,
+      "subject": "복합",
+      "title": "몰라쟁이 엄마",
+      "author": "이태준",
+      "publisher": "우리교육",
+      "year": "2021"
+    },
+    {
+      "grade": 1,
+      "subject": "복합",
+      "title": "버스가 왔어요",
+      "author": "유미무라 키키",
+      "publisher": "노란돼지",
+      "year": "2023"
+    },
+    {
+      "grade": 1,
+      "subject": "복합",
+      "title": "뽀롱뽀롱 뽀로로 달을 갖고 싶어요",
+      "author": "키즈아이콘",
+      "publisher": "키즈아이콘",
+      "year": "2023"
+    },
+    {
+      "grade": 1,
+      "subject": "복합",
+      "title": "스마트폰에 빠질 때 놓치는 것",
+      "author": "레니아 마조르",
+      "publisher": "아름다운사람들",
+      "year": "2024"
+    },
+    {
+      "grade": 1,
+      "subject": "복합",
+      "title": "슬퍼하는 나무",
+      "author": "이태준",
+      "publisher": "단비어린이",
+      "year": "2022"
+    },
+    {
+      "grade": 1,
+      "subject": "복합",
+      "title": "우리가 사랑한 의사 선생님",
+      "author": "소중애",
+      "publisher": "단비어린이",
+      "year": "2023"
+    },
+    {
+      "grade": 1,
+      "subject": "복합",
+      "title": "으랏차차! 뭉치면 힘이 세져",
+      "author": "조영경",
+      "publisher": "키즈프렌즈",
+      "year": "2023"
+    },
+    {
+      "grade": 1,
+      "subject": "복합",
+      "title": "저학년 교과서 창작 동화",
+      "author": "한국아동문학연구소",
+      "publisher": "효리원",
+      "year": "2024"
+    },
+    {
+      "grade": 1,
+      "subject": "복합",
+      "title": "고아 소녀 버티",
+      "author": "강밀아",
+      "publisher": "옐로스톤",
+      "year": "2024"
+    },
+    {
+      "grade": 1,
+      "subject": "복합",
+      "title": "곰 생각 별 생각",
+      "author": "박하잎",
+      "publisher": "창비",
+      "year": "2024"
+    },
+    {
+      "grade": 1,
+      "subject": "복합",
+      "title": "구두 디자이너 뱀 씨",
+      "author": "임윤정",
+      "publisher": "봄날의곰",
+      "year": "2024"
+    },
+    {
+      "grade": 1,
+      "subject": "복합",
+      "title": "난 완벽하지 않아",
+      "author": "마야 마이어스",
+      "publisher": "창비",
+      "year": "2024"
+    },
+    {
+      "grade": 1,
+      "subject": "복합",
+      "title": "내 개는 특별하니까!",
+      "author": "마리사 베스티타",
+      "publisher": "나무말미",
+      "year": "2024"
+    },
+    {
+      "grade": 1,
+      "subject": "복합",
+      "title": "다정한 빵집",
+      "author": "정연숙",
+      "publisher": "논장",
+      "year": "2024"
+    },
+    {
+      "grade": 1,
+      "subject": "복합",
+      "title": "당나귀 임금님",
+      "author": "조태봉",
+      "publisher": "청개구리",
+      "year": "2024"
+    },
+    {
+      "grade": 1,
+      "subject": "복합",
+      "title": "마음먹은 고양이",
+      "author": "강경호",
+      "publisher": "나무말미",
+      "year": "2024"
+    },
+    {
+      "grade": 1,
+      "subject": "복합",
+      "title": "물빛 코끼리와 사과 나무",
+      "author": "나카반",
+      "publisher": "봄볕",
+      "year": "2024"
+    },
+    {
+      "grade": 1,
+      "subject": "복합",
+      "title": "아빠, 나의 바다",
+      "author": "이경아",
+      "publisher": "창비",
+      "year": "2024"
+    },
+    {
+      "grade": 2,
+      "subject": "복합",
+      "title": "방귀 파워 뿅",
+      "author": "박병주",
+      "publisher": "올리",
+      "year": "2023"
+    },
+    {
+      "grade": 2,
+      "subject": "복합",
+      "title": "여름 상상",
+      "author": "박광명",
+      "publisher": "고래뱃속",
+      "year": "2023"
+    },
+    {
+      "grade": 2,
+      "subject": "복합",
+      "title": "꽁꽁꽁 캠핑",
+      "author": "윤정주",
+      "publisher": "책읽는곰",
+      "year": "2023"
+    },
+    {
+      "grade": 2,
+      "subject": "복합",
+      "title": "나태평과 진지해",
+      "author": "진수경",
+      "publisher": "천개의바람",
+      "year": "2022"
+    },
+    {
+      "grade": 2,
+      "subject": "복합",
+      "title": "날씨 상점",
+      "author": "토마쓰리",
+      "publisher": "웅진주니어",
+      "year": "2023"
+    },
+    {
+      "grade": 2,
+      "subject": "복합",
+      "title": "도망쳐요 달평씨",
+      "author": "신민재",
+      "publisher": "책읽는곰",
+      "year": "2022"
+    },
+    {
+      "grade": 2,
+      "subject": "복합",
+      "title": "땅속 아파트 77호",
+      "author": "김건구",
+      "publisher": "소담주니어",
+      "year": "2023"
+    },
+    {
+      "grade": 2,
+      "subject": "복합",
+      "title": "바다처럼 유유히",
+      "author": "막스 뒤코스",
+      "publisher": "국민서관",
+      "year": "2023"
+    },
+    {
+      "grade": 2,
+      "subject": "복합",
+      "title": "반짝반짝 비행접시",
+      "author": "윤지",
+      "publisher": "웅진주니어",
+      "year": "2023"
+    },
+    {
+      "grade": 2,
+      "subject": "복합",
+      "title": "수박을 쓴 여우",
+      "author": "솔 운두라가, 무헤르 갈리나",
+      "publisher": "놀궁리",
+      "year": "2022"
+    },
+    {
+      "grade": 2,
+      "subject": "복합",
+      "title": "시장에 가면?",
+      "author": "김정선",
+      "publisher": "길벗어린이",
+      "year": "2023"
+    },
+    {
+      "grade": 2,
+      "subject": "복합",
+      "title": "여름아이",
+      "author": "최휘",
+      "publisher": "문학동네",
+      "year": "2022"
+    },
+    {
+      "grade": 2,
+      "subject": "복합",
+      "title": "오이잉?",
+      "author": "최진우",
+      "publisher": "보랏빛소어린이",
+      "year": "2022"
+    },
+    {
+      "grade": 2,
+      "subject": "복합",
+      "title": "제자리를 찾습니다",
+      "author": "막스 뒤코스",
+      "publisher": "국민서관",
+      "year": "2023"
+    },
+    {
+      "grade": 2,
+      "subject": "복합",
+      "title": "해골씨의 새집",
+      "author": "홍지혜",
+      "publisher": "고래뱃속",
+      "year": "2023"
+    },
+    {
+      "grade": 2,
+      "subject": "복합",
+      "title": "호랭면",
+      "author": "김지안",
+      "publisher": "미디어창비",
+      "year": "2023"
+    },
+    {
+      "grade": 2,
+      "subject": "복합",
+      "title": "고모가 생길 뻔한 날",
+      "author": "심수영",
+      "publisher": "봄마중",
+      "year": "2024"
+    },
+    {
+      "grade": 2,
+      "subject": "복합",
+      "title": "꼬마 유령 코치와 두근두근 이발소",
+      "author": "가도노 에이코",
+      "publisher": "가람어린이",
+      "year": "2024"
+    },
+    {
+      "grade": 2,
+      "subject": "복합",
+      "title": "노란 버스",
+      "author": "로렌 롱",
+      "publisher": "지양어린이",
+      "year": "2024"
+    },
+    {
+      "grade": 2,
+      "subject": "복합",
+      "title": "늑대는 1층에만",
+      "author": "김수빈",
+      "publisher": "노란돼지",
+      "year": "2024"
+    },
+    {
+      "grade": 2,
+      "subject": "복합",
+      "title": "마음 두꺼비 약국",
+      "author": "임은정",
+      "publisher": "길벗스쿨",
+      "year": "2024"
+    },
+    {
+      "grade": 2,
+      "subject": "복합",
+      "title": "별빛을 훔친 알바",
+      "author": "마리노 아모디오",
+      "publisher": "작은코도마뱀",
+      "year": "2024"
+    },
+    {
+      "grade": 2,
+      "subject": "복합",
+      "title": "세뱃돈 되찾기 프로젝트",
+      "author": "송선혜",
+      "publisher": "마루비",
+      "year": "2024"
+    },
+    {
+      "grade": 2,
+      "subject": "복합",
+      "title": "수피아, 숲 소리를 부탁해!",
+      "author": "윤혜선",
+      "publisher": "파란자전거",
+      "year": "2024"
+    },
+    {
+      "grade": 2,
+      "subject": "복합",
+      "title": "엄마의 고물상",
+      "author": "현지영",
+      "publisher": "비엠케이",
+      "year": "2024"
+    },
+    {
+      "grade": 2,
+      "subject": "복합",
+      "title": "오빠 생각",
+      "author": "박상재",
+      "publisher": "샘터사",
+      "year": "2024"
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "거미의 인사",
+      "author": "어윤정",
+      "publisher": "샘터",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "고개를 들면 보이는 것들",
+      "author": "기예르모 데쿠르헤즈",
+      "publisher": "지양어린이",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "나의 오랑우탄 엄마",
+      "author": "이영미",
+      "publisher": "보림",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "놀이터 세상",
+      "author": "조성자",
+      "publisher": "베틀북",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "드라큘라의 시",
+      "author": "김개미",
+      "publisher": "천개의바람",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "마음 얼굴 병원",
+      "author": "김경미",
+      "publisher": "소원나무",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "맛나이 채소",
+      "author": "백혜진",
+      "publisher": "국민서관",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "봉스타 프로젝트",
+      "author": "백은하",
+      "publisher": "현암주니어",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "빨강 여우",
+      "author": "조태봉",
+      "publisher": "청개구리",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "사실, 꼬리 아홉 여우는",
+      "author": "조현미",
+      "publisher": "잇츠북",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "세기의 대결",
+      "author": "신채연",
+      "publisher": "북스그라운드",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "세상에서 제일 무거운 엉덩이",
+      "author": "이하정",
+      "publisher": "반달서재",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "언니는 따뜻해",
+      "author": "현경미",
+      "publisher": "청개구리",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "처음 우주에 간 고양이, 피자를 맛보다",
+      "author": "맥 바넷",
+      "publisher": "나무의말",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "코코코 나라",
+      "author": "김율희",
+      "publisher": "고래뱃속",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "타잔이 나타났다",
+      "author": "연지민",
+      "publisher": "마음이음",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "1795년, 정조의 행복한 행차",
+      "author": "윤민용",
+      "publisher": "봄볕",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "감정에 이름을 붙여 봐",
+      "author": "이라일라",
+      "publisher": "파스텔하우스",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "달팽이 : 빛을 조각한 예술가, 이사무 노구치",
+      "author": "에밀리 휴즈",
+      "publisher": "지양어린이",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "도둑 잡는 도둑, 청길동",
+      "author": "표영민",
+      "publisher": "봄볕",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "마음을 다해 똑똑하게, 다정하게 말하고 싶어",
+      "author": "김경미",
+      "publisher": "슈크림북",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "마음일기",
+      "author": "자현",
+      "publisher": "노란돼지",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "막난 할미, 래퍼로 데뷔하다",
+      "author": "안오일",
+      "publisher": "뜨인돌어린이",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "상자 속 도플갱어",
+      "author": "신은영",
+      "publisher": "노란돼지",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "상처 사진기 '나혼네컷'",
+      "author": "박현아",
+      "publisher": "내일을여는책",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "안녕이라고 말할 때",
+      "author": "신운선",
+      "publisher": "해와나무",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "어린이를 위한 한글 이야기",
+      "author": "강영임, 저지영",
+      "publisher": "파라주니어",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "왕만두",
+      "author": "김유석",
+      "publisher": "열림원어린이",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "우리 할머니는 사이보그",
+      "author": "남유하",
+      "publisher": "해와나무",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "친구 잘 사귀는 법",
+      "author": "류윤환",
+      "publisher": "뜨인돌어린이",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "행복 충전소 게스트하우스",
+      "author": "혜련",
+      "publisher": "해와나무",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "복합",
+      "title": "나는 그렇고 그런 고양이가 아니야!",
+      "author": "젤라",
+      "publisher": "뜨인돌어린이",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "복합",
+      "title": "나로의 가상현실",
+      "author": "임어진",
+      "publisher": "열림원어린이",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "복합",
+      "title": "대답 말고 질문",
+      "author": "로레나 엘렐라",
+      "publisher": "느림보",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "복합",
+      "title": "상상수집가 조르주. 10 : 추리",
+      "author": "뱅자맹 아당",
+      "publisher": "고래뱃속",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "복합",
+      "title": "설전도 수련관. 3 : 비속어 없이 감정 표현하기",
+      "author": "김경미",
+      "publisher": "슈크림북",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "복합",
+      "title": "쉿! 고양이 말이 들리는 건 비밀이야",
+      "author": "요아힘 프리드리히",
+      "publisher": "알라딘북스",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "복합",
+      "title": "신데렐라 패밀리",
+      "author": "최수현",
+      "publisher": "에앤키즈",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "복합",
+      "title": "쓰는대로 이루어진다!",
+      "author": "멜리사 다소리",
+      "publisher": "개암나무",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "복합",
+      "title": "우리 교실은 명화 미술관",
+      "author": "이든",
+      "publisher": "해와나무",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "복합",
+      "title": "유리의 집",
+      "author": "신미애",
+      "publisher": "해와나무",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "복합",
+      "title": "저승 변호사 왈왈",
+      "author": "키키유",
+      "publisher": "나무말미",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "복합",
+      "title": "지구가 멸망하면 어쩌죠?",
+      "author": "아누슈카 그로스",
+      "publisher": "파란자전거",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "복합",
+      "title": "칭찬해 주세요",
+      "author": "최진",
+      "publisher": "청개구리",
+      "year": null
+    },
+    {
+      "grade": 5,
+      "subject": "복합",
+      "title": "표절이 취미",
+      "author": "신은영",
+      "publisher": "내일을여는책",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "그깟 양반 개나 줘라!",
+      "author": "장세현",
+      "publisher": "책내음",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "나무 문해력 초등 6학년",
+      "author": "윤병무",
+      "publisher": "국수",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "룰스",
+      "author": "단 한 사람만을 위한 규칙) (신시아 로드",
+      "publisher": "초록개구리",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "마지막 숲을 찾아라!",
+      "author": "파트리시아 가르시아로호",
+      "publisher": "봄볕",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "백정의 아들, 포와에 가다",
+      "author": "남경희",
+      "publisher": "봄볕",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "벽란도의 마로, 변경에 가다",
+      "author": "김하영",
+      "publisher": "오늘책",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "소리끼리 달달달",
+      "author": "하지혜",
+      "publisher": "청개구리",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "어린이를 위한 역사의 쓸모: 인생 편 5 희망",
+      "author": "최태성",
+      "publisher": "다산어린이",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "예의 있고 똑 부러지는 말투 쓰기",
+      "author": "사이토 다카시",
+      "publisher": "국민서관",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "왜 그 친구와는 말이 안 통할까?",
+      "author": "매슈 사이드",
+      "publisher": "위즈덤하우스",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "우리들의 재판을 시작하겠습니다",
+      "author": "율리 체, 엘리사 호벤",
+      "publisher": "다산어린이",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "이솝 우화로 배우는 속담과 사자성어",
+      "author": "김숙분",
+      "publisher": "가문비어린이",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "자신만만한 음치 거북이들",
+      "author": "아구스틴 산체스 아길라르",
+      "publisher": "북스그라운드",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "천왕성에서 유턴",
+      "author": "이경아",
+      "publisher": "열림원어린이",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "평범한 어린이가 말하는 모두의 행복",
+      "author": "이데 에이사쿠",
+      "publisher": "우리학교",
+      "year": null
+    },
+    {
+      "grade": 6,
+      "subject": "복합",
+      "title": "푸른 눈의 독립운동가",
+      "author": "김영숙",
+      "publisher": "풀빛",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "가르쳐주세요! 통계에 대해서",
+      "author": "이운영",
+      "publisher": "지브레인",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "가우스, 동화 나라의 사라진 0을 찾아라",
+      "author": "김정",
+      "publisher": "뭉치",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "견우와 직녀가 분수 때문에 싸웠대",
+      "author": "이안, 한지연",
+      "publisher": "뭉치",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "계산이 빨라지는 인도 베다 수학",
+      "author": "마키노 다케후미",
+      "publisher": "바이킹",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "모두의 단위",
+      "author": "오지은",
+      "publisher": "대림아이",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "백 점 맞는 수학 왕",
+      "author": "김현태",
+      "publisher": "가문비",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "수리네 자동차",
+      "author": "서주희",
+      "publisher": "북극곰",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "아르키는 어림하기로 걸리버 아저씨를 구했어",
+      "author": "김승태",
+      "publisher": "뭉치",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "알면 알수록 재미있는 단위의 세계",
+      "author": "단위의 세계 편집부",
+      "publisher": "리스컴",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "어떻게 똑같이 나누지?",
+      "author": "윤병무",
+      "publisher": "국수",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "완주 분수",
+      "author": "남택진, 이현욱",
+      "publisher": "서사원주니어",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "외계인도 수학을 할까?",
+      "author": "김성화 외",
+      "publisher": "와이즈만BOOKS",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "평각 삼각형도 있나요?",
+      "author": "윤병무",
+      "publisher": "국수",
+      "year": null
+    },
+    {
+      "grade": 3,
+      "subject": "복합",
+      "title": "한 권으로 끝내는 뚝딱 수학 : 초등 3학년",
+      "author": "박신식",
+      "publisher": "크레용하우스",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "꽃잎의 개수에 담긴 수열의 비밀",
+      "author": "계영희",
+      "publisher": "뭉치",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "똑똑한 표와 대단한 그래프",
+      "author": "스튜어트 머피",
+      "publisher": "봄나무",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "뾰족반듯단단 도형 나라의 비밀",
+      "author": "가졸, 크뤼시포룸",
+      "publisher": "한울림어린이",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "세계로 떠나는 수학 도형 여행",
+      "author": "김리나",
+      "publisher": "다락원",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "세상 곳곳 수학 쏙쏙",
+      "author": "팀 콜린스",
+      "publisher": "다섯수레",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "수학아 수학아 나 좀 도와줘 2",
+      "author": "조성실",
+      "publisher": "삼성당",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "스포츠 속 황금 각도를 찾아라",
+      "author": "황근기",
+      "publisher": "뭉치",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "쌍둥이 건물 속 대칭축을 찾아라",
+      "author": "여승현",
+      "publisher": "뭉치",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "씽씽레츠고 내 딱지가 제일 세! 평면도형",
+      "author": "한날",
+      "publisher": "이젠교육",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "옷과 음식에도 단위의 비밀이 있다고?",
+      "author": "이정",
+      "publisher": "뭉치",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "우주를 재자",
+      "author": "이종필",
+      "publisher": "아이들은 자연이다",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "유클리드, 플라톤의 진리를 찾아 도형 왕국을 구하라",
+      "author": "오가희",
+      "publisher": "뭉치",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "읽을수록 빠지는 수학으로 배우는 세계사",
+      "author": "곰곰쌤",
+      "publisher": "제제의숲",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "짜장면 곱빼기에 수학이 들어 있다고?",
+      "author": "김용관",
+      "publisher": "사계절",
+      "year": null
+    },
+    {
+      "grade": 4,
+      "subject": "복합",
+      "title": "풀고 싶은 퀴즈 알고 싶은 수학",
+      "author": "정왕근",
+      "publisher": "키움",
+      "year": null
+    }
+  ]
+}

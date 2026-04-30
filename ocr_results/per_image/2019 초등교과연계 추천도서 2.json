@@ -1,0 +1,199 @@
+{
+  "header_grade": 6,
+  "header_subjects": [
+    "국어",
+    "사회",
+    "과학"
+  ],
+  "books": [
+    {
+      "subject": "국어",
+      "title": "계축일기",
+      "author": "전윤호",
+      "publisher": "주니어김영사",
+      "year": 2018
+    },
+    {
+      "subject": "국어",
+      "title": "나비 공주",
+      "author": "벨아래",
+      "publisher": "책고래",
+      "year": 2018
+    },
+    {
+      "subject": "국어",
+      "title": "나는 그때 왜 비겁했을까",
+      "author": "이벤 아케뢸리",
+      "publisher": "아름다운사람들",
+      "year": 2018
+    },
+    {
+      "subject": "국어",
+      "title": "너무 많이 가르치는 선생님",
+      "author": "셰인 페이슬리",
+      "publisher": "책과콩나무",
+      "year": 2019
+    },
+    {
+      "subject": "국어",
+      "title": "동해",
+      "author": "장설아",
+      "publisher": "책고래",
+      "year": 2019
+    },
+    {
+      "subject": "국어",
+      "title": "두 개의 달",
+      "author": "전성현",
+      "publisher": "문학과지성사",
+      "year": 2018
+    },
+    {
+      "subject": "국어",
+      "title": "루저 클럽",
+      "author": "앤드류 클레먼츠",
+      "publisher": "웅진주니어",
+      "year": 2019
+    },
+    {
+      "subject": "국어",
+      "title": "못 찾겠다, 소사만!",
+      "author": "고순덕",
+      "publisher": "밝은미래",
+      "year": 2018
+    },
+    {
+      "subject": "국어",
+      "title": "발터 벤야민의 수수께끼 라디오",
+      "author": "발터 벤야민",
+      "publisher": "봄볕",
+      "year": 2018
+    },
+    {
+      "subject": "국어",
+      "title": "변변한 가족",
+      "author": "박현숙",
+      "publisher": "서유재",
+      "year": 2019
+    },
+    {
+      "subject": "국어",
+      "title": "수영성 소년 장이",
+      "author": "구본석",
+      "publisher": "책고래",
+      "year": 2018
+    },
+    {
+      "subject": "국어",
+      "title": "속담에서 시작해 속담으로 끝나는 속담책",
+      "author": "강승임",
+      "publisher": "책속물고기",
+      "year": 2019
+    },
+    {
+      "subject": "국어",
+      "title": "아무것도 가르치지 않는 선생님",
+      "author": "셰인 페이슬리",
+      "publisher": "책과콩나무",
+      "year": 2019
+    },
+    {
+      "subject": "국어",
+      "title": "어느 날 가족이 되었습니다",
+      "author": "박현숙",
+      "publisher": "서유재",
+      "year": 2018
+    },
+    {
+      "subject": "국어",
+      "title": "연 날리는 소년",
+      "author": "엘런 판 펠젠",
+      "publisher": "알라딘북스",
+      "year": 2017
+    },
+    {
+      "subject": "국어",
+      "title": "욕쟁이와 명텅구리",
+      "author": "재임스 패터슨, 크리스 그레벤스타인",
+      "publisher": "봄볕",
+      "year": 2018
+    },
+    {
+      "subject": "국어",
+      "title": "읽으면서 바로 써먹는 어린이 고사성어",
+      "author": "한날",
+      "publisher": "파란정원",
+      "year": 2018
+    },
+    {
+      "subject": "국어",
+      "title": "읽으면서 바로 써먹는 어린이 관용구",
+      "author": "한날",
+      "publisher": "파란정원",
+      "year": 2018
+    },
+    {
+      "subject": "국어",
+      "title": "읽으면서 바로 써먹는 어린이 속담",
+      "author": "한날",
+      "publisher": "파란정원",
+      "year": 2017
+    },
+    {
+      "subject": "국어",
+      "title": "자유와 비밀의 숲",
+      "author": "이승민",
+      "publisher": "킨더랜드",
+      "year": 2018
+    },
+    {
+      "subject": "국어",
+      "title": "책 꿈는 소년",
+      "author": "장은영",
+      "publisher": "파란자전거",
+      "year": 2018
+    },
+    {
+      "subject": "국어",
+      "title": "첫사랑 탐구하기",
+      "author": "이하은",
+      "publisher": "청개구리",
+      "year": 2017
+    },
+    {
+      "subject": "국어",
+      "title": "태평양을 건너 간 사진신부",
+      "author": "윤자명",
+      "publisher": "밝은미래",
+      "year": 2018
+    },
+    {
+      "subject": "국어",
+      "title": "푸른 눈의 세상",
+      "author": "나영",
+      "publisher": "청개구리",
+      "year": 2018
+    },
+    {
+      "subject": "국어",
+      "title": "휴대폰에서 나를 구해줘!",
+      "author": "다이안 몬테스",
+      "publisher": "봄볕",
+      "year": 2018
+    }
+  ],
+  "_source_file": "2019 초등교과연계 추천도서 2.png",
+  "_extracted_at": "2026-04-30T10:16:45.701Z",
+  "_tokens": {
+    "input_tokens": 1887,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "cache_creation": {
+      "ephemeral_5m_input_tokens": 0,
+      "ephemeral_1h_input_tokens": 0
+    },
+    "output_tokens": 1708,
+    "service_tier": "standard",
+    "inference_geo": "global"
+  }
+}

@@ -1,0 +1,1027 @@
+{
+  "total": 96,
+  "quota": {
+    "1": {
+      "economy": 0,
+      "environment": 2,
+      "science": 2,
+      "law": 1,
+      "history": 0,
+      "media": 1,
+      "philosophy": 2,
+      "literature": 8
+    },
+    "2": {
+      "economy": 1,
+      "environment": 2,
+      "science": 2,
+      "law": 1,
+      "history": 1,
+      "media": 1,
+      "philosophy": 2,
+      "literature": 6
+    },
+    "3": {
+      "economy": 1,
+      "environment": 2,
+      "science": 3,
+      "law": 1,
+      "history": 2,
+      "media": 1,
+      "philosophy": 2,
+      "literature": 4
+    },
+    "4": {
+      "economy": 2,
+      "environment": 2,
+      "science": 2,
+      "law": 2,
+      "history": 2,
+      "media": 2,
+      "philosophy": 2,
+      "literature": 2
+    },
+    "5": {
+      "economy": 2,
+      "environment": 2,
+      "science": 2,
+      "law": 2,
+      "history": 2,
+      "media": 2,
+      "philosophy": 2,
+      "literature": 2
+    },
+    "6": {
+      "economy": 2,
+      "environment": 2,
+      "science": 2,
+      "law": 2,
+      "history": 2,
+      "media": 2,
+      "philosophy": 2,
+      "literature": 2
+    }
+  },
+  "books": [
+    {
+      "grade": 1,
+      "semester": 1,
+      "domain": "environment",
+      "title": "아빠, 나의 바다",
+      "author": "이경아",
+      "publisher": "창비",
+      "year": "2024",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 1,
+      "semester": 1,
+      "domain": "science",
+      "title": "곰 생각 별 생각",
+      "author": "박하잎",
+      "publisher": "창비",
+      "year": "2024",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 1,
+      "semester": 1,
+      "domain": "law",
+      "title": "배고픈 늑대가 사냥하는 방법",
+      "author": "뱀코",
+      "publisher": "미래엔아이세움",
+      "year": null,
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 1,
+      "semester": 1,
+      "domain": "media",
+      "title": "스마트폰에 빠질 때 놓치는 것",
+      "author": "레니아 마조르",
+      "publisher": "아름다운사람들",
+      "year": "2024",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 1,
+      "semester": 1,
+      "domain": "philosophy",
+      "title": "우리가 사랑한 의사 선생님",
+      "author": "소중애",
+      "publisher": "단비어린이",
+      "year": "2023",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 1,
+      "semester": 1,
+      "domain": "literature",
+      "title": "난 완벽하지 않아",
+      "author": "마야 마이어스",
+      "publisher": "창비",
+      "year": "2024",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 1,
+      "semester": 1,
+      "domain": "literature",
+      "title": "말놀이 동시집",
+      "author": "최승호",
+      "publisher": "비룡소",
+      "year": null,
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 1,
+      "semester": 1,
+      "domain": "literature",
+      "title": "길어도 너무 긴",
+      "author": "강정연",
+      "publisher": "길벗어린이",
+      "year": null,
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 1,
+      "semester": 1,
+      "domain": "literature",
+      "title": "어서 오세요! ㄱㄴㄷ 뷔페",
+      "author": "최경식",
+      "publisher": "위즈덤하우스",
+      "year": null,
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 1,
+      "semester": 2,
+      "domain": "environment",
+      "title": "물빛 코끼리와 사과 나무",
+      "author": "나카반",
+      "publisher": "봄볕",
+      "year": "2024",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 1,
+      "semester": 2,
+      "domain": "science",
+      "title": "모든 존재는 특별해요",
+      "author": "니콜라 데이비스",
+      "publisher": "아름다운사람들",
+      "year": "2024",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 1,
+      "semester": 2,
+      "domain": "philosophy",
+      "title": "다정한 빵집",
+      "author": "정연숙",
+      "publisher": "논장",
+      "year": "2024",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 1,
+      "semester": 2,
+      "domain": "literature",
+      "title": "셈셈이+나",
+      "author": "요안나 비에야크",
+      "publisher": "북극곰",
+      "year": null,
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 1,
+      "semester": 2,
+      "domain": "literature",
+      "title": "한 마리 여우",
+      "author": "케이트 리드",
+      "publisher": "북극곰",
+      "year": null,
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 1,
+      "semester": 2,
+      "domain": "literature",
+      "title": "꼬마 시인의 하루",
+      "author": "장혜진",
+      "publisher": "북극곰",
+      "year": null,
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 1,
+      "semester": 2,
+      "domain": "literature",
+      "title": "한문철의 어린이 교통 안전 1",
+      "author": "유경원",
+      "publisher": "다산어린이",
+      "year": null,
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 2,
+      "semester": 1,
+      "domain": "economy",
+      "title": "시장에 가면?",
+      "author": "김정선",
+      "publisher": "길벗어린이",
+      "year": "2023",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 2,
+      "semester": 1,
+      "domain": "environment",
+      "title": "수피아, 숲 소리를 부탁해!",
+      "author": "윤혜선",
+      "publisher": "파란자전거",
+      "year": "2024",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 2,
+      "semester": 1,
+      "domain": "science",
+      "title": "별빛을 훔친 알바",
+      "author": "마리노 아모디오",
+      "publisher": "작은코도마뱀",
+      "year": "2024",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 2,
+      "semester": 1,
+      "domain": "law",
+      "title": "우주에서 찾아온 특별한 나",
+      "author": "류미정",
+      "publisher": "뭉치",
+      "year": "2023",
+      "borrowed_from_grade": 1
+    },
+    {
+      "grade": 2,
+      "semester": 1,
+      "domain": "media",
+      "title": "콜록콜록! 오늘의 황사 뉴스",
+      "author": "요리",
+      "publisher": "뭉치",
+      "year": null,
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 2,
+      "semester": 1,
+      "domain": "philosophy",
+      "title": "오빠 생각",
+      "author": "박상재",
+      "publisher": "샘터사",
+      "year": "2024",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 2,
+      "semester": 1,
+      "domain": "literature",
+      "title": "여름 상상",
+      "author": "박광명",
+      "publisher": "고래뱃속",
+      "year": "2023",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 2,
+      "semester": 1,
+      "domain": "literature",
+      "title": "해골씨의 새집",
+      "author": "홍지혜",
+      "publisher": "고래뱃속",
+      "year": "2023",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 2,
+      "semester": 1,
+      "domain": "literature",
+      "title": "도망쳐요 달평씨",
+      "author": "신민재",
+      "publisher": "책읽는곰",
+      "year": "2022",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 2,
+      "semester": 1,
+      "domain": "history",
+      "title": "지도 : 종이 한 장에 담은 넓은 세상",
+      "author": "대동역사기행",
+      "publisher": "주니어김영사",
+      "year": "2019",
+      "borrowed_from_grade": 3
+    },
+    {
+      "grade": 2,
+      "semester": 2,
+      "domain": "environment",
+      "title": "숲에는 길이 많아요",
+      "author": "박경화",
+      "publisher": "창비",
+      "year": "2018",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 2,
+      "semester": 2,
+      "domain": "science",
+      "title": "오! 감",
+      "author": "주미경",
+      "publisher": "별천",
+      "year": null,
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 2,
+      "semester": 2,
+      "domain": "philosophy",
+      "title": "마음 두꺼비 약국",
+      "author": "임은정",
+      "publisher": "길벗스쿨",
+      "year": "2024",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 2,
+      "semester": 2,
+      "domain": "literature",
+      "title": "꽁꽁꽁 캠핑",
+      "author": "윤정주",
+      "publisher": "책읽는곰",
+      "year": "2023",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 2,
+      "semester": 2,
+      "domain": "literature",
+      "title": "여름아이",
+      "author": "최휘",
+      "publisher": "문학동네",
+      "year": "2022",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 2,
+      "semester": 2,
+      "domain": "literature",
+      "title": "선택",
+      "author": "다니엘 살미에리",
+      "publisher": "북극곰",
+      "year": "2019",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 3,
+      "semester": 1,
+      "domain": "environment",
+      "title": "슬기로운 인터넷 생활",
+      "author": "나탈리 다르장",
+      "publisher": "푸른숲주니어",
+      "year": "2020",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 3,
+      "semester": 1,
+      "domain": "science",
+      "title": "견우와 직녀가 분수 때문에 싸웠대",
+      "author": "이향안",
+      "publisher": "뭉치",
+      "year": null,
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 3,
+      "semester": 1,
+      "domain": "science",
+      "title": "가우스는 소수 대결로 마녀들을 물리쳤어",
+      "author": "김정",
+      "publisher": "뭉치",
+      "year": null,
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 3,
+      "semester": 1,
+      "domain": "law",
+      "title": "패션, 나를 표현하는 방법",
+      "author": "헬렌 행콕스",
+      "publisher": "키다리",
+      "year": "2020",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 3,
+      "semester": 1,
+      "domain": "history",
+      "title": "어린이로 사는 건 너무 힘들어! : 고대 그리스 이야기",
+      "author": "스트레이티 채",
+      "publisher": "을파소",
+      "year": "2020",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 3,
+      "semester": 1,
+      "domain": "philosophy",
+      "title": "내 친구의 집",
+      "author": "우미옥",
+      "publisher": "사계절",
+      "year": null,
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 3,
+      "semester": 1,
+      "domain": "literature",
+      "title": "거꾸로 가족",
+      "author": "신은영",
+      "publisher": "단비어린이",
+      "year": "2019",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 3,
+      "semester": 1,
+      "domain": "literature",
+      "title": "거미의 인사",
+      "author": "어윤정",
+      "publisher": "샘터",
+      "year": null,
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 3,
+      "semester": 1,
+      "domain": "economy",
+      "title": "어린이를 위한 생산과 이동의 원리",
+      "author": "리비 도이치",
+      "publisher": "풀과바람",
+      "year": "2019",
+      "borrowed_from_grade": 4
+    },
+    {
+      "grade": 3,
+      "semester": 1,
+      "domain": "media",
+      "title": "호랭면",
+      "author": "김지안",
+      "publisher": "미디어창비",
+      "year": "2023",
+      "borrowed_from_grade": 2
+    },
+    {
+      "grade": 3,
+      "semester": 2,
+      "domain": "environment",
+      "title": "최강 지구 백과",
+      "author": "마일즈켈리 편집부",
+      "publisher": "보랏빛소 어린이",
+      "year": null,
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 3,
+      "semester": 2,
+      "domain": "science",
+      "title": "견우와 직녀가 분수 때문에 싸웠대",
+      "author": "이안, 한지연",
+      "publisher": "뭉치",
+      "year": null,
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 3,
+      "semester": 2,
+      "domain": "history",
+      "title": "선생님, 3.1운동이 뭐예요?",
+      "author": "배성호 외",
+      "publisher": "철수와영희",
+      "year": "2019",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 3,
+      "semester": 2,
+      "domain": "philosophy",
+      "title": "고양이 자꾸",
+      "author": "한수언",
+      "publisher": "마음이음",
+      "year": null,
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 3,
+      "semester": 2,
+      "domain": "literature",
+      "title": "할머니 주름살이 좋아요",
+      "author": "시모나 치라올로",
+      "publisher": "창비",
+      "year": "2019",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 3,
+      "semester": 2,
+      "domain": "literature",
+      "title": "코코코 나라",
+      "author": "김율희",
+      "publisher": "고래뱃속",
+      "year": null,
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 4,
+      "semester": 1,
+      "domain": "economy",
+      "title": "와글와글 어린이 경제 수업",
+      "author": "김세현",
+      "publisher": "다림",
+      "year": "2019",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 4,
+      "semester": 1,
+      "domain": "environment",
+      "title": "미래는 어떨까요?",
+      "author": "부뤼노 골드만",
+      "publisher": "개암나무",
+      "year": "2019",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 4,
+      "semester": 1,
+      "domain": "science",
+      "title": "도시식물 탐험대",
+      "author": "손연주 외",
+      "publisher": "주니어RHK",
+      "year": null,
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 4,
+      "semester": 1,
+      "domain": "law",
+      "title": "책, 즐겁게 읽는 법",
+      "author": "박동석",
+      "publisher": "봄볕",
+      "year": "2018",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 4,
+      "semester": 1,
+      "domain": "history",
+      "title": "1795년, 정조의 행복한 행차",
+      "author": "윤민용",
+      "publisher": "봄볕",
+      "year": null,
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 4,
+      "semester": 1,
+      "domain": "media",
+      "title": "상처 사진기 '나혼네컷'",
+      "author": "박현아",
+      "publisher": "내일을여는책",
+      "year": null,
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 4,
+      "semester": 1,
+      "domain": "philosophy",
+      "title": "친절한 엘리베이터",
+      "author": "김우정",
+      "publisher": "파란자전거",
+      "year": null,
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 4,
+      "semester": 1,
+      "domain": "literature",
+      "title": "초록 양",
+      "author": "다이애나 킵튼",
+      "publisher": "샘터",
+      "year": "2019",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 4,
+      "semester": 2,
+      "domain": "economy",
+      "title": "시끌벅적 세계의 시장",
+      "author": "유경숙",
+      "publisher": "봄볕",
+      "year": null,
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 4,
+      "semester": 2,
+      "domain": "environment",
+      "title": "성 평등이 뭐예요?",
+      "author": "제랄딘 메상",
+      "publisher": "개암나무",
+      "year": "2018",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 4,
+      "semester": 2,
+      "domain": "science",
+      "title": "옷과 음식에도 단위의 비밀이 있다고?",
+      "author": "이정",
+      "publisher": "뭉치",
+      "year": null,
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 4,
+      "semester": 2,
+      "domain": "law",
+      "title": "복작복작 세상을 바꾸는 법칙",
+      "author": "박동석",
+      "publisher": "봄볕",
+      "year": "2016",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 4,
+      "semester": 2,
+      "domain": "history",
+      "title": "3.1운동, 그 가족에게 생긴 일",
+      "author": "고수산나",
+      "publisher": "내일을여는책",
+      "year": "2019",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 4,
+      "semester": 2,
+      "domain": "media",
+      "title": "표절이 취미",
+      "author": "신은영",
+      "publisher": "내일을여는책",
+      "year": null,
+      "borrowed_from_grade": 5
+    },
+    {
+      "grade": 4,
+      "semester": 2,
+      "domain": "philosophy",
+      "title": "안녕, 세계의 친구들",
+      "author": "마이야 브라미",
+      "publisher": "샘터",
+      "year": "2018",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 4,
+      "semester": 2,
+      "domain": "literature",
+      "title": "수리가족 탄생기",
+      "author": "황종금",
+      "publisher": "파란자전거",
+      "year": "2019",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 5,
+      "semester": 1,
+      "domain": "economy",
+      "title": "전 세계의 시장",
+      "author": "마리야 바하레바",
+      "publisher": "주니어RHK",
+      "year": "2024",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 5,
+      "semester": 1,
+      "domain": "environment",
+      "title": "세계는 왜 끝없이 싸울까?",
+      "author": "오승현",
+      "publisher": "개암나무",
+      "year": "2025",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 5,
+      "semester": 1,
+      "domain": "science",
+      "title": "우리는 모두 생물이니까",
+      "author": "줄리 라르동",
+      "publisher": "다산어린이",
+      "year": "2024",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 5,
+      "semester": 1,
+      "domain": "law",
+      "title": "멈춰, 그건 괴롭힘이야!",
+      "author": "이자벨 필리오자 외",
+      "publisher": "다림",
+      "year": "2024",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 5,
+      "semester": 1,
+      "domain": "history",
+      "title": "꼭 알아야 할 세계사 명장면",
+      "author": "편집 위원회",
+      "publisher": "비룡소",
+      "year": "2024",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 5,
+      "semester": 1,
+      "domain": "media",
+      "title": "동에 번쩍 서에 번쩍 귀신 잡는 감찰궁녀",
+      "author": "손주현",
+      "publisher": "파란자전거",
+      "year": "2021",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 5,
+      "semester": 1,
+      "domain": "philosophy",
+      "title": "나를 표현하는 열두 가지 감정",
+      "author": "임성관",
+      "publisher": "책속물고기",
+      "year": "2018",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 5,
+      "semester": 1,
+      "domain": "literature",
+      "title": "잠실역은 왜 잠실역이야?",
+      "author": "안미연",
+      "publisher": "현암주니어",
+      "year": "2025",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 5,
+      "semester": 2,
+      "domain": "economy",
+      "title": "돈도 공부가 필요해!",
+      "author": "안재욱",
+      "publisher": "머핀북",
+      "year": "2024",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 5,
+      "semester": 2,
+      "domain": "environment",
+      "title": "고구마 선거",
+      "author": "임지형",
+      "publisher": "개암나무",
+      "year": "2018",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 5,
+      "semester": 2,
+      "domain": "science",
+      "title": "알고리즘",
+      "author": "플로랑스 피노",
+      "publisher": "다림",
+      "year": "2019",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 5,
+      "semester": 2,
+      "domain": "law",
+      "title": "선생님, 난민은 왜 생기나요?",
+      "author": "김미조",
+      "publisher": "철수와영희",
+      "year": "2024",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 5,
+      "semester": 2,
+      "domain": "history",
+      "title": "경주역사유적지구",
+      "author": "이은석",
+      "publisher": "주니어김영사",
+      "year": "2019",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 5,
+      "semester": 2,
+      "domain": "media",
+      "title": "십 대의 똑똑한 미디어 생활을 위한 20가지 수업",
+      "author": "윤선희",
+      "publisher": "청어람미디어",
+      "year": "2024",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 5,
+      "semester": 2,
+      "domain": "philosophy",
+      "title": "동물의 행복이 너무 멀어",
+      "author": "김지숙",
+      "publisher": "다정한시민",
+      "year": "2024",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 5,
+      "semester": 2,
+      "domain": "literature",
+      "title": "나는 왜 이렇게 생겼지?",
+      "author": "카타리나 폰 데어 가텐",
+      "publisher": "위즈덤하우스",
+      "year": "2024",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 6,
+      "semester": 1,
+      "domain": "economy",
+      "title": "노동이 뭐예요?",
+      "author": "자크 올리비에 포",
+      "publisher": "개암나무",
+      "year": "2018",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 6,
+      "semester": 1,
+      "domain": "environment",
+      "title": "마지막 숲을 찾아라!",
+      "author": "파트리시아 가르시아로호",
+      "publisher": "봄볕",
+      "year": null,
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 6,
+      "semester": 1,
+      "domain": "science",
+      "title": "오일러, 오즈의 입체도형 마법사를 찾아라",
+      "author": "이안",
+      "publisher": "뭉치",
+      "year": "2020",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 6,
+      "semester": 1,
+      "domain": "law",
+      "title": "열두 달 성평등 교실",
+      "author": "아웃박스",
+      "publisher": "파란자전거",
+      "year": "2021",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 6,
+      "semester": 1,
+      "domain": "history",
+      "title": "의병장 윤희순",
+      "author": "정종숙",
+      "publisher": "한솔수북",
+      "year": "2019",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 6,
+      "semester": 1,
+      "domain": "media",
+      "title": "Why? 뉴스와 미디어",
+      "author": "조영선",
+      "publisher": "예림당",
+      "year": "2020",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 6,
+      "semester": 1,
+      "domain": "philosophy",
+      "title": "고래 어린이 인문 학교",
+      "author": "최성각 외",
+      "publisher": "철수와영희",
+      "year": "2018",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 6,
+      "semester": 1,
+      "domain": "literature",
+      "title": "백년아이",
+      "author": "김지연",
+      "publisher": "다림",
+      "year": "2019",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 6,
+      "semester": 2,
+      "domain": "economy",
+      "title": "선생님, 노동이 뭐예요?",
+      "author": "하종강",
+      "publisher": "철수와영희",
+      "year": "2018",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 6,
+      "semester": 2,
+      "domain": "environment",
+      "title": "매쓰 왕자와 지구의 비밀",
+      "author": "김주창",
+      "publisher": "자음과모음",
+      "year": "2019",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 6,
+      "semester": 2,
+      "domain": "science",
+      "title": "과학 탐정스 3",
+      "author": "조인하",
+      "publisher": "미래엔아이세움",
+      "year": null,
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 6,
+      "semester": 2,
+      "domain": "law",
+      "title": "백정의 아들, 포와에 가다",
+      "author": "남경희",
+      "publisher": "봄볕",
+      "year": null,
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 6,
+      "semester": 2,
+      "domain": "history",
+      "title": "으랏차차 조선 실록 수호대",
+      "author": "장은영",
+      "publisher": "파란자전거",
+      "year": "2019",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 6,
+      "semester": 2,
+      "domain": "media",
+      "title": "휴대폰에서 나를 구해줘!",
+      "author": "다미안 몬테스",
+      "publisher": "봄볕",
+      "year": "2018",
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 6,
+      "semester": 2,
+      "domain": "philosophy",
+      "title": "왜 그 친구와는 말이 안 통할까?",
+      "author": "매슈 사이드",
+      "publisher": "위즈덤하우스",
+      "year": null,
+      "borrowed_from_grade": null
+    },
+    {
+      "grade": 6,
+      "semester": 2,
+      "domain": "literature",
+      "title": "노벨 아저씨네 미스터리 팡팡센터",
+      "author": "김하은",
+      "publisher": "주니어김영사",
+      "year": "2019",
+      "borrowed_from_grade": null
+    }
+  ]
+}

@@ -1,0 +1,192 @@
+{
+  "header_grade": 4,
+  "header_subjects": [
+    "국어",
+    "사회",
+    "과학"
+  ],
+  "books": [
+    {
+      "subject": "사회",
+      "title": "할머니의 마법수레",
+      "author": "조연화",
+      "publisher": "청개구리",
+      "year": 2018
+    },
+    {
+      "subject": "사회",
+      "title": "땅에 사는 아이들",
+      "author": "정세언",
+      "publisher": "내일을여는책",
+      "year": 2017
+    },
+    {
+      "subject": "사회",
+      "title": "미래를 살리는 착한 소비 이야기",
+      "author": "한화주",
+      "publisher": "팜파스",
+      "year": 2016
+    },
+    {
+      "subject": "사회",
+      "title": "복작복작 세상을 바꾸는 법칙",
+      "author": "박동석",
+      "publisher": "봄볕",
+      "year": 2016
+    },
+    {
+      "subject": "사회",
+      "title": "어린이 토론학교 : 돈과 경제",
+      "author": "김지은, 권이은, 주정현",
+      "publisher": "우리학교",
+      "year": 2016
+    },
+    {
+      "subject": "사회",
+      "title": "어린이 토론학교 : 학교와 가족",
+      "author": "권이은, 주정현",
+      "publisher": "우리학교",
+      "year": 2016
+    },
+    {
+      "subject": "사회",
+      "title": "소녀소년 평등 팀구생활",
+      "author": "양해경",
+      "publisher": "파란자전거",
+      "year": 2013
+    },
+    {
+      "subject": "사회",
+      "title": "안드로메다에서 찾아온 사회 개념 1",
+      "author": "김진옥",
+      "publisher": "과학동아북스",
+      "year": 2013
+    },
+    {
+      "subject": "과학",
+      "title": "(3·4학년이 꼭 읽어야 할) 교과서 과학 동화",
+      "author": "이봉",
+      "publisher": "효리원",
+      "year": 2018
+    },
+    {
+      "subject": "과학",
+      "title": "거울과 렌즈는 마법이 아니에요 : 빛의 반사와 굴절",
+      "author": "아나 알폰소",
+      "publisher": "알라딘북스",
+      "year": 2018
+    },
+    {
+      "subject": "과학",
+      "title": "과학 잘하는 40가지 비밀",
+      "author": "롭 비티",
+      "publisher": "부즈펌어린이",
+      "year": 2018
+    },
+    {
+      "subject": "과학",
+      "title": "나 좀 살려 줘 환경과 쓰레기",
+      "author": "허정임",
+      "publisher": "아로��",
+      "year": 2018
+    },
+    {
+      "subject": "과학",
+      "title": "대비해 대피해! 지진과 안전",
+      "author": "신랑실",
+      "publisher": "아로볼",
+      "year": 2018
+    },
+    {
+      "subject": "과학",
+      "title": "반려식물 키우기",
+      "author": "강지혜",
+      "publisher": "상상의집",
+      "year": 2018
+    },
+    {
+      "subject": "과학",
+      "title": "산인장은 어떻게 식물원에 왔을까?",
+      "author": "정병길",
+      "publisher": "철수와영희",
+      "year": 2018
+    },
+    {
+      "subject": "과학",
+      "title": "어린 왕자와 알록달록 숲속 친구들",
+      "author": "에이치비",
+      "publisher": "한국독서지도회",
+      "year": 2018
+    },
+    {
+      "subject": "과학",
+      "title": "왜? 하고 물으면 과학이 답해요 : 화학",
+      "author": "정성욱, 이재아",
+      "publisher": "다락원",
+      "year": 2018
+    },
+    {
+      "subject": "과학",
+      "title": "자연사 박물관 : 생명 관찰 실험실",
+      "author": "DK자연사박물관집위원회",
+      "publisher": "비룡소",
+      "year": 2018
+    },
+    {
+      "subject": "과학",
+      "title": "지구가 좌충우돌",
+      "author": "오주영",
+      "publisher": "상상의집",
+      "year": 2018
+    },
+    {
+      "subject": "과학",
+      "title": "처음 만나는 야생화 그림책 : 가을",
+      "author": "마에다 마유미",
+      "publisher": "길벗스쿨",
+      "year": 2018
+    },
+    {
+      "subject": "과학",
+      "title": "처음 만나는 야생화 그림책 : 봄·여름",
+      "author": "마에다 마유미",
+      "publisher": "길벗스쿨",
+      "year": 2018
+    },
+    {
+      "subject": "과학",
+      "title": "둘썩둘썩 우리로 꽝 우리를 위협하는 자연재해",
+      "author": "정영훈",
+      "publisher": "뭉치",
+      "year": 2017
+    },
+    {
+      "subject": "과학",
+      "title": "자연재해로부터 탈출하려면",
+      "author": "최영준",
+      "publisher": "비룡소",
+      "year": 2017
+    },
+    {
+      "subject": "과학",
+      "title": "가장 완벽한 지구책",
+      "author": "조너선 리턴",
+      "publisher": "라이카미",
+      "year": 2016
+    }
+  ],
+  "_source_file": "2019 초등교과연계 추천도서 5.png",
+  "_extracted_at": "2026-04-30T10:18:05.839Z",
+  "_tokens": {
+    "input_tokens": 1903,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "cache_creation": {
+      "ephemeral_5m_input_tokens": 0,
+      "ephemeral_1h_input_tokens": 0
+    },
+    "output_tokens": 1774,
+    "service_tier": "standard",
+    "inference_geo": "global"
+  }
+}
