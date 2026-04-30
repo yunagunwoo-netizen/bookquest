@@ -231,6 +231,11 @@
     const QUIZ_TOO_FAST_MS = 2000;  // 임계값: 2초 미만 응답 = 부드러운 알림
 
     // ═══════════════════════════════════════
+    // 배틀 결과 제출 중복 호출 가드 (interactiveBattle finalize 한 번만)
+    // ═══════════════════════════════════════
+    let _finalizeInteractiveBusy = false;
+
+    // ═══════════════════════════════════════
     // ☁️ Cloud Functions API 서비스
     // ═══════════════════════════════════════
     const FUNCTIONS_BASE = "https://us-central1-bookquest-f9720.cloudfunctions.net";
@@ -5612,6 +5617,7 @@
             myUid, oppUid: opp.uid, myPack, oppPack, myName, oppName, miniDebateOwner: debateOwner
           });
 
+          _finalizeInteractiveBusy = false;  // 새 배틀 시작 — 가드 리셋
           setInteractiveBattleId(result.battleId);
           setInteractiveRounds(result.rounds);
 
@@ -5910,6 +5916,12 @@
       };
 
       const finalizeInteractiveBattle = async () => {
+        // 중복 호출 가드 — 한 배틀당 finalize는 한 번만
+        if (_finalizeInteractiveBusy) {
+          console.log("finalizeInteractiveBattle 중복 호출 무시");
+          return;
+        }
+        _finalizeInteractiveBusy = true;
         const myWins = roundAnswers.filter(r => r.judge === "my").length;
         const oppWins = roundAnswers.filter(r => r.judge === "opp").length;
 
