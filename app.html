@@ -7787,10 +7787,31 @@
                       {recBookDetail.publisher}{recBookDetail.year ? ` · ${recBookDetail.year}년` : ""}
                     </div>
                   )}
-                  <div style={{ background: "#EFF6FF", borderRadius: 12, padding: 12, fontSize: 12, color: "#1e40af", lineHeight: 1.6, marginBottom: 12 }}>
-                    📖 책 줄거리·퀴즈·토론은 점차 추가됩니다.<br/>
-                    지금은 도서관·서점에서 책을 빌려 읽어 보세요!
-                  </div>
+                  {/* 📖 책 소개 — 알라딘 description (있으면 표시) */}
+                  {recBookDetail.summary ? (
+                    <>
+                      <div style={{ fontSize: 13, fontWeight: 800, color: "#1a1a2e", marginBottom: 6, display: "flex", alignItems: "center", gap: 6 }}>
+                        <span>📖</span><span>책 소개</span>
+                      </div>
+                      <div style={{ background: "#F9FAFB", borderRadius: 12, padding: 12, fontSize: 12.5, color: "#374151", lineHeight: 1.65, marginBottom: 12, whiteSpace: "pre-wrap", maxHeight: 280, overflowY: "auto", border: "1px solid #E5E7EB" }}>
+                        {recBookDetail.summary}
+                      </div>
+                      <div style={{ background: "#FEF3C7", borderRadius: 10, padding: 10, fontSize: 11, color: "#92400E", lineHeight: 1.5, marginBottom: 12 }}>
+                        💡 줄거리는 알라딘 도서 정보 출처. 퀴즈·토론은 점차 추가됩니다.
+                      </div>
+                    </>
+                  ) : (
+                    <div style={{ background: "#EFF6FF", borderRadius: 12, padding: 12, fontSize: 12, color: "#1e40af", lineHeight: 1.6, marginBottom: 12 }}>
+                      📖 책 소개·퀴즈·토론은 점차 추가됩니다.<br/>
+                      지금은 도서관·서점에서 책을 빌려 읽어 보세요!
+                    </div>
+                  )}
+                  {recBookDetail.aladinLink && (
+                    <a href={recBookDetail.aladinLink} target="_blank" rel="noopener noreferrer"
+                       style={{ display: "block", textAlign: "center", background: "white", border: "1px solid #6366f1", color: "#4338ca", borderRadius: 10, padding: "10px 0", fontSize: 12, fontWeight: 700, marginBottom: 8, textDecoration: "none" }}>
+                      알라딘에서 자세히 보기 →
+                    </a>
+                  )}
                   <button onClick={() => setRecBookDetail(null)}
                     style={{ width: "100%", background: "#1f2937", color: "white", border: "none", borderRadius: 12, padding: "12px 0", fontSize: 14, fontWeight: 800, cursor: "pointer" }}>
                     닫기
