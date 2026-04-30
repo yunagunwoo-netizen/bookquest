@@ -7692,9 +7692,18 @@
             {bookTab === "discuss" && (() => {
               const allDisc = filterByLevel(book.discussionTopics || [], profile?.grade);
               const sortedDisc = prioritizeByUsedSet(allDisc, t => `${book.id}-disc-${stableHash(t.q)}`, discussionSeenMap, discussionShuffleSeed);
+              // Layer 2-3: 양 기반 점진 잠금
+              const DISC_CHUNK = 5;
+              const startedDiscCount = allDisc.filter(t => {
+                const i = allDisc.findIndex(o => o.q === t.q);
+                return discussionState[`${book.id}-disc-${i}`];
+              }).length;
+              const unlockedDiscCount = Math.min(allDisc.length, (Math.floor(startedDiscCount / DISC_CHUNK) + 1) * DISC_CHUNK);
+              const unlockedSortedDisc = sortedDisc.filter(t => sortedDisc.indexOf(t) < unlockedDiscCount);
               const SHOW_DISC = 3;
-              const displayedDisc = sortedDisc.slice(0, SHOW_DISC);
-              const hasMoreDisc = allDisc.length > displayedDisc.length;
+              const displayedDisc = unlockedSortedDisc.slice(0, SHOW_DISC);
+              const hasMoreDisc = unlockedSortedDisc.length > displayedDisc.length;
+              const remainToNextDiscUnlock = Math.max(0, unlockedDiscCount - startedDiscCount);
               const renderStars = (num) => {
                 const full = Math.floor(num);
                 return '⭐'.repeat(full) + '☆'.repeat(Math.max(0, 3 - full));
@@ -7710,8 +7719,19 @@
                     )}
                   </div>
                   {allDisc.length > 0 && (
-                    <div style={{ fontSize: 11, color: "#aaa", marginBottom: 8, textAlign: "right" }}>
-                      전체 {allDisc.length}개 중 {displayedDisc.length}개 표시
+                    <div style={{ fontSize: 11, marginBottom: 8, display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
+                      <span style={{ color: "#667eea", fontWeight: 700 }}>
+                        💬 토론 진행: {startedDiscCount}/{allDisc.length}
+                        {startedDiscCount < allDisc.length && (
+                          <span style={{ color: "#888", fontWeight: 500, marginLeft: 6 }}>
+                            · {remainToNextDiscUnlock > 0 ? `${remainToNextDiscUnlock}개 더 시작하면 다음 묶음` : "다음 묶음 열림!"}
+                          </span>
+                        )}
+                        {startedDiscCount >= allDisc.length && (
+                          <span style={{ color: "#22c55e", fontWeight: 700, marginLeft: 6 }}>· 완주! 🎉</span>
+                        )}
+                      </span>
+                      <span style={{ color: "#aaa" }}>{displayedDisc.length}개 표시</span>
                     </div>
                   )}
                   {displayedDisc.map((t) => {
@@ -7753,15 +7773,40 @@
             {bookTab === "quiz" && (() => {
               const allQuiz = filterByLevel(book.quizzes || [], profile?.grade);
               const sortedQuiz = prioritizeByUsedSet(allQuiz, q => `${book.id}-quiz-${stableHash(q.q)}`, quizSeenMap, quizShuffleSeed);
+              // Layer 2-3: 양 기반 점진 잠금 — 답한 개수의 5묶음마다 다음 5개 해제
+              const CHUNK_SIZE = 5;
+              const answeredQuizCount = allQuiz.filter(q => {
+                const i = allQuiz.findIndex(o => o.q === q.q);
+                return quizState[`${book.id}-quiz-${i}`]?.answered;
+              }).length;
+              const unlockedQuizCount = Math.min(allQuiz.length, (Math.floor(answeredQuizCount / CHUNK_SIZE) + 1) * CHUNK_SIZE);
+              const unlockedSorted = sortedQuiz.filter(q => {
+                const i = allQuiz.findIndex(o => o.q === q.q);
+                // 풀린 묶음 안의 q만 노출 — sortedQuiz 안에서 unlockedQuizCount개까지만
+                return sortedQuiz.indexOf(q) < unlockedQuizCount;
+              });
               const SHOW_QUIZ = 4;
-              const displayedQuiz = sortedQuiz.slice(0, SHOW_QUIZ);
-              const hasMoreQuiz = allQuiz.length > displayedQuiz.length;
+              const displayedQuiz = unlockedSorted.slice(0, SHOW_QUIZ);
+              const hasMoreQuiz = unlockedSorted.length > displayedQuiz.length;
+              const nextUnlockAt = unlockedQuizCount;
+              const remainToNextUnlock = Math.max(0, nextUnlockAt - answeredQuizCount);
               return (
               <div>
                 <div style={{ fontSize: 13, color: "#888", marginBottom: 12 }}><img src="icons/ui/ui_question.png" alt="" style={{ width: 14, height: 14, verticalAlign: "middle" }} /> 책 내용을 바탕으로 퀴즈를 풀어보세요! (+10XP)</div>
                 {allQuiz.length > 0 && (
-                  <div style={{ fontSize: 11, color: "#aaa", marginBottom: 8, textAlign: "right" }}>
-                    전체 {allQuiz.length}개 중 {displayedQuiz.length}개 표시
+                  <div style={{ fontSize: 11, marginBottom: 8, display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
+                    <span style={{ color: "#667eea", fontWeight: 700 }}>
+                      📚 풀이 진행: {answeredQuizCount}/{allQuiz.length}
+                      {answeredQuizCount < allQuiz.length && (
+                        <span style={{ color: "#888", fontWeight: 500, marginLeft: 6 }}>
+                          · {remainToNextUnlock > 0 ? `${remainToNextUnlock}문제 더 풀면 다음 묶음 해제` : "다음 묶음 열림!"}
+                        </span>
+                      )}
+                      {answeredQuizCount >= allQuiz.length && (
+                        <span style={{ color: "#22c55e", fontWeight: 700, marginLeft: 6 }}>· 완주! 🎉</span>
+                      )}
+                    </span>
+                    <span style={{ color: "#aaa" }}>{displayedQuiz.length}개 표시</span>
                   </div>
                 )}
                 {displayedQuiz.map((quiz) => {
@@ -7855,9 +7900,18 @@
             {bookTab === "deep" && (() => {
               const allDeep = filterByLevel(book.deepTopics || [], profile?.grade);
               const sortedDeep = prioritizeByUsedSet(allDeep, t => `${book.id}-deep-${stableHash(t.q)}`, deepSeenMap, deepShuffleSeed);
+              // Layer 2-3: 양 기반 점진 잠금 (심화는 8개 → 4개씩 2묶음)
+              const DEEP_CHUNK = 4;
+              const startedDeepCount = allDeep.filter(t => {
+                const i = allDeep.findIndex(o => o.q === t.q);
+                return discussionState[`${book.id}-deep-${i}`];
+              }).length;
+              const unlockedDeepCount = Math.min(allDeep.length, (Math.floor(startedDeepCount / DEEP_CHUNK) + 1) * DEEP_CHUNK);
+              const unlockedSortedDeep = sortedDeep.filter(t => sortedDeep.indexOf(t) < unlockedDeepCount);
               const SHOW_DEEP = 2;
-              const displayedDeep = sortedDeep.slice(0, SHOW_DEEP);
-              const hasMoreDeep = allDeep.length > displayedDeep.length;
+              const displayedDeep = unlockedSortedDeep.slice(0, SHOW_DEEP);
+              const hasMoreDeep = unlockedSortedDeep.length > displayedDeep.length;
+              const remainToNextDeepUnlock = Math.max(0, unlockedDeepCount - startedDeepCount);
               const renderStars = (num) => {
                 const full = Math.floor(num);
                 return '⭐'.repeat(full) + '☆'.repeat(Math.max(0, 3 - full));
@@ -7869,8 +7923,19 @@
                     {!isPremium && !isAdmin && <span style={{ marginLeft: 8, fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 8, background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white" }}>Premium</span>}
                   </div>
                   {allDeep.length > 0 && (
-                    <div style={{ fontSize: 11, color: "#aaa", marginBottom: 8, textAlign: "right" }}>
-                      전체 {allDeep.length}개 중 {displayedDeep.length}개 표시
+                    <div style={{ fontSize: 11, marginBottom: 8, display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
+                      <span style={{ color: "#FF6F00", fontWeight: 700 }}>
+                        🔥 심화 진행: {startedDeepCount}/{allDeep.length}
+                        {startedDeepCount < allDeep.length && (
+                          <span style={{ color: "#888", fontWeight: 500, marginLeft: 6 }}>
+                            · {remainToNextDeepUnlock > 0 ? `${remainToNextDeepUnlock}개 더 시작하면 다음 묶음` : "다음 묶음 열림!"}
+                          </span>
+                        )}
+                        {startedDeepCount >= allDeep.length && (
+                          <span style={{ color: "#22c55e", fontWeight: 700, marginLeft: 6 }}>· 완주! 🎉</span>
+                        )}
+                      </span>
+                      <span style={{ color: "#aaa" }}>{displayedDeep.length}개 표시</span>
                     </div>
                   )}
                   {displayedDeep.map((t) => {
