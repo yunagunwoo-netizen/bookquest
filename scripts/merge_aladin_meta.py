@@ -1,25 +1,32 @@
 #!/usr/bin/env python3
 """
-scripts/merge_aladin_meta.py
+scripts/merge_aladin_meta.py - v2 (brace-balanced parser)
 
-ocr_results/aladin_meta.json 을 읽어 app-data.js의 RECOMMENDED_BOOKS·EXTRA_BOOKS 객체에
-summary (책 소개), isbn, aladinLink 필드를 병합한다.
+Merge aladin_meta.json into RECOMMENDED_BOOKS / EXTRA_BOOKS objects in app-data.js.
+Inject summary, isbn, aladinLink fields.
 
-실행:
-    cd C:\dev\bookquest
+v1 used regex which mismatched on certain summary characters and could damage the
+file. v2 uses balanced brace counters to slice each object exactly. Safe.
+
+Usage:
+    cd C:\\dev\\bookquest
     python scripts/merge_aladin_meta.py
 
-사전조건:
-    - scripts/fetch_aladin_descriptions.js 실행 완료 후
-    - ocr_results/aladin_meta.json 존재
+Prereq:
+    - scripts/fetch_aladin_descriptions.js executed first
+    - ocr_results/aladin_meta.json exists
 
-안전:
-    - 작업 전 backup/ 에 app-data.js 스냅샷 자동 생성
-    - 객체별 한 줄 단위로 정확히 매칭, 1회 매칭 안 되면 중단
-    - description, fullDescription 중 더 긴 것을 summary로 사용
+Safety:
+    - automatic backup of app-data.js into backup/ before editing
+    - per-object processing, no partial-corruption risk
+    - summary picks the longer of fullDescription / description
+    - skip if existing summary > 30 chars (resume support)
 """
 
-import json, re, sys, os, shutil, time
+import json
+import re
+import shutil
+import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -28,102 +35,176 @@ META_PATH = ROOT / "ocr_results" / "aladin_meta.json"
 BACKUP_DIR = ROOT / "backup"
 
 if not META_PATH.exists():
-    print(f"[ERR] {META_PATH} 없음. 먼저 scripts/fetch_aladin_descriptions.js 를 실행하세요.")
-    sys.exit(1)
+    print("[ERR] " + str(META_PATH) + " not found.")
+    print("      Run scripts/fetch_aladin_descriptions.js first.")
+    exit(1)
 
 if not APP_DATA.exists():
-    print(f"[ERR] {APP_DATA} 없음.")
-    sys.exit(1)
+    print("[ERR] " + str(APP_DATA) + " not found.")
+    exit(1)
 
-# Backup
 BACKUP_DIR.mkdir(exist_ok=True)
 ts = time.strftime("%Y%m%d_%H%M%S")
-bk = BACKUP_DIR / f"app-data-pre-aladin-merge-{ts}.js"
+bk = BACKUP_DIR / ("app-data-pre-merge-" + ts + ".js")
 shutil.copy(APP_DATA, bk)
-print(f"[OK] backup: {bk.name}")
+print("[OK] backup: " + bk.name)
 
-with open(META_PATH, "r", encoding="utf-8") as f:
+with open(META_PATH, encoding="utf-8") as f:
     meta = json.load(f)
+print("[OK] aladin_meta entries: " + str(len(meta)))
 
-print(f"[OK] aladin_meta entries: {len(meta)}")
-
-with open(APP_DATA, "r", encoding="utf-8") as f:
+with open(APP_DATA, encoding="utf-8") as f:
     src = f.read()
 
 original_size = len(src.encode("utf-8"))
-updated = 0
-skipped = 0
-not_found = 0
 
-# Helper: pick the best summary from meta entry
-def pick_summary(entry):
-    fd = (entry.get("fullDescription") or "").strip()
-    sd = (entry.get("description") or "").strip()
-    # Prefer the longer non-empty one
-    if len(fd) >= max(50, len(sd)):
-        return fd
-    return sd
+
+def slice_array(text, name):
+    """Return (start, end+1) of the [...] block for `const NAME = [...]`."""
+    m = re.search(r"const " + re.escape(name) + r"\s*=\s*\[", text)
+    if not m:
+        return None, None
+    start = m.end() - 1
+    depth, in_str, esc = 0, False, False
+    for i in range(start, len(text)):
+        c = text[i]
+        if esc:
+            esc = False
+            continue
+        if c == "\\":
+            esc = True
+            continue
+        if c == '"':
+            in_str = not in_str
+            continue
+        if in_str:
+            continue
+        if c == "[":
+            depth += 1
+        elif c == "]":
+            depth -= 1
+            if depth == 0:
+                return start, i + 1
+    return start, None
+
+
+def split_objects(arr_text):
+    """Return (start, end) ranges of top-level { ... } objects inside [ ... ]."""
+    inside = arr_text[1:-1]
+    objs = []
+    depth, in_str, esc = 0, False, False
+    obj_start = None
+    for i, c in enumerate(inside):
+        if esc:
+            esc = False
+            continue
+        if c == "\\":
+            esc = True
+            continue
+        if c == '"':
+            in_str = not in_str
+            continue
+        if in_str:
+            continue
+        if c == "{":
+            if depth == 0:
+                obj_start = i
+            depth += 1
+        elif c == "}":
+            depth -= 1
+            if depth == 0 and obj_start is not None:
+                # +1 to compensate for the leading '[' in arr_text
+                objs.append((obj_start + 1, i + 2))
+                obj_start = None
+    return objs
+
+
+def get_obj_id(obj_text):
+    m = re.search(r'\bid:\s*(?:"([^"]+)"|(\d+))', obj_text)
+    if not m:
+        return None
+    return m.group(1) or m.group(2)
+
 
 def js_str(s):
     return json.dumps(s, ensure_ascii=False)
 
-# Merge: for each id in meta, find matching object in app-data.js and inject fields
-for bid, entry in meta.items():
-    summary = pick_summary(entry)
-    isbn13 = entry.get("isbn13", "") or entry.get("isbn", "")
-    link = entry.get("link", "")
-    if not summary and not isbn13 and not link:
-        skipped += 1
+
+def pick_summary(entry):
+    fd = (entry.get("fullDescription") or "").strip()
+    sd = (entry.get("description") or "").strip()
+    return fd if len(fd) >= max(50, len(sd)) else sd
+
+
+def build_new_array(arr_text, objs, prefix="  "):
+    new_objs, updated, skipped = [], 0, 0
+    for s, e in objs:
+        obj_text = arr_text[s:e]
+        bid = get_obj_id(obj_text)
+        if bid not in meta:
+            new_objs.append(obj_text)
+            skipped += 1
+            continue
+        entry = meta[bid]
+        summary = pick_summary(entry)
+        isbn = entry.get("isbn13", "") or entry.get("isbn", "")
+        link = entry.get("link", "")
+
+        existing = re.search(r'summary:\s*"((?:[^"\\]|\\.)*)"', obj_text)
+        if existing and len(existing.group(1)) > 30:
+            new_objs.append(obj_text)
+            skipped += 1
+            continue
+
+        parts = []
+        if summary:
+            parts.append("summary: " + js_str(summary))
+        if isbn:
+            parts.append("isbn: " + js_str(isbn))
+        if link:
+            parts.append("aladinLink: " + js_str(link))
+        if not parts:
+            new_objs.append(obj_text)
+            skipped += 1
+            continue
+
+        last_brace = obj_text.rfind("}")
+        before = obj_text[:last_brace].rstrip()
+        if before.endswith(","):
+            before = before[:-1]
+        new_objs.append(before + ", " + ", ".join(parts) + " }")
+        updated += 1
+
+    new_arr = "[\n" + ",\n".join(prefix + o for o in new_objs) + "\n]"
+    return new_arr, updated, skipped
+
+
+totals = {"updated": 0, "skipped": 0}
+for arr_name in ["RECOMMENDED_BOOKS", "EXTRA_BOOKS"]:
+    s, e = slice_array(src, arr_name)
+    if s is None:
+        print("[WARN] " + arr_name + " not found - skipping")
         continue
-
-    # Locate the object: id format differs
-    if bid.startswith("R"):
-        # R001 → string id
-        pattern = rf'(\{{ id: "{re.escape(bid)}",[^}}]*?)( \}}),'
-    else:
-        # 14, 15, 16, 17 → numeric id, used as bare number
-        pattern = rf'(\{{ id: {re.escape(bid)},[^}}]*?)( \}}),'
-
-    m = re.search(pattern, src)
-    if not m:
-        # Try without trailing comma (last item) — but in our format objects always end with `},`
-        not_found += 1
-        print(f"  [WARN] id {bid}: 객체 못 찾음")
-        continue
-
-    obj_inner = m.group(1)
-
-    # Skip if already has summary
-    if "summary:" in obj_inner and len(re.search(r'summary:\s*"((?:[^"\\]|\\.)*)"', obj_inner).group(1) if re.search(r'summary:\s*"((?:[^"\\]|\\.)*)"', obj_inner) else "") > 30:
-        skipped += 1
-        continue
-
-    # Build new fields string
-    extra_fields = []
-    if summary:
-        extra_fields.append(f"summary: {js_str(summary)}")
-    if isbn13:
-        extra_fields.append(f"isbn: {js_str(isbn13)}")
-    if link:
-        extra_fields.append(f"aladinLink: {js_str(link)}")
-
-    if not extra_fields:
-        skipped += 1
-        continue
-
-    new_inner = obj_inner + ", " + ", ".join(extra_fields)
-    src = src.replace(obj_inner + " }", new_inner + " }", 1)
-    updated += 1
+    arr_text = src[s:e]
+    objs = split_objects(arr_text)
+    print("[OK] " + arr_name + ": " + str(len(objs)) + " objects")
+    new_arr, upd, skp = build_new_array(arr_text, objs)
+    src = src[:s] + new_arr + src[e:]
+    totals["updated"] += upd
+    totals["skipped"] += skp
+    print("     " + arr_name + ": " + str(upd) + " updated / " + str(skp) + " skipped")
 
 with open(APP_DATA, "w", encoding="utf-8") as f:
     f.write(src)
 
 new_size = len(src.encode("utf-8"))
+delta = new_size - original_size
+sign = "+" if delta >= 0 else ""
+
 print()
-print(f"=== 결과 ===")
-print(f"  updated:    {updated}")
-print(f"  skipped:    {skipped}")
-print(f"  not_found:  {not_found}")
-print(f"  app-data.js: {original_size} → {new_size} bytes (Δ {new_size - original_size:+d})")
+print("=== Result ===")
+print("  updated total: " + str(totals["updated"]))
+print("  skipped total: " + str(totals["skipped"]))
+print("  app-data.js: " + str(original_size) + " -> " + str(new_size) + " bytes (delta " + sign + str(delta) + ")")
 print()
-print("다음 단계: deploy.ps1 실행")
+print("Next: .\\deploy.ps1")
