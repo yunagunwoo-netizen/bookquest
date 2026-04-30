@@ -210,7 +210,9 @@
       measurementId: "G-PKQK61MJ06"
     };
     firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+    // var (not const) so the Babel-script block below can see `db` via globalThis
+    var db = firebase.firestore();
+    window.db = db;
   </script>
 
   <script crossorigin="" src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -8902,9 +8904,9 @@
                     <div style={{ fontSize: 12, color: "#888", marginBottom: 8 }}>{thisWeekBook.author}</div>
                     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                       <div style={{ flex: 1, background: "#ddd", borderRadius: 6, height: 8, overflow: "hidden" }}>
-                        <div style={{ background: thisWeekBook.color, height: "100%", width: `${bookProgress[thisWeekBook.id]}%`, borderRadius: 6, transition: "width 0.5s" }} />
+                        <div style={{ background: thisWeekBook.color, height: "100%", width: `${bookProgress[thisWeekBook.id] ?? 0}%`, borderRadius: 6, transition: "width 0.5s" }} />
                       </div>
-                      <span style={{ fontSize: 12, color: "#666", fontWeight: 700 }}>{bookProgress[thisWeekBook.id]}%</span>
+                      <span style={{ fontSize: 12, color: "#666", fontWeight: 700 }}>{bookProgress[thisWeekBook.id] ?? 0}%</span>
                     </div>
                   </div>
                 </div>
