@@ -6197,13 +6197,24 @@
                   <div style={{ fontSize: 12, opacity: 0.85, lineHeight: 1.6 }}>
                     Q&A 2라운드는 네가 풀고,<br/>미니토론 1라운드는 담당을 고를 수 있어.
                   </div>
+                  {/* 잔여 횟수 항상 표시 */}
+                  <div style={{ marginTop: 12, display: "inline-block", fontSize: 11, fontWeight: 700, color: canPlayToday() ? "#86efac" : "#fca5a5", background: "rgba(0,0,0,0.25)", padding: "5px 12px", borderRadius: 12 }}>
+                    오늘 {BATTLE_PLAY_DAILY_LIMIT - remainingPlayCount()}/{BATTLE_PLAY_DAILY_LIMIT} 사용 · {remainingPlayCount()}회 남음
+                  </div>
                 </div>
-                <button onClick={() => launchInteractiveBattle("me")} disabled={battleLoading}
-                  style={{ width: "100%", padding: 14, borderRadius: 14, border: "none", background: "linear-gradient(135deg, #22c55e, #059669)", color: "white", fontSize: 15, fontWeight: 800, cursor: "pointer", marginBottom: 10, opacity: battleLoading ? 0.6 : 1 }}>
+                {/* 기회 소진 안내 박스 */}
+                {!canPlayToday() && !isAdmin && (
+                  <div style={{ background: "rgba(239, 68, 68, 0.18)", border: "1px solid rgba(239, 68, 68, 0.5)", color: "#fecaca", padding: 14, borderRadius: 14, marginBottom: 14, textAlign: "center", lineHeight: 1.7, fontSize: 13 }}>
+                    ⏰ <strong>오늘 배틀 기회를 모두 썼어요!</strong><br/>
+                    하루 {BATTLE_PLAY_DAILY_LIMIT}회 제한이라 내일 다시 도전할 수 있어요.
+                  </div>
+                )}
+                <button onClick={() => launchInteractiveBattle("me")} disabled={battleLoading || (!canPlayToday() && !isAdmin)}
+                  style={{ width: "100%", padding: 14, borderRadius: 14, border: "none", background: "linear-gradient(135deg, #22c55e, #059669)", color: "white", fontSize: 15, fontWeight: 800, cursor: (battleLoading || (!canPlayToday() && !isAdmin)) ? "not-allowed" : "pointer", marginBottom: 10, opacity: (battleLoading || (!canPlayToday() && !isAdmin)) ? 0.4 : 1 }}>
                   <img src="icons/ui/ui_player.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> 내가 토론할래 (직접 선택)
                 </button>
-                <button onClick={() => launchInteractiveBattle("ai")} disabled={battleLoading}
-                  style={{ width: "100%", padding: 14, borderRadius: 14, border: "1px solid rgba(255,255,255,0.3)", background: "rgba(255,255,255,0.08)", color: "white", fontSize: 15, fontWeight: 800, cursor: "pointer", marginBottom: 10, opacity: battleLoading ? 0.6 : 1 }}>
+                <button onClick={() => launchInteractiveBattle("ai")} disabled={battleLoading || (!canPlayToday() && !isAdmin)}
+                  style={{ width: "100%", padding: 14, borderRadius: 14, border: "1px solid rgba(255,255,255,0.3)", background: "rgba(255,255,255,0.08)", color: "white", fontSize: 15, fontWeight: 800, cursor: (battleLoading || (!canPlayToday() && !isAdmin)) ? "not-allowed" : "pointer", marginBottom: 10, opacity: (battleLoading || (!canPlayToday() && !isAdmin)) ? 0.4 : 1 }}>
                   <img src="icons/ui/ui_robot.png" alt="" style={{ width: 16, height: 16, verticalAlign: "middle" }} /> 아바타가 토론할래 (AI 자동)
                 </button>
                 <button onClick={() => setBattlePhase("gate")} disabled={battleLoading}
