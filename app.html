@@ -249,6 +249,20 @@
       if (nextStage >= SR_GRADUATED_STAGE) return { reviewStage: SR_GRADUATED_STAGE, nextDueAt: null };
       return { reviewStage: nextStage, nextDueAt: now + SR_INTERVALS_MS[nextStage - 1] };
     };
+    // 토론·심화 별점 기반 SR (3성=정답, 2성=유지, 0~1성=리셋)
+    const computeNextDueByStars = (stars, prevStage) => {
+      const now = Date.now();
+      if (stars >= 3) {
+        const nextStage = Math.min(SR_GRADUATED_STAGE, (prevStage || 0) + 1);
+        if (nextStage >= SR_GRADUATED_STAGE) return { reviewStage: SR_GRADUATED_STAGE, nextDueAt: null };
+        return { reviewStage: nextStage, nextDueAt: now + SR_INTERVALS_MS[nextStage - 1] };
+      }
+      if (stars >= 2) {
+        const stage = prevStage || 0;
+        return { reviewStage: stage, nextDueAt: now + SR_INTERVALS_MS[Math.max(0, stage - 1)] };
+      }
+      return { reviewStage: 0, nextDueAt: now + SR_INTERVALS_MS[0] };
+    };
 
     // ═══════════════════════════════════════
     // 배틀 결과 제출 중복 호출 가드 (interactiveBattle finalize 한 번만)
@@ -4740,9 +4754,11 @@
             const stars = giveReward(false);
 
             setDiscussionStarState(prev => {
-              const existing = prev[key] || { completed: false, stars: 0, bestStars: 0 };
+              const existing = prev[key] || { completed: false, stars: 0, bestStars: 0, reviewStage: 0 };
               const newBestStars = Math.max(existing.bestStars || 0, stars);
-              return { ...prev, [key]: { completed: true, stars, bestStars: newBestStars } };
+              // Layer 3: 별점 기반 SR 단계 업데이트
+              const sr = computeNextDueByStars(stars, existing.reviewStage || 0);
+              return { ...prev, [key]: { completed: true, stars, bestStars: newBestStars, reviewStage: sr.reviewStage, nextDueAt: sr.nextDueAt } };
             });
             setDiscussionState(prev => ({ ...prev, [key]: true }));
 
@@ -7719,10 +7735,33 @@
                 return discussionState[`${book.id}-disc-${i}`];
               }).length;
               const unlockedDiscCount = Math.min(allDisc.length, (Math.floor(startedDiscCount / DISC_CHUNK) + 1) * DISC_CHUNK);
-              const unlockedSortedDisc = sortedDisc.filter(t => sortedDisc.indexOf(t) < unlockedDiscCount);
+              // Layer 3: SR — 졸업 제외, 복습 due 우선
+              const nowMsDisc = Date.now();
+              const isDiscReviewDue = (t) => {
+                const i = allDisc.findIndex(o => o.q === t.q);
+                const st = discussionStarState[`${book.id}-disc-${i}`];
+                if (!st || !st.completed) return false;
+                if (st.reviewStage >= SR_GRADUATED_STAGE) return false;
+                return (st.nextDueAt || 0) <= nowMsDisc;
+              };
+              const isDiscGraduated = (t) => {
+                const i = allDisc.findIndex(o => o.q === t.q);
+                const st = discussionStarState[`${book.id}-disc-${i}`];
+                return st && st.reviewStage >= SR_GRADUATED_STAGE;
+              };
+              const isDiscFresh = (t) => {
+                const i = allDisc.findIndex(o => o.q === t.q);
+                return !discussionState[`${book.id}-disc-${i}`];
+              };
+              const reviewDueDiscCount = allDisc.filter(isDiscReviewDue).length;
+              const graduatedDiscCount = allDisc.filter(isDiscGraduated).length;
+              const unlockedSortedDisc = sortedDisc.filter(t => sortedDisc.indexOf(t) < unlockedDiscCount && !isDiscGraduated(t));
+              const reviewDueDisc = unlockedSortedDisc.filter(isDiscReviewDue);
+              const freshDisc = unlockedSortedDisc.filter(isDiscFresh);
+              const orderedDisc = [...reviewDueDisc, ...freshDisc];
               const SHOW_DISC = 3;
-              const displayedDisc = unlockedSortedDisc.slice(0, SHOW_DISC);
-              const hasMoreDisc = unlockedSortedDisc.length > displayedDisc.length;
+              const displayedDisc = orderedDisc.slice(0, SHOW_DISC);
+              const hasMoreDisc = orderedDisc.length > displayedDisc.length;
               const remainToNextDiscUnlock = Math.max(0, unlockedDiscCount - startedDiscCount);
               const renderStars = (num) => {
                 const full = Math.floor(num);
@@ -7739,19 +7778,31 @@
                     )}
                   </div>
                   {allDisc.length > 0 && (
-                    <div style={{ fontSize: 11, marginBottom: 8, display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
-                      <span style={{ color: "#667eea", fontWeight: 700 }}>
-                        💬 토론 진행: {startedDiscCount}/{allDisc.length}
-                        {startedDiscCount < allDisc.length && (
-                          <span style={{ color: "#888", fontWeight: 500, marginLeft: 6 }}>
-                            · {remainToNextDiscUnlock > 0 ? `${remainToNextDiscUnlock}개 더 시작하면 다음 묶음` : "다음 묶음 열림!"}
-                          </span>
-                        )}
-                        {startedDiscCount >= allDisc.length && (
-                          <span style={{ color: "#22c55e", fontWeight: 700, marginLeft: 6 }}>· 완주! 🎉</span>
-                        )}
-                      </span>
-                      <span style={{ color: "#aaa" }}>{displayedDisc.length}개 표시</span>
+                    <div style={{ marginBottom: 8 }}>
+                      <div style={{ fontSize: 11, display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                        <span style={{ color: "#667eea", fontWeight: 700 }}>
+                          💬 토론 진행: {startedDiscCount}/{allDisc.length}
+                          {startedDiscCount < allDisc.length && (
+                            <span style={{ color: "#888", fontWeight: 500, marginLeft: 6 }}>
+                              · {remainToNextDiscUnlock > 0 ? `${remainToNextDiscUnlock}개 더 시작하면 다음 묶음` : "다음 묶음 열림!"}
+                            </span>
+                          )}
+                          {startedDiscCount >= allDisc.length && (
+                            <span style={{ color: "#22c55e", fontWeight: 700, marginLeft: 6 }}>· 완주! 🎉</span>
+                          )}
+                        </span>
+                        <span style={{ color: "#aaa" }}>{displayedDisc.length}개 표시</span>
+                      </div>
+                      {(reviewDueDiscCount > 0 || graduatedDiscCount > 0) && (
+                        <div style={{ fontSize: 10, color: "#666", display: "flex", gap: 10 }}>
+                          {reviewDueDiscCount > 0 && (
+                            <span style={{ background: "#fef3c7", color: "#92400e", padding: "2px 8px", borderRadius: 8, fontWeight: 700 }}>🔄 복습 {reviewDueDiscCount}개 대기</span>
+                          )}
+                          {graduatedDiscCount > 0 && (
+                            <span style={{ background: "#dcfce7", color: "#166534", padding: "2px 8px", borderRadius: 8, fontWeight: 700 }}>🎓 졸업 {graduatedDiscCount}/{allDisc.length}</span>
+                          )}
+                        </div>
+                      )}
                     </div>
                   )}
                   {displayedDisc.map((t) => {
@@ -7971,10 +8022,33 @@
                 return discussionState[`${book.id}-deep-${i}`];
               }).length;
               const unlockedDeepCount = Math.min(allDeep.length, (Math.floor(startedDeepCount / DEEP_CHUNK) + 1) * DEEP_CHUNK);
-              const unlockedSortedDeep = sortedDeep.filter(t => sortedDeep.indexOf(t) < unlockedDeepCount);
+              // Layer 3: SR
+              const nowMsDeep = Date.now();
+              const isDeepReviewDue = (t) => {
+                const i = allDeep.findIndex(o => o.q === t.q);
+                const st = discussionStarState[`${book.id}-deep-${i}`];
+                if (!st || !st.completed) return false;
+                if (st.reviewStage >= SR_GRADUATED_STAGE) return false;
+                return (st.nextDueAt || 0) <= nowMsDeep;
+              };
+              const isDeepGraduated = (t) => {
+                const i = allDeep.findIndex(o => o.q === t.q);
+                const st = discussionStarState[`${book.id}-deep-${i}`];
+                return st && st.reviewStage >= SR_GRADUATED_STAGE;
+              };
+              const isDeepFresh = (t) => {
+                const i = allDeep.findIndex(o => o.q === t.q);
+                return !discussionState[`${book.id}-deep-${i}`];
+              };
+              const reviewDueDeepCount = allDeep.filter(isDeepReviewDue).length;
+              const graduatedDeepCount = allDeep.filter(isDeepGraduated).length;
+              const unlockedSortedDeep = sortedDeep.filter(t => sortedDeep.indexOf(t) < unlockedDeepCount && !isDeepGraduated(t));
+              const reviewDueDeep = unlockedSortedDeep.filter(isDeepReviewDue);
+              const freshDeep = unlockedSortedDeep.filter(isDeepFresh);
+              const orderedDeep = [...reviewDueDeep, ...freshDeep];
               const SHOW_DEEP = 2;
-              const displayedDeep = unlockedSortedDeep.slice(0, SHOW_DEEP);
-              const hasMoreDeep = unlockedSortedDeep.length > displayedDeep.length;
+              const displayedDeep = orderedDeep.slice(0, SHOW_DEEP);
+              const hasMoreDeep = orderedDeep.length > displayedDeep.length;
               const remainToNextDeepUnlock = Math.max(0, unlockedDeepCount - startedDeepCount);
               const renderStars = (num) => {
                 const full = Math.floor(num);
@@ -7987,19 +8061,31 @@
                     {!isPremium && !isAdmin && <span style={{ marginLeft: 8, fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 8, background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white" }}>Premium</span>}
                   </div>
                   {allDeep.length > 0 && (
-                    <div style={{ fontSize: 11, marginBottom: 8, display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
-                      <span style={{ color: "#FF6F00", fontWeight: 700 }}>
-                        🔥 심화 진행: {startedDeepCount}/{allDeep.length}
-                        {startedDeepCount < allDeep.length && (
-                          <span style={{ color: "#888", fontWeight: 500, marginLeft: 6 }}>
-                            · {remainToNextDeepUnlock > 0 ? `${remainToNextDeepUnlock}개 더 시작하면 다음 묶음` : "다음 묶음 열림!"}
-                          </span>
-                        )}
-                        {startedDeepCount >= allDeep.length && (
-                          <span style={{ color: "#22c55e", fontWeight: 700, marginLeft: 6 }}>· 완주! 🎉</span>
-                        )}
-                      </span>
-                      <span style={{ color: "#aaa" }}>{displayedDeep.length}개 표시</span>
+                    <div style={{ marginBottom: 8 }}>
+                      <div style={{ fontSize: 11, display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                        <span style={{ color: "#FF6F00", fontWeight: 700 }}>
+                          🔥 심화 진행: {startedDeepCount}/{allDeep.length}
+                          {startedDeepCount < allDeep.length && (
+                            <span style={{ color: "#888", fontWeight: 500, marginLeft: 6 }}>
+                              · {remainToNextDeepUnlock > 0 ? `${remainToNextDeepUnlock}개 더 시작하면 다음 묶음` : "다음 묶음 열림!"}
+                            </span>
+                          )}
+                          {startedDeepCount >= allDeep.length && (
+                            <span style={{ color: "#22c55e", fontWeight: 700, marginLeft: 6 }}>· 완주! 🎉</span>
+                          )}
+                        </span>
+                        <span style={{ color: "#aaa" }}>{displayedDeep.length}개 표시</span>
+                      </div>
+                      {(reviewDueDeepCount > 0 || graduatedDeepCount > 0) && (
+                        <div style={{ fontSize: 10, color: "#666", display: "flex", gap: 10 }}>
+                          {reviewDueDeepCount > 0 && (
+                            <span style={{ background: "#fef3c7", color: "#92400e", padding: "2px 8px", borderRadius: 8, fontWeight: 700 }}>🔄 복습 {reviewDueDeepCount}개 대기</span>
+                          )}
+                          {graduatedDeepCount > 0 && (
+                            <span style={{ background: "#dcfce7", color: "#166534", padding: "2px 8px", borderRadius: 8, fontWeight: 700 }}>🎓 졸업 {graduatedDeepCount}/{allDeep.length}</span>
+                          )}
+                        </div>
+                      )}
                     </div>
                   )}
                   {displayedDeep.map((t) => {
