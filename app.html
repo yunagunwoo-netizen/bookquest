@@ -730,7 +730,7 @@
       1: { season: 1, totalWeeks: 12, totalBooks: 13, startDate: "2026-03-24", tiers: false },
       2: { season: 2, totalWeeks: 16, totalBooks: 16, startDate: "2026-09-01", tiers: true },
     };
-    const CURRENT_SEASON = 1;  // 운영 중인 시즌 (2026-04-30 시즌2 비노출 처리, BOOKS 13권 사용)
+    const CURRENT_SEASON = 1;  // 운영 중인 시즌 (2026-04-30 시즌2 비노출, BOOKS 13권 사용)
     const SEASON_CONFIG = SEASONS[CURRENT_SEASON];
 
     // 학년 → 학년군(tier) 매핑
@@ -9229,8 +9229,13 @@
               const korUnits = semData?.["국어"] || [];
               const currBooks = [];
               const seen = new Set();
+              // 2026-04-30 — 표시용 풀(BOOKS+CURRICULUM_BOOKS)에 있는 책만 노출. archive 책은 제외.
               korUnits.forEach(u => (u.recommendedBooks || []).forEach(id => {
-                if (!seen.has(id)) { seen.add(id); const b = findBookById(id); if (b) currBooks.push(b); }
+                if (!seen.has(id)) {
+                  seen.add(id);
+                  const b = ALL_BOOKS.find(x => x.id === id || x.id === Number(id));
+                  if (b) currBooks.push(b);
+                }
               }));
               if (currBooks.length === 0) return null;
               return (
