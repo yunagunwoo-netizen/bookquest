@@ -1216,25 +1216,37 @@
 
 [내가 함께 읽은 책들 (${completedBooks.length}권 완독, ${readingBooks.length}권 읽는 중)]`;
 
-      const bookSummaries = completedBooks.slice(0, 6).map(b => {
+      // Layer 2 후속: 매 배틀마다 다른 6권을 Gemini에 보내 같은 질문 반복 방지
+      // (완독 책이 6권 이하면 셔플해도 같은 풀이지만 키포인트 순서가 달라져 출제 다양성 ↑)
+      const shuffledCompleted = [...completedBooks].sort(() => Math.random() - 0.5);
+      const pickedCompleted = shuffledCompleted.slice(0, 6);
+      const bookSummaries = pickedCompleted.map(b => {
         const domains = (b.domains || [])
           .map(id => DOMAIN_META.find(d => d.id === id))
           .filter(Boolean)
           .map(d => d.name).join("/");
-        const keyPoints = (b.keyPoints || []).slice(0, 4).join(" / ");
+        // keyPoints도 셔플해서 매번 다른 4개 노출
+        const allKp = b.keyPoints || [];
+        const shuffledKp = [...allKp].sort(() => Math.random() - 0.5).slice(0, 4);
+        const keyPoints = shuffledKp.join(" / ");
         return `"${b.title}" (${b.author}) [${domains}]
 요약: ${b.summary}
 핵심: ${keyPoints}`;
       }).join("\n\n");
 
-      const readingList = readingBooks.slice(0, 3).map(b =>
+      const shuffledReading = [...readingBooks].sort(() => Math.random() - 0.5);
+      const readingList = shuffledReading.slice(0, 3).map(b =>
         `"${b.title}" (${b.author}) - 아직 읽는 중`
       ).join("\n");
+
+      // 다양성 시드: 매 배틀마다 다른 토큰을 prompt에 포함시켜 Gemini가 캐시되지 않은 출력 생성
+      const variantSeed = `[다양성 시드: ${Date.now().toString(36)}-${Math.random().toString(36).slice(2,8)}]\n[지시: 이번 배틀은 직전 배틀과 다른 책·다른 키포인트·다른 시각으로 5문제를 만들어. 같은 책의 비슷한 질문을 반복하지 마.]`;
 
       return [
         personaHeader,
         bookSummaries || "(아직 완독한 책이 없어. 읽은 적 없다고 솔직히 말해.)",
-        readingList ? "\n[읽고 있는 중]\n" + readingList : ""
+        readingList ? "\n[읽고 있는 중]\n" + readingList : "",
+        variantSeed
       ].filter(Boolean).join("\n\n");
     };
 
