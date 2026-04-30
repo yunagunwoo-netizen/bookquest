@@ -5,7 +5,7 @@
 // (it replaces `bookquest-v<ts>` with a fresh timestamp), so
 // browsers detect sw.js bytes differ and install the new SW.
 // ============================================================
-const CACHE_NAME = 'bookquest-v20260430213707';
+const CACHE_NAME = 'bookquest-v20260430214636';
 
 // Only precache files that actually exist at repo root.
 const ASSETS_TO_CACHE = [
